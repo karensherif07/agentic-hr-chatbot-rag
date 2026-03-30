@@ -16,37 +16,49 @@ from sentence_transformers import CrossEncoder
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
-ARABIC_PDF_PATH = "arabic_policy.pdf"
+ARABIC_PDF_PATH = "ar_policy.pdf"
 ENGLISH_PDF_PATH = "eng_policy.pdf"
+
+# ─── Language Detection ────────────────────────────────────────
 
 FRANCO_TIER1 = {
     "ana", "enta", "enti", "ehna", "entom", "howa", "hya", "homma",
     "msh", "mesh", "mish", "mafish",
     "leh", "leih", "fein", "fen", "emta", "ezay", "meen", "eih", "eh",
     "ya3ni", "3ashan", "momken", "3ayz", "3ayza", "yenfa3", "ynfa3",
-    "tayeb", "tamam", "keda", "kidda", "bas",
+    "tayeb", "tamam", "keda", "kidda", "bas", "ad" , "2ad",
     "7aga", "haga", "feeh", "fieh", "la2", "aywa", "aiwa",
     "wenta", "wenti", "bs", "delwa2ty", "badein", "b3dein",
     "el", "di", "da", "dol", "aho", "ahi",
 }
 
-
-def has_arabic_digit_combo(text: str) -> bool:
-    tokens = re.findall(r"[a-zA-Z0-9]+", text.lower())
-    for tok in tokens:
-        if len(tok) >= 2 and re.search(r"[a-z]", tok) and re.search(r"[23578]", tok):
-            return True
-    return False
+ENGLISH_STOP_WORDS = {"the", "is", "are", "what", "how", "who", "where", "of", "and", "to", "for"}
 
 
 def detect_language_type(text: str) -> str:
+    # Arabic unicode check — must come first
     if re.search(r"[\u0600-\u06FF]", text):
         return "arabic"
-    tokens = set(re.findall(r"[a-zA-Z0-9']+", text.lower()))
-    if tokens & FRANCO_TIER1:
+
+    tokens = re.findall(r"[a-zA-Z0-9']+", text.lower())
+    token_set = set(tokens)
+
+    # Priority 1: Known Franco slang vocabulary
+    if token_set & FRANCO_TIER1:
         return "franco"
-    if has_arabic_digit_combo(text):
+
+    # Priority 2: Digit-letter combos (e.g. 3yoon, 7elw, ma3lesh)
+    franco_hits = 0
+    for tok in tokens:
+        if len(tok) >= 2 and re.search(r"[a-z]", tok) and re.search(r"[23578]", tok):
+            franco_hits += 1
+    if franco_hits >= 1:
         return "franco"
+
+    # Priority 3: English structural words — only reached after ruling out Franco
+    if token_set & ENGLISH_STOP_WORDS:
+        return "english"
+
     return "english"
 
 
@@ -62,6 +74,8 @@ def get_semantic_dialect(llm, arabic_text: str) -> str:
     except Exception:
         return "msa"
 
+
+# ─── Text Cleaning & Normalization ────────────────────────────
 
 def clean_pdf(text: str) -> str:
     text = re.sub(r"[\ufeff\u200b\u200c\u200d\u200e\u200f]", "", text)
@@ -80,6 +94,47 @@ def normalize_arabic(text: str) -> str:
 def normalize_english(text: str) -> str:
     return text.lower()
 
+
+# ─── Franco → Arabic Conversion ───────────────────────────────
+
+FRANCO_MAP = {"2":"ء", "3":"ع", "4":"ش", "5":"خ","7":"ح", "8":"غ"}
+
+FRANCO_WORDS = {
+    "3ayz": "عايز", "3ayza": "عايزة", "a3raf": "اعرف", "ezay": "ازاي", "fein": "فين", 
+    "leh": "ليه", "leih": "ليه", "msh": "مش", "mesh": "مش", "mish": "مش", "ana": "انا", 
+    "enta": "انت", "enti": "انتي", "el": "ال", "ya3ni": "يعني", "3ashan": "عشان", 
+    "tayeb": "طيب", "tamam": "تمام", "keda": "كده", "kidda": "كده", "bas": "بس", "bs": "بس",
+    "la2": "لأ", "aywa": "ايوه", "aiwa": "ايوه", "momken": "ممكن", "7aga": "حاجة", 
+    "haga": "حاجة", "emta": "امتى", "meen": "مين", "eih": "ايه", "eh": "ايه", "fen": "فين", 
+    "mafish": "مافيش", "yenfa3": "ينفع", "ynfa3": "ينفع", "feeh": "فيه", "fieh": "فيه", 
+    "delwa2ty": "دلوقتي", "badein": "بعدين", "b3dein": "بعدين", "da": "ده", "di": "دي", 
+    "dol": "دول", "aho": "اهو", "ahi": "اهي", "ehna": "احنا", "ento": "انتوا", 
+    "howa": "هو", "hya": "هي", "homma": "هما"
+}
+
+def franco_to_arabic(text: str) -> str:
+    """
+    FIX: Word-level dictionary lookup MUST happen before digit substitution.
+    In the original code, FRANCO_MAP digit replacement ran first across the whole
+    string — so "3ayz" became "عayz" before the FRANCO_WORDS dict could match it,
+    meaning the dict lookup NEVER worked. Now we do word-level lookup first, then
+    apply digit substitution only to words not found in the dictionary.
+    """
+    words = text.lower().split()
+    converted = []
+    for w in words:
+        if w in FRANCO_WORDS:
+            converted.append(FRANCO_WORDS[w])
+        else:
+            # Apply digit → Arabic-letter substitution for unknown words
+            result = w
+            for digit, arabic_char in FRANCO_MAP.items():
+                result = result.replace(digit, arabic_char)
+            converted.append(result)
+    return " ".join(converted)
+
+
+# ─── Retrieval Utilities ──────────────────────────────────────
 
 def tokenize(text: str) -> list:
     return re.findall(r"[\w\u0600-\u06FF]+", text.lower())
@@ -140,20 +195,16 @@ def build_context(docs: list) -> str:
     return "\n\n---\n\n".join(out)
 
 
-# ─────────────────────────────────────────────────────────────
-# FIX 1: Citation validation — only flag truly missing citations.
-#         Do NOT append extra text to every valid answer.
-# ─────────────────────────────────────────────────────────────
-def validate(ans: str) -> str:
-    # Strip any stray trailing whitespace
+# ─── Validation & Citation Utilities ─────────────────────────
+
+def validate(ans: str, lang: str, has_citations: bool = False) -> str:
+    """
+    Warn if the LLM produced no citations at all.
+    `has_citations` is pre-computed from the raw answer before [Page N] stripping,
+    so this function does not need to re-scan for markers.
+    """
     ans = ans.strip()
 
-    # Check for at least one page citation anywhere in the answer
-    has_citation = bool(
-        re.search(r"\[Page\s*\d+", ans, re.IGNORECASE)
-    )
-
-    # Only add the warning when the answer is substantive but has no citations at all
     not_found_phrases = [
         "not available in the policy",
         "غير متوفرة في وثائق",
@@ -161,44 +212,55 @@ def validate(ans: str) -> str:
     ]
     is_not_found = any(p.lower() in ans.lower() for p in not_found_phrases)
 
-    if not has_citation and not is_not_found:
-        ans += "\n\n⚠️ لم يتم ذكر أرقام الصفحات في هذه الإجابة." if re.search(
-            r"[\u0600-\u06FF]", ans
-        ) else "\n\n⚠️ Page citations were not produced for this answer."
+    if not has_citations and not is_not_found:
+        if lang == "arabic":
+            ans += "\n\n⚠️ لم يتم ذكر أرقام الصفحات في هذه الإجابة."
+        else:
+            ans += "\n\n⚠️ Page citations were not produced for this answer."
 
     return ans
 
 
-# ─────────────────────────────────────────────────────────────
-# FIX 2: "Used chunks" extraction — parse cited page numbers from
-#         the answer and only show chunks whose page matches.
-# ─────────────────────────────────────────────────────────────
 def get_cited_pages(answer: str) -> set:
-    """Return a set of 1-based page numbers mentioned in citations."""
     return {int(n) for n in re.findall(r"\[Page\s*(\d+)", answer, re.IGNORECASE)}
 
 
+def strip_citations(answer: str) -> str:
+    """Remove all [Page N] / [Page N | AR] / [Page N | EN] markers from displayed answer."""
+    cleaned = re.sub(r"\s*\[Page\s*\d+(?:\s*\|\s*(?:AR|EN))?\]", "", answer, flags=re.IGNORECASE)
+    # Collapse any double spaces left behind
+    cleaned = re.sub(r"  +", " ", cleaned)
+    return cleaned.strip()
+
+
 def filter_cited_chunks(docs: list, cited_pages: set) -> list:
-    """Return only the chunks whose page number appears in the answer."""
     if not cited_pages:
-        return docs  # fallback: show all if no citations parsed
+        return docs
     return [
         d for d in docs
         if (d.metadata.get("page", 0) + 1) in cited_pages
     ]
 
 
-CITATION_EXAMPLE_EN = """
-EXAMPLE of a correct cited answer:
+# ─── Prompt Templates ─────────────────────────────────────────
+
+CITATION_EXAMPLE_EN_2ND = """
+EXAMPLES of correct cited answers:
+Q: Can I take unpaid leave?
+A: Yes, you can apply for unpaid leave after exhausting your annual leave balance [Page 8].
+
 Q: How many annual leave days do employees get?
 A: Employees are entitled to 21 working days of annual leave per year [Page 5].
    This increases to 30 days after 10 years of continuous service [Page 5].
 """
 
-CITATION_EXAMPLE_AR = """
-مثال على إجابة صحيحة مع اقتباسات:
+CITATION_EXAMPLE_AR_2ND = """
+أمثلة على إجابات صحيحة:
+س: هل يمكنني أخذ إجازة بدون راتب؟
+ج: نعم، يمكنك التقدم بطلب إجازة بدون راتب بعد استنفاد رصيد إجازتك السنوية [Page 8].
+
 س: كم يوم إجازة سنوية يحق للموظف؟
-ج: يحق للموظف 21 يوم عمل إجازة سنوية [Page 5]. وترتفع إلى 30 يوماً بعد 10 سنوات [Page 5].
+ج: يحق للموظف 21 يوم عمل إجازة سنوية في السنة [Page 5]. وترتفع إلى 30 يوماً بعد 10 سنوات [Page 5].
 """
 
 BASE_EN = (
@@ -211,15 +273,12 @@ BASE_EN = (
     "4. If the answer is not in the context, respond with exactly:\n"
     "   \"This information is not available in the policy documents.\"\n"
     "5. Do not add information not present in the context.\n"
-    + CITATION_EXAMPLE_EN
+    "6. MIRROR the person/voice of the question:\n"
+    "   - If the question uses 'I' or 'can I' or 'my' → answer with 'you' / 'you can' / 'your'.\n"
+    "   - If the question uses 'employees' or 'he/she/they' → answer in third person.\n"
+    + CITATION_EXAMPLE_EN_2ND
 )
 
-# ─────────────────────────────────────────────────────────────
-# FIX 3: Arabic prompts rewritten in 3rd-person ("الموظف يستحق...")
-#         instead of 1st-person ("يحق لك..."), since the bot is
-#         answering factual HR policy questions, not addressing the
-#         user directly.
-# ─────────────────────────────────────────────────────────────
 BASE_AR = (
     "أنت مساعد سياسة الموارد البشرية.\n\n"
     "القواعد — اتبعها بدقة:\n"
@@ -229,9 +288,10 @@ BASE_AR = (
     "3. إذا لم تكن المعلومات في السياق، قل بالضبط:\n"
     "   \"هذه المعلومات غير متوفرة في وثائق السياسة.\"\n"
     "4. لا تضف معلومات غير موجودة في السياق.\n"
-    "5. أجب بصيغة الغائب (الشخص الثالث)، مثل:\n"
-    "   'يستحق الموظف...' و'تنص السياسة على...' — وليس 'يحق لك...' أو 'أنت تستحق...'.\n"
-    + CITATION_EXAMPLE_AR
+    "5. طابق ضمير السؤال في الإجابة:\n"
+    "   - إذا كان السؤال بصيغة المتكلم (أنا / هل أستطيع / ممكن آخذ) → أجب بصيغة المخاطب (أنت / يمكنك / تستحق).\n"
+    "   - إذا كان السؤال عن الموظف أو الغائب → أجب بصيغة الغائب (يستحق الموظف / تنص السياسة).\n"
+    + CITATION_EXAMPLE_AR_2ND
 )
 
 english_prompt = PromptTemplate(
@@ -245,22 +305,42 @@ msa_prompt = PromptTemplate(
 )
 
 egy_prompt = PromptTemplate(
-    template=BASE_AR + "\nأجب باللهجة المصرية العامية (صيغة الغائب أيضاً، مثل: 'الموظف بيستحق...').\n\nالسياق:\n{context}\n\nالسؤال: {question}\nالإجابة:",
+    template=BASE_AR + "\nأجب باللهجة المصرية العامية.\n\nالسياق:\n{context}\n\nالسؤال: {question}\nالإجابة:",
     input_variables=["context", "question"]
+)
+
+CITATION_EXAMPLE_FRANCO = """
+Amtela sa7:
+So2al (2nd person): momken akhod agaza bel mabla3?
+Egaba: aywa, momken ta5od agaza bel mabla3 lw 3andak raseed kafi [Page 8].
+
+So2al (3rd person): el mowazaf bya5od kam yom agaza?
+Egaba: el mowazaf bystahel 21 yom 3amal agaza f el sana [Page 5]. lw 3amal 10 sneen, byb2a 3ando 30 yom [Page 5].
+"""
+
+FRANCO_BASE = (
+    "Enta mosa3ed siyaset el HR.\n\n"
+    "El rules — etba3ha:\n"
+    "1. Egib bass men el context el maktub tala7t. Matesta5dimsh ay ma3lomat bara.\n"
+    "2. Kol gomla lazem tet7et 3aleha citation bel format [Page N].\n"
+    "3. Lw el ma3loma mesh mawgoda f el context, 2ol:\n"
+    "   \"El ma3loma di mesh mawgoda f el policy.\"\n"
+    "4. Matdifsh 7aga mesh f el context.\n"
+    "5. Etba3 damir el so2al:\n"
+    "   - Lw el so2al bel mutakalem (ana / momken akhod / 3ayez a3raf) → egib bel muka5ab (enta / momken ta5od / 3andak).\n"
+    "   - Lw el so2al 3an el mowazaf aw el gha2eb → egib bel gha2eb (el mowazaf bystahel...).\n"
+    "6. Egib bel Franco 3arabi bass: kelmaat 3arabiyya maktuba bel 7oroof el latiniyya wel arqam "
+    "(3 = ع, 7 = ح, 2 = ء, 5 = خ, 6 = ط, 8 = ق, 9 = ص). Matektibsh 3arabi fa9i7 wala inglizi.\n"
+    + CITATION_EXAMPLE_FRANCO
 )
 
 franco_prompt = PromptTemplate(
-    template=(
-        BASE_EN
-        + "\nThe user wrote in Franco Arabic (Arabic written with Latin letters and numbers, "
-        "e.g. '3' for ع, '7' for ح, '2' for ء, '5' for خ). "
-        "Respond in Franco Arabic using the same digit-letter conventions. "
-        "Use third-person phrasing (e.g. 'el mowazaf bystahel...' not 'enta btstahel...').\n\n"
-        "Context:\n{context}\n\nQuestion: {question}\nAnswer:"
-    ),
+    template=FRANCO_BASE + "\nEl context:\n{context}\n\nEl so2al: {question}\nEl egaba:",
     input_variables=["context", "question"]
 )
 
+
+# ─── Setup (cached) ───────────────────────────────────────────
 
 @st.cache_resource
 def setup():
@@ -272,7 +352,14 @@ def setup():
         pages = PyMuPDFLoader(path).load()
         for d in pages:
             d.page_content = clean_pdf(d.page_content)
-        splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=100)
+            d.metadata["doc_type"] = "policy"
+            d.metadata["lang"] = "arabic" if ARABIC_PDF_PATH in path else "english"
+
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=500,
+            chunk_overlap=50,
+            separators=["\n\n", "\n", ".", " "]
+        )
         docs = splitter.split_documents(pages)
         bm25_corpus = [tokenize(normalize_fn(d.page_content)) for d in docs]
         vs = FAISS.from_documents(docs, emb)
@@ -298,8 +385,30 @@ def setup():
     return ar_index, en_index, ar_llm, en_llm, reranker
 
 
-# ─── UI ───────────────────────────────────────────────────────
+# ─── Streamlit UI ─────────────────────────────────────────────
+
 st.set_page_config(page_title="HR Policy Assistant", layout="wide")
+
+# RTL/LTR CSS for proper Arabic and Franco rendering
+st.markdown("""
+<style>
+.rtl-answer {
+    direction: rtl;
+    text-align: right;
+    font-size: 1rem;
+    line-height: 1.9;
+    padding: 0.5rem 0;
+}
+.ltr-answer {
+    direction: ltr;
+    text-align: left;
+    font-size: 1rem;
+    line-height: 1.9;
+    padding: 0.5rem 0;
+}
+</style>
+""", unsafe_allow_html=True)
+
 st.title("💼 HR Policy Assistant")
 st.caption("Ask in English, Arabic (MSA or Egyptian dialect), or Franco Arabic.")
 
@@ -316,29 +425,41 @@ if question:
         try:
             lang = detect_language_type(question)
 
+            # ── Build bilingual queries ──────────────────────────────
             if lang == "english":
                 q_en = question
                 q_ar = translate(ar_llm, question, "Arabic")
+
             elif lang == "arabic":
                 q_ar = question
                 q_en = translate(en_llm, question, "English")
-            else:  # franco
-                q_ar = translate(ar_llm, question, "Modern Standard Arabic")
+
+            elif lang == "franco":
+                # FIX: Do NOT apply normalize_arabic to q_ar here.
+                # normalize_arabic is called inside retrieve() via normalize_fn,
+                # so FAISS gets clean Arabic while BM25 gets normalized Arabic.
+                # Applying normalize_arabic here would corrupt q_ar before FAISS sees it.
+                franco_arabic = franco_to_arabic(question)
+                q_ar = translate(ar_llm, franco_arabic, "Modern Standard Arabic")
                 q_en = translate(en_llm, q_ar, "English")
 
+            # ── Dialect detection ────────────────────────────────────
             dialect = None
             if lang == "arabic":
                 dialect = get_semantic_dialect(ar_llm, question)
             elif lang == "franco":
                 dialect = "franco"
 
+            # ── Unpack indices ───────────────────────────────────────
             ar_vs, ar_bm25, ar_docs = ar_index
             en_vs, en_bm25, en_docs = en_index
 
+            # ── Retrieve from both indices ───────────────────────────
             docs_ar = retrieve(q_ar, ar_vs, ar_bm25, ar_docs, normalize_arabic)
             docs_en = retrieve(q_en, en_vs, en_bm25, en_docs, normalize_english)
 
             combined = rrf(docs_ar, docs_en)
+
             rerank_query = q_ar if lang in ("arabic", "franco") else q_en
             top_docs = rerank(rerank_query, combined, reranker, top_n=5)
 
@@ -348,34 +469,56 @@ if question:
 
             context = build_context(top_docs)
 
+            # ── Select prompt and LLM ────────────────────────────────
             if lang == "english":
                 prompt = english_prompt
                 llm = en_llm
             elif lang == "franco":
                 prompt = franco_prompt
                 llm = ar_llm
-            else:
+            else:  # arabic
                 prompt = egy_prompt if dialect == "egyptian" else msa_prompt
                 llm = ar_llm
 
             final_prompt = prompt.format(context=context, question=question)
             res = llm.invoke(final_prompt)
-            answer = validate(res.content)
 
-            # ── FIX 2: Identify which chunks were actually cited ──
-            cited_pages = get_cited_pages(answer)
+            raw_answer = res.content
+
+            # Parse citations from the raw LLM output BEFORE stripping markers
+            cited_pages = get_cited_pages(raw_answer)
             cited_docs = filter_cited_chunks(top_docs, cited_pages)
 
+            # Strip [Page N] markers so they don't appear in the displayed answer
+            clean_answer = strip_citations(raw_answer)
+
+            # Validate on the clean answer (citation check uses cited_pages already parsed above)
+            answer = validate(clean_answer, lang, has_citations=bool(cited_pages))
+
+            # ── Layout ───────────────────────────────────────────────
             col1, col2 = st.columns([2, 1])
+
             with col1:
                 st.subheader("Answer")
-                st.success(answer)
+                css_class = "rtl-answer" if lang == "arabic" else "ltr-answer"
+                st.markdown(
+                    f'<div class="{css_class}">{answer.replace(chr(10), "<br>")}</div>',
+                    unsafe_allow_html=True
+                )
                 st.divider()
                 if st.button("🔄 Translate answer"):
                     if lang == "english":
-                        st.info(translate(ar_llm, answer, "Arabic"))
+                        translated = translate(ar_llm, answer, "Arabic")
+                        st.markdown(
+                            f'<div class="rtl-answer">{translated.replace(chr(10), "<br>")}</div>',
+                            unsafe_allow_html=True
+                        )
                     else:
-                        st.info(translate(en_llm, answer, "English"))
+                        translated = translate(en_llm, answer, "English")
+                        st.markdown(
+                            f'<div class="ltr-answer">{translated.replace(chr(10), "<br>")}</div>',
+                            unsafe_allow_html=True
+                        )
 
             with col2:
                 st.subheader("Query Info")
@@ -385,29 +528,23 @@ if question:
                 st.info(f"**Arabic query:** {q_ar}")
                 st.info(f"**English query:** {q_en}")
 
-            # ── FIX 2: Show ONLY cited chunks ──
-            if cited_docs:
-                with st.expander(f"📄 Source Chunks ({len(cited_docs)} cited)"):
-                    for i, d in enumerate(cited_docs, 1):
-                        source = (
-                            "Arabic PDF"
-                            if ARABIC_PDF_PATH in d.metadata.get("source", "")
-                            else "English PDF"
-                        )
-                        page_no = d.metadata.get("page", 0) + 1
-                        st.markdown(f"**Chunk {i} — Page {page_no} ({source})**")
-                        st.write(d.page_content)
-            else:
-                with st.expander("📄 Source Chunks (retrieved)"):
-                    for i, d in enumerate(top_docs, 1):
-                        source = (
-                            "Arabic PDF"
-                            if ARABIC_PDF_PATH in d.metadata.get("source", "")
-                            else "English PDF"
-                        )
-                        page_no = d.metadata.get("page", 0) + 1
-                        st.markdown(f"**Chunk {i} — Page {page_no} ({source})**")
-                        st.write(d.page_content)
+            # ── Source chunks ────────────────────────────────────────
+            display_docs = cited_docs if cited_docs else top_docs
+            chunk_label = (
+                f"📄 Source Chunks ({len(cited_docs)} cited)"
+                if cited_docs
+                else "📄 Source Chunks (retrieved — no citations parsed)"
+            )
+            with st.expander(chunk_label):
+                for i, d in enumerate(display_docs, 1):
+                    source = (
+                        "Arabic PDF"
+                        if ARABIC_PDF_PATH in d.metadata.get("source", "")
+                        else "English PDF"
+                    )
+                    page_no = d.metadata.get("page", 0) + 1
+                    st.markdown(f"**Chunk {i} — Page {page_no} ({source})**")
+                    st.write(d.page_content)
 
         except Exception as e:
             st.error(f"Error: {str(e)}")
