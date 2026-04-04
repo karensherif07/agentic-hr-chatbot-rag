@@ -29,6 +29,21 @@ So2al (3rd person): el mowazaf bya5od kam yom agaza?
 Egaba: el mowazaf bya5od 21 yom 3amal agaza f el sana [Page 5]. lw 3amal 10 sneen, byb2a 3ando 30 yom [Page 5].
 """
 
+HISTORY_BLOCK_EN = (
+    "Conversation so far (use this to understand follow-up questions):\n"
+    "{history}\n\n"
+)
+
+HISTORY_BLOCK_AR = (
+    "المحادثة السابقة (استخدمها لفهم الأسئلة المتابعة):\n"
+    "{history}\n\n"
+)
+
+HISTORY_BLOCK_FRANCO = (
+    "El kalam elli fat (esta5damo 3alashan tef2am el as2ela el follow-up):\n"
+    "{history}\n\n"
+)
+
 BASE_EN = (
     "You are an HR policy assistant.\n\n"
     "RULES — follow exactly:\n"
@@ -77,21 +92,41 @@ FRANCO_BASE = (
 )
 
 english_prompt = PromptTemplate(
-    template=BASE_EN + "\nRespond in English.\n\nContext:\n{context}\n\nQuestion: {question}\nAnswer:",
-    input_variables=["context", "question"]
+    template=(
+        BASE_EN
+        + "\nRespond in English.\n\n"
+        + HISTORY_BLOCK_EN
+        + "Context:\n{context}\n\nQuestion: {question}\nAnswer:"
+    ),
+    input_variables=["context", "question", "history"]
 )
 
 msa_prompt = PromptTemplate(
-    template=BASE_AR + "\nأجب باللغة العربية الفصحى.\n\nالسياق:\n{context}\n\nالسؤال: {question}\nالإجابة:",
-    input_variables=["context", "question"]
+    template=(
+        BASE_AR
+        + "\nأجب باللغة العربية الفصحى.\n\n"
+        + HISTORY_BLOCK_AR
+        + "السياق:\n{context}\n\nالسؤال: {question}\nالإجابة:"
+    ),
+    input_variables=["context", "question", "history"]
 )
 
 egy_prompt = PromptTemplate(
-    template=BASE_AR + "\nأجب باللهجة المصرية العامية.\n\nالسياق:\n{context}\n\nالسؤال: {question}\nالإجابة:",
-    input_variables=["context", "question"]
+    template=(
+        BASE_AR
+        + "\nأجب باللهجة المصرية العامية.\n\n"
+        + HISTORY_BLOCK_AR
+        + "السياق:\n{context}\n\nالسؤال: {question}\nالإجابة:"
+    ),
+    input_variables=["context", "question", "history"]
 )
 
 franco_prompt = PromptTemplate(
-    template=FRANCO_BASE + "\nEl context:\n{context}\n\nEl so2al: {question}\nEl egaba:",
-    input_variables=["context", "question"]
+    template=(
+        FRANCO_BASE
+        + "\n"
+        + HISTORY_BLOCK_FRANCO
+        + "El context:\n{context}\n\nEl so2al: {question}\nEl egaba:"
+    ),
+    input_variables=["context", "question", "history"]
 )
