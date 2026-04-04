@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import streamlit as st
+import fitz  # PyMuPDF
 
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -18,16 +19,45 @@ from nlp_utils import clean_pdf, normalize_arabic, normalize_english, tokenize
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
-ARABIC_PDF_PATH = "ar_policy.pdf"
-ENGLISH_PDF_PATH = "eng_policy.pdf"
+ARABIC_PDF_PATH = "policies/ar_policy.pdf"
+ENGLISH_PDF_PATH = "policies/eng_policy.pdf"
 
+
+# ─── PDF Page Rendering ────────────────────────────────────────
+
+@st.cache_data
+def render_page_to_image(pdf_path: str, page_num: int, zoom: float = 2.0, clip_text: str = None) -> bytes:
+    """Render a PDF page to PNG image bytes, optionally clipped to text."""
+    doc = fitz.open(pdf_path)
+    page = doc.load_page(page_num - 1)  # 0-based
+    matrix = fitz.Matrix(zoom, zoom)
+
+    if clip_text:
+        # Search for the text and get its bbox
+        text_instances = page.search_for(clip_text)
+        if text_instances:
+            # Union of all instances
+            rect = text_instances[0]
+            for inst in text_instances[1:]:
+                rect = rect | inst
+            # Add some padding
+            rect = rect + (-10, -10, 10, 10)
+            pix = page.get_pixmap(matrix=matrix, clip=rect)
+        else:
+            pix = page.get_pixmap(matrix=matrix)
+    else:
+        pix = page.get_pixmap(matrix=matrix)
+
+    img_bytes = pix.tobytes("png")
+    doc.close()
+    return img_bytes
 
 
 # ─── Arabic NLP Stack (MARBERT + AraBERT) ─────────────────────
 
 @st.cache_resource
 def load_nlp_stack():
-    dialect_pipe = pipeline("text-classification", model="UBC-NLP/MARBERT")
+    dialect_pipe = pipeline("text-classification", model="IbrahimAmin/marbertv2-arabic-written-dialect-classifier")
     ara_tokenizer = AutoTokenizer.from_pretrained("aubmindlab/bert-base-arabertv02")
     return dialect_pipe, ara_tokenizer
 
@@ -52,7 +82,9 @@ def setup():
             d.metadata["lang"] = "arabic" if ARABIC_PDF_PATH in path else "english"
 
         splitter = RecursiveCharacterTextSplitter(
-            chunk_size=500, chunk_overlap=50, separators=["\n\n", "\n", ".", " "]
+            chunk_size=500,
+            chunk_overlap=50,
+            separators=["\n\n", "\n", ".", "?", "!", " "]
         )
         docs = splitter.split_documents(pages)
         bm25_corpus = [tokenize(normalize_fn(d.page_content)) for d in docs]

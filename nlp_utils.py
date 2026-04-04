@@ -8,7 +8,7 @@ FRANCO_TIER1 = {
 FRANCO_MAP = {"2": "ء", "3": "ع", "4": "ش", "5": "خ", "7": "ح", "8": "غ"}
 
 FRANCO_WORDS = {
-    "3ayz": "عايز", "3ayza": "عايزة", "a3raf": "اعرف", "ezay": "ازاي", "fein": "فين",
+    "3ayz": "عايز", "3ayza": "عايزة", "a3raf": "اعرف", "ezay": "ازاي", "fein": "فين", "law": "لو", "2ad": "قد",
     "leh": "ليه", "leih": "ليه", "msh": "مش", "mesh": "مش", "mish": "مش", "ana": "انا",
     "enta": "انت", "enti": "انتي", "el": "ال", "ya3ni": "يعني", "3ashan": "عشان",
     "tayeb": "طيب", "tamam": "تمام", "keda": "كده", "kidda": "كده", "bas": "بس", "bs": "بس",
@@ -17,8 +17,8 @@ FRANCO_WORDS = {
     "mafish": "مافيش", "yenfa3": "ينفع", "ynfa3": "ينفع", "feeh": "فيه", "fieh": "فيه",
     "delwa2ty": "دلوقتي", "badein": "بعدين", "b3dein": "بعدين", "da": "ده", "di": "دي",
     "dol": "دول", "aho": "اهو", "ahi": "اهي", "ehna": "احنا", "ento": "انتوا",
-    "howa": "هو", "hya": "هي", "homma": "هما",
-}
+    "howa": "هو", "hya": "هي", "homma": "هما",    "law": "لو", "egaza": "اجازة", "gawaz": "جواز", "a5od": "اخد", "a3mel": "اعمل",
+    "eh": "ايه", "gawaz": "جواز", "egazah": "اجازة", "egazt": "اجازة", "3ayez": "عايز",}
 
 ENGLISH_STOP_WORDS = {"the", "is", "are", "what", "how", "who", "where", "of", "and", "to", "for"}
 
@@ -31,7 +31,7 @@ def detect_language_type(text: str) -> str:
     if re.search(r"[\u0600-\u06FF]", text):
         return "arabic"
 
-    tokens = re.findall(r"[a-zA-Z0-9']+", text.lower())
+    tokens = re.findall(r"[a-zA-Z0-9]+", text.lower())
     token_set = set(tokens)
     
     if token_set & ENGLISH_STOP_WORDS:
@@ -50,20 +50,19 @@ def detect_language_type(text: str) -> str:
     return "english"
 
 
-
 def get_semantic_dialect(text: str, dialect_pipe) -> str:
     if not isinstance(text, str):
         return "msa"
 
-    text_norm = re.sub(r"[^\u0600-\u06FF\s]", "", text)
+    # Rule-based fast path — check known Egyptian markers first
+    tokens = set(re.findall(r"[\u0600-\u06FF]+", text))
+    if tokens & EGY_MARKERS:
+        return "egyptian"
 
-    for marker in EGY_MARKERS:
-        if marker in text_norm:
-            return "egyptian"
     try:
         res = dialect_pipe(text)[0]
         label = res['label'].upper()
-        if any(x in label for x in ["EGY", "DIALECT", "LABEL_1"]):
+        if any(k in label for k in ("EGY", "EGYPT", "CAI", "DIAL", "DA")):
             return "egyptian"
     except Exception:
         pass
@@ -72,7 +71,11 @@ def get_semantic_dialect(text: str, dialect_pipe) -> str:
 
 def clean_pdf(text: str) -> str:
     text = re.sub(r"[\ufeff\u200b\u200c\u200d\u200e\u200f]", "", text)
-    return re.sub(r"\s+", " ", text).strip()
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r" *\n *", "\n", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
 
 
 def normalize_arabic(text: str, ara_tokenizer) -> str:
@@ -107,7 +110,5 @@ def franco_to_arabic(text: str) -> str:
     return " ".join(converted)
 
 def tokenize(text: str) -> list:
+    text = re.sub(r"[\"']", "", text)  # remove quotes
     return re.findall(r"[\w\u0600-\u06FF]+", text.lower())
-
-
-

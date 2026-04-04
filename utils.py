@@ -1,11 +1,12 @@
 import re
 
-ARABIC_PDF_PATH = "ar_policy.pdf"
+ARABIC_PDF_PATH = "policies/ar_policy.pdf"
 
 def translate(llm, text: str, target_language: str) -> str:
     try:
         res = llm.invoke(
-            f"Translate the following text to {target_language}. "
+            f"Translate the following text to {target_language} using ONLY formal Modern Standard Arabic (no dialect). "
+            f"Convert any dialect words into proper MSA.\n\n"
             f"Return ONLY the translation, nothing else.\n\nText: {text}"
         )
         return res.content.strip()
@@ -24,15 +25,30 @@ def build_context(docs: list) -> str:
 
 # ─── Validation & Citation Utilities ─────────────────────────
 
+NO_INFO_PATTERNS = [
+    "this information is not available in the policy documents",
+    "information is not available in the policy",
+    "not available in the policy",
+    "not found in",
+    "zis information is not available",
+    "هذه المعلومات غير متوفرة في وثائق السياسة",
+    "هذه المعلومات غير متاحة في وثائق السياسة",
+    "معلومات غير متوفرة",
+    "mesh mawgoda f el policy",
+    "el ma3loma di mesh mawgoda f el policy",
+    "el ma3loma mesh mawgoda",
+    "mawgoda f el policy"
+]
+
+
+def is_no_info_answer(ans: str) -> bool:
+    normalized = ans.strip().lower()
+    return any(pattern in normalized for pattern in NO_INFO_PATTERNS)
+
+
 def validate(ans: str, lang: str, has_citations: bool = False) -> str:
     ans = ans.strip()
-    not_found_phrases = [
-        "not available in the policy",
-        "غير متوفرة في وثائق",
-        "not found in",
-        "mesh mawgoda f el policy",
-    ]
-    is_not_found = any(p.lower() in ans.lower() for p in not_found_phrases)
+    is_not_found = is_no_info_answer(ans)
     if not has_citations and not is_not_found:
         if lang == "arabic":
             ans += "\n\n⚠️ لم يتم ذكر أرقام الصفحات في هذه الإجابة."

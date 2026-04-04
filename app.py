@@ -1,12 +1,19 @@
 
 import streamlit as st
-from setup import setup
+from setup import setup, render_page_to_image
 from nlp_utils import detect_language_type, get_semantic_dialect, franco_to_arabic, normalize_arabic, normalize_english
 from retrieval import retrieve, rerank, rrf
-from utils import translate, build_context, validate, get_cited_pages, strip_citations, filter_cited_chunks
+from utils import translate, build_context, validate, get_cited_pages, strip_citations, filter_cited_chunks, is_no_info_answer
 from prompts import english_prompt, msa_prompt, egy_prompt, franco_prompt
 
+
+ARABIC_PDF_PATH = "policies/ar_policy.pdf"
+ENGLISH_PDF_PATH = "policies/eng_policy.pdf"
+
 # ─── Streamlit UI ─────────────────────────────────────────────
+
+def clean_query(text):
+    return text.replace('"', '').replace("'", "").strip()
 
 st.set_page_config(page_title="HR Policy Assistant", layout="wide")
 
@@ -28,6 +35,8 @@ if "last_cited_docs" not in st.session_state:
     st.session_state.last_cited_docs = []
 if "last_top_docs" not in st.session_state:
     st.session_state.last_top_docs = []
+if "last_cited_pages" not in st.session_state:
+    st.session_state.last_cited_pages = set()
 
 st.markdown("""
 <style>
@@ -64,6 +73,7 @@ with st.form("question_form"):
     submitted = st.form_submit_button("Ask")
 
 if submitted and question:
+    question = clean_query(question)
     st.session_state.translated_answer = None
     st.session_state.translation_for_question = ""
 
@@ -91,11 +101,14 @@ if submitted and question:
             ar_vs, ar_bm25, ar_docs = ar_index
             en_vs, en_bm25, en_docs = en_index
 
+            q_ar_clean = q_ar.replace('"', '').replace("'", "")
+            q_en_clean = q_en.replace('"', '').replace("'", "")
+
             docs_ar = retrieve(
-                q_ar, ar_vs, ar_bm25, ar_docs,
+                q_ar_clean, ar_vs, ar_bm25, ar_docs,
                 lambda text: normalize_arabic(text, ara_tokenizer)
             )
-            docs_en = retrieve(q_en, en_vs, en_bm25, en_docs, normalize_english)
+            docs_en = retrieve(q_en_clean, en_vs, en_bm25, en_docs, normalize_english)
 
             combined = rrf(docs_ar, docs_en)
 
@@ -134,6 +147,7 @@ if submitted and question:
             st.session_state.last_q_en = q_en
             st.session_state.last_cited_docs = cited_docs
             st.session_state.last_top_docs = top_docs
+            st.session_state.last_cited_pages = cited_pages
 
         except Exception as e:
             st.error(f"Error: {str(e)}")
@@ -187,19 +201,39 @@ if st.session_state.last_answer:
         st.info(f"**Arabic query:** {q_ar}")
         st.info(f"**English query:** {q_en}")
 
-    display_docs = cited_docs if cited_docs else top_docs
-    chunk_label = (
-        f"📄 Source Chunks ({len(cited_docs)} cited)"
-        if cited_docs
-        else "📄 Source Chunks (retrieved — no citations parsed)"
-    )
-    with st.expander(chunk_label):
-        for i, d in enumerate(display_docs, 1):
-            source = (
-                "Arabic PDF"
-                if ARABIC_PDF_PATH in d.metadata.get("source", "")
-                else "English PDF"
-            )
-            page_no = d.metadata.get("page", 0) + 1
-            st.markdown(f"**Chunk {i} — Page {page_no} ({source})**")
-            st.write(d.page_content)
+    is_no_info = is_no_info_answer(answer)
+
+    if not is_no_info:
+        display_docs = cited_docs if cited_docs else top_docs
+        cited_pages = sorted(getattr(st.session_state, 'last_cited_pages', set()))
+        if cited_docs:
+            page_list = ", ".join(str(p) for p in cited_pages)
+            chunk_label = f"📄 Source Evidence {page_list}"
+        else:
+            chunk_label = "📄 Source Evidence (retrieved — no citations parsed)"
+
+        with st.expander(chunk_label):
+            if cited_docs:
+                st.markdown(f"**Cited pages:** {page_list}")
+
+            # Collect unique pages
+            unique_pages = {}
+            for d in display_docs:
+                page_no = d.metadata.get("page", 0) + 1
+                source_path = ARABIC_PDF_PATH if ARABIC_PDF_PATH in d.metadata.get("source", "") else ENGLISH_PDF_PATH
+                key = (source_path, page_no)
+                if key not in unique_pages:
+                    unique_pages[key] = d
+
+            for (pdf_path, page_no), d in unique_pages.items():
+                source = "Arabic PDF" if ARABIC_PDF_PATH in pdf_path else "English PDF"
+                st.markdown(f"**📄 Page {page_no} — {source}**")
+                try:
+                    img_bytes = render_page_to_image(pdf_path, page_no, clip_text=d.page_content)
+                    st.image(img_bytes, caption=f"Relevant section from Page {page_no}", width=800)
+                except Exception as e:
+                    st.error(f"Failed to render page {page_no}: {e}")
+                    # Fallback to text
+                    st.write(d.page_content)
+                if len(unique_pages) > 1:
+                    st.markdown("---")
