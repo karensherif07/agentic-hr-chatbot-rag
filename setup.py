@@ -82,9 +82,9 @@ def setup():
             d.metadata["lang"] = "arabic" if ARABIC_PDF_PATH in path else "english"
 
         splitter = RecursiveCharacterTextSplitter(
-            chunk_size=500,
-            chunk_overlap=50,
-            separators=["\n\n", "\n", ".", "?", "!", " "]
+            chunk_size=1000,
+            chunk_overlap=100,
+            separators=["\n\n", "\n", ".", "?", "!", " ","---", "|"]
         )
         docs = splitter.split_documents(pages)
         bm25_corpus = [tokenize(normalize_fn(d.page_content)) for d in docs]
@@ -103,11 +103,16 @@ def setup():
         model_name="llama-3.3-70b-versatile",
         temperature=0
     )
+    # en_llm = ChatGroq(
+    #     groq_api_key=api_key,
+    #     model_name="openai/gpt-oss-120b",
+    #     temperature=0
+    # )
+
     en_llm = ChatGroq(
         groq_api_key=api_key,
-        model_name="openai/gpt-oss-120b",
+        model_name="llama-3.3-70b-versatile",
         temperature=0
     )
-
     reranker = CrossEncoder("cross-encoder/mmarco-mMiniLMv2-L12-H384-v1")
     return ar_index, en_index, ar_llm, en_llm, reranker, dialect_pipe, ara_tokenizer

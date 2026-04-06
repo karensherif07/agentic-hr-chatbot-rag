@@ -1,7 +1,7 @@
 import streamlit as st
 from setup import setup, render_page_to_image
 from nlp_utils import detect_language_type, get_semantic_dialect, franco_to_arabic, normalize_arabic, normalize_english
-from retrieval import retrieve, rerank, rrf
+from retrieval import retrieve, rerank, rrf, build_retrieval_query
 from utils import translate, build_context, validate, get_cited_pages, strip_citations, filter_cited_chunks, is_no_info_answer
 from prompts import english_prompt, msa_prompt, egy_prompt, franco_prompt
 
@@ -129,8 +129,10 @@ if question:
                 ar_vs, ar_bm25, ar_docs = ar_index
                 en_vs, en_bm25, en_docs = en_index
 
-                q_ar_clean = q_ar.replace('"', '').replace("'", "")
-                q_en_clean = q_en.replace('"', '').replace("'", "")
+                retrieval_query_ar = build_retrieval_query(q_ar, st.session_state.chat_history)
+                retrieval_query_en = build_retrieval_query(q_en, st.session_state.chat_history)
+                q_ar_clean = retrieval_query_ar.replace('"', '').replace("'", "")
+                q_en_clean = retrieval_query_en.replace('"', '').replace("'", "")
 
                 docs_ar = retrieve(
                     q_ar_clean, ar_vs, ar_bm25, ar_docs,

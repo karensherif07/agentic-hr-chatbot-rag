@@ -1,0 +1,350 @@
+{
+  "summary": {
+    "pass": 18,
+    "partial": 5,
+    "fail": 7,
+    "total": 30
+  },
+  "chains": [
+    {
+      "chain_id": "EN-01",
+      "language": "English",
+      "topic": "Annual Leave",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "How many annual leave days do I get?",
+          "chatbot_answer": "You are entitled to 14 working days of annual leave if you have less than 1 year of service.If you have between 1 and 5 years of service, you receive 21 working days of annual leave.With 5 to 10 years of service, your annual leave increases to 25 working days.When you have more than 10 years of service, you are granted 30 working days of annual leave.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided a correct and detailed answer that matches the policy.",
+          "missing": ""
+        },
+        {
+          "turn": 2,
+          "question": "I have been here for 4 years. How many days is that for me?",
+          "chatbot_answer": "You are entitled to 21 working days of annual leave per year.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided a correct and direct answer to the question about annual leave days based on the employee's years of service.",
+          "missing": ""
+        },
+        {
+          "turn": 3,
+          "question": "Can I carry any of those days over to next year?",
+          "chatbot_answer": "Yes, you can carry over a limited number of unused annual‑leave days to the next year; the amount you may transfer depends on your length of service. For employees with 1 – 5 years of service, you are allowed to carry over up to 7 days of unused leave.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided a correct and detailed answer that matches the policy.",
+          "missing": ""
+        }
+      ]
+    },
+    {
+      "chain_id": "EN-02",
+      "language": "English",
+      "topic": "Travel Policy",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "What flight class am I entitled to for a long international trip?",
+          "chatbot_answer": "For a long trip (more than 6 hours), you are entitled to the premium‑economy class if your position is at or below grade G3.If you are a manager at grade G4, you qualify for the highest business‑class tier.A special or exceptional trip that receives senior‑executive approval entitles you to first‑class travel.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot responded correctly.",
+          "missing": ""
+        },
+        {
+          "turn": 2,
+          "question": "What is the daily allowance if I travel to London?",
+          "chatbot_answer": "The daily allowance for travel to London is $350 per day.",
+          "verdict": "PASS",
+          "score": 9,
+          "reason": "The chatbot provided the correct daily allowance for travel to London.",
+          "missing": ""
+        },
+        {
+          "turn": 3,
+          "question": "How many days do I have to submit my expense report after I return?",
+          "chatbot_answer": "You must submit your expense report within 7 working days after you return.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided a correct and concise answer that matches the policy.",
+          "missing": ""
+        }
+      ]
+    },
+    {
+      "chain_id": "EN-03",
+      "language": "English",
+      "topic": "Discipline & Gross Misconduct",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "What is the first step in the disciplinary process?",
+          "chatbot_answer": "The first step in the disciplinary process is a verbal warning issued by the line manager, which is valid for three months.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided a correct and concise answer that matches the policy details.",
+          "missing": ""
+        },
+        {
+          "turn": 2,
+          "question": "What happens if the behaviour is not corrected after that?",
+          "chatbot_answer": "If the behaviour is still not corrected after the progressive steps (including the Performance Improvement Plan), the process moves to termination, which is carried out by the CEO or HR Director.",
+          "verdict": "FAIL",
+          "score": 0,
+          "reason": "The chatbot skipped the intermediate steps and directly mentioned termination, missing the key detail of a first written warning",
+          "missing": "first written warning issued by the manager and HR, valid for 6 months"
+        },
+        {
+          "turn": 3,
+          "question": "Are there situations where someone can be fired immediately without going through these steps?",
+          "chatbot_answer": "Yes, there are situations where an employee can be terminated immediately without going through the progressive disciplinary steps.Immediate termination applies to gross misconduct such as theft, fraud, or deliberate falsification of company records; physical assault or serious threats of violence in the workplace; disclosure of confidential or sensitive information to unauthorised parties; reporting to work under the influence of alcohol or controlled substances; and serious breaches of health, safety, or data‑protection regulations.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided a comprehensive and accurate response to the question about immediate termination due to gross misconduct.",
+          "missing": ""
+        }
+      ]
+    },
+    {
+      "chain_id": "EN-04",
+      "language": "English",
+      "topic": "Performance & Bonus",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "How does the annual bonus work?",
+          "chatbot_answer": "The annual bonus is a performance‑based payment that is funded from a bonus pool determined by the company’s financial results and is awarded according to both individual and company performance.To be eligible, you must have completed at least six months of service during the calendar year.If you are placed on a Performance Improvement Plan, you are not eligible for the bonus while the PIP is in effect.The amount you receive is calculated using bonus multipliers that correspond to the performance rating scale described in Section 3 of the handbook.",
+          "verdict": "PARTIAL",
+          "score": 6,
+          "reason": "The chatbot's response was correct but missed specific multipliers",
+          "missing": "The chatbot failed to mention the specific multipliers (1x to 1.5x) tied to performance ratings."
+        },
+        {
+          "turn": 2,
+          "question": "I got a rating of 4 last year. What bonus multiplier does that give me?",
+          "chatbot_answer": "Your rating of 4 gives you a bonus multiplier of 1.25×.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided the correct bonus multiplier for a rating of 4.",
+          "missing": ""
+        },
+        {
+          "turn": 3,
+          "question": "And what salary raise would that rating give me?",
+          "chatbot_answer": "This information is not available in the policy documents.",
+          "verdict": "FAIL",
+          "score": 0,
+          "reason": "The chatbot claimed the information was not available in the policy documents when it was actually present.",
+          "missing": "The correct salary raise percentage for a given rating"
+        }
+      ]
+    },
+    {
+      "chain_id": "MSA-01",
+      "language": "MSA Arabic",
+      "topic": "إجازة الأمومة والأبوة",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "ما هي مدة إجازة الأمومة وهل هي مدفوعة؟",
+          "chatbot_answer": "تستحق الأم 90 يوماً كاملة من إجازة الأمومة، وهي مدفوعة.",
+          "verdict": "PASS",
+          "score": 9,
+          "reason": "The chatbot provided the correct duration and payment status of maternity leave.",
+          "missing": ""
+        },
+        {
+          "turn": 2,
+          "question": "وماذا عن إجازة الأبوة؟",
+          "chatbot_answer": "هذه المعلومات غير متوفرة في وثائق السياسة.",
+          "verdict": "FAIL",
+          "score": 0,
+          "reason": "The chatbot failed to provide the correct information about paternity leave despite it being covered in the policy.",
+          "missing": "The duration of paternity leave and the requirement of a birth certificate."
+        },
+        {
+          "turn": 3,
+          "question": "هل يمكنني أخذ إجازة الأبوة قبل إحضار شهادة الميلاد؟",
+          "chatbot_answer": "لا، لا يمكنك أخذ إجازة الأبوة قبل إحضار شهادة الميلاد، حيث أن الشهادة المطلوبة هي شهادة الميلاد.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided a correct and direct answer to the question about taking paternity leave before obtaining a birth certificate.",
+          "missing": ""
+        }
+      ]
+    },
+    {
+      "chain_id": "MSA-02",
+      "language": "MSA Arabic",
+      "topic": "مكافأة نهاية الخدمة",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "كيف تُحسب مكافأة نهاية الخدمة؟",
+          "chatbot_answer": "تُحسب مكافأة نهاية الخدمة بناءً على سنوات الخدمة، حيث يستحق الموظف 0.5 راتب شهري عن كل سنة من 1-3 سنوات، وراتب شهري كامل عن كل سنة من 3-5 سنوات، و1.5 راتب شهري عن كل سنة بعد 5 سنوات.",
+         "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot's response correctly stated the gratuity calculation as per the policy.",
+          "missing": ""
+        },
+        {
+          "turn": 2,
+          "question": "أنا أعمل في الشركة منذ 6 سنوات، كم تبلغ مكافأتي؟",
+          "chatbot_answer": "تستحق مكافأة نهاية الخدمة بناءً على سنوات الخدمة، حيث يستحق الموظف 0.5 راتب شهري عن كل سنة من 1-3 سنوات، وراتب شهري كامل عن كل سنة من 3-5 سنوات، و1.5 راتب شهري عن كل سنة بعد 5 سنوات.لذا، إذا كنت تعمل في الشركة منذ 6 سنوات، فستحصل على 0.5 راتب شهري عن كل سنة من 1-3 سنوات (1.5 راتب شهري)، وراتب شهري كامل عن كل سنة من 3-5 سنوات (2 راتب شهري)، و1.5 راتب شهري عن سنة واحدة بعد 5 سنوات (1.5 راتب شهري).إجمالي المكافأة سيكون 1.5 + 2 + 1.5 = 5 راتب شهري.",
+          "verdict": "PASS",
+          "score": 9,
+          "reason": "The chatbot calculated correctly.",
+          "missing": ""
+        },
+        {
+          "turn": 3,
+          "question": "هل أحصل على هذه المكافأة إذا تم فصلي بسبب مخالفة جسيمة؟",
+          "chatbot_answer": "لا، لا تستحق مكافأة نهاية الخدمة إذا تم فصلك بسبب المخالفات الجسيمة.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided a correct and relevant response to the question",
+          "missing": ""
+        }
+      ]
+    },
+    {
+      "chain_id": "EGY-01",
+      "language": "Egyptian Arabic",
+      "topic": "العمل عن بُعد",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "أنا عايز أشتغل من البيت، إيه الشروط؟",
+          "chatbot_answer": "يمكنك العمل من البيت إذا كنت في دورة عمل معتمدة للعمل عن بعد، وستحصل على 800 جنيه مصري في الشهر لcovering الإنترنت والمرافق.",
+          "verdict": "PARTIAL",
+          "score": 6,
+          "reason": "The chatbot's response was mostly correct but lacked key details about the requirements for working from home.",
+          "missing": "internet speed, camera requirement, and response time"
+        },
+        {
+          "turn": 2,
+          "question": "ومحتاج موافقة مين عشان أشتغل remote بالكامل؟",
+          "chatbot_answer": "يمكنك العمل من البيت إذا كنت في دورة عمل معتمدة للعمل عن بعد، وستحصل على 800 جنيه مصري في الشهر لcovering الإنترنت والمرافق.",
+          "verdict": "FAIL",
+          "score": 0,
+          "reason": "The chatbot's response did not address the question about who needs to approve full remote work",
+          "missing": "CEO and HR approval for full remote work"
+        },
+        {
+          "turn": 3,
+          "question": "طب لو مديري وافق بس، مش كفاية؟",
+          "chatbot_answer": "أنت تحتاج موافقة قسم الموارد البشرية HR بالإضافة لموافقة مديرك لكي تستطيع العمل من البيت.",
+          "verdict": "PARTIAL",
+          "score": 6,
+          "reason": "The chatbot's response is mostly correct but does not fully capture the requirement for full remote work approval as stated in the policy.also answered in msa not egyptian.",
+          "missing": "CEO's approval"
+        }
+      ]
+    },
+    {
+      "chain_id": "EGY-02",
+      "language": "Egyptian Arabic",
+      "topic": "الهدايا",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "لو عميل بعتلي هدية بـ 100 دولار، أعمل إيه؟",
+          "chatbot_answer": "أنت لازم تبلغ قسم الموارد البشرية عن الهدية وتسجلها، لأن قيمتها بين 50 و200 دولار.",
+          "verdict": "PARTIAL",
+          "score": 6,
+          "reason": "The chatbot correctly identified the need to report the gift to HR but missed the crucial detail about the potential refusal or donation of the gift",
+          "missing": "HR's decision to either refuse or donate the gift"
+        },
+        {
+          "turn": 2,
+          "question": "وإيه اللي بيحصل لو قبلتها من غير ما أبلغ؟",
+          "chatbot_answer": "أنت ممكن تواجه إجراءات تأديبية لو قبلت الهدية من غير ما أبلغ قسم الموارد البشرية، لأنها تعتبر مخالفة لقواعد الشركة.",
+          "verdict": "PASS",
+          "score": 9,
+          "reason": "The chatbot provided a correct and relevant response to the question about the consequences of accepting a gift without reporting it.",
+          "missing": ""
+        },
+        {
+          "turn": 3,
+          "question": "طب لو الهدية كانت فلوس كاش؟",
+          "chatbot_answer": "أنت لازم تبلغ قسم الموارد البشرية عن الهدية وتسجلها، لأن قيمتها بين 50 و200 دولار، سواء كانت فلوس كاش أو غيرها.",
+          "verdict": "FAIL",
+          "score": 0,
+          "reason": "The chatbot's response failed to correctly address the policy regarding cash gifts, which should be refused immediately regardless of value.",
+          "missing": "The key information that cash gifts of any amount should be refused was missing."
+        }
+      ]
+    },
+    {
+      "chain_id": "FRANCO-01",
+      "language": "Franco Arabic",
+      "topic": "Training Budget",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "ana shaghal sana we nos, kam el training budget bta3i?",
+          "chatbot_answer": "momken ta5od $5,000 kam training budget bta3ak lw 3andak sana we nos khidma.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided the correct training budget amount.",
+          "missing": ""
+        },
+        {
+          "turn": 2,
+          "question": "we law 3ayez adros master's degree, el sharka bt3mel eih?",
+          "chatbot_answer": "momken ta5od minha program mena7a 3alashan adros masters degree, el sherka btoffer program mena7a 3alashan adros masters degree bta3i lw 3andak shartain: awalak, lw 3andak moafakat mudeer el 9isma w mudeer el mozarab el bashari, w tani, lw 3andak ilti9am bi shart el bikaa3 f el sherka lamudda taktal 3an sana ba3d ma ta5od el mena7a. el mena7a di btoffer kamil el rasoom el dirasa b7ad aqsay 15,000 dollar sanawiyan.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot provided a correct and detailed answer in the required language, covering all key points of the policy.",
+          "missing": ""
+        },
+        {
+          "turn": 3,
+          "question": "emta a2dar a2addem el talab?",
+          "chatbot_answer": "momken ta5od el talab lw 3andak raseed kafi, lakn el ma3loma di mesh mawgoda f el policy.",
+          "verdict": "FAIL",
+          "score": 0,
+          "reason": "The chatbot failed to provide the correct information about the scholarship application period",
+          "missing": "The correct information that scholarship applications are accepted in October and November each year"
+        }
+      ]
+    },
+    {
+      "chain_id": "FRANCO-02",
+      "language": "Franco Arabic",
+      "topic": "Notice Period",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "ana manager grade 4G, law ests2elt, notice period bta3i ad eih?",
+          "chatbot_answer": "momken ta5od agaza lw 3andak raseed kafi, bas lw bta5od ests2al, ftrat el eshar bta3ak 60 yom.",
+          "verdict": "PASS",
+          "score": 9,
+          "reason": "The chatbot provided the correct notice period for a 4G manager with appropriate language.",
+          "missing": ""
+        },
+        {
+          "turn": 2,
+          "question": "we law el sharka hiya elli 3ayza tfasalni, nafs el notice?",
+          "chatbot_answer": "momken ta5od agaza lw 3andak raseed kafi, bas lw bta5od tfasal, ftrat el eshar bta3ak 60 yom.",
+          "verdict": "PARTIAL",
+          "score": 6,
+          "reason": "The chatbot's response is mostly correct but lacks clarity and specific details about the notice period for both employee and company-initiated termination.",
+          "missing": "Specific mention of the notice period being the same for both parties and the exception of gross misconduct"
+        },
+        {
+          "turn": 3,
+          "question": "law et7asabt 3alaya gross misconduct, hay3melo eih?",
+          "chatbot_answer": "momken ta5od agaza fawri bel 9ila lw et7asabt 3alaya gross misconduct, w hay3melo eih:- lw et7asabt 3alaya sarika aw 7tyal aw tzawer mastandat el sharka.- lw et7asabt 3alaya 3itdai jismi aw tahdid jisim dakhel bi2a el 3amal.- lw et7asabt 3alaya ifshae ma3lomat seriya la taraf ghayr masroh laha.- lw et7asabt 3alaya 7dor lel 3amal ta7t ta2thir el kohol aw el mawad el makhdara.el ma3loma di mesh mawgoda f el policy.",
+          "verdict": "FAIL",
+          "score": 0,
+          "reason": "The chatbot failed to provide the correct consequence of gross misconduct, which is immediate termination with no notice period, and instead listed examples of gross misconduct without addressing the question.",
+          "missing": "The correct consequence of gross misconduct, which is immediate termination with no notice period."
+        }
+      ]
+    }
+  ]
+}

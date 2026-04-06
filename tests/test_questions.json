@@ -1,0 +1,269 @@
+{
+  "meta": {
+    "company": "Horizon Tech",
+    "version": "2.0",
+    "description": "HR Policy chatbot test suite — all 4 languages + follow-up memory chains"
+  },
+  "chains": [
+
+    {
+      "id": "EN-01",
+      "language": "English",
+      "topic": "Annual Leave",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "How many annual leave days do I get?",
+          "expected_keywords": ["14", "21", "25", "30", "years", "service"],
+          "expected_answer_summary": "Leave days depend on years of service: 14 days (0-1yr), 21 days (1-5yr), 25 days (5-10yr), 30 days (10+yr)."
+        },
+        {
+          "turn": 2,
+          "question": "I have been here for 4 years. How many days is that for me?",
+          "expected_keywords": ["21", "1-5", "four"],
+          "expected_answer_summary": "With 4 years of service the employee gets 21 working days of annual leave."
+        },
+        {
+          "turn": 3,
+          "question": "Can I carry any of those days over to next year?",
+          "expected_keywords": ["7", "carry", "carryover", "rollover"],
+          "expected_answer_summary": "Employees in the 1-5 year band can carry over up to 7 days to the next year."
+        }
+      ]
+    },
+
+    {
+      "id": "EN-02",
+      "language": "English",
+      "topic": "Travel Policy",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "What flight class am I entitled to for a long international trip?",
+          "expected_keywords": ["grade", "level", "business", "premium economy", "4G", "G3"],
+          "expected_answer_summary": "Flight class depends on grade: up to G3 gets Premium Economy; 4G and above gets Business Class on long flights."
+        },
+        {
+          "turn": 2,
+          "question": "What is the daily allowance if I travel to London?",
+          "expected_keywords": ["350", "high-cost", "London"],
+          "expected_answer_summary": "London is a high-cost city so the daily allowance is $350, covering all daily expenses."
+        },
+        {
+          "turn": 3,
+          "question": "How many days do I have to submit my expense report after I return?",
+          "expected_keywords": ["7", "working days", "return"],
+          "expected_answer_summary": "The expense report with original receipts must be submitted within 7 working days of returning."
+        }
+      ]
+    },
+
+    {
+      "id": "EN-03",
+      "language": "English",
+      "topic": "Discipline & Gross Misconduct",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "What is the first step in the disciplinary process?",
+          "expected_keywords": ["verbal warning", "line manager", "3 months"],
+          "expected_answer_summary": "Step 1 is a verbal warning issued by the line manager, valid for 3 months."
+        },
+        {
+          "turn": 2,
+          "question": "What happens if the behaviour is not corrected after that?",
+          "expected_keywords": ["written warning", "HR", "6 months"],
+          "expected_answer_summary": "The next step is a first written warning issued by the manager and HR, valid for 6 months."
+        },
+        {
+          "turn": 3,
+          "question": "Are there situations where someone can be fired immediately without going through these steps?",
+          "expected_keywords": ["gross misconduct", "immediate", "theft", "fraud", "assault", "data"],
+          "expected_answer_summary": "Yes — gross misconduct offences like theft, fraud, physical assault, or serious data breaches lead to immediate termination without notice."
+        }
+      ]
+    },
+
+    {
+      "id": "EN-04",
+      "language": "English",
+      "topic": "Performance & Bonus",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "How does the annual bonus work?",
+          "expected_keywords": ["6 months", "performance", "rating", "multiplier"],
+          "expected_answer_summary": "Employees need at least 6 months of service. The bonus is tied to performance rating multipliers (1x to 1.5x). Employees on PIP are not eligible."
+        },
+        {
+          "turn": 2,
+          "question": "I got a rating of 4 last year. What bonus multiplier does that give me?",
+          "expected_keywords": ["1.25", "exceeds"],
+          "expected_answer_summary": "A rating of 4 (Exceeds Expectations) gives a bonus multiplier of 1.25x."
+        },
+        {
+          "turn": 3,
+          "question": "And what salary raise would that rating give me?",
+          "expected_keywords": ["15%", "up to 15"],
+          "expected_answer_summary": "A rating of 4 is eligible for a salary increment of up to 15%."
+        }
+      ]
+    },
+
+    {
+      "id": "MSA-01",
+      "language": "MSA Arabic",
+      "topic": "إجازة الأمومة والأبوة",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "ما هي مدة إجازة الأمومة وهل هي مدفوعة؟",
+          "expected_keywords": ["90", "مدفوعة", "شهادة"],
+          "expected_answer_summary": "إجازة الأمومة مدتها 90 يوماً وهي مدفوعة بالكامل، وتستلزم تقديم شهادة طبية."
+        },
+        {
+          "turn": 2,
+          "question": "وماذا عن إجازة الأبوة؟",
+          "expected_keywords": ["10", "أيام", "شهادة الميلاد"],
+          "expected_answer_summary": "إجازة الأبوة مدتها 10 أيام عمل مدفوعة، وتستلزم تقديم شهادة الميلاد."
+        },
+        {
+          "turn": 3,
+          "question": "هل يمكنني أخذ إجازة الأبوة قبل إحضار شهادة الميلاد؟",
+          "expected_keywords": ["شهادة الميلاد", "مطلوب", "إجراء"],
+          "expected_answer_summary": "وفقاً للسياسة، شهادة الميلاد هي المستند المطلوب لإجازة الأبوة ولم تذكر السياسة استثناءات لذلك."
+        }
+      ]
+    },
+
+    {
+      "id": "MSA-02",
+      "language": "MSA Arabic",
+      "topic": "مكافأة نهاية الخدمة",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "كيف تُحسب مكافأة نهاية الخدمة؟",
+          "expected_keywords": ["سنة", "راتب", "خدمة"],
+          "expected_answer_summary": "تُحسب المكافأة بحسب سنوات الخدمة: 0.5 راتب/سنة (1-3سنوات)، راتب كامل/سنة (3-5سنوات)، 1.5 راتب/سنة (أكثر من 5 سنوات)."
+        },
+        {
+          "turn": 2,
+          "question": "أنا أعمل في الشركة منذ 6 سنوات، كم تبلغ مكافأتي؟",
+          "expected_keywords": ["1.5", "6", "سنوات"],
+          "expected_answer_summary": "بعد 6 سنوات خدمة، يستحق الموظف 1.5 راتب شهري عن كل سنة، أي ما يعادل 9 رواتب شهرية."
+        },
+        {
+          "turn": 3,
+          "question": "هل أحصل على هذه المكافأة إذا تم فصلي بسبب مخالفة جسيمة؟",
+          "expected_keywords": ["لا", "مخالفة جسيمة", "استثناء", "فصل"],
+          "expected_answer_summary": "لا، المكافأة لا تُصرف في حالات الفصل بسبب المخالفات الجسيمة."
+        }
+      ]
+    },
+
+    {
+      "id": "EGY-01",
+      "language": "Egyptian Arabic",
+      "topic": "العمل عن بُعد",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "أنا عايز أشتغل من البيت، إيه الشروط؟",
+          "expected_keywords": ["20", "إنترنت", "كاميرا", "800", "30 دقيقة"],
+          "expected_answer_summary": "لازم يكون عندك إنترنت 20 ميجابت على الأقل، تفتح الكاميرا في الاجتماعات، ترد على رسائل الشغل خلال 30 دقيقة، وبياخد بدل 800 جنيه في الشهر."
+        },
+        {
+          "turn": 2,
+          "question": "ومحتاج موافقة مين عشان أشتغل remote بالكامل؟",
+          "expected_keywords": ["CEO", "HR", "موافقة"],
+          "expected_answer_summary": "العمل عن بُعد بالكامل محتاج موافقة CEO وHR مع بعض."
+        },
+        {
+          "turn": 3,
+          "question": "طب لو مديري وافق بس، مش كفاية؟",
+          "expected_keywords": ["لأ", "CEO", "HR", "مش كفاية", "لازم"],
+          "expected_answer_summary": "لأ، موافقة المدير وحدها مش كفاية للعمل الكامل من البيت — لازم CEO وHR يوافقوا."
+        }
+      ]
+    },
+
+    {
+      "id": "EGY-02",
+      "language": "Egyptian Arabic",
+      "topic": "الهدايا",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "لو عميل بعتلي هدية بـ 100 دولار، أعمل إيه؟",
+          "expected_keywords": ["إبلاغ", "HR", "تسجيل", "50", "200"],
+          "expected_answer_summary": "لازم تبلغ HR وتسجّل الهدية، وHR بتقرر إما ترفضها أو تتبرع بيها للجمعيات الخيرية."
+        },
+        {
+          "turn": 2,
+          "question": "وإيه اللي بيحصل لو قبلتها من غير ما أبلغ؟",
+          "expected_keywords": ["مخالفة", "تأديبي", "عقوبة"],
+          "expected_answer_summary": "قبول الهدية من غير إبلاغ يُعتبر مخالفة تأديبية وممكن يؤدي لإجراء تأديبي."
+        },
+        {
+          "turn": 3,
+          "question": "طب لو الهدية كانت فلوس كاش؟",
+          "expected_keywords": ["رفض", "فوري", "أي قيمة", "نقدية"],
+          "expected_answer_summary": "الهدايا النقدية ترُفض فوراً بغض النظر عن قيمتها — دي مخالفة صريحة."
+        }
+      ]
+    },
+
+    {
+      "id": "FRANCO-01",
+      "language": "Franco Arabic",
+      "topic": "Training Budget",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "ana shaghal sana we nos, kam el training budget bta3i?",
+          "expected_keywords": ["2500", "5000", "1", "sana"],
+          "expected_answer_summary": "After 1.5 years the employee is in the 1-5 year band, so they get a $5,000 training budget and 8 paid training days."
+        },
+        {
+          "turn": 2,
+          "question": "we law 3ayez adros master's degree, el sharka bt3mel eih?",
+          "expected_keywords": ["15000", "scholarship", "grant", "2 years", "sneen"],
+          "expected_answer_summary": "The company covers up to $15,000/year for a relevant postgrad degree, requires manager + HR approval, and the employee must stay 2 years after the grant."
+        },
+        {
+          "turn": 3,
+          "question": "emta a2dar a2addem el talab?",
+          "expected_keywords": ["october", "november", "oktobar", "novaember", "aktober"],
+          "expected_answer_summary": "Scholarship applications are accepted in October and November each year."
+        }
+      ]
+    },
+
+    {
+      "id": "FRANCO-02",
+      "language": "Franco Arabic",
+      "topic": "Notice Period",
+      "turns": [
+        {
+          "turn": 1,
+          "question": "ana manager grade 4G, law ests2elt, notice period bta3i ad eih?",
+          "expected_keywords": ["60", "days", "yom", "3G-4G"],
+          "expected_answer_summary": "A 4G manager has a notice period of 60 days when resigning."
+        },
+        {
+          "turn": 2,
+          "question": "we law el sharka hiya elli 3ayza tfasalni, nafs el notice?",
+          "expected_keywords": ["60", "nafs", "same", "yom"],
+          "expected_answer_summary": "The same notice period (60 days for 3G-4G) applies whether the employee or company initiates termination, unless it is gross misconduct."
+        },
+        {
+          "turn": 3,
+          "question": "law et7asabt 3alaya gross misconduct, hay3melo eih?",
+          "expected_keywords": ["immediate", "fori", "no notice", "bala notice"],
+          "expected_answer_summary": "Gross misconduct results in immediate termination with no notice period."
+        }
+      ]
+    }
+  ]
+}
