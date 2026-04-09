@@ -10,13 +10,19 @@ def retrieve(raw_query: str, vs, bm25, docs: list, normalize_fn, k: int = 15) ->
     return rrf(faiss_docs, bm25_docs)
 
 
-def rerank(query: str, docs: list, reranker, top_n: int = 8) -> list:
+def rerank(query: str, docs: list, reranker, top_n: int = 8) -> tuple:
+    """
+    Returns (ranked_docs, scores_dict).
+    scores_dict = {doc_key: raw_score} where doc_key = page_content[:120].
+    """
     if not docs:
-        return []
+        return [], {}
     pairs = [(query, d.page_content) for d in docs]
-    scores = reranker.predict(pairs)
-    ranked = sorted(zip(docs, scores), key=lambda x: x[1], reverse=True)
-    return [d for d, _ in ranked[:top_n]]
+    raw_scores = reranker.predict(pairs)
+    ranked = sorted(zip(docs, raw_scores), key=lambda x: x[1], reverse=True)
+    top = ranked[:top_n]
+    scores_dict = {d.page_content[:120]: float(s) for d, s in top}
+    return [d for d, _ in top], scores_dict
 
 
 def rrf(docs1: list, docs2: list, k: int = 60) -> list:
@@ -34,30 +40,18 @@ def rrf(docs1: list, docs2: list, k: int = 60) -> list:
     return [doc_map[key] for key, _ in ranked]
 
 
-# ── FIX 4: Build a richer retrieval query that includes recent conversation ──
 def build_retrieval_query(current_question: str, chat_history: list, max_turns: int = 2) -> str:
     """
-    Concatenates the last N user turns with the current question so that
-    follow-up questions like 'what about my spouse?' or 'and if I've been here 5 years?'
-    retrieve chunks relevant to the full context, not just the isolated short question.
-
-    Example:
-      history: ["How does gratuity work?", "I've worked 6 years, how much do I get?"]
-      current: "And if I was fired for gross misconduct?"
-      → query:  "How does gratuity work? I've worked 6 years, how much do I get?
-                 And if I was fired for gross misconduct?"
+    Concatenates the last N user messages with the current question so that
+    short follow-ups like 'what about paternity leave?' retrieve relevant chunks.
     """
     if not chat_history:
         return current_question
-
     recent_user_turns = [
         msg["content"]
         for msg in chat_history[-(max_turns * 2):]
         if msg["role"] == "user"
     ][-max_turns:]
-
     if not recent_user_turns:
         return current_question
-
-    combined = " ".join(recent_user_turns) + " " + current_question
-    return combined.strip()
+    return (" ".join(recent_user_turns) + " " + current_question).strip()

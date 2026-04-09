@@ -1,8 +1,8 @@
 {
   "summary": {
-    "pass": 17,
-    "partial": 5,
-    "fail": 8,
+    "pass": 18,
+    "partial": 8,
+    "fail": 4,
     "total": 30
   },
   "chains": [
@@ -14,29 +14,29 @@
         {
           "turn": 1,
           "question": "How many annual leave days do I get?",
-          "chatbot_answer": "You are entitled to 14 working days of annual leave if you have less than 1 year of service.If you have between 1 and 5 years of service, you receive 21 working days of annual leave.With 5 to 10 years of service, your annual leave increases to 25 working days.When you have more than 10 years of service, you are granted 30 working days of annual leave.",
+          "chatbot_answer": "To determine the number of annual leave days you are entitled to, we need to know your years of service. However, since that information is not provided, I will outline the general policy: employees are entitled to a certain number of annual leave days based on their years of service, with the following brackets: 0-1 year (14 days), 1-5 years (21 days), 5-10 years (25 days), and more than 10 years (30 days).",
           "verdict": "PASS",
-          "score": 10,
-          "reason": "The chatbot provided a correct and detailed answer that matches the policy.",
-          "missing": ""
+          "score": 9,
+          "reason": "The chatbot provided the correct leave days based on years of service, but did not directly answer the question due to missing information about the user's years of service.",
+          "missing": "Direct answer to the user's question based on their specific years of service"
         },
         {
           "turn": 2,
           "question": "I have been here for 4 years. How many days is that for me?",
-          "chatbot_answer": "You are entitled to 21 working days of annual leave per year.",
+          "chatbot_answer": "You have been with the company for 4 years, which falls into the 1-5 years bracket. According to the policy, employees with 1-5 years of service are entitled to 21 working days of annual leave.",
           "verdict": "PASS",
           "score": 10,
-          "reason": "The chatbot provided a correct and direct answer to the question about annual leave days based on the employee's years of service.",
+          "reason": "The chatbot provided a correct and detailed answer according to the policy.",
           "missing": ""
         },
         {
           "turn": 3,
           "question": "Can I carry any of those days over to next year?",
-          "chatbot_answer": "Yes, you can carry over a limited number of unused annual‑leave days to the next year; the amount you may transfer depends on your length of service. For employees with 1 – 5 years of service, you are allowed to carry over up to 7 days of unused leave.",
-          "verdict": "PASS",
-          "score": 10,
-          "reason": "The chatbot provided a correct and detailed answer that matches the policy.",
-          "missing": ""
+          "chatbot_answer": "According to the policy, the annual leave days can be carried over, but only up to a certain limit, as stated in the table: up to 7 days for 0-1 year of service, up to 7 days for 1-5 years of service, up to 10 days for 5-10 years of service, and up to 14 days for more than 10 years of service.",
+          "verdict": "PARTIAL",
+          "score": 6,
+          "reason": "The chatbot provided the correct carryover limits but failed to directly address the user's implicit question about their specific situation, assuming they are in the 1-5 year band based on the context of the question.",
+          "missing": "Direct reference to the user's specific situation or year band"
         }
       ]
     },
@@ -48,28 +48,28 @@
         {
           "turn": 1,
           "question": "What flight class am I entitled to for a long international trip?",
-          "chatbot_answer": "For a long trip (more than 6 hours), you are entitled to the premium‑economy class if your position is at or below grade G3.If you are a manager at grade G4, you qualify for the highest business‑class tier.A special or exceptional trip that receives senior‑executive approval entitles you to first‑class travel.",
-          "verdict": "PASS",
-          "score": 10,
-          "reason": "The chatbot responded correctly.",
-          "missing": ""
+          "chatbot_answer": "You are entitled to Business Class for a long international trip, as per the company's travel policy for managers G4 and above.",
+          "verdict": "PARTIAL",
+          "score": 6,
+          "reason": "The chatbot's response is mostly correct but fails to mention the condition for employees below G4, who are entitled to Premium Economy on long flights.",
+          "missing": "The condition for employees below G4, specifically that they are entitled to Premium Economy on long flights."
         },
         {
           "turn": 2,
           "question": "What is the daily allowance if I travel to London?",
-          "chatbot_answer": "The daily allowance for travel to London is $350 per day.",
+          "chatbot_answer": "Your daily allowance for traveling to London would be $350, as it is considered a high-cost city.",
           "verdict": "PASS",
-          "score": 9,
-          "reason": "The chatbot provided the correct daily allowance for travel to London.",
+          "score": 10,
+          "reason": "The chatbot provided the correct daily allowance for traveling to London with appropriate language.",
           "missing": ""
         },
         {
           "turn": 3,
           "question": "How many days do I have to submit my expense report after I return?",
-          "chatbot_answer": "You must submit your expense report within 7 working days after you return.",
+          "chatbot_answer": "You have 7 working days to submit your expense report after you return.",
           "verdict": "PASS",
           "score": 10,
-          "reason": "The chatbot provided a correct and concise answer that matches the policy.",
+          "reason": "The chatbot provided a correct and concise answer to the question about the deadline for submitting an expense report.",
           "missing": ""
         }
       ]
@@ -82,29 +82,29 @@
         {
           "turn": 1,
           "question": "What is the first step in the disciplinary process?",
-          "chatbot_answer": "The first step in the disciplinary process is a verbal warning issued by the line manager, which is valid for three months.",
+          "chatbot_answer": "The first step in the disciplinary process is a verbal warning, which is issued by the line manager and is valid for 3 months.",
           "verdict": "PASS",
           "score": 10,
-          "reason": "The chatbot provided a correct and concise answer that matches the policy details.",
+          "reason": "The chatbot's response accurately reflects the first step in the disciplinary process as outlined in the policy.",
           "missing": ""
         },
         {
           "turn": 2,
           "question": "What happens if the behaviour is not corrected after that?",
-          "chatbot_answer": "If the behaviour is still not corrected after the progressive steps (including the Performance Improvement Plan), the process moves to termination, which is carried out by the CEO or HR Director.",
-          "verdict": "FAIL",
-          "score": 0,
-          "reason": "The chatbot skipped the intermediate steps and directly mentioned termination, missing the key detail of a first written warning",
-          "missing": "first written warning issued by the manager and HR, valid for 6 months"
+          "chatbot_answer": "If the behaviour is not corrected after the verbal warning, the next step is a first written warning, which is issued by the line manager and HR, and is valid for 6 months.",
+          "verdict": "PASS",
+          "score": 10,
+          "reason": "The chatbot's response accurately reflects the policy regarding the next step after a verbal warning.",
+          "missing": ""
         },
         {
           "turn": 3,
           "question": "Are there situations where someone can be fired immediately without going through these steps?",
-          "chatbot_answer": "Yes, there are situations where an employee can be terminated immediately without going through the progressive disciplinary steps.Immediate termination applies to gross misconduct such as theft, fraud, or deliberate falsification of company records; physical assault or serious threats of violence in the workplace; disclosure of confidential or sensitive information to unauthorised parties; reporting to work under the influence of alcohol or controlled substances; and serious breaches of health, safety, or data‑protection regulations.",
-          "verdict": "PASS",
-          "score": 10,
-          "reason": "The chatbot provided a comprehensive and accurate response to the question about immediate termination due to gross misconduct.",
-          "missing": ""
+          "chatbot_answer": "Yes, there are situations where an employee can be terminated immediately without going through the disciplinary steps, specifically in cases of Gross Misconduct, which includes offences such as theft, fraud, physical assault, disclosure of confidential information, and serious breaches of health, safety, or data protection regulations, and these offences may result in immediate termination without prior notice or severance. Additionally, similar examples of Gross Misconduct are also listed in the Arabic manual, including سرقة أو الحتيال أو تزوير مستندات الشركة, and إفشاء معلومات سرية لأطراف غير مصرح لها.",
+          "verdict": "PARTIAL",
+          "score": 7,
+          "reason": "The chatbot introduced unnecessary and untranslated information from an 'Arabic manual'.",
+          "missing": "no missing only extra."
         }
       ]
     },
@@ -116,16 +116,16 @@
         {
           "turn": 1,
           "question": "How does the annual bonus work?",
-          "chatbot_answer": "The annual bonus is a performance‑based payment that is funded from a bonus pool determined by the company’s financial results and is awarded according to both individual and company performance.To be eligible, you must have completed at least six months of service during the calendar year.If you are placed on a Performance Improvement Plan, you are not eligible for the bonus while the PIP is in effect.The amount you receive is calculated using bonus multipliers that correspond to the performance rating scale described in Section 3 of the handbook.",
+          "chatbot_answer": "The annual bonus is based on individual and company performance, with a bonus pool determined by the company's financial results, and eligible employees must have completed at least 6 months of service in the calendar year to be eligible.",
           "verdict": "PARTIAL",
           "score": 6,
-          "reason": "The chatbot's response was correct but missed specific multipliers",
-          "missing": "The chatbot failed to mention the specific multipliers (1x to 1.5x) tied to performance ratings."
+          "reason": "The chatbot's response missed some points like performance rating multipliers.",
+          "missing": "performance rating multipliers (1x to 1.5x) and ineligibility for employees on PIP"
         },
         {
           "turn": 2,
           "question": "I got a rating of 4 last year. What bonus multiplier does that give me?",
-          "chatbot_answer": "Your rating of 4 gives you a bonus multiplier of 1.25×.",
+          "chatbot_answer": "You have a bonus multiplier of 1.25×, as a rating of 4 corresponds to 'Exceeds Expectations'.",
           "verdict": "PASS",
           "score": 10,
           "reason": "The chatbot provided the correct bonus multiplier for a rating of 4.",
@@ -134,11 +134,11 @@
         {
           "turn": 3,
           "question": "And what salary raise would that rating give me?",
-          "chatbot_answer": "This information is not available in the policy documents.",
+          "chatbot_answer": "Your rating of 4 corresponds to 'Exceeds Expectations', and according to the policy, this rating does not directly determine a salary raise, as the provided context only discusses bonus multipliers, not salary increases.",
           "verdict": "FAIL",
           "score": 0,
-          "reason": "The chatbot claimed the information was not available in the policy documents when it was actually present.",
-          "missing": "The correct salary raise percentage for a given rating"
+          "reason": "The chatbot provided incorrect information by stating that the rating does not determine a salary raise, when in fact the policy clearly states that a rating of 4 corresponds to a 15% raise.",
+          "missing": "Correct salary raise percentage for a rating of 4"
         }
       ]
     },
@@ -150,28 +150,28 @@
         {
           "turn": 1,
           "question": "ما هي مدة إجازة الأمومة وهل هي مدفوعة؟",
-          "chatbot_answer": "تستحق الأم 90 يوماً كاملة من إجازة الأمومة، وهي مدفوعة.",
+          "chatbot_answer": "حسناً. الإجابة هي: تبلغ مدة إجازة الأمومة 90 يوما كاملة، وهي مدفوعة. [Page 8.2 | AR]",
           "verdict": "PASS",
           "score": 9,
-          "reason": "The chatbot provided the correct duration and payment status of maternity leave.",
+          "reason": "Correctly stated the duration of maternity leave.",
           "missing": ""
         },
         {
           "turn": 2,
           "question": "وماذا عن إجازة الأبوة؟",
-          "chatbot_answer": "هذه المعلومات غير متوفرة في وثائق السياسة.",
-          "verdict": "FAIL",
-          "score": 0,
-          "reason": "The chatbot failed to provide the correct information about paternity leave despite it being covered in the policy.",
-          "missing": "The duration of paternity leave and the requirement of a birth certificate."
+          "chatbot_answer": " الإجابة هي: تبلغ مدة إجازة الأبوة 90 يوما كاملة، وهي مدفوعة.",
+          "verdict": "PARTIAL",
+          "score": 6,
+          "reason": "Correctly identified the leave type but provided incorrect duration and answer language needs improvement.",
+          "missing": "10 days"
         },
         {
           "turn": 3,
           "question": "هل يمكنني أخذ إجازة الأبوة قبل إحضار شهادة الميلاد؟",
-          "chatbot_answer": "لا، لا يمكنك أخذ إجازة الأبوة قبل إحضار شهادة الميلاد، حيث أن الشهادة المطلوبة هي شهادة الميلاد.",
+          "chatbot_answer": "لا، لا يمكنك أخذ إجازة الأبوة قبل إحضار شهادة الميلاد",
           "verdict": "PASS",
           "score": 10,
-          "reason": "The chatbot provided a correct and direct answer to the question about taking paternity leave before obtaining a birth certificate.",
+          "reason": "Correctly stated that a birth certificate is required.",
           "missing": ""
         }
       ]
@@ -184,28 +184,28 @@
         {
           "turn": 1,
           "question": "كيف تُحسب مكافأة نهاية الخدمة؟",
-          "chatbot_answer": "تُحسب مكافأة نهاية الخدمة بناءً على سنوات الخدمة، حيث يستحق الموظف 0.5 راتب شهري عن كل سنة من 1-3 سنوات، وراتب شهري كامل عن كل سنة من 3-5 سنوات، و1.5 راتب شهري عن كل سنة بعد 5 سنوات.",
-         "verdict": "PASS",
-          "score": 10,
-          "reason": "The chatbot's response correctly stated the gratuity calculation as per the policy.",
+          "chatbot_answer": "حسناً. إذا كان الموظف قد أتم سنة خدمة كاملة، فيستحق مكافأة نهاية الخدمة عند انتهاء العقد (باستثناء الحالة الفصل بسبب المخالفات الجسيمة).حسناً. سنوات الخدمة مقدار المكافأة هي كما يلي:- 1-3 سنوات: 0.5 راتب شهري عن كل سنة.- 3-5 سنوات: راتب شهري كامل عن كل سنة.- أكثر من 5 سنوات: 1.5 راتب شهري عن كل سنة.مثال: إذا كان الموظف قد عمل 5 سنوات، فيستحق مكافأة نهاية الخدمة مقدارها 5 راتب شهري كامل.",
+          "verdict": "PASS",
+          "score": 9,
+          "reason": "Correctly explained the gratuity calculation.",
           "missing": ""
         },
         {
           "turn": 2,
           "question": "أنا أعمل في الشركة منذ 6 سنوات، كم تبلغ مكافأتي؟",
-          "chatbot_answer": "تستحق مكافأة نهاية الخدمة بناءً على سنوات الخدمة، حيث يستحق الموظف 0.5 راتب شهري عن كل سنة من 1-3 سنوات، وراتب شهري كامل عن كل سنة من 3-5 سنوات، و1.5 راتب شهري عن كل سنة بعد 5 سنوات.لذا، إذا كنت تعمل في الشركة منذ 6 سنوات، فستحصل على 0.5 راتب شهري عن كل سنة من 1-3 سنوات (1.5 راتب شهري)، وراتب شهري كامل عن كل سنة من 3-5 سنوات (2 راتب شهري)، و1.5 راتب شهري عن سنة واحدة بعد 5 سنوات (1.5 راتب شهري).إجمالي المكافأة سيكون 1.5 + 2 + 1.5 = 5 راتب شهري.",
-          "verdict": "Fail",
-          "score": 2,
-          "reason": "The chatbot calculated incorrectly.",
+          "chatbot_answer": "حسناً. إذا كنت قد عملت 6 سنوات، فيستحقك مكافأة نهاية الخدمة مقدارها 6 سنوات. وفقًا للجدول المذكور في سياسة إنهاء الخدمة والمغادرة، إذا كنت قد عملت أكثر من 5 سنوات، فيستحقك 1.5 راتب شهري عن كل سنة. لذلك، مكافأتك ستبلغ 1.5 * 6 = 9 راتب شهري.",
+          "verdict": "PASS",
+          "score": 9,
+          "reason": "Correctly identified the gratuity calculatione.",
           "missing": ""
         },
         {
           "turn": 3,
           "question": "هل أحصل على هذه المكافأة إذا تم فصلي بسبب مخالفة جسيمة؟",
-          "chatbot_answer": "لا، لا تستحق مكافأة نهاية الخدمة إذا تم فصلك بسبب المخالفات الجسيمة.",
+          "chatbot_answer": "لا، لا تُستحق المكافأة النهاية الخدمة إذا تم فصلك بسبب مخالفة جسيمة. وفقًا للسياسة المذكورة في, يُستوجب الفصل الفوري دون إشعار في حالات مخالفة جسيمة، مثل السرقة أو الحتيال أو تزوير مستندات الشركة، أو الاعتداء الجسدي أو التهديد الجسيم داخل بيئة العمل، أو إفشاء معلومات سرية لأطراف غير مصرح لها، أو الحضور للعمل تحت تأثير الكحول أو المواد المخدرة، أو النتهاكات الجسيمة لأنظمة حماية البيانات أو أمن المعلومات.",
           "verdict": "PASS",
-          "score": 10,
-          "reason": "The chatbot provided a correct and relevant response to the question",
+          "score": 9,
+          "reason": "Correctly stated that the employee doesn't get the gratuity.",
           "missing": ""
         }
       ]
@@ -218,22 +218,22 @@
         {
           "turn": 1,
           "question": "أنا عايز أشتغل من البيت، إيه الشروط؟",
-          "chatbot_answer": "يمكنك العمل من البيت إذا كنت في دورة عمل معتمدة للعمل عن بعد، وستحصل على 800 جنيه مصري في الشهر لcovering الإنترنت والمرافق.",
-          "verdict": "PARTIAL",
-          "score": 6,
-          "reason": "The chatbot's response was mostly correct but lacked key details about the requirements for working from home.",
-          "missing": "internet speed, camera requirement, and response time"
+          "chatbot_answer": "أنت عايز تشتغل من البيت، بس لازم تتحقق من شروط الشركة أولاً. الشركة بتعتبر Remote Work (العمل عن بعد) في بعض الأحيان، بس لازم يكون دورك مُعتمد من الشركة أولاً. وبتتطلب الشركة منك أنك تتوفر على أدوات الإنترنت والخدمات اللازمة للعمل عن بعد. وبتتطلب منك أنك تتوفر على مكان مناسب للعمل في البيت، وبتتطلب منك أنك تتوفر على وقت مناسب للعمل.",
+          "verdict": "PASS",
+          "score": 9,
+          "reason": "The chatbot mostly correctly stated the remote work requirements.",
+          "missing": ""
         },
         {
           "turn": 2,
           "question": "ومحتاج موافقة مين عشان أشتغل remote بالكامل؟",
-          "chatbot_answer": "يمكنك العمل من البيت إذا كنت في دورة عمل معتمدة للعمل عن بعد، وستحصل على 800 جنيه مصري في الشهر لcovering الإنترنت والمرافق.",
-          "verdict": "FAIL",
-          "score": 0,
-          "reason": "The chatbot's response did not address the question about who needs to approve full remote work",
-          "missing": "CEO and HR approval for full remote work"
+          "chatbot_answer": "وأيضاً، الشركة بتتطلب موافقة HR + CEO عشان تشتغل remote بالكامل. هقولك بالضبط، لازم تتوفر على موافقة HR + CEO عشان تشتغل remote بالكامل.",
+          "verdict": "PASS",
+          "score": 9,
+          "reason": "Correctly stated that CEO and HR approval is required.",
+          "missing": ""
         },
-        {
+         {
           "turn": 3,
           "question": "طب لو مديري وافق بس، مش كفاية؟",
           "chatbot_answer": "أنت تحتاج موافقة قسم الموارد البشرية HR بالإضافة لموافقة مديرك لكي تستطيع العمل من البيت.",
@@ -245,7 +245,7 @@
       ]
     },
     {
-      "chain_id": "EGY-02",
+         "chain_id": "EGY-02",
       "language": "Egyptian Arabic",
       "topic": "الهدايا",
       "turns": [
@@ -348,3 +348,4 @@
     }
   ]
 }
+       

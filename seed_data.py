@@ -1,12 +1,6 @@
 """
-seed_data.py
-Run once after schema.sql to populate the database with realistic fake employees.
-
-Usage:
-    python seed_data.py
-
-What it creates:
-  - 12 employees across all grades (G1–G5), departments, and work models
+Creates:
+  - 13 employees across all grades (G1–G5), departments, and work models
   - Leave balances for 2025 and 2026
   - Leave requests (approved, pending, rejected)
   - Performance reviews for 2024 and 2025 (H1 + H2)
@@ -201,6 +195,16 @@ with engine.begin() as conn:
         work_model='remote', is_active=True,
         probation_end_date=None, phone='+20-10-0000-0005'
     ))
+    # G3 — Senior Software Engineer (Karen Sherif)
+    karen_id = insert_employee(conn, dict(
+        full_name='Karen Sherif', full_name_ar='كارين شريف',
+        email='karen.sherif@horizontech.com', password_hash=h('pass1234'),
+        grade='G3', job_title='Senior Software Engineer',
+        department='Engineering', manager_id=eng_mgr_id, # Reports to Sara
+        hire_date=date(2024, 1, 10), employment_type='full-time',
+        work_model='remote', is_active=True,
+        probation_end_date=None, phone='+20-10-1234-5678'
+    ))
 
     # G3 — HR Lead
     hr_lead_id = insert_employee(conn, dict(
@@ -299,6 +303,11 @@ with engine.begin() as conn:
     insert_leave_balance(conn, eng_mgr_id, 2026, 'annual', 25, 3, 4, 0, 0)
     insert_leave_balance(conn, eng_mgr_id, 2026, 'sick',   10, 0, 2, 0, 0)
     insert_leave_balance(conn, eng_mgr_id, 2026, 'maternity', 90, 0, 0, 0, 0)
+
+    # Karen Sherif — G3, 2+ yrs → 21 annual days
+    insert_leave_balance(conn, karen_id, 2025, 'annual', 21, 0, 15, 0, 0)
+    insert_leave_balance(conn, karen_id, 2026, 'annual', 21, 6, 0, 0, 0)
+    insert_leave_balance(conn, karen_id, 2026, 'sick',   10, 0, 0, 0, 0)
 
     # Omar Nabil — G4, 5+ yrs → 25 annual days
     insert_leave_balance(conn, prod_mgr_id, 2025, 'annual', 25, 0, 15, 0, 3)
@@ -423,6 +432,7 @@ with engine.begin() as conn:
         eng_mgr_id:    57000,
         prod_mgr_id:   55000,
         sen_eng_id:    36000,
+        karen_id:      36000, 
         hr_lead_id:    34000,
         eng2_id:       21000,
         analyst_id:    20000,
@@ -433,7 +443,7 @@ with engine.begin() as conn:
         for eid, base in grade_base.items():
             emp_grade = {
                 ceo_id: 'G5', hr_dir_id: 'G5', eng_mgr_id: 'G4', prod_mgr_id: 'G4',
-                sen_eng_id: 'G3', hr_lead_id: 'G3', eng2_id: 'G2',
+                sen_eng_id: 'G3', hr_lead_id: 'G3', eng2_id: 'G2', karen_id: 'G3',
                 analyst_id: 'G2', hr_spec_id: 'G2', junior_id: 'G1'
             }[eid]
             housing  = round(base * 0.20, 2) if emp_grade in ('G4','G5') else 0

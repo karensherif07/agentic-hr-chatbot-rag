@@ -1,26 +1,15 @@
 """
-Horizon Tech HR Chatbot — Manual Test Grader (Groq Version)
-===========================================================
-HOW TO USE:
-1. Open your chatbot in the browser
-2. Run this script: python grade_responses.py
-3. For each question, copy-paste it into your chatbot
-4. Copy-paste the chatbot's response back here
-5. Groq (Llama 3) grades it automatically — pass / fail / partial
-6. At the end you get a full report saved to results/
+HR Chatbot — Manual Test Grader 
 
-REQUIREMENTS:
-    pip install groq
-    Set your API key: $env:GROQ_API_KEY="gsk_..."
 """
-
 import json
 import os
 import sys
 import datetime
 from groq import Groq
+from dotenv import load_dotenv
+load_dotenv()
 
-# Initialize Groq Client
 client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 QUESTIONS_FILE = "test_questions.json"

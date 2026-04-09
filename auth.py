@@ -1,17 +1,3 @@
-"""
-auth.py
-Login gate for the Streamlit app.
-
-Call require_login() at the top of app.py.
-If the user is not logged in, it shows the login form and stops execution.
-If logged in, it sets:
-  st.session_state.employee_id
-  st.session_state.employee_email
-  st.session_state.employee_name
-  st.session_state.employee_grade
-  st.session_state.employee_dept
-  st.session_state.manager_id
-"""
 
 import bcrypt
 import streamlit as st

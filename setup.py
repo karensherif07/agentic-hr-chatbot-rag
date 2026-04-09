@@ -27,25 +27,56 @@ ENGLISH_PDF_PATH = "policies/eng_policy.pdf"
 
 @st.cache_data
 def render_page_to_image(pdf_path: str, page_num: int, zoom: float = 2.0, clip_text: str = None) -> bytes:
-    """Render a PDF page to PNG image bytes, optionally clipped to text."""
+    """Render a full PDF page to PNG image bytes."""
     doc = fitz.open(pdf_path)
-    page = doc.load_page(page_num - 1)  # 0-based
+    page = doc.load_page(page_num - 1)
+    matrix = fitz.Matrix(zoom, zoom)
+    pix = page.get_pixmap(matrix=matrix)
+    img_bytes = pix.tobytes("png")
+    doc.close()
+    return img_bytes
+
+
+@st.cache_data
+def render_page_snippet(pdf_path: str, page_num: int, clip_text: str, zoom: float = 2.0,
+                        padding: int = 20) -> bytes:
+    """
+    Renders only the region of the page containing clip_text, with padding.
+    Falls back to the full page if the text is not found.
+    Highlights the matched region in yellow.
+    """
+    doc = fitz.open(pdf_path)
+    page = doc.load_page(page_num - 1)
     matrix = fitz.Matrix(zoom, zoom)
 
-    if clip_text:
-        # Search for the text and get its bbox
-        text_instances = page.search_for(clip_text)
-        if text_instances:
-            # Union of all instances
-            rect = text_instances[0]
-            for inst in text_instances[1:]:
-                rect = rect | inst
-            # Add some padding
-            rect = rect + (-10, -10, 10, 10)
-            pix = page.get_pixmap(matrix=matrix, clip=rect)
-        else:
-            pix = page.get_pixmap(matrix=matrix)
+    # Try to find the text on the page
+    # Use the first ~80 chars of chunk text to search (avoid too-long strings)
+    search_text = clip_text[:80].strip() if clip_text else ""
+    instances = page.search_for(search_text) if search_text else []
+
+    if instances:
+        # Union bounding box of all matches
+        rect = instances[0]
+        for inst in instances[1:]:
+            rect = rect | inst
+
+        # Add padding (in PDF units before zoom)
+        pad = padding / zoom
+        clip_rect = fitz.Rect(
+            max(0, rect.x0 - pad),
+            max(0, rect.y0 - pad),
+            min(page.rect.width, rect.x1 + pad),
+            min(page.rect.height, rect.y1 + pad),
+        )
+
+        # Highlight the matched text in yellow
+        for inst in instances:
+            highlight = page.add_highlight_annot(inst)
+            highlight.update()
+
+        pix = page.get_pixmap(matrix=matrix, clip=clip_rect)
     else:
+        # Fall back to full page
         pix = page.get_pixmap(matrix=matrix)
 
     img_bytes = pix.tobytes("png")
@@ -84,7 +115,7 @@ def setup():
         splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
             chunk_overlap=100,
-            separators=["\n\n", "\n", ".", "?", "!", " ","---", "|"]
+            separators=["\n\n", "\n", ".", "?", "!", " ", "---", "|"]
         )
         docs = splitter.split_documents(pages)
         bm25_corpus = [tokenize(normalize_fn(d.page_content)) for d in docs]
@@ -103,12 +134,6 @@ def setup():
         model_name="llama-3.3-70b-versatile",
         temperature=0
     )
-    # en_llm = ChatGroq(
-    #     groq_api_key=api_key,
-    #     model_name="openai/gpt-oss-120b",
-    #     temperature=0
-    # )
-
     en_llm = ChatGroq(
         groq_api_key=api_key,
         model_name="llama-3.3-70b-versatile",
