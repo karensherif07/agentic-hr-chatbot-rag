@@ -47,8 +47,11 @@ PERSONAL_PATTERNS = [
 ]
 
 HYBRID_PATTERNS = [
-    # Working hours need DB (work_model) + policy (shift table) → always hybrid
-    r"(my working hours|what are my hours|my shift|my schedule|my start time|ساعات عملي|مواعيد عملي|mawa3id shoghl|working hours bta3i)",
+    # Working hours / schedule: DB (work_model) + policy (shift / hours) → hybrid
+    r"(what are my working hours|what are my hours|my working hours|my work hours|hours do i work|how many hours"
+    r".*(per day|a day|do i work|weekly)|when do i (start|finish|clock in|work)|my shift|my schedule|my start time"
+    r"|my work schedule|am i (remote|hybrid|office|on-?site)|work from home|ساعات عملي|مواعيد عملي|عدد ساعات|جدول عملي"
+    r"|mawa3id shoghl|working hours bta3i|kam sa3a|sa3at el shoghl)",
     # Can I take more leave — needs balance + policy entitlement
     r"can i (take|get|have|request|apply).*(more|additional|extra|another|any).*(leave|agaza)",
     r"(can i).*(study|sick|annual|maternity|paternity|hajj).*(leave|agaza)",

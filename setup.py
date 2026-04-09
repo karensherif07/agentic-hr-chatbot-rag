@@ -1,4 +1,5 @@
 import os
+import re
 from dotenv import load_dotenv
 import streamlit as st
 import fitz  # PyMuPDF
@@ -37,46 +38,75 @@ def render_page_to_image(pdf_path: str, page_num: int, zoom: float = 2.0, clip_t
     return img_bytes
 
 
+def _pdf_search_candidates(clip_text: str) -> list:
+    t = re.sub(r"\s+", " ", (clip_text or "").strip())
+    if not t:
+        return []
+    out = []
+    for n in (160, 130, 100, 72, 54):
+        if len(t) >= n:
+            out.append(t[:n])
+    if len(t) > 90:
+        mid = max(0, len(t) // 3)
+        for n in (100, 70):
+            chunk = t[mid : mid + n]
+            if len(chunk) >= 40:
+                out.append(chunk)
+    seen = set()
+    uniq = []
+    for c in out:
+        if c not in seen:
+            seen.add(c)
+            uniq.append(c)
+    return uniq
+
+
+def _rect_too_narrow(rect: fitz.Rect, page: fitz.Page) -> bool:
+    pr = page.rect
+    h, w = rect.y1 - rect.y0, rect.x1 - rect.x0
+    if h < pr.height * 0.055 and w < pr.width * 0.35:
+        return True
+    return (w * h) < (pr.width * pr.height * 0.012)
+
+
 @st.cache_data
 def render_page_snippet(pdf_path: str, page_num: int, clip_text: str, zoom: float = 2.0,
                         padding: int = 20) -> bytes:
     """
-    Renders only the region of the page containing clip_text, with padding.
-    Falls back to the full page if the text is not found.
-    Highlights the matched region in yellow.
+    Renders the region around clip_text with padding.
+    Tries progressively shorter phrases; rejects tiny match boxes; otherwise full page.
     """
     doc = fitz.open(pdf_path)
     page = doc.load_page(page_num - 1)
     matrix = fitz.Matrix(zoom, zoom)
+    pr = page.rect
 
-    # Try to find the text on the page
-    # Use the first ~80 chars of chunk text to search (avoid too-long strings)
-    search_text = clip_text[:80].strip() if clip_text else ""
-    instances = page.search_for(search_text) if search_text else []
+    instances = []
+    for phrase in _pdf_search_candidates(clip_text):
+        found = page.search_for(phrase)
+        if not found:
+            continue
+        rect = found[0]
+        for inst in found[1:]:
+            rect = rect | inst
+        if _rect_too_narrow(rect, page):
+            continue
+        instances = found
+        break
 
     if instances:
-        # Union bounding box of all matches
         rect = instances[0]
         for inst in instances[1:]:
             rect = rect | inst
-
-        # Add padding (in PDF units before zoom)
         pad = padding / zoom
         clip_rect = fitz.Rect(
             max(0, rect.x0 - pad),
             max(0, rect.y0 - pad),
-            min(page.rect.width, rect.x1 + pad),
-            min(page.rect.height, rect.y1 + pad),
+            min(pr.width, rect.x1 + pad),
+            min(pr.height, rect.y1 + pad),
         )
-
-        # Highlight the matched text in yellow
-        for inst in instances:
-            highlight = page.add_highlight_annot(inst)
-            highlight.update()
-
         pix = page.get_pixmap(matrix=matrix, clip=clip_rect)
     else:
-        # Fall back to full page
         pix = page.get_pixmap(matrix=matrix)
 
     img_bytes = pix.tobytes("png")

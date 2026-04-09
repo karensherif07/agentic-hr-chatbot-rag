@@ -13,7 +13,11 @@ def retrieve(raw_query: str, vs, bm25, docs: list, normalize_fn, k: int = 15) ->
 def rerank(query: str, docs: list, reranker, top_n: int = 8) -> tuple:
     """
     Returns (ranked_docs, scores_dict).
-    scores_dict = {doc_key: raw_score} where doc_key = page_content[:120].
+    scores_dict maps id(doc) -> raw reranker score (avoids collisions on shared prefixes).
+
+    NOTE: The mmarco cross-encoder scores most reliably with English queries.
+    Always pass q_en as `query` from app.py for consistent confidence scores,
+    regardless of the user's input language.
     """
     if not docs:
         return [], {}
@@ -21,7 +25,7 @@ def rerank(query: str, docs: list, reranker, top_n: int = 8) -> tuple:
     raw_scores = reranker.predict(pairs)
     ranked = sorted(zip(docs, raw_scores), key=lambda x: x[1], reverse=True)
     top = ranked[:top_n]
-    scores_dict = {d.page_content[:120]: float(s) for d, s in top}
+    scores_dict = {id(d): float(s) for d, s in top}
     return [d for d, _ in top], scores_dict
 
 

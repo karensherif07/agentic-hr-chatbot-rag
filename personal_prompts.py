@@ -16,19 +16,27 @@ def format_personal_data(data: dict) -> str:
         lines.append(f"Name: {profile.get('full_name')} | Grade: {profile.get('grade')} | Title: {profile.get('job_title')}")
         lines.append(f"Dept: {profile.get('department')} | Manager: {profile.get('manager_name', 'N/A')}")
         lines.append(f"Hire date: {profile.get('hire_date')} | Type: {profile.get('employment_type')} | Work model: {profile.get('work_model')}")
-        # Explicit probation status — never let the LLM infer from other fields
         if profile.get("probation_end_date"):
             lines.append(f"Probation status: ACTIVE — ends {profile['probation_end_date']}")
         else:
             lines.append("Probation status: NOT IN PROBATION")
-        # Working hours note (policy-based, injected here so personal answers can state it)
-        wm = profile.get("work_model", "")
+        wm = (profile.get("work_model") or "").strip().lower()
         if wm == "remote":
-            lines.append("Working hours note: Standard corporate hours 9:00 AM – 5:00 PM apply. Remote allowance 800 EGP/month.")
+            lines.append(
+                "Work arrangement: REMOTE — you are not expected on-site daily; work location is primarily off-site. "
+                "Standard company clock hours and break rules in policy still apply unless your manager agrees different core hours."
+            )
+            lines.append("Allowances: remote work allowance 800 EGP/month (if listed in payroll).")
         elif wm == "hybrid":
-            lines.append("Working hours note: Standard corporate hours 9:00 AM – 5:00 PM. 3 days in-office, 2 remote.")
+            lines.append(
+                "Work arrangement: HYBRID — mix of office and remote as defined by your department; "
+                "standard company clock hours apply on working days unless agreed otherwise."
+            )
         else:
-            lines.append("Working hours note: Standard corporate hours 9:00 AM – 5:00 PM, 5 days in-office.")
+            lines.append(
+                "Work arrangement: ON-SITE / office-based unless policy or your contract says otherwise; "
+                "standard company clock hours apply."
+            )
         lines.append("")
 
     leave_balances = data.get("leave_balances", [])
@@ -116,59 +124,111 @@ def format_personal_data(data: dict) -> str:
     return "\n".join(lines).strip()
 
 
-# ── Shared personal rules (compact, per language) ─────────────
+# ── Personal rules — answers come from DB data, not from policy docs ──────
 _PERSONAL_RULES_EN = (
     "RULES:\n"
-    "1. Answer ONLY from the personal data block below. Never guess.\n"
-    "2. State exact numbers — days, amounts, ratings.\n"
-    "3. PROBATION: Use the 'Probation status' field. Never infer probation from OKR grace periods.\n"
-    "4. WORKING HOURS: Use the 'Working hours note' field in the profile.\n"
-    "5. If a field is missing, say: 'This information is not available in your record.'\n"
-    "6. Mirror pronouns: I/my → you/your.\n"
-    "7. No page citations — this data is from your live record.\n"
+    "1. Answer ONLY from the employee data block below. Never guess or invent.\n"
+    "2. State exact numbers — days, amounts, ratings — as they appear in the data.\n"
+    "3. PROBATION: Read the 'Probation status' field directly. Never infer it from other fields.\n"
+    "4. WORK MODEL / HOURS: Read 'Work arrangement' and related lines in the data block; never contradict work_model (e.g. do not say daily office attendance if remote).\n"
+    "5. If a field is missing: say 'This information is not available in your record.'\n"
+    "6. Mirror pronouns: user says I/my → reply with you/your.\n"
+    "7. No page citations — this data is from the live HR database.\n"
     "8. LANGUAGE LOCK: Reply in English only.\n"
 )
+
 _PERSONAL_RULES_AR = (
     "القواعد:\n"
-    "1. أجب من بيانات الموظف فقط. لا تخمّن.\n"
-    "2. اذكر الأرقام بدقة — أيام، مبالغ، تقييمات.\n"
-    "3. التجربة: استخدم حقل 'Probation status'. لا تستنتج الوضع من فترات OKR.\n"
-    "4. ساعات العمل: استخدم حقل 'Working hours note' في الملف الشخصي.\n"
+    "1. أجب من بيانات الموظف المرفقة فقط. لا تخمّن.\n"
+    "2. اذكر الأرقام الدقيقة — أيام، مبالغ، تقييمات — كما هي في البيانات.\n"
+    "3. التجربة: اقرأ حقل 'Probation status' مباشرة. لا تستنتجه من حقول أخرى.\n"
+    "4. نموذج العمل / الساعات: اتبع سطور 'Work arrangement'؛ لا تقل إن الحضور اليومي للمكتب مطلوب إذا كان العمل عن بُعد.\n"
     "5. إذا غاب حقل: 'هذه المعلومة غير متوفرة في سجلك.'\n"
     "6. طابق الضمائر: أنا/لي → أنت/لك.\n"
-    "7. لا أرقام صفحات — البيانات من السجل الحي.\n"
+    "7. لا أرقام صفحات — البيانات من قاعدة البيانات الحية.\n"
     "8. قفل اللغة: أجب بالعربية فقط.\n"
 )
+
 _PERSONAL_RULES_EGY = (
     "القواعد:\n"
-    "1. جاوب من البيانات دي بس. متخمنش.\n"
-    "2. اذكر الأرقام بدقة.\n"
-    "3. التجربة: استخدم حقل 'Probation status'. متستنتجش من OKR.\n"
-    "4. ساعات الشغل: استخدم حقل 'Working hours note'.\n"
-    "5. لو المعلومة ناقصة: 'المعلومة دي مش متاحة في سجلك.'\n"
-    "6. الموظف 'أنا/بتاعي' → إنت 'إنت/بتاعك'.\n"
+    "1. جاوب من بيانات الموظف دي بس. متخمنش.\n"
+    "2. اذكر الأرقام الصح — أيام، فلوس، تقييمات — زي ما هي في البيانات.\n"
+    "3. التجربة: اقرأ حقل 'Probation status' على طول. متستنتجش من حاجة تانية.\n"
+    "4. نموذج العمل / الساعات: اتبع سطور 'Work arrangement' في البيانات؛ لا تقل إن الحضور اليومي للمكتب مطلوب إذا كان العمل عن بُعد.\n"
+    "5. لو المعلومة مش موجودة: 'المعلومة دي مش متاحة في سجلك.'\n"
+    "6. الموظف بيقول أنا/بتاعي → رد بـ إنت/بتاعك.\n"
     "7. متستخدمش أرقام صفحات.\n"
     "8. قفل اللغة: أجب بالعامية المصرية فقط. لا فصحى.\n"
 )
+
+# Franco: natural Arabizi — not word-by-word broken transliteration
 _PERSONAL_RULES_FRANCO = (
-    # English meta so LLM reliably follows it
-    "IMPORTANT: Reply EXCLUSIVELY in Franco Arabic — Egyptian Arabic written in Latin script "
-    "with numbers for Arabic letters (3=ع, 7=ح, 2=ء, 5=خ). "
-    "Do NOT write English sentences. Do NOT write Modern Standard Arabic.\n"
+    "OUTPUT: Franco Arabi — Egyptian Arabic in Latin letters, like real WhatsApp messages. "
+    "Use 3 7 5 2 4 for ع ح خ أ/ء ش when it reads naturally. "
+    "Keep sentences short and clear. No formal MSA paragraphs. Do not reply in English.\n"
     "RULES:\n"
-    "1. Egib men el bayanat el shakhsiyya bass. Matkhminsh.\n"
-    "2. 2ol el arqam beld2a — ayam, mablag, taqyim.\n"
-    "3. Probation: esta5dem 7aql 'Probation status' bass. Matkstantij4sh men OKR.\n"
-    "4. Mawa3id el shoghl: esta5dem 7aql 'Working hours note'.\n"
-    "5. Lw el ma3loma na2sa: '(Da) mesh mawgod f segelak.'\n"
-    "6. Ana/bta3i → enta/bta3ak.\n"
-    "7. Mafish arqam sa7fat — el bayanat men el segell el 7ay.\n"
+    "1. Use ONLY the employee data block. No guessing.\n"
+    "2. Numbers and facts exactly as in the data (days, money, ratings).\n"
+    "3. Probation: read 'Probation status' as written — do not infer from other fields.\n"
+    "4. Work model / hours: follow the 'Work arrangement' and allowance lines — say remote/hybrid/office clearly.\n"
+    "5. If a field is missing: 'El ma3loma di mesh mawgoda f segelak.'\n"
+    "6. User says I/my → you/your in Franco.\n"
+    "7. No page numbers — data is from the live HR database.\n"
 )
 
-# ── Personal prompts ───────────────────────────────────────────
+# ── Hybrid rules — combines DB data with policy context ───────────────────
+_HYBRID_RULES_EN = (
+    "RULES:\n"
+    "1. State the employee's actual data FIRST (exact fields from the data block — especially work_model).\n"
+    "2. WORKING HOURS / SCHEDULE: Always lead with 'Work arrangement' / work_model (remote, hybrid, or on-site). "
+    "If remote: make clear they are not required to be in the office daily; standard start/end times from policy still apply "
+    "unless an exception is stated. Do NOT describe them like a full-time office worker if work_model is remote.\n"
+    "3. Then cite the relevant policy lines (shift length, breaks, typical corporate hours) with [Page N | AR/EN].\n"
+    "4. Combine into one concise answer — do not repeat the same fact in multiple sentences.\n"
+    "5. No page citations for the personal/database part — only for policy sentences.\n"
+    "6. LANGUAGE LOCK: Reply in English only.\n"
+)
+
+_HYBRID_RULES_AR = (
+    "القواعد:\n"
+    "1. اذكر بيانات الموظف أولاً (خصوصاً نموذج العمل work_model).\n"
+    "2. ساعات العمل / الجدول: ابدأ بتوضيح طريقة العمل (عن بُعد، هجين، أو في المكتب). "
+    "إذا كان عن بُعد: أوضح أن الحضور اليومي للمكتب غير مطلوب؛ أوقات بداية ونهاية الدوام من السياسة تظل سارية ما لم يُستثنَ. "
+    "لا تصِف الموظف كمن يعمل يومياً من المكتب إذا كان العمل عن بُعد.\n"
+    "3. ثم استشهد بما ينطبق من السياسة مع [Page N | AR/EN].\n"
+    "4. إجابة موجزة دون تكرار نفس الجملة.\n"
+    "5. لا أرقام صفحات لجزء قاعدة البيانات — فقط لجمل السياسة.\n"
+    "6. قفل اللغة: أجب بالعربية فقط.\n"
+)
+
+_HYBRID_RULES_EGY = (
+    "القواعد:\n"
+    "1. اذكر بيانات الموظف الأول — وخصوصاً شغلك عن بُعد ولا هجين ولا من المكتب (work_model).\n"
+    "2. ساعات الشغل: لو أنت remote متقولش إنك لازم تقعد في الشركة كل يوم؛ الأوقات الرسمية من السياسة لسه بتتطبق. "
+    "لو hybrid أو office وضّح الفرق باختصار.\n"
+    "3. بعدين استشهد بالسياسة مع [Page N | AR/EN].\n"
+    "4. من غير تكرار نفس الكلام مرتين.\n"
+    "5. لا أرقام صفحات للبيانات الشخصية — بس للسياسة.\n"
+    "6. قفل اللغة: عامية مصرية بس.\n"
+)
+
+_HYBRID_RULES_FRANCO = (
+    "OUTPUT: Franco Arabi — Egyptian Arabic in Latin letters, natural texting style "
+    "(3=ع, 7=ح, 5=خ, 2=أ/ء, 4=ش). Short sentences; يعني، كده، عشان، لو where natural. "
+    "No formal فصحى paragraphs. Do not answer in English.\n"
+    "RULES:\n"
+    "1. 2ol el bayanat el shakhseya awwel — khosousan work_model (remote / hybrid / office).\n"
+    "2. Law remote: wa7yed en el attendance el yomiyyan fel ma7kam mesh matloob; el mawa3id el rasmeya men el policy lissa matlooba. "
+    "Mat2olsh en el shoghl zay employee office kamel law howwa remote.\n"
+    "3. Ba3den el policy ma3 [Page N | AR/EN] lel ta2seel (sa3at, breaks, shift).\n"
+    "4. Mat3awdsh takrar nafs el fekra maratein.\n"
+    "5. Mafish [Page …] lel gomel el database — bas lel policy.\n"
+)
+
+# ── Prompt templates ───────────────────────────────────────────
 PERSONAL_EN = PromptTemplate(
     template=(
-        "You are a personal HR assistant for Horizon Tech.\n"
+        "You are a personal HR assistant.\n"
         + _PERSONAL_RULES_EN
         + "\nRecent conversation:\n{history}\n\n"
         "=== EMPLOYEE DATA ===\n{personal_data}\n\n"
@@ -176,9 +236,10 @@ PERSONAL_EN = PromptTemplate(
     ),
     input_variables=["personal_data", "question", "history"]
 )
+
 PERSONAL_AR = PromptTemplate(
     template=(
-        "أنت مساعد موارد بشرية شخصي في شركة أفق التقنية.\n"
+        "أنت مساعد موارد بشرية شخصي.\n"
         + _PERSONAL_RULES_AR
         + "\nالمحادثة الأخيرة:\n{history}\n\n"
         "=== بيانات الموظف ===\n{personal_data}\n\n"
@@ -186,9 +247,10 @@ PERSONAL_AR = PromptTemplate(
     ),
     input_variables=["personal_data", "question", "history"]
 )
+
 PERSONAL_EGY = PromptTemplate(
     template=(
-        "أنت مساعد موارد بشرية شخصي في أفق التقنية.\n"
+        "أنت مساعد موارد بشرية شخصي.\n"
         + _PERSONAL_RULES_EGY
         + "\nالمحادثة اللي فاتت:\n{history}\n\n"
         "=== بيانات الموظف ===\n{personal_data}\n\n"
@@ -196,55 +258,21 @@ PERSONAL_EGY = PromptTemplate(
     ),
     input_variables=["personal_data", "question", "history"]
 )
+
 PERSONAL_FRANCO = PromptTemplate(
     template=(
-        "You are a personal HR assistant for Horizon Tech.\n"
+        "You are a personal HR assistant.\n"
         + _PERSONAL_RULES_FRANCO
         + "\nEl kalam el fat:\n{history}\n\n"
-        "=== El bayanat el shakhsiyya ===\n{personal_data}\n\n"
+        "=== El bayanat el shakhseya ===\n{personal_data}\n\n"
         "El so2al: {question}\nEl egaba (Franco bass):"
     ),
     input_variables=["personal_data", "question", "history"]
 )
 
-# ── Hybrid rules (compact) ─────────────────────────────────────
-_HYBRID_RULES_EN = (
-    "RULES:\n"
-    "1. State the employee's actual data FIRST (balance, rating, etc.).\n"
-    "2. Then state the relevant policy rule with [Page N | AR/EN] citations.\n"
-    "3. Combine both to give a direct, actionable answer.\n"
-    "4. No page citations for personal data.\n"
-    "5. LANGUAGE LOCK: Reply in English only.\n"
-)
-_HYBRID_RULES_AR = (
-    "القواعد:\n"
-    "1. اذكر بيانات الموظف الفعلية أولاً.\n"
-    "2. ثم اذكر القاعدة من السياسة مع [Page N | AR/EN].\n"
-    "3. ادمجهما في إجابة عملية مباشرة.\n"
-    "4. لا أرقام صفحات للبيانات الشخصية.\n"
-    "5. قفل اللغة: أجب بالعربية فقط.\n"
-)
-_HYBRID_RULES_EGY = (
-    "القواعد:\n"
-    "1. اذكر بيانات الموظف الأول.\n"
-    "2. بعدين القاعدة من السياسة مع [Page N | AR/EN].\n"
-    "3. ادمجهم في إجابة بالعامية المصرية.\n"
-    "4. لا أرقام صفحات للبيانات الشخصية.\n"
-    "5. قفل اللغة: أجب بالعامية المصرية فقط. لا فصحى.\n"
-)
-_HYBRID_RULES_FRANCO = (
-    "IMPORTANT: Reply EXCLUSIVELY in Franco Arabic — Egyptian Arabic in Latin script "
-    "with number substitutions (3=ع, 7=ح, 2=ء, 5=خ). No English sentences, no فصحى.\n"
-    "RULES:\n"
-    "1. 2ol bayanat el mowazaf awwel (balance, taqyim, etc.).\n"
-    "2. Ba3den el rule men el policy ma3 [Page N | AR/EN].\n"
-    "3. Edmezhom f egaba wa7da — sara7a w 3amaleya.\n"
-    "4. Mafish cite lel bayanat el shakhsiyya.\n"
-)
-
 HYBRID_EN = PromptTemplate(
     template=(
-        "You are an HR assistant for Horizon Tech.\n"
+        "You are an HR assistant.\n"
         + _HYBRID_RULES_EN
         + "\nRecent conversation:\n{history}\n\n"
         "=== EMPLOYEE DATA ===\n{personal_data}\n\n"
@@ -253,9 +281,10 @@ HYBRID_EN = PromptTemplate(
     ),
     input_variables=["personal_data", "policy_context", "question", "history"]
 )
+
 HYBRID_AR = PromptTemplate(
     template=(
-        "أنت مساعد موارد بشرية في شركة أفق التقنية.\n"
+        "أنت مساعد موارد بشرية.\n"
         + _HYBRID_RULES_AR
         + "\nالمحادثة الأخيرة:\n{history}\n\n"
         "=== بيانات الموظف ===\n{personal_data}\n\n"
@@ -264,9 +293,10 @@ HYBRID_AR = PromptTemplate(
     ),
     input_variables=["personal_data", "policy_context", "question", "history"]
 )
+
 HYBRID_EGY = PromptTemplate(
     template=(
-        "أنت مساعد موارد بشرية في أفق التقنية.\n"
+        "أنت مساعد موارد بشرية.\n"
         + _HYBRID_RULES_EGY
         + "\nالمحادثة اللي فاتت:\n{history}\n\n"
         "=== بيانات الموظف ===\n{personal_data}\n\n"
@@ -275,26 +305,29 @@ HYBRID_EGY = PromptTemplate(
     ),
     input_variables=["personal_data", "policy_context", "question", "history"]
 )
+
 HYBRID_FRANCO = PromptTemplate(
     template=(
-        "You are an HR assistant for Horizon Tech.\n"
+        "You are an HR assistant.\n"
         + _HYBRID_RULES_FRANCO
         + "\nEl kalam el fat:\n{history}\n\n"
-        "=== El bayanat el shakhsiyya ===\n{personal_data}\n\n"
+        "=== El bayanat el shakhseya ===\n{personal_data}\n\n"
         "=== El policy context ===\n{policy_context}\n\n"
         "El so2al: {question}\nEl egaba (Franco bass):"
     ),
     input_variables=["personal_data", "policy_context", "question", "history"]
 )
 
+
 def get_personal_prompt(lang: str, dialect: str = None):
-    if lang == "english": return PERSONAL_EN
-    if lang == "franco":  return PERSONAL_FRANCO
-    if dialect == "egyptian": return PERSONAL_EGY
+    if lang == "english":       return PERSONAL_EN
+    if lang == "franco":        return PERSONAL_FRANCO
+    if dialect == "egyptian":   return PERSONAL_EGY
     return PERSONAL_AR
 
+
 def get_hybrid_prompt(lang: str, dialect: str = None):
-    if lang == "english": return HYBRID_EN
-    if lang == "franco":  return HYBRID_FRANCO
-    if dialect == "egyptian": return HYBRID_EGY
+    if lang == "english":       return HYBRID_EN
+    if lang == "franco":        return HYBRID_FRANCO
+    if dialect == "egyptian":   return HYBRID_EGY
     return HYBRID_AR
