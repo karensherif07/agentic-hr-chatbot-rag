@@ -1,11 +1,9 @@
 import streamlit as st
-
 from auth import init_cookie_manager, require_login, logout
-
 from intent import classify_intent
 from personal_data import fetch_for_intent
 from personal_prompts import get_personal_prompt, get_hybrid_prompt, format_personal_data
-from setup import setup, render_page_highlighted, render_page_to_image
+from setup import setup, render_page_to_image
 from nlp_utils import (detect_language_type, get_semantic_dialect,
                        franco_to_arabic, normalize_arabic, normalize_english)
 from retrieval import retrieve, rerank, rrf, build_retrieval_query
@@ -13,7 +11,7 @@ from utils import (
     translate, build_context, build_history_str, validate,
     get_cited_pages, strip_citations, filter_cited_chunks, is_no_info_answer,
     summarize_history, extract_snippet, confidence_badge,
-    batch_rerank_query_excerpts, anchor_for_pdf_search,
+    batch_rerank_query_excerpts,
 )
 from prompts import english_prompt, msa_prompt, egy_prompt, franco_prompt
 from speech import (
@@ -25,17 +23,12 @@ from sessions import save_session, load_session, clear_session
 ARABIC_PDF_PATH  = "policies/ar_policy.pdf"
 ENGLISH_PDF_PATH = "policies/eng_policy.pdf"
 
-
 def clean_query(text: str) -> str:
     return text.replace('"', '').replace("'", "").strip()
 
-
 # ─── Page config + login gate ─────────────────────────────────
 st.set_page_config(page_title="HR Assistant", layout="wide")
-# init_cookie_manager MUST come after set_page_config (which must be the
-# first st.* call) but before require_login so the CookieManager component
-# is present in the DOM on every single run, including refreshes.
-init_cookie_manager()
+init_cookie_manager()   # no-op now, kept for compatibility
 require_login()
 
 # ─── Sidebar ──────────────────────────────────────────────────
@@ -92,107 +85,20 @@ st.markdown("""
     display:inline-block; padding:2px 8px; border-radius:4px;
     font-size:0.72rem; font-weight:600; color:white; margin-left:8px; vertical-align:middle;
 }
-/* Voice UI card */
-.voice-card {
-    background: var(--secondary-background-color, #f8f9fa);
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1rem;
+.mic-container {
+    background: #f8f9fa;
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
+.stAudioInput { margin-bottom: 0px !important; }
 </style>
 """, unsafe_allow_html=True)
 
 st.title("💼 HR Assistant")
 st.caption("Ask in English, Arabic (MSA or Egyptian dialect), or Franco Arabic.")
-
-# ─── Voice Input Section ──────────────────────────────────────
-with st.expander("🎤 Voice input", expanded=False):
-    st.markdown('<div class="voice-card">', unsafe_allow_html=True)
-
-    audio_bytes  = None
-    audio_format = "audio/wav"
-
-    # Streamlit ≥ 1.33 has a native microphone widget
-    if hasattr(st, "audio_input"):
-        col_mic, col_upload = st.columns([1, 1], gap="large")
-        with col_mic:
-            st.markdown("**Record directly**")
-            recorded = st.audio_input("Press to record", key="mic_native", label_visibility="collapsed")
-            if recorded is not None:
-                # Read bytes immediately and cache in session_state.
-                # st.audio_input returns a new object on every rerun but
-                # its .read() empties the buffer — cache to survive reruns.
-                raw = recorded.read()
-                if raw:
-                    st.session_state["_cached_audio_bytes"]  = raw
-                    st.session_state["_cached_audio_format"] = "audio/wav"
-        with col_upload:
-            st.markdown("**Or upload a file**")
-            uploaded = st.file_uploader(
-                "Upload audio",
-                type=["wav", "mp3", "ogg", "webm"],
-                key="voice_upload",
-                label_visibility="collapsed",
-            )
-            if uploaded is not None:
-                raw = uploaded.read()
-                if raw:
-                    st.session_state["_cached_audio_bytes"]  = raw
-                    st.session_state["_cached_audio_format"] = uploaded.type or "audio/webm"
-    else:
-        # Fallback for older Streamlit: file upload only
-        st.info("Upgrade to Streamlit ≥ 1.33 for in-browser microphone recording.")
-        uploaded = st.file_uploader(
-            "Upload a recorded question (WAV / MP3 / OGG / WebM)",
-            type=["wav", "mp3", "ogg", "webm"],
-            key="voice_upload_fallback",
-        )
-        if uploaded is not None:
-            raw = uploaded.read()
-            if raw:
-                st.session_state["_cached_audio_bytes"]  = raw
-                st.session_state["_cached_audio_format"] = uploaded.type or "audio/webm"
-
-    # Use cached bytes (survive reruns)
-    audio_bytes  = st.session_state.get("_cached_audio_bytes")
-    audio_format = st.session_state.get("_cached_audio_format", "audio/wav")
-
-    if audio_bytes:
-        st.audio(audio_bytes, format=audio_format)
-
-        if not whisper_available():
-            st.info("Install `pip install openai-whisper` and `ffmpeg` to transcribe voice.")
-        else:
-            with st.spinner("🎙️ Transcribing… (first run loads model, ~30 s)"):
-                transcript = transcribe_audio(audio_bytes)
-
-            if transcript:
-                st.success(f"**Recognised:** {transcript}")
-                col_ask, col_edit = st.columns([1, 2], gap="small")
-                with col_ask:
-                    if st.button("✅ Ask this", use_container_width=True, key="ask_voice_btn"):
-                        st.session_state.transcribed_voice_question = clean_query(transcript)
-                        st.session_state.pop("_cached_audio_bytes", None)
-                        st.session_state.pop("_cached_audio_format", None)
-                        st.rerun()
-                with col_edit:
-                    edited = st.text_input(
-                        "Edit before asking:",
-                        value=transcript,
-                        key="edit_transcript",
-                        label_visibility="collapsed",
-                        placeholder="Edit transcript here…",
-                    )
-                    if st.button("✏️ Ask edited", use_container_width=True, key="ask_edited_btn"):
-                        st.session_state.transcribed_voice_question = clean_query(edited)
-                        st.session_state.pop("_cached_audio_bytes", None)
-                        st.session_state.pop("_cached_audio_format", None)
-                        st.rerun()
-            else:
-                st.warning("Could not transcribe. Check that ffmpeg is installed and try again, or type your question below.")
-
-    st.markdown("</div>", unsafe_allow_html=True)
 
 # ─── Load models ──────────────────────────────────────────────
 try:
@@ -212,8 +118,41 @@ for msg in st.session_state.chat_history:
             unsafe_allow_html=True
         )
 
-# ─── Chat input ───────────────────────────────────────────────
+# ─── Voice panel + chat input ────────────────────────────────
 question = st.session_state.pop("transcribed_voice_question", None)
+
+if not whisper_available():
+    st.caption("🎤 Voice input disabled: Ensure whisper and ffmpeg are installed.")
+else:
+    with st.container():
+        st.markdown('<div class="mic-container">', unsafe_allow_html=True)
+        # Using native st.audio_input for a better look
+        recorded = st.audio_input("Record your question", label_visibility="collapsed")
+        
+        if recorded:
+            audio_bytes = recorded.read()
+            if st.session_state.get("_mic_transcript") is None:
+                with st.status("🎙️ Processing speech...", expanded=False) as status:
+                    # Pass the actual bytes to whisper
+                    text = transcribe_audio(audio_bytes)
+                    if text:
+                        st.session_state["_mic_transcript"] = text
+                        status.update(label="✅ Transcription complete", state="complete")
+                    else:
+                        status.update(label="❌ Could not understand audio", state="error")
+
+            transcript = st.session_state.get("_mic_transcript")
+            if transcript:
+                edited_text = st.text_area("Edit or confirm your question:", value=transcript, height=100)
+                b1, b2, _ = st.columns([1, 1, 3])
+                if b1.button("🚀 Send", use_container_width=True):
+                    question = clean_query(edited_text)
+                    st.session_state.pop("_mic_transcript", None)
+                if b2.button("🗑️ Reset", use_container_width=True):
+                    st.session_state.pop("_mic_transcript", None)
+                    st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+
 if question is None:
     question = st.chat_input("Ask your question…")
 
@@ -260,12 +199,8 @@ if question:
                 # 4. Intent
                 intent, topic = classify_intent(question)
 
-                top_docs          = []
-                cited_docs        = []
-                cited_pages       = set()
-                personal_data_str = ""
-                answer            = ""
-                scores_dict       = {}
+                top_docs, cited_docs, cited_pages = [], [], set()
+                personal_data_str, answer, scores_dict = "", "", {}
 
                 # ── PERSONAL ──────────────────────────────────
                 if intent == "personal":
@@ -330,19 +265,10 @@ if question:
                     unsafe_allow_html=True
                 )
 
-                # 6. Personal data expander
                 if intent in ("personal", "hybrid") and personal_data_str:
                     with st.expander("📋 Your data used to answer this"):
                         st.code(personal_data_str, language=None)
 
-                # 7. Query info expander
-                with st.expander("🔍 Query Info"):
-                    st.info(f"**Intent:** {intent} | **Language:** {lang}" +
-                            (f" | **Dialect:** {dialect}" if dialect else ""))
-                    st.info(f"**AR:** {q_ar}")
-                    st.info(f"**EN:** {q_en}")
-
-                # 8. Source evidence with highlights
                 if cited_docs:
                     pages_sorted = sorted(cited_pages)
                     with st.expander(f"📄 Source Evidence — pages: {', '.join(str(p) for p in pages_sorted)}"):
@@ -361,8 +287,7 @@ if question:
                             pr = batch_rerank_query_excerpts(reranker, q_en, cited_for_display, window=720)
                             if pr:
                                 rerank_cited = {id(x): s for x, s in zip(cited_for_display, pr)}
-                        peer_scores     = list(rerank_cited.values()) if rerank_cited else []
-                        ans_for_snippet = strip_citations(answer)[:800]
+                        peer_scores = list(rerank_cited.values()) if rerank_cited else []
 
                         for (pdf_path, page_no), d in unique_pages.items():
                             src_name  = "Arabic PDF" if ARABIC_PDF_PATH in pdf_path else "English PDF"
@@ -377,37 +302,8 @@ if question:
                             else:
                                 st.markdown(f"**📄 Page {page_no} — {src_name}**")
 
-                            # Build precise search text from answer + query
-                            # This lands the highlight on the cited sentence,
-                            # not the section header at the top of the chunk.
-                            search_text = anchor_for_pdf_search(
-                                chunk_text=d.page_content,
-                                query_en=q_en,
-                                query_ar=q_ar,
-                                answer_excerpt=ans_for_snippet,
-                                max_len=200,
-                            )
-
-                            try:
-                                img_bytes = render_page_highlighted(
-                                    pdf_path, page_no,
-                                    clip_text=search_text,
-                                )
-                                st.image(img_bytes, caption=f"Page {page_no} — {src_name} (highlighted)", width=700)
-                            except Exception:
-                                direction = "rtl" if "ar_policy" in pdf_path else "ltr"
-                                align     = "right" if direction == "rtl" else "left"
-                                snippet   = extract_snippet(
-                                    d.page_content,
-                                    f"{q_en} {q_ar} {ans_for_snippet}",
-                                    window=700
-                                )
-                                st.markdown(
-                                    f'<div style="direction:{direction};text-align:{align};'
-                                    f'background:#f9f9f9;padding:10px;border-radius:5px;'
-                                    f'font-size:0.9rem;">{snippet}</div>',
-                                    unsafe_allow_html=True
-                                )
+                            img_bytes = render_page_to_image(pdf_path, page_no)
+                            st.image(img_bytes, width=700)
 
                 # 9. Save to history
                 st.session_state.chat_history.append({"role": "user",      "content": question, "is_arabic": False})
@@ -436,53 +332,27 @@ if question:
 
             except Exception as e:
                 st.error(f"Error: {str(e)}")
-                import traceback
-                st.code(traceback.format_exc())
 
 # ─── Bottom action bar ────────────────────────────────────────
 if st.session_state.last_answer:
-    answer = st.session_state.last_answer
-    lang   = st.session_state.last_lang
+    answer, lang = st.session_state.last_answer, st.session_state.last_lang
     st.divider()
-
     cols = st.columns([1, 1, 4])
-
     with cols[0]:
         if st.button("🔄 Translate"):
-            with st.spinner("Translating…"):
-                target = "Arabic" if lang == "english" else "English"
-                llm    = st.session_state.ar_llm if lang == "english" else st.session_state.en_llm
-                st.session_state.translated_answer        = translate(llm, answer, target)
-                st.session_state.translation_for_question = answer
-
+            target = "Arabic" if lang == "english" else "English"
+            llm    = st.session_state.ar_llm if lang == "english" else st.session_state.en_llm
+            st.session_state.translated_answer        = translate(llm, answer, target)
+            st.session_state.translation_for_question = answer
     with cols[1]:
         if tts_available():
             if st.button("🔊 Read aloud"):
-                with st.spinner("Generating audio…"):
-                    audio = text_to_speech(
-                        strip_citations(answer),
-                        lang=lang,
-                        dialect=st.session_state.last_dialect
-                    )
+                audio = text_to_speech(strip_citations(answer), lang=lang, dialect=st.session_state.last_dialect)
                 if audio:
-                    st.session_state.tts_audio      = audio
-                    st.session_state.tts_for_answer = answer
-                else:
-                    st.warning("Audio generation failed. Ensure gTTS is installed and you have internet access, or install pyttsx3 for offline TTS.")
-        else:
-            st.caption("TTS: `pip install gtts`")
-
+                    st.session_state.tts_audio, st.session_state.tts_for_answer = audio, answer
     if st.session_state.tts_audio and st.session_state.tts_for_answer == answer:
-        fmt = tts_audio_format(lang)
-        st.audio(st.session_state.tts_audio, format=fmt)
-
-    if (st.session_state.translated_answer
-            and st.session_state.translation_for_question == answer):
+        st.audio(st.session_state.tts_audio, format=tts_audio_format(lang))
+    if st.session_state.translated_answer and st.session_state.translation_for_question == answer:
         is_arabic = lang in ("arabic", "franco")
         css       = "ltr-answer" if is_arabic else "rtl-answer"
-        st.markdown(
-            f'<div class="{css}">'
-            f'{st.session_state.translated_answer.replace(chr(10), "<br>")}'
-            f'</div>',
-            unsafe_allow_html=True
-        )
+        st.markdown(f'<div class="{css}">{st.session_state.translated_answer.replace(chr(10), "<br>")}</div>', unsafe_allow_html=True)
