@@ -1,5 +1,9 @@
 from nlp_utils import tokenize
 
+# Maximum length of the combined retrieval query string.
+# Long histories produce very long strings that degrade BM25 scoring.
+_MAX_RETRIEVAL_QUERY_CHARS = 500
+
 
 def retrieve(raw_query: str, vs, bm25, docs: list, normalize_fn, k: int = 15) -> list:
     faiss_docs = vs.similarity_search(raw_query, k=k)
@@ -13,7 +17,7 @@ def retrieve(raw_query: str, vs, bm25, docs: list, normalize_fn, k: int = 15) ->
 def rerank(query: str, docs: list, reranker, top_n: int = 8) -> tuple:
     """
     Returns (ranked_docs, scores_dict).
-    scores_dict maps id(doc) -> raw reranker score (avoids collisions on shared prefixes).
+    scores_dict maps id(doc) -> raw reranker score.
 
     NOTE: The mmarco cross-encoder scores most reliably with English queries.
     Always pass q_en as `query` from app.py for consistent confidence scores,
@@ -48,14 +52,21 @@ def build_retrieval_query(current_question: str, chat_history: list, max_turns: 
     """
     Concatenates the last N user messages with the current question so that
     short follow-ups like 'what about paternity leave?' retrieve relevant chunks.
+
+    Caps the result at _MAX_RETRIEVAL_QUERY_CHARS to avoid degrading BM25 on
+    long conversation histories.
     """
     if not chat_history:
-        return current_question
+        return current_question[:_MAX_RETRIEVAL_QUERY_CHARS]
+
     recent_user_turns = [
         msg["content"]
         for msg in chat_history[-(max_turns * 2):]
         if msg["role"] == "user"
     ][-max_turns:]
+
     if not recent_user_turns:
-        return current_question
-    return (" ".join(recent_user_turns) + " " + current_question).strip()
+        return current_question[:_MAX_RETRIEVAL_QUERY_CHARS]
+
+    combined = (" ".join(recent_user_turns) + " " + current_question).strip()
+    return combined[:_MAX_RETRIEVAL_QUERY_CHARS]

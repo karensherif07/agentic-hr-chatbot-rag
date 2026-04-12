@@ -1,21 +1,28 @@
 import streamlit as st
-from auth import require_login, logout
+
+from auth import init_cookie_manager, require_login, logout
+
 from intent import classify_intent
 from personal_data import fetch_for_intent
 from personal_prompts import get_personal_prompt, get_hybrid_prompt, format_personal_data
-from setup import setup, render_page_to_image
+from setup import setup, render_page_highlighted, render_page_to_image
 from nlp_utils import (detect_language_type, get_semantic_dialect,
-                        franco_to_arabic, normalize_arabic, normalize_english)
+                       franco_to_arabic, normalize_arabic, normalize_english)
 from retrieval import retrieve, rerank, rrf, build_retrieval_query
 from utils import (
     translate, build_context, build_history_str, validate,
     get_cited_pages, strip_citations, filter_cited_chunks, is_no_info_answer,
     summarize_history, extract_snippet, confidence_badge,
-    batch_rerank_query_excerpts,
+    batch_rerank_query_excerpts, anchor_for_pdf_search,
 )
 from prompts import english_prompt, msa_prompt, egy_prompt, franco_prompt
+from speech import (
+    text_to_speech, tts_available, tts_audio_format,
+    whisper_available, transcribe_audio
+)
+from sessions import save_session, load_session, clear_session
 
-ARABIC_PDF_PATH = "policies/ar_policy.pdf"
+ARABIC_PDF_PATH  = "policies/ar_policy.pdf"
 ENGLISH_PDF_PATH = "policies/eng_policy.pdf"
 
 
@@ -23,8 +30,12 @@ def clean_query(text: str) -> str:
     return text.replace('"', '').replace("'", "").strip()
 
 
-# ─── Page config ──────────────────────────────────────────────
-st.set_page_config(page_title="HR Policy Assistant", layout="wide")
+# ─── Page config + login gate ─────────────────────────────────
+st.set_page_config(page_title="HR Assistant", layout="wide")
+# init_cookie_manager MUST come after set_page_config (which must be the
+# first st.* call) but before require_login so the CookieManager component
+# is present in the DOM on every single run, including refreshes.
+init_cookie_manager()
 require_login()
 
 # ─── Sidebar ──────────────────────────────────────────────────
@@ -33,51 +44,157 @@ with st.sidebar:
     st.caption(f"{st.session_state.employee_grade} · {st.session_state.employee_dept}")
     if st.button("Sign out"):
         logout()
+    st.divider()
+    if st.button("🗑 Clear chat history"):
+        clear_session(st.session_state.employee_id)
+        st.session_state.chat_history         = []
+        st.session_state.conversation_summary = ""
+        st.rerun()
 
-# ─── Session State ────────────────────────────────────────────
+# ─── Session state defaults ───────────────────────────────────
 _DEFAULTS = {
-    "chat_history": [],
-    "conversation_summary": "",
-    "translated_answer": None,
-    "translation_for_question": "",
-    "last_answer": None,
-    "last_lang": None,
-    "last_dialect": None,
-    "last_q_ar": None,
-    "last_q_en": None,
-    "last_cited_docs": [],
-    "last_top_docs": [],
-    "last_cited_pages": set(),
-    "last_scores": {},
+    "chat_history":              [],
+    "conversation_summary":      "",
+    "history_loaded":            False,
+    "translated_answer":         None,
+    "translation_for_question":  "",
+    "last_answer":               None,
+    "last_lang":                 None,
+    "last_dialect":              None,
+    "last_q_ar":                 None,
+    "last_q_en":                 None,
+    "last_cited_docs":           [],
+    "last_top_docs":             [],
+    "last_cited_pages":          set(),
+    "last_scores":               {},
+    "tts_audio":                 None,
+    "tts_for_answer":            None,
+    "transcribed_voice_question": None,
 }
 for key, default in _DEFAULTS.items():
     if key not in st.session_state:
         st.session_state[key] = default
 
+# ─── Load persisted history once per login session ────────────
+if not st.session_state.history_loaded:
+    hist, summ = load_session(st.session_state.employee_id)
+    if hist:
+        st.session_state.chat_history        = hist
+        st.session_state.conversation_summary = summ
+    st.session_state.history_loaded = True
+
 # ─── Styles ───────────────────────────────────────────────────
 st.markdown("""
 <style>
-.rtl-answer {
-    direction: rtl; text-align: right;
-    font-size: 1rem; line-height: 1.9; padding: 0.5rem 0;
-}
-.ltr-answer {
-    direction: ltr; text-align: left;
-    font-size: 1rem; line-height: 1.9; padding: 0.5rem 0;
-}
+.rtl-answer { direction:rtl; text-align:right; font-size:1rem; line-height:1.9; padding:0.5rem 0; }
+.ltr-answer { direction:ltr; text-align:left;  font-size:1rem; line-height:1.9; padding:0.5rem 0; }
 .conf-badge {
-    display: inline-block;
-    padding: 2px 8px; border-radius: 4px;
-    font-size: 0.72rem; font-weight: 600;
-    color: white; margin-left: 8px; vertical-align: middle;
+    display:inline-block; padding:2px 8px; border-radius:4px;
+    font-size:0.72rem; font-weight:600; color:white; margin-left:8px; vertical-align:middle;
+}
+/* Voice UI card */
+.voice-card {
+    background: var(--secondary-background-color, #f8f9fa);
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("💼 HR Policy Assistant")
+st.title("💼 HR Assistant")
 st.caption("Ask in English, Arabic (MSA or Egyptian dialect), or Franco Arabic.")
 
-# ─── Load models (cached) ─────────────────────────────────────
+# ─── Voice Input Section ──────────────────────────────────────
+with st.expander("🎤 Voice input", expanded=False):
+    st.markdown('<div class="voice-card">', unsafe_allow_html=True)
+
+    audio_bytes  = None
+    audio_format = "audio/wav"
+
+    # Streamlit ≥ 1.33 has a native microphone widget
+    if hasattr(st, "audio_input"):
+        col_mic, col_upload = st.columns([1, 1], gap="large")
+        with col_mic:
+            st.markdown("**Record directly**")
+            recorded = st.audio_input("Press to record", key="mic_native", label_visibility="collapsed")
+            if recorded is not None:
+                # Read bytes immediately and cache in session_state.
+                # st.audio_input returns a new object on every rerun but
+                # its .read() empties the buffer — cache to survive reruns.
+                raw = recorded.read()
+                if raw:
+                    st.session_state["_cached_audio_bytes"]  = raw
+                    st.session_state["_cached_audio_format"] = "audio/wav"
+        with col_upload:
+            st.markdown("**Or upload a file**")
+            uploaded = st.file_uploader(
+                "Upload audio",
+                type=["wav", "mp3", "ogg", "webm"],
+                key="voice_upload",
+                label_visibility="collapsed",
+            )
+            if uploaded is not None:
+                raw = uploaded.read()
+                if raw:
+                    st.session_state["_cached_audio_bytes"]  = raw
+                    st.session_state["_cached_audio_format"] = uploaded.type or "audio/webm"
+    else:
+        # Fallback for older Streamlit: file upload only
+        st.info("Upgrade to Streamlit ≥ 1.33 for in-browser microphone recording.")
+        uploaded = st.file_uploader(
+            "Upload a recorded question (WAV / MP3 / OGG / WebM)",
+            type=["wav", "mp3", "ogg", "webm"],
+            key="voice_upload_fallback",
+        )
+        if uploaded is not None:
+            raw = uploaded.read()
+            if raw:
+                st.session_state["_cached_audio_bytes"]  = raw
+                st.session_state["_cached_audio_format"] = uploaded.type or "audio/webm"
+
+    # Use cached bytes (survive reruns)
+    audio_bytes  = st.session_state.get("_cached_audio_bytes")
+    audio_format = st.session_state.get("_cached_audio_format", "audio/wav")
+
+    if audio_bytes:
+        st.audio(audio_bytes, format=audio_format)
+
+        if not whisper_available():
+            st.info("Install `pip install openai-whisper` and `ffmpeg` to transcribe voice.")
+        else:
+            with st.spinner("🎙️ Transcribing… (first run loads model, ~30 s)"):
+                transcript = transcribe_audio(audio_bytes)
+
+            if transcript:
+                st.success(f"**Recognised:** {transcript}")
+                col_ask, col_edit = st.columns([1, 2], gap="small")
+                with col_ask:
+                    if st.button("✅ Ask this", use_container_width=True, key="ask_voice_btn"):
+                        st.session_state.transcribed_voice_question = clean_query(transcript)
+                        st.session_state.pop("_cached_audio_bytes", None)
+                        st.session_state.pop("_cached_audio_format", None)
+                        st.rerun()
+                with col_edit:
+                    edited = st.text_input(
+                        "Edit before asking:",
+                        value=transcript,
+                        key="edit_transcript",
+                        label_visibility="collapsed",
+                        placeholder="Edit transcript here…",
+                    )
+                    if st.button("✏️ Ask edited", use_container_width=True, key="ask_edited_btn"):
+                        st.session_state.transcribed_voice_question = clean_query(edited)
+                        st.session_state.pop("_cached_audio_bytes", None)
+                        st.session_state.pop("_cached_audio_format", None)
+                        st.rerun()
+            else:
+                st.warning("Could not transcribe. Check that ffmpeg is installed and try again, or type your question below.")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# ─── Load models ──────────────────────────────────────────────
 try:
     ar_index, en_index, ar_llm, en_llm, reranker, dialect_pipe, ara_tokenizer = setup()
     st.session_state.ar_llm = ar_llm
@@ -89,68 +206,68 @@ except Exception as e:
 # ─── Render chat history ──────────────────────────────────────
 for msg in st.session_state.chat_history:
     with st.chat_message(msg["role"]):
-        css_class = "rtl-answer" if msg.get("is_arabic") else "ltr-answer"
+        css = "rtl-answer" if msg.get("is_arabic") else "ltr-answer"
         st.markdown(
-            f'<div class="{css_class}">{msg["content"].replace(chr(10), "<br>")}</div>',
+            f'<div class="{css}">{msg["content"].replace(chr(10), "<br>")}</div>',
             unsafe_allow_html=True
         )
 
 # ─── Chat input ───────────────────────────────────────────────
-question = st.chat_input("Ask your question...")
+question = st.session_state.pop("transcribed_voice_question", None)
+if question is None:
+    question = st.chat_input("Ask your question…")
 
 if question:
     question = clean_query(question)
-    st.session_state.translated_answer = None
+    st.session_state.translated_answer        = None
     st.session_state.translation_for_question = ""
+    st.session_state.tts_audio               = None
+    st.session_state.tts_for_answer          = None
 
     with st.chat_message("user"):
         st.markdown(question)
 
     with st.chat_message("assistant"):
-        with st.spinner("Searching..."):
+        with st.spinner("Searching…"):
             try:
-                # ── 1. Language + dialect detection ───────────────────
-                lang = detect_language_type(question)
+                # 1. Language detection
+                lang    = detect_language_type(question)
                 dialect = None
                 if lang == "arabic":
                     dialect = get_semantic_dialect(question, dialect_pipe)
                 elif lang == "franco":
                     dialect = "franco"
 
-                # ── 2. Translate to AR + EN for retrieval ─────────────
+                # 2. Translate for retrieval
                 if lang == "english":
                     q_en = question
                     q_ar = translate(ar_llm, question, "Arabic")
                 elif lang == "arabic":
                     q_ar = question
                     q_en = translate(en_llm, question, "English")
-                else:  # franco
-                    # Convert franco tokens → rough Arabic, then translate to proper MSA
+                else:
                     franco_arabic = franco_to_arabic(question)
                     q_ar = translate(ar_llm, franco_arabic, "Modern Standard Arabic")
                     q_en = translate(en_llm, q_ar, "English")
 
-                # ── 3. Build history string ───────────────────────────
+                # 3. History
                 history_str = build_history_str(
                     st.session_state.chat_history,
                     st.session_state.conversation_summary
                 )
                 employee_id = st.session_state.employee_id
 
-                # ── 4. Intent classification ──────────────────────────
+                # 4. Intent
                 intent, topic = classify_intent(question)
 
-                # ── 5. Initialise outputs ─────────────────────────────
-                top_docs        = []
-                cited_docs      = []
-                cited_pages     = set()
+                top_docs          = []
+                cited_docs        = []
+                cited_pages       = set()
                 personal_data_str = ""
-                answer          = ""
-                scores_dict     = {}
+                answer            = ""
+                scores_dict       = {}
 
-                # ══════════════════════════════════════════════════════
-                # PERSONAL — answered from DB only, no RAG
-                # ══════════════════════════════════════════════════════
+                # ── PERSONAL ──────────────────────────────────
                 if intent == "personal":
                     personal_data     = fetch_for_intent(employee_id, topic)
                     personal_data_str = format_personal_data(personal_data)
@@ -158,51 +275,29 @@ if question:
                     llm    = en_llm if lang == "english" else ar_llm
                     res    = llm.invoke(prompt.format(
                         personal_data=personal_data_str,
-                        question=question,
-                        history=history_str
+                        question=question, history=history_str
                     ))
                     answer = res.content
 
-                # ══════════════════════════════════════════════════════
-                # HYBRID / POLICY — RAG retrieval
-                # ══════════════════════════════════════════════════════
+                # ── HYBRID / POLICY ────────────────────────────
                 else:
                     ar_vs, ar_bm25, ar_docs = ar_index
                     en_vs, en_bm25, en_docs = en_index
 
-                    # For franco: enrich AR retrieval query with raw franco→arabic
-                    # so BM25 catches keywords the LLM translation might miss
-                    if lang == "franco":
-                        ar_retrieval_base = (q_ar + " " + franco_to_arabic(question)).strip()
-                    else:
-                        ar_retrieval_base = q_ar
+                    ar_base  = (q_ar + " " + franco_to_arabic(question)).strip() if lang == "franco" else q_ar
+                    q_ar_ret = build_retrieval_query(ar_base, st.session_state.chat_history).replace('"', '').replace("'", '')
+                    q_en_ret = build_retrieval_query(q_en,    st.session_state.chat_history).replace('"', '').replace("'", '')
 
-                    # Build context-aware queries (appends recent user turns)
-                    q_ar_ret = build_retrieval_query(
-                        ar_retrieval_base, st.session_state.chat_history
-                    ).replace('"', '').replace("'", "")
-                    q_en_ret = build_retrieval_query(
-                        q_en, st.session_state.chat_history
-                    ).replace('"', '').replace("'", "")
-
-                    # Retrieve from both indexes, fuse with RRF
-                    docs_ar  = retrieve(q_ar_ret, ar_vs, ar_bm25, ar_docs,
-                                        lambda t: normalize_arabic(t, ara_tokenizer))
+                    docs_ar  = retrieve(q_ar_ret, ar_vs, ar_bm25, ar_docs, lambda t: normalize_arabic(t, ara_tokenizer))
                     docs_en  = retrieve(q_en_ret, en_vs, en_bm25, en_docs, normalize_english)
                     combined = rrf(docs_ar, docs_en)
-
-                    # ── ALWAYS rerank with English query ──────────────
-                    # The mmarco cross-encoder is most reliable with English
-                    # queries regardless of the document language. Using dialect
-                    # Arabic or Franco as the rerank query produces artificially
-                    # low scores because the model was not trained on that style.
                     top_docs, scores_dict = rerank(q_en, combined, reranker, top_n=8)
 
                     if not top_docs and intent == "policy":
                         answer = "No relevant policy documents found."
                     else:
                         context = build_context(top_docs) if top_docs else ""
-                        llm = en_llm if lang == "english" else ar_llm
+                        llm     = en_llm if lang == "english" else ar_llm
 
                         if intent == "hybrid":
                             personal_data     = fetch_for_intent(employee_id, topic)
@@ -211,121 +306,101 @@ if question:
                             res = llm.invoke(prompt.format(
                                 personal_data=personal_data_str,
                                 policy_context=context,
-                                question=question,
-                                history=history_str
+                                question=question, history=history_str
                             ))
                         else:
-                            if lang == "english":
-                                prompt = english_prompt
-                            elif lang == "franco":
-                                prompt = franco_prompt
-                            else:
-                                prompt = egy_prompt if dialect == "egyptian" else msa_prompt
-
+                            if lang == "english":  prompt = english_prompt
+                            elif lang == "franco": prompt = franco_prompt
+                            else: prompt = egy_prompt if dialect == "egyptian" else msa_prompt
                             res = llm.invoke(prompt.format(
-                                context=context,
-                                question=question,
-                                history=history_str
+                                context=context, question=question, history=history_str
                             ))
 
-                        raw_answer  = res.content
-                        cited_pages = get_cited_pages(raw_answer)
-                        cited_docs  = filter_cited_chunks(top_docs, cited_pages)
+                        raw_answer   = res.content
+                        cited_pages  = get_cited_pages(raw_answer)
+                        cited_docs   = filter_cited_chunks(top_docs, cited_pages)
                         clean_answer = strip_citations(raw_answer)
-                        answer = validate(clean_answer, lang, has_citations=bool(cited_pages))
+                        answer       = validate(clean_answer, lang, has_citations=bool(cited_pages))
 
-                # ── 6. Render answer ──────────────────────────────────
+                # 5. Render answer
                 is_arabic = lang in ("arabic", "franco")
-                css_class = "rtl-answer" if is_arabic else "ltr-answer"
+                css       = "rtl-answer" if is_arabic else "ltr-answer"
                 st.markdown(
-                    f'<div class="{css_class}">{answer.replace(chr(10), "<br>")}</div>',
+                    f'<div class="{css}">{answer.replace(chr(10), "<br>")}</div>',
                     unsafe_allow_html=True
                 )
 
-                # ── 7. Personal data expander ─────────────────────────
+                # 6. Personal data expander
                 if intent in ("personal", "hybrid") and personal_data_str:
                     with st.expander("📋 Your data used to answer this"):
                         st.code(personal_data_str, language=None)
 
-                # ── 8. Query info expander ────────────────────────────
+                # 7. Query info expander
                 with st.expander("🔍 Query Info"):
-                    st.info(
-                        f"**Intent:** {intent} | **Language:** {lang}"
-                        + (f" | **Dialect:** {dialect}" if dialect else "")
-                    )
-                    st.info(f"**AR query:** {q_ar}")
-                    st.info(f"**EN query:** {q_en}")
+                    st.info(f"**Intent:** {intent} | **Language:** {lang}" +
+                            (f" | **Dialect:** {dialect}" if dialect else ""))
+                    st.info(f"**AR:** {q_ar}")
+                    st.info(f"**EN:** {q_en}")
 
-                # ── 9. Source evidence — ONLY when pages were cited ───
-                # If the LLM answered from its absolute rules without citing
-                # a page, we do not show source evidence (no valid citations).
+                # 8. Source evidence with highlights
                 if cited_docs:
                     pages_sorted = sorted(cited_pages)
-                    chunk_label = (
-                        f"📄 Source Evidence — pages cited: "
-                        f"{', '.join(str(p) for p in pages_sorted)}"
-                    )
-                    with st.expander(chunk_label):
-                        # Deduplicate: one entry per (pdf, page)
+                    with st.expander(f"📄 Source Evidence — pages: {', '.join(str(p) for p in pages_sorted)}"):
                         unique_pages: dict = {}
                         for d in cited_docs:
                             page_no = d.metadata.get("page", 0) + 1
-                            src = (ARABIC_PDF_PATH
-                                   if ARABIC_PDF_PATH in d.metadata.get("source", "")
-                                   else ENGLISH_PDF_PATH)
-                            key = (src, page_no)
-                            if key not in unique_pages:
-                                unique_pages[key] = d
+                            src     = (ARABIC_PDF_PATH
+                                       if ARABIC_PDF_PATH in d.metadata.get("source", "")
+                                       else ENGLISH_PDF_PATH)
+                            if (src, page_no) not in unique_pages:
+                                unique_pages[(src, page_no)] = d
 
                         cited_for_display = list(unique_pages.values())
                         rerank_cited = {}
-                        if cited_for_display and reranker is not None:
-                            pr = batch_rerank_query_excerpts(
-                                reranker, q_en, cited_for_display, window=720
-                            )
+                        if cited_for_display and reranker:
+                            pr = batch_rerank_query_excerpts(reranker, q_en, cited_for_display, window=720)
                             if pr:
-                                rerank_cited = {
-                                    id(x): s for x, s in zip(cited_for_display, pr)
-                                }
-
-                        peer_scores = list(rerank_cited.values()) if rerank_cited else []
-                        ans_for_snippet = strip_citations(answer)[:1200]
+                                rerank_cited = {id(x): s for x, s in zip(cited_for_display, pr)}
+                        peer_scores     = list(rerank_cited.values()) if rerank_cited else []
+                        ans_for_snippet = strip_citations(answer)[:800]
 
                         for (pdf_path, page_no), d in unique_pages.items():
-                            src_name = "Arabic PDF" if ARABIC_PDF_PATH in pdf_path else "English PDF"
-
+                            src_name  = "Arabic PDF" if ARABIC_PDF_PATH in pdf_path else "English PDF"
                             raw_score = rerank_cited.get(id(d), scores_dict.get(id(d)))
+
                             if raw_score is not None:
                                 conf_label, conf_color = confidence_badge(raw_score, peer_scores)
-                                badge = (
-                                    f'<span class="conf-badge" style="background:{conf_color};">'
-                                    f'{conf_label} (score {raw_score:.1f})</span>'
-                                )
-                                st.markdown(
-                                    f"**📄 Page {page_no} — {src_name}**{badge}",
-                                    unsafe_allow_html=True
-                                )
+                                badge = (f'<span class="conf-badge" style="background:{conf_color};">'
+                                         f'{conf_label} ({raw_score:.1f})</span>')
+                                st.markdown(f"**📄 Page {page_no} — {src_name}**{badge}",
+                                            unsafe_allow_html=True)
                             else:
                                 st.markdown(f"**📄 Page {page_no} — {src_name}**")
 
-                            # Full page image (avoids bad crops; cross-encoder score is excerpt-based)
+                            # Build precise search text from answer + query
+                            # This lands the highlight on the cited sentence,
+                            # not the section header at the top of the chunk.
+                            search_text = anchor_for_pdf_search(
+                                chunk_text=d.page_content,
+                                query_en=q_en,
+                                query_ar=q_ar,
+                                answer_excerpt=ans_for_snippet,
+                                max_len=200,
+                            )
+
                             try:
-                                img_bytes = render_page_to_image(
-                                    pdf_path, page_no, zoom=1.75
+                                img_bytes = render_page_highlighted(
+                                    pdf_path, page_no,
+                                    clip_text=search_text,
                                 )
-                                st.image(
-                                    img_bytes,
-                                    caption=f"Full page {page_no} — {src_name}",
-                                    width=700,
-                                )
+                                st.image(img_bytes, caption=f"Page {page_no} — {src_name} (highlighted)", width=700)
                             except Exception:
-                                # Text fallback
                                 direction = "rtl" if "ar_policy" in pdf_path else "ltr"
-                                align = "right" if direction == "rtl" else "left"
-                                snippet = extract_snippet(
+                                align     = "right" if direction == "rtl" else "left"
+                                snippet   = extract_snippet(
                                     d.page_content,
                                     f"{q_en} {q_ar} {ans_for_snippet}",
-                                    window=700,
+                                    window=700
                                 )
                                 st.markdown(
                                     f'<div style="direction:{direction};text-align:{align};'
@@ -334,21 +409,21 @@ if question:
                                     unsafe_allow_html=True
                                 )
 
-                # ── 10. Update history + running summary ──────────────
-                st.session_state.chat_history.append(
-                    {"role": "user",      "content": question, "is_arabic": False}
-                )
-                st.session_state.chat_history.append(
-                    {"role": "assistant", "content": answer,   "is_arabic": is_arabic}
-                )
+                # 9. Save to history
+                st.session_state.chat_history.append({"role": "user",      "content": question, "is_arabic": False})
+                st.session_state.chat_history.append({"role": "assistant", "content": answer,   "is_arabic": is_arabic})
 
                 st.session_state.conversation_summary = summarize_history(
-                    en_llm,
+                    en_llm, st.session_state.chat_history,
+                    st.session_state.conversation_summary
+                )
+
+                save_session(
+                    employee_id,
                     st.session_state.chat_history,
                     st.session_state.conversation_summary
                 )
 
-                # Persist last-answer state for translate button
                 st.session_state.last_answer      = answer
                 st.session_state.last_lang        = lang
                 st.session_state.last_dialect     = dialect
@@ -364,25 +439,49 @@ if question:
                 import traceback
                 st.code(traceback.format_exc())
 
-# ─── Translate last answer ────────────────────────────────────
+# ─── Bottom action bar ────────────────────────────────────────
 if st.session_state.last_answer:
     answer = st.session_state.last_answer
     lang   = st.session_state.last_lang
     st.divider()
 
-    if st.button("🔄 Translate last answer"):
-        with st.spinner("Translating..."):
-            target = "Arabic" if lang == "english" else "English"
-            llm    = st.session_state.ar_llm if lang == "english" else st.session_state.en_llm
-            st.session_state.translated_answer          = translate(llm, answer, target)
-            st.session_state.translation_for_question   = answer
+    cols = st.columns([1, 1, 4])
+
+    with cols[0]:
+        if st.button("🔄 Translate"):
+            with st.spinner("Translating…"):
+                target = "Arabic" if lang == "english" else "English"
+                llm    = st.session_state.ar_llm if lang == "english" else st.session_state.en_llm
+                st.session_state.translated_answer        = translate(llm, answer, target)
+                st.session_state.translation_for_question = answer
+
+    with cols[1]:
+        if tts_available():
+            if st.button("🔊 Read aloud"):
+                with st.spinner("Generating audio…"):
+                    audio = text_to_speech(
+                        strip_citations(answer),
+                        lang=lang,
+                        dialect=st.session_state.last_dialect
+                    )
+                if audio:
+                    st.session_state.tts_audio      = audio
+                    st.session_state.tts_for_answer = answer
+                else:
+                    st.warning("Audio generation failed. Ensure gTTS is installed and you have internet access, or install pyttsx3 for offline TTS.")
+        else:
+            st.caption("TTS: `pip install gtts`")
+
+    if st.session_state.tts_audio and st.session_state.tts_for_answer == answer:
+        fmt = tts_audio_format(lang)
+        st.audio(st.session_state.tts_audio, format=fmt)
 
     if (st.session_state.translated_answer
             and st.session_state.translation_for_question == answer):
         is_arabic = lang in ("arabic", "franco")
-        trans_css = "ltr-answer" if is_arabic else "rtl-answer"
+        css       = "ltr-answer" if is_arabic else "rtl-answer"
         st.markdown(
-            f'<div class="{trans_css}">'
+            f'<div class="{css}">'
             f'{st.session_state.translated_answer.replace(chr(10), "<br>")}'
             f'</div>',
             unsafe_allow_html=True

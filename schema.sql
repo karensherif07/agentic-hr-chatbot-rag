@@ -183,6 +183,14 @@ CREATE TABLE disciplinary_records (
     created_at          TIMESTAMPTZ     NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS chat_sessions (
+    employee_id   INT PRIMARY KEY REFERENCES employees(id) ON DELETE CASCADE,
+    history_json  TEXT NOT NULL DEFAULT '[]',
+    summary_text  TEXT NOT NULL DEFAULT '',
+    updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+ 
+
 -- ─── INDEXES ─────────────────────────────────────────────────
 -- Every foreign key that will be used in WHERE clauses gets an index.
 CREATE INDEX idx_leave_balances_employee   ON leave_balances(employee_id, year);

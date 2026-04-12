@@ -16,10 +16,6 @@ def translate(llm, text: str, target_language: str) -> str:
 
 # ─── Conversation Memory ──────────────────────────────────────
 def summarize_history(llm, chat_history: list, existing_summary: str = "") -> str:
-    """
-    Produces a compact running summary of the conversation so far.
-    Called after each turn; replaces the raw message log.
-    """
     if not chat_history:
         return existing_summary or ""
     lines = []
@@ -46,10 +42,6 @@ def summarize_history(llm, chat_history: list, existing_summary: str = "") -> st
 
 
 def build_history_str(chat_history: list, conversation_summary: str = "") -> str:
-    """
-    Returns the history string for the prompt.
-    Uses the running summary if available, otherwise falls back to last 2 raw turns.
-    """
     if conversation_summary:
         return f"Conversation so far:\n{conversation_summary}"
     if not chat_history:
@@ -119,7 +111,6 @@ def filter_cited_chunks(docs: list, cited_pages: set) -> list:
 
 
 # ─── Snippet Extraction ───────────────────────────────────────
-# Words that should not anchor the snippet (they match everywhere / headers).
 _SNIPPET_STOPWORDS = frozenset({
     "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
     "have", "has", "had", "do", "does", "did", "will", "would", "could",
@@ -136,7 +127,6 @@ _SNIPPET_STOPWORDS = frozenset({
 
 
 def _snippet_query_tokens(query: str) -> list:
-    """Meaningful tokens for matching (2+ chars); drops stopwords."""
     raw = re.findall(r"[\w\u0600-\u06FF]{2,}", (query or "").lower())
     out = []
     seen = set()
@@ -161,13 +151,6 @@ def _wrap_snippet(page_text: str, start: int, end: int) -> str:
 
 
 def extract_snippet(page_text: str, query: str, window: int = 400) -> str:
-    """
-    Extracts the most relevant snippet from a page's text for the query.
-
-    Chooses a fixed-length window that maximizes how many query tokens appear
-    inside it (sliding scan). Stops words are ignored for anchoring. Falls back
-    to the start of the page if nothing matches.
-    """
     if not page_text:
         return ""
     if window < 1:
@@ -197,7 +180,6 @@ def extract_snippet(page_text: str, query: str, window: int = 400) -> str:
             best_score = sc
             best_start = s
 
-    # Refine around the best coarse window (finer step) for a better fit.
     if best_score > 0:
         refine_lo = max(0, best_start - step)
         refine_hi = min(n - window, best_start + step)
@@ -208,7 +190,6 @@ def extract_snippet(page_text: str, query: str, window: int = 400) -> str:
                 best_start = s
 
     if best_score == 0:
-        # No token matched anywhere: try span-based centering on any non-stopword hit.
         positions = []
         for w in query_words:
             pos = text_lower.find(w)
@@ -230,17 +211,50 @@ def anchor_for_pdf_search(
     query_en: str,
     query_ar: str = "",
     answer_excerpt: str = "",
-    max_len: int = 120,
+    max_len: int = 200,
 ) -> str:
     """
-    Build a phrase from the retrieved chunk that overlaps the question/answer
-    and is long enough for PyMuPDF search_for() (avoids tiny irrelevant clips).
+    Build a phrase that PyMuPDF search_for() can locate on the PDF page.
+
+    Priority:
+    1. Try to find exact phrasing from the LLM answer inside the chunk text.
+       This lands the highlight on the cited sentence, not the section header.
+    2. Fall back to a query-matched snippet from the chunk.
+
+    IMPORTANT: Strip [Page N | AR/EN] citation tags from the answer excerpt
+    before trying to match — those tags exist only in the LLM output and
+    will never appear in the raw PDF text.
     """
     if not chunk_text:
         return ""
-    blob = " ".join(p for p in (query_en or "", query_ar or "", answer_excerpt or "") if p)
-    win = min(max(500, max_len * 5), max(len(chunk_text), max_len + 40))
-    snippet = extract_snippet(chunk_text, blob, window=win)
+
+    # Strip citation tags so they don't poison every substring match
+    def _strip_cites(s: str) -> str:
+        return re.sub(r"\s*\[Page\s*\d+[^\]]*\]", "", s or "", flags=re.IGNORECASE).strip()
+
+    chunk_clean = chunk_text
+
+    # 1. Try to anchor on the answer's own phrasing
+    if answer_excerpt:
+        clean_ans = re.sub(r"\s+", " ", _strip_cites(answer_excerpt))
+        # Try progressively shorter windows of the answer text
+        for length in (160, 130, 100, 70, 50, 35):
+            if len(clean_ans) < length:
+                continue
+            candidate = clean_ans[:length].strip()
+            # Must be at least a few words — single-word or 2-word hits land on headers
+            if len(candidate.split()) < 5:
+                continue
+            # Check if this phrase actually appears (case-insensitive) in the chunk
+            if candidate.lower() in chunk_clean.lower():
+                return candidate[:max_len]
+
+    # 2. Fall back to best-matching snippet from chunk
+    blob = " ".join(p for p in (_strip_cites(query_en or ""),
+                                _strip_cites(query_ar or ""),
+                                _strip_cites(answer_excerpt or "")) if p)
+    win = min(max(500, max_len * 4), max(len(chunk_clean), max_len + 40))
+    snippet = extract_snippet(chunk_clean, blob, window=win)
     s = snippet.strip()
     if s.startswith("…"):
         s = s[1:].lstrip()
@@ -248,18 +262,12 @@ def anchor_for_pdf_search(
         s = s[:-1].rstrip()
     s = re.sub(r"\s+", " ", s).strip()
     if len(s) < 35:
-        s = re.sub(r"\s+", " ", chunk_text[:500]).strip()
-    if len(s) > max_len:
-        lo = min(len(s) // 6, max(0, len(s) - max_len))
-        s = s[lo : lo + max_len].strip()
+        s = re.sub(r"\s+", " ", chunk_clean[:500]).strip()
     return s[:max_len]
 
 
 # ─── Confidence / Similarity Scores ──────────────────────────
 def get_doc_scores(query: str, docs: list, reranker) -> dict:
-    """
-    Returns {id(doc): score} for each doc using the cross-encoder reranker.
-    """
     if not docs or reranker is None:
         return {}
     pairs = [(query, d.page_content) for d in docs]
@@ -271,10 +279,6 @@ def get_doc_scores(query: str, docs: list, reranker) -> dict:
 
 
 def batch_rerank_query_excerpts(reranker, query: str, docs: list, window: int = 480) -> list[float]:
-    """
-    Scores (query vs excerpt) where excerpt is the best-matching window of each chunk.
-    Full 1000-token chunks often score artificially low; excerpts align with what the UI shows.
-    """
     if not docs or reranker is None:
         return []
     excerpts = []
@@ -291,10 +295,6 @@ def batch_rerank_query_excerpts(reranker, query: str, docs: list, window: int = 
 
 
 def score_to_confidence(raw_score: float) -> tuple:
-    """
-    Converts a raw cross-encoder score to (label, hex_color).
-    Prefer confidence_badge() for UI — it compares peers and uses looser bands.
-    """
     if raw_score >= -4.0:
         return "High", "#2e7d32"
     if raw_score >= -9.0:
@@ -303,11 +303,6 @@ def score_to_confidence(raw_score: float) -> tuple:
 
 
 def confidence_badge(raw_score: float, peer_scores: list[float] | None) -> tuple[str, str]:
-    """
-    Labels for the policy excerpt score. With 2+ cited pages, ranks this page
-    against the others so badges are not all Low. Single page: generous absolute
-    bands (mmarco-mMiniLM logits are often negative even for good matches).
-    """
     peers = [float(p) for p in (peer_scores or []) if p is not None]
     if len(peers) >= 2:
         lo, hi = min(peers), max(peers)

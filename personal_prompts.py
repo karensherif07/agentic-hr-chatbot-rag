@@ -58,6 +58,18 @@ def format_personal_data(data: dict) -> str:
             lines.append(f"  {p['leave_type']} {p['start_date']}→{p['end_date']} ({p['days_count']} days)")
         lines.append("")
 
+    recent_requests = data.get("recent_requests", [])
+    if recent_requests:
+        lines.append("RECENT LEAVE REQUESTS (last 5)")
+        for r in recent_requests:
+            status_str = r['status'].upper()
+            lines.append(
+                f"  [{status_str}] {r['leave_type']} {r['start_date']}→{r['end_date']} "
+                f"({r['days_count']} days)"
+                + (f" — rejected: {r['rejection_reason']}" if r.get('rejection_reason') else "")
+            )
+        lines.append("")
+
     latest = data.get("latest_review")
     if latest:
         lines.append("LATEST PERFORMANCE REVIEW")
@@ -91,14 +103,40 @@ def format_personal_data(data: dict) -> str:
     salary = data.get("latest_salary")
     if salary:
         lines.append("LATEST SALARY")
+        lines.append(f"  Month: {salary.get('month', 'N/A')}")
         lines.append(f"  Base: {float(salary['base_salary']):,.0f} EGP | Gross: {float(salary['gross_salary']):,.0f} | Net: {float(salary['net_salary']):,.0f}")
         allowances = []
-        for k, label in [("transport_allowance","Transport"),("housing_allowance","Housing"),("mobile_allowance","Mobile"),("remote_allowance","Remote")]:
+        for k, label in [
+            ("transport_allowance", "Transport"),
+            ("housing_allowance", "Housing"),
+            ("mobile_allowance", "Mobile"),
+            ("remote_allowance", "Remote"),
+            ("shift_allowance", "Shift"),
+            ("on_call_allowance", "On-call"),
+        ]:
             v = float(salary.get(k, 0))
             if v > 0:
                 allowances.append(f"{label}={v:,.0f}")
         if allowances:
             lines.append(f"  Allowances: {' | '.join(allowances)}")
+        deductions = []
+        for k, label in [("income_tax", "Tax"), ("social_insurance", "Social ins."), ("other_deductions", "Other")]:
+            v = float(salary.get(k, 0))
+            if v > 0:
+                deductions.append(f"{label}={v:,.0f}")
+        if deductions:
+            lines.append(f"  Deductions: {' | '.join(deductions)}")
+        lines.append("")
+
+    # Salary history (last 3 months trend) — was previously not rendered
+    salary_history = data.get("salary_history", [])
+    if salary_history and len(salary_history) > 1:
+        lines.append("SALARY HISTORY (recent months)")
+        for rec in salary_history[:3]:
+            lines.append(
+                f"  {rec.get('month', '?')}: Base={float(rec['base_salary']):,.0f} | "
+                f"Gross={float(rec['gross_salary']):,.0f} | Net={float(rec['net_salary']):,.0f}"
+            )
         lines.append("")
 
     training = data.get("training")
@@ -161,7 +199,6 @@ _PERSONAL_RULES_EGY = (
     "8. قفل اللغة: أجب بالعامية المصرية فقط. لا فصحى.\n"
 )
 
-# Franco: natural Arabizi — not word-by-word broken transliteration
 _PERSONAL_RULES_FRANCO = (
     "OUTPUT: Franco Arabi — Egyptian Arabic in Latin letters, like real WhatsApp messages. "
     "Use 3 7 5 2 4 for ع ح خ أ/ء ش when it reads naturally. "
