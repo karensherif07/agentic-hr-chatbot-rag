@@ -63,6 +63,7 @@ _DEFAULTS = {
     "tts_audio":                 None,
     "tts_for_answer":            None,
     "transcribed_voice_question": None,
+    "_mic_transcript":           None,
 }
 for key, default in _DEFAULTS.items():
     if key not in st.session_state:
@@ -126,14 +127,22 @@ if not whisper_available():
 else:
     with st.container():
         st.markdown('<div class="mic-container">', unsafe_allow_html=True)
-        # Using native st.audio_input for a better look
-        recorded = st.audio_input("Record your question", label_visibility="collapsed")
         
-        if recorded:
-            audio_bytes = recorded.read()
+        # Dual Audio Input: Native Recording + File Upload
+        tab_rec, tab_up = st.tabs(["🎙️ Record", "📁 Upload Sound"])
+        
+        audio_source = None
+        with tab_rec:
+            recorded = st.audio_input("Record your question", key="mic_input", label_visibility="collapsed")
+            if recorded: audio_source = recorded
+        with tab_up:
+            uploaded = st.file_uploader("Upload audio (WAV/MP3/M4A/WebM)", type=["wav", "mp3", "m4a", "webm"], key="file_input", label_visibility="collapsed")
+            if uploaded: audio_source = uploaded
+        
+        if audio_source:
+            audio_bytes = audio_source.read()
             if st.session_state.get("_mic_transcript") is None:
-                with st.status("🎙️ Processing speech...", expanded=False) as status:
-                    # Pass the actual bytes to whisper
+                with st.status("🎙️ Processing audio...", expanded=False) as status:
                     text = transcribe_audio(audio_bytes)
                     if text:
                         st.session_state["_mic_transcript"] = text
