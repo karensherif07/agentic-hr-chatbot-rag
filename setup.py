@@ -206,7 +206,7 @@ def setup():
             d.metadata["doc_type"] = "policy"
             d.metadata["lang"] = "arabic" if ARABIC_PDF_PATH in path else "english"
         splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000, chunk_overlap=100,
+            chunk_size=1000, chunk_overlap=300,
             separators=["\n\n", "\n", ".", "?", "!", " ", "---", "|"]
         )
         docs = splitter.split_documents(pages)

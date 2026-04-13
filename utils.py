@@ -56,8 +56,19 @@ def build_history_str(chat_history: list, conversation_summary: str = "") -> str
 
 # ─── Context Building ─────────────────────────────────────────
 def build_context(docs: list) -> str:
+    # Sort by source file then page number so consecutive pages appear together.
+    # This is critical for cross-page lists: if page 4 and page 5 contain parts
+    # of the same list, they must appear adjacent in the prompt or the LLM won't
+    # recognise page 5's bullets as a continuation of page 4's section.
+    sorted_docs = sorted(
+        docs,
+        key=lambda d: (
+            d.metadata.get("source", ""),
+            d.metadata.get("page", 0)
+        )
+    )
     out = []
-    for d in docs:
+    for d in sorted_docs:
         page_num = d.metadata.get("page", 0) + 1
         lang_tag = "AR" if ARABIC_PDF_PATH in d.metadata.get("source", "") else "EN"
         out.append(f"[Page {page_num} | {lang_tag}]\n{d.page_content}")
@@ -221,40 +232,27 @@ def anchor_for_pdf_search(
        This lands the highlight on the cited sentence, not the section header.
     2. Fall back to a query-matched snippet from the chunk.
 
-    IMPORTANT: Strip [Page N | AR/EN] citation tags from the answer excerpt
-    before trying to match — those tags exist only in the LLM output and
-    will never appear in the raw PDF text.
+    max_len raised to 200 so PyMuPDF has a longer rope to match with.
     """
     if not chunk_text:
         return ""
 
-    # Strip citation tags so they don't poison every substring match
-    def _strip_cites(s: str) -> str:
-        return re.sub(r"\s*\[Page\s*\d+[^\]]*\]", "", s or "", flags=re.IGNORECASE).strip()
-
-    chunk_clean = chunk_text
-
     # 1. Try to anchor on the answer's own phrasing
     if answer_excerpt:
-        clean_ans = re.sub(r"\s+", " ", _strip_cites(answer_excerpt))
+        clean_ans = re.sub(r"\s+", " ", answer_excerpt.strip())
         # Try progressively shorter windows of the answer text
-        for length in (160, 130, 100, 70, 50, 35):
+        for length in (140, 100, 70, 50, 35):
             if len(clean_ans) < length:
                 continue
             candidate = clean_ans[:length].strip()
-            # Must be at least a few words — single-word or 2-word hits land on headers
-            if len(candidate.split()) < 5:
-                continue
             # Check if this phrase actually appears (case-insensitive) in the chunk
-            if candidate.lower() in chunk_clean.lower():
-                return candidate[:max_len]
+            if candidate.lower() in chunk_text.lower():
+                return candidate
 
     # 2. Fall back to best-matching snippet from chunk
-    blob = " ".join(p for p in (_strip_cites(query_en or ""),
-                                _strip_cites(query_ar or ""),
-                                _strip_cites(answer_excerpt or "")) if p)
-    win = min(max(500, max_len * 4), max(len(chunk_clean), max_len + 40))
-    snippet = extract_snippet(chunk_clean, blob, window=win)
+    blob = " ".join(p for p in (query_en or "", query_ar or "", answer_excerpt or "") if p)
+    win = min(max(500, max_len * 4), max(len(chunk_text), max_len + 40))
+    snippet = extract_snippet(chunk_text, blob, window=win)
     s = snippet.strip()
     if s.startswith("…"):
         s = s[1:].lstrip()
@@ -262,7 +260,7 @@ def anchor_for_pdf_search(
         s = s[:-1].rstrip()
     s = re.sub(r"\s+", " ", s).strip()
     if len(s) < 35:
-        s = re.sub(r"\s+", " ", chunk_clean[:500]).strip()
+        s = re.sub(r"\s+", " ", chunk_text[:500]).strip()
     return s[:max_len]
 
 

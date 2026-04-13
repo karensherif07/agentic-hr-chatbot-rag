@@ -25,6 +25,8 @@ CORE_RULES_EN = (
     "6. LANGUAGE LOCK: Reply in English only. Never append Arabic text to an English answer.\n"
     "7. For calculations: apply the formula to the specific number given and state the result directly.\n"
     "8. SALARY RAISE: When asked about salary increment for a rating, the values are: rating 5=up to 20%, 4=up to 15%, 3=up to 8%, 1-2=0%.\n"
+    "9. COMPLETENESS: When the question asks for requirements, criteria, steps, or a list — you MUST include EVERY item found across ALL pages of the context. "
+    "Never stop after the first item. If requirements span multiple pages, list all of them with their respective page citations.\n"
 )
 
 CORE_RULES_AR = (
@@ -37,6 +39,7 @@ CORE_RULES_AR = (
     "6. قفل اللغة: أجب بالعربية فقط. لا تُلحق النسخة الإنجليزية.\n"
     "7. للحسابات: طبّق الصيغة على الرقم المحدد واذكر النتيجة مباشرة.\n"
     "8. زيادة الراتب: تقييم 5=حتى 20%، 4=حتى 15%، 3=حتى 8%، 1-2=0%.\n"
+    "9. الاكتمال: عند السؤال عن متطلبات أو معايير أو خطوات أو قائمة — يجب ذكر جميع البنود من كل الصفحات. لا تتوقف عند أول بند.\n"
 )
 
 # ── Franco base — restructured for natural Arabizi output ─────
