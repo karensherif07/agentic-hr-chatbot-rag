@@ -1,15 +1,14 @@
 """
 speech.py — Text-to-speech and speech-to-text.
 
-Key fixes for Arabic / Egyptian Arabic accuracy:
-1. Use whisper "medium" model — "tiny" is the worst model and fails badly on Arabic.
-   "medium" is the minimum viable model for Arabic. "large-v3" is best but slower.
-2. Always pass language="ar" so Whisper never wastes time guessing.
-3. Pass initial_prompt with Egyptian Arabic context words — this primes the
-   tokenizer vocabulary toward colloquial Arabic instead of MSA or transliteration.
-4. Use task="transcribe" (not "translate") so output stays in Arabic script.
-5. For Franco input (Latin-script Arabic), we still transcribe as Arabic since
-   Whisper will capture the spoken sounds; the NLP layer handles the rest.
+STT strategy:
+1. Use whisper "medium" model — minimum viable for Arabic. Use "large-v3" for GPU.
+2. First pass: auto-detect language using Whisper's built-in detector.
+3. If detected as Arabic (or ambiguous): re-transcribe with language="ar" and
+   an Egyptian Arabic initial_prompt to bias the decoder toward dialect vocab.
+4. If detected as English: transcribe with language="en" — no Arabic prompt.
+5. Franco Arabic is spoken as Arabic sounds, so Whisper detects it as "ar"
+   and the NLP layer downstream handles the Latin-script normalization.
 """
 
 import io
@@ -111,20 +110,38 @@ def _load_whisper_model():
     return model
 
 
-def transcribe_audio(audio_bytes: bytes, hint_language: str = "ar") -> str:
+def _detect_spoken_language(model, wav_path: str) -> str:
     """
-    Transcribe audio bytes to text.
+    Use Whisper's built-in language detector on the first 30 seconds of audio.
+    Returns an ISO-639-1 code e.g. "ar", "en".
+    Falls back to "ar" on any error — safer for this app's audience.
+    """
+    try:
+        import whisper
+        import torch
+        audio = whisper.load_audio(wav_path)
+        audio = whisper.pad_or_trim(audio)
+        mel   = whisper.log_mel_spectrogram(audio).to(model.device)
+        _, probs = model.detect_language(mel)
+        detected = max(probs, key=probs.get)
+        print(f"[speech] detected language: {detected} (confidence: {probs[detected]:.2f})")
+        return detected
+    except Exception as e:
+        print(f"[speech] language detection failed: {e}, defaulting to 'ar'")
+        return "ar"
 
-    Parameters
-    ----------
-    audio_bytes : bytes
-        Raw audio from st.audio_input.
-    hint_language : str
-        ISO-639-1 language code. Pass "ar" for Arabic/Egyptian (default).
-        Pass "en" for English queries if you detect the user is typing in English.
-        The intent classifier already handles mixed input, so always defaulting
-        to "ar" is fine — Whisper can handle English audio even with lang="ar"
-        set as long as the spoken content is actually English.
+
+def transcribe_audio(audio_bytes: bytes) -> str:
+    """
+    Transcribe audio bytes to text with automatic language detection.
+
+    Strategy:
+    - Pass 1: detect spoken language using Whisper's built-in detector.
+    - If Arabic (or any non-English): transcribe with language="ar" and the
+      Egyptian Arabic initial_prompt to bias the decoder toward dialect vocab.
+    - If English: transcribe with language="en" — no Arabic prompt injected.
+    - Franco Arabic is spoken with Arabic phonetics so Whisper detects it as
+      "ar"; the NLP layer downstream handles Latin-script normalization.
     """
     if not whisper_available() or not audio_bytes:
         return None
@@ -134,7 +151,7 @@ def transcribe_audio(audio_bytes: bytes, hint_language: str = "ar") -> str:
     out_path = None
 
     try:
-        # 1. Write audio to a temp file with the correct extension
+        # 1. Write audio with correct extension so ffmpeg knows the codec
         with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp_in:
             tmp_in.write(audio_bytes)
             in_path = tmp_in.name
@@ -146,8 +163,7 @@ def transcribe_audio(audio_bytes: bytes, hint_language: str = "ar") -> str:
         result = subprocess.run(
             [_FFMPEG_PATH, "-y", "-i", in_path,
              "-ar", "16000", "-ac", "1",
-             # Normalize audio level — helps with quiet microphone recordings
-             "-af", "loudnorm",
+             "-af", "loudnorm",      # normalize quiet microphone input
              "-f", "wav", out_path],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -160,35 +176,33 @@ def transcribe_audio(audio_bytes: bytes, hint_language: str = "ar") -> str:
             print("[speech] ffmpeg produced empty/missing output file")
             return None
 
-        # 3. Transcribe with language and initial_prompt set
         model = _load_whisper_model()
 
-        # Build transcribe kwargs
+        # 3. Auto-detect spoken language
+        detected_lang = _detect_spoken_language(model, out_path)
+        is_arabic = detected_lang != "en"
+
+        # 4. Transcribe with the right language and optional Arabic prompt
         transcribe_kwargs = {
-            "fp16": False,          # safer for CPU; set True only if you have CUDA
-            "task": "transcribe",   # keep output in original language (don't translate)
-            "language": hint_language,
-            # beam_size=5 is more accurate than the default greedy search
+            "fp16": False,
+            "task": "transcribe",
+            "language": "ar" if is_arabic else "en",
             "beam_size": 5,
-            # temperature fallback: if beam search fails, retry with higher temp
             "temperature": (0.0, 0.2, 0.4),
-            # Condition on previous text to maintain context across segments
             "condition_on_previous_text": True,
         }
-
-        # Only inject the Arabic prompt when transcribing Arabic/Franco
-        if hint_language == "ar":
+        if is_arabic:
             transcribe_kwargs["initial_prompt"] = _ARABIC_INITIAL_PROMPT
 
         res  = model.transcribe(out_path, **transcribe_kwargs)
         text = res.get("text", "").strip()
 
-        # Post-process: strip leading/trailing punctuation artifacts Whisper adds
+        # 5. Strip punctuation artifacts Whisper adds at boundaries
         text = re.sub(r"^[\.\,\،\s]+", "", text)
-        text = re.sub(r"[\.\،\s]+$", "", text)
+        text = re.sub(r"[\.\،\s]+$",   "", text)
         text = re.sub(r"\s+", " ", text).strip()
 
-        print(f"[speech] transcription ({hint_language}): '{text}'")
+        print(f"[speech] transcription (lang={detected_lang}): '{text}'")
         return text or None
 
     except Exception as e:
