@@ -202,3 +202,18 @@ CREATE INDEX idx_training_employee         ON training_records(employee_id, year
 CREATE INDEX idx_disciplinary_employee     ON disciplinary_records(employee_id);
 CREATE INDEX idx_employees_email           ON employees(email);
 CREATE INDEX idx_employees_manager        ON employees(manager_id);
+-- ─── 9. ANALYTICS LOG ────────────────────────────────────────
+-- One row per chatbot query. Populated automatically by app.py.
+-- Used by the admin analytics dashboard (pages/admin_analytics.py).
+CREATE TABLE IF NOT EXISTS analytics_log (
+    id            SERIAL PRIMARY KEY,
+    employee_id   INT          REFERENCES employees(id) ON DELETE SET NULL,
+    intent        VARCHAR(20)  NOT NULL DEFAULT '',   -- personal | hybrid | policy
+    topic         VARCHAR(40)  NOT NULL DEFAULT '',   -- leave | salary | performance | etc.
+    language      VARCHAR(20)  NOT NULL DEFAULT '',   -- english | arabic | franco
+    unanswered    BOOLEAN      NOT NULL DEFAULT FALSE,-- TRUE when bot said "not in policy"
+    question_text TEXT         NOT NULL DEFAULT '',   -- first 300 chars of the question
+    asked_at      TIMESTAMPTZ  NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_analytics_asked_at ON analytics_log(asked_at DESC);
+CREATE INDEX IF NOT EXISTS idx_analytics_employee ON analytics_log(employee_id);

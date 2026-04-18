@@ -20,6 +20,62 @@ from speech import (
 )
 from sessions import save_session, load_session, clear_session
 
+
+# ─── Analytics logging ────────────────────────────────────────
+def _log_query(employee_id: int, intent: str, topic: str | None,
+               lang: str, is_no_info: bool, question: str) -> None:
+    """Log every query to analytics_log table for the admin dashboard."""
+    try:
+        from database import get_db
+        from sqlalchemy import text
+        with get_db() as db:
+            db.execute(text("""
+                INSERT INTO analytics_log
+                    (employee_id, intent, topic, language, unanswered, question_text, asked_at)
+                VALUES
+                    (:eid, :intent, :topic, :lang, :unans, :q, NOW())
+            """), {"eid": employee_id, "intent": intent, "topic": topic or "",
+                   "lang": lang, "unans": is_no_info, "q": question[:300]})
+    except Exception as e:
+        print(f"[analytics] log error (non-fatal): {e}")
+
+
+# ─── Escalation helper ────────────────────────────────────────
+def _send_escalation_email(employee_name: str, manager_email: str,
+                            question: str) -> bool:
+    """Email the employee's manager when the bot can't answer."""
+    import smtplib, os
+    from email.mime.text import MIMEText
+    smtp_host = os.environ.get("SMTP_HOST", "")
+    smtp_port = int(os.environ.get("SMTP_PORT", 587))
+    smtp_user = os.environ.get("SMTP_USER", "")
+    smtp_pass = os.environ.get("SMTP_PASS", "")
+    from_addr = os.environ.get("SMTP_FROM", smtp_user)
+    if not all([smtp_host, smtp_user, smtp_pass, manager_email]):
+        return False
+    try:
+        body = (
+            f"Hi,\n\n"
+            f"The HR chatbot could not answer the following question from {employee_name}:\n\n"
+            f"  \"{question}\"\n\n"
+            f"Please follow up with them directly.\n\n"
+            f"— HR Assistant (automated)"
+        )
+        msg = MIMEText(body)
+        msg["Subject"] = f"HR Chatbot: Unanswered query from {employee_name}"
+        msg["From"]    = from_addr
+        msg["To"]      = manager_email
+        with smtplib.SMTP(smtp_host, smtp_port) as s:
+            s.starttls()
+            s.login(smtp_user, smtp_pass)
+            s.sendmail(from_addr, [manager_email], msg.as_string())
+        return True
+    except Exception as e:
+        print(f"[escalation] email error: {e}")
+        import streamlit as _st
+        _st.error(f"Email error: {e}")
+        return False
+
 ARABIC_PDF_PATH  = "policies/ar_policy.pdf"
 ENGLISH_PDF_PATH = "policies/eng_policy.pdf"
 
@@ -65,6 +121,11 @@ _DEFAULTS = {
     "transcribed_voice_question": None,
     "_mic_transcript":           None,
     "_cached_audio_bytes":       None,
+    "escalation_sent":           None,
+    "_show_esc":                 False,
+    "_esc_email":                "",
+    "_esc_question":             "",
+    "_esc_name":                 "",
 }
 for key, default in _DEFAULTS.items():
     if key not in st.session_state:
@@ -297,10 +358,50 @@ if question:
                     st.session_state.last_lang    = lang
                     st.session_state.last_dialect = dialect
 
+                    # ── Analytics logging ─────────────────────────────
+                    _no_info = is_no_info_answer(answer)
+                    _log_query(st.session_state.employee_id, intent, topic,
+                               lang, _no_info, question)
+
+                    # ── Store escalation data if bot cannot answer ─────
+                    if _no_info:
+                        from personal_data import get_employee_profile
+                        _prof      = get_employee_profile(st.session_state.employee_id)
+                        _mgr_email = _prof.get("manager_email", "")
+                        if _mgr_email:
+                            st.session_state["_esc_email"]    = _mgr_email
+                            st.session_state["_esc_question"] = question
+                            st.session_state["_esc_name"]     = st.session_state.employee_name
+                            st.session_state["_show_esc"]     = True
+
                 except Exception as e:
                     st.error(f"Error: {str(e)}")
                     import traceback
                     st.code(traceback.format_exc())
+
+# ─── Escalation UI (always rendered at top level) ────────────
+if st.session_state.get("_show_esc"):
+    st.info(
+        "I could not find an answer in the policy documents. "
+        "Would you like me to notify your HR manager?"
+    )
+    col_a, col_b = st.columns([1, 5])
+    with col_a:
+        if st.button("📧 Notify HR manager", key="esc_btn"):
+            sent = _send_escalation_email(
+                st.session_state.get("_esc_name", ""),
+                st.session_state.get("_esc_email", ""),
+                st.session_state.get("_esc_question", "")
+            )
+            st.session_state["_show_esc"] = False
+            if sent:
+                st.success("✅ Your manager has been notified.")
+            else:
+                st.warning("Email not sent — check your SMTP settings in .env.")
+    with col_b:
+        if st.button("Dismiss", key="esc_dismiss"):
+            st.session_state["_show_esc"] = False
+            st.rerun()
 
 # ─── Voice panel ──────────────────────────────────────────────
 if whisper_available():

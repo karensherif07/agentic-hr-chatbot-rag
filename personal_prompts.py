@@ -159,6 +159,74 @@ def format_personal_data(data: dict) -> str:
             lines.append(f"  {d['action_type']} issued {d['issued_date']} expires {d.get('expiry_date','N/A')}: {d['reason']}")
         lines.append("")
 
+
+    # ── Eligibility pre-check block ──────────────────────────────────────
+    # Structured YES/NO verdicts computed in Python so the LLM never has to
+    # reason over raw dates or do arithmetic itself. The LLM must use these
+    # verdicts as ground truth and never override them.
+    from datetime import date as _date
+    lines.append("ELIGIBILITY PRE-CHECK (use these verdicts exactly — do not recalculate)")
+    in_probation = bool(profile.get("probation_end_date")) if profile else False
+    on_pip       = any(d.get("action_type") == "pip" for d in (data.get("active_disciplinary") or []))
+
+    tenure_months = 0
+    hire_str = profile.get("hire_date") if profile else None
+    if hire_str:
+        try:
+            hire  = _date.fromisoformat(str(hire_str))
+            today = _date.today()
+            tenure_months = (today.year - hire.year) * 12 + (today.month - hire.month)
+        except Exception:
+            tenure_months = 0
+
+    latest_rating = None
+    latest_rev = data.get("latest_review")
+    if latest_rev:
+        try:
+            latest_rating = int(latest_rev.get("rating", 0))
+        except Exception:
+            latest_rating = None
+
+    annual_remaining = 0
+    for lb in data.get("leave_balances", []):
+        if lb.get("leave_type", "").lower() == "annual":
+            try:
+                annual_remaining = float(lb.get("remaining_days", 0))
+            except Exception:
+                annual_remaining = 0
+
+    bonus_eligible = (
+        tenure_months >= 6 and not in_probation
+        and not on_pip and latest_rating is not None and latest_rating >= 3
+    )
+    bonus_reason = []
+    if tenure_months < 6:   bonus_reason.append(f"tenure only {tenure_months} months (need 6+)")
+    if in_probation:        bonus_reason.append("still in probation")
+    if on_pip:              bonus_reason.append("currently on PIP")
+    if latest_rating is not None and latest_rating < 3:
+        bonus_reason.append(f"rating {latest_rating}/5 below minimum")
+    lines.append("  Bonus eligible: " + ("YES" if bonus_eligible else "NO") +
+                 ((" — " + ", ".join(bonus_reason)) if bonus_reason else ""))
+
+    promo_eligible = tenure_months >= 12 and not in_probation and (latest_rating or 0) >= 4
+    promo_reason = []
+    if tenure_months < 12:  promo_reason.append(f"tenure only {tenure_months} months (need 12+)")
+    if in_probation:        promo_reason.append("still in probation")
+    if (latest_rating or 0) < 4:
+        promo_reason.append(f"rating {latest_rating or 0}/5 (need 4+)")
+    lines.append("  Promotion eligible: " + ("YES" if promo_eligible else "NO") +
+                 ((" — " + ", ".join(promo_reason)) if promo_reason else ""))
+
+    schol_eligible = tenure_months >= 12 and not in_probation
+    schol_reason = []
+    if tenure_months < 12:  schol_reason.append(f"tenure only {tenure_months} months (need 12+)")
+    if in_probation:        schol_reason.append("still in probation")
+    lines.append("  Scholarship eligible: " + ("YES" if schol_eligible else "NO") +
+                 ((" — " + ", ".join(schol_reason)) if schol_reason else ""))
+
+    leave_verdict = f"YES ({annual_remaining:.0f} days remaining)" if annual_remaining > 0 else "NO — balance is zero"
+    lines.append("  Can take more annual leave: " + leave_verdict)
+    lines.append("")
     return "\n".join(lines).strip()
 
 
@@ -173,6 +241,7 @@ _PERSONAL_RULES_EN = (
     "6. Mirror pronouns: user says I/my → reply with you/your.\n"
     "7. No page citations — this data is from the live HR database.\n"
     "8. LANGUAGE LOCK: Reply in English only.\n"
+    "9. ELIGIBILITY: When asked about bonus, promotion, scholarship, or leave eligibility, read the ELIGIBILITY PRE-CHECK block and state the YES/NO verdict directly with the reason given. Do not re-derive eligibility from raw fields.\n"
 )
 
 _PERSONAL_RULES_AR = (
