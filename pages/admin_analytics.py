@@ -1,44 +1,21 @@
 """
 pages/admin_analytics.py
-Admin-only analytics dashboard.
-
-Reads from the analytics_log table populated automatically by app.py.
-
-SQL to create the table (add to schema.sql):
-
-    CREATE TABLE IF NOT EXISTS analytics_log (
-        id            SERIAL PRIMARY KEY,
-        employee_id   INT REFERENCES employees(id) ON DELETE SET NULL,
-        intent        VARCHAR(20)  NOT NULL DEFAULT '',
-        topic         VARCHAR(40)  NOT NULL DEFAULT '',
-        language      VARCHAR(20)  NOT NULL DEFAULT '',
-        unanswered    BOOLEAN      NOT NULL DEFAULT FALSE,
-        question_text TEXT         NOT NULL DEFAULT '',
-        asked_at      TIMESTAMPTZ  NOT NULL DEFAULT NOW()
-    );
-    CREATE INDEX idx_analytics_asked_at ON analytics_log(asked_at DESC);
-    CREATE INDEX idx_analytics_employee ON analytics_log(employee_id);
+HR Admin analytics dashboard — visible only to admin_role users.
 """
 
 import streamlit as st
 import pandas as pd
 from sqlalchemy import text
 from database import get_db
-from auth import require_login
+from auth import require_admin   # uses the new role-based gate
 
 st.set_page_config(page_title="HR Analytics", layout="wide")
-require_login()
-
-# ── Simple admin gate — only HR grade G4+ can view ────────────
-ALLOWED_GRADES = {"G4", "G5"}
-if st.session_state.get("employee_grade") not in ALLOWED_GRADES:
-    st.error("Access denied. This page is for HR administrators only.")
-    st.stop()
+require_admin()   # blocks anyone without hr_admin or super_admin role
 
 st.title("📊 HR Chatbot Analytics")
-st.caption("Live query data from all employees.")
+st.caption(f"Logged in as: {st.session_state.employee_name} ({st.session_state.admin_role})")
 
-# ── Date range filter ─────────────────────────────────────────
+# ── Date range filter ──────────────────────────────────────────
 col1, col2 = st.columns(2)
 with col1:
     from datetime import date, timedelta
@@ -46,7 +23,7 @@ with col1:
 with col2:
     date_to = st.date_input("To", value=date.today())
 
-# ── Load data ─────────────────────────────────────────────────
+# ── Load data ──────────────────────────────────────────────────
 @st.cache_data(ttl=60)
 def load_analytics(date_from, date_to):
     with get_db() as db:
@@ -74,21 +51,21 @@ if df.empty:
     st.info("No queries logged in this date range yet.")
     st.stop()
 
-# ── Summary metrics ───────────────────────────────────────────
-total        = len(df)
-unanswered   = int(df["unanswered"].sum())
-unans_rate   = round(unanswered / total * 100, 1) if total else 0
-top_lang     = df["language"].value_counts().idxmax() if total else "—"
+# ── Summary metrics ────────────────────────────────────────────
+total      = len(df)
+unanswered = int(df["unanswered"].sum())
+unans_rate = round(unanswered / total * 100, 1) if total else 0
+top_lang   = df["language"].value_counts().idxmax() if total else "—"
 
 m1, m2, m3, m4 = st.columns(4)
-m1.metric("Total queries",      total)
-m2.metric("Unanswered",         unanswered)
-m3.metric("Unanswered rate",    f"{unans_rate}%")
-m4.metric("Top language",       top_lang)
+m1.metric("Total queries",   total)
+m2.metric("Unanswered",      unanswered)
+m3.metric("Unanswered rate", f"{unans_rate}%")
+m4.metric("Top language",    top_lang)
 
 st.divider()
 
-# ── Charts ────────────────────────────────────────────────────
+# ── Charts ─────────────────────────────────────────────────────
 left, right = st.columns(2)
 
 with left:
@@ -99,9 +76,19 @@ with left:
     st.bar_chart(topic_counts.set_index("topic"))
 
 with right:
+    # 4 distinct language values:
+    # english | arabic_msa | arabic_egyptian | franco
     st.subheader("Queries by language")
+    label_map = {
+        "english":         "English",
+        "arabic_msa":      "Arabic (MSA)",
+        "arabic_egyptian": "Arabic (Egyptian)",
+        "franco":          "Franco Arabic",
+        "arabic":          "Arabic (legacy)",   # rows before the fix
+    }
     lang_counts = df["language"].value_counts().reset_index()
     lang_counts.columns = ["language", "count"]
+    lang_counts["language"] = lang_counts["language"].map(lambda x: label_map.get(x, x))
     st.bar_chart(lang_counts.set_index("language"))
 
 left2, right2 = st.columns(2)
@@ -120,20 +107,21 @@ with right2:
 
 st.divider()
 
-# ── Unanswered questions — most actionable for HR ─────────────
+# ── Unanswered questions ───────────────────────────────────────
 st.subheader("🔴 Unanswered questions")
-st.caption("Questions the bot could not answer — review these to identify policy gaps.")
-unanswered_df = df[df["unanswered"] == True][["asked_at", "full_name", "department", "language", "question_text"]]
-if unanswered_df.empty:
+st.caption("Questions the bot could not answer — review to identify policy gaps.")
+udf = df[df["unanswered"] == True][
+    ["asked_at", "full_name", "department", "language", "question_text"]
+]
+if udf.empty:
     st.success("No unanswered questions in this period.")
 else:
-    st.dataframe(unanswered_df, width='stretch', hide_index=True)
+    st.dataframe(udf, use_container_width=True, hide_index=True)
 
 st.divider()
 
-# ── Full log ──────────────────────────────────────────────────
+# ── Full log ───────────────────────────────────────────────────
 with st.expander("📋 Full query log"):
-    st.dataframe(df, width='stretch', hide_index=True)
-
+    st.dataframe(df, use_container_width=True, hide_index=True)
     csv = df.to_csv(index=False).encode("utf-8")
     st.download_button("⬇️ Download CSV", csv, "hr_chatbot_analytics.csv", "text/csv")

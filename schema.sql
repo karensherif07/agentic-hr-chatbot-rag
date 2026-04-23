@@ -11,6 +11,7 @@ CREATE TABLE employees (
     full_name_ar        VARCHAR(120),                        -- Arabic name for Arabic UI
     email               VARCHAR(120)    NOT NULL UNIQUE,     -- used as login username
     password_hash       VARCHAR(255)    NOT NULL,            -- bcrypt hash
+    admin_role          VARCHAR(20),   -- NULL | hr_admin | super_admin
     grade               VARCHAR(10)     NOT NULL,            -- G1, G2, G3, G4, G5
     job_title           VARCHAR(120)    NOT NULL,
     department          VARCHAR(80)     NOT NULL,
@@ -25,7 +26,9 @@ CREATE TABLE employees (
     national_id         VARCHAR(30),
     phone               VARCHAR(30),
     created_at          TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
-    updated_at          TIMESTAMPTZ     NOT NULL DEFAULT NOW()
+    updated_at          TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
+    CONSTRAINT chk_admin_role
+        CHECK (admin_role IN ('hr_admin', 'super_admin') OR admin_role IS NULL)
 );
 
 -- ─── 2. LEAVE BALANCES ───────────────────────────────────────
@@ -217,3 +220,6 @@ CREATE TABLE IF NOT EXISTS analytics_log (
 );
 CREATE INDEX IF NOT EXISTS idx_analytics_asked_at ON analytics_log(asked_at DESC);
 CREATE INDEX IF NOT EXISTS idx_analytics_employee ON analytics_log(employee_id);
+CREATE INDEX idx_employees_admin_role 
+ON employees(admin_role)
+WHERE admin_role IS NOT NULL;

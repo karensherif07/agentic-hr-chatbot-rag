@@ -14,25 +14,19 @@ def translate(llm, text: str, target_language: str) -> str:
         return text
 
 
-# ─── Conversation Memory ──────────────────────────────────────
 def summarize_history(llm, chat_history: list, existing_summary: str = "") -> str:
     if not chat_history:
         return existing_summary or ""
     lines = []
     for msg in chat_history[-6:]:
         role = "User" if msg["role"] == "user" else "Assistant"
-        lines.append(f"{role}: {msg['content'][:300]}")
+        lines.append(f"{role}: {msg['content'][:200]}")
     transcript = "\n".join(lines)
-
     prompt = (
-        "You are a summarization assistant. "
-        "Given the previous conversation summary and the latest exchange, "
-        "produce a single concise paragraph (max 120 words) capturing: "
-        "what topics were discussed, what personal data was mentioned (grades, balances, etc.), "
-        "and any important conclusions. Preserve key facts (numbers, names, decisions).\n\n"
-        f"Previous summary:\n{existing_summary or 'None'}\n\n"
-        f"Latest exchange:\n{transcript}\n\n"
-        "Updated summary (plain text, no bullet points):"
+        "Summarize the conversation in one paragraph (max 80 words). "
+        "Keep key facts: topics, numbers, names, decisions.\n\n"
+        f"Previous summary: {existing_summary or 'None'}\n\n"
+        f"Latest exchange:\n{transcript}\n\nSummary:"
     )
     try:
         res = llm.invoke(prompt)
@@ -42,30 +36,24 @@ def summarize_history(llm, chat_history: list, existing_summary: str = "") -> st
 
 
 def build_history_str(chat_history: list, conversation_summary: str = "") -> str:
+    # Token optimization: use summary when available (much shorter than raw history)
     if conversation_summary:
-        return f"Conversation so far:\n{conversation_summary}"
+        return f"Summary: {conversation_summary}"
     if not chat_history:
-        return "No previous conversation."
+        return ""
+    # Only last 2 turns if no summary yet
     recent = chat_history[-4:]
     lines = []
     for msg in recent:
-        role = "User" if msg["role"] == "user" else "Assistant"
-        lines.append(f"{role}: {msg['content'][:300]}")
+        role = "User" if msg["role"] == "user" else "Asst"
+        lines.append(f"{role}: {msg['content'][:200]}")
     return "\n".join(lines)
 
 
-# ─── Context Building ─────────────────────────────────────────
 def build_context(docs: list) -> str:
-    # Sort by source file then page number so consecutive pages appear together.
-    # This is critical for cross-page lists: if page 4 and page 5 contain parts
-    # of the same list, they must appear adjacent in the prompt or the LLM won't
-    # recognise page 5's bullets as a continuation of page 4's section.
     sorted_docs = sorted(
         docs,
-        key=lambda d: (
-            d.metadata.get("source", ""),
-            d.metadata.get("page", 0)
-        )
+        key=lambda d: (d.metadata.get("source", ""), d.metadata.get("page", 0))
     )
     out = []
     for d in sorted_docs:
@@ -75,7 +63,6 @@ def build_context(docs: list) -> str:
     return "\n\n---\n\n".join(out)
 
 
-# ─── No-Info Detection ────────────────────────────────────────
 NO_INFO_PATTERNS = [
     "this information is not available in the policy documents",
     "information is not available in the policy",
@@ -83,10 +70,11 @@ NO_INFO_PATTERNS = [
     "not found in",
     "هذه المعلومات غير متوفرة في وثائق السياسة",
     "هذه المعلومات غير متاحة في وثائق السياسة",
-    "معلومات غير متوفرة",
+    "معلومات غير متوفرة في وثائق",
+    "الموضوع ده مش موجود في السياسة",
     "mesh mawgoda f el policy",
-    "el ma3loma di mesh mawgoda f el policy",
-    "el ma3loma mesh mawgoda",
+    "ma3loma mesh mawgoda fel policy",
+    "no relevant policy documents found",
 ]
 
 
@@ -100,14 +88,20 @@ def validate(ans: str, lang: str, has_citations: bool = False) -> str:
     if not has_citations and not is_no_info_answer(ans):
         if lang == "arabic":
             ans += "\n\n⚠️ لم يتم ذكر أرقام الصفحات في هذه الإجابة."
+        elif lang == "franco":
+            ans += "\n\n⚠️ Mafeesh arqam sa7fat fel egaba di."
         else:
             ans += "\n\n⚠️ Page citations were not produced for this answer."
     return ans
 
 
-# ─── Citation Helpers ─────────────────────────────────────────
 def get_cited_pages(answer: str) -> set:
-    return {int(n) for n in re.findall(r"\[Page\s*(\d+)", answer, re.IGNORECASE)}
+    """
+    Returns set of (page_num_int, lang_tag) tuples e.g. {(9, 'AR'), (5, 'EN')}.
+    Using (page, lang) prevents AR p.9 from also displaying EN p.9 chunks.
+    """
+    matches = re.findall(r"\[Page\s*(\d+)\s*\|\s*(AR|EN)\]", answer, re.IGNORECASE)
+    return {(int(n), tag.upper()) for n, tag in matches}
 
 
 def strip_citations(answer: str) -> str:
@@ -116,178 +110,93 @@ def strip_citations(answer: str) -> str:
 
 
 def filter_cited_chunks(docs: list, cited_pages: set) -> list:
+    """
+    cited_pages is set of (page_num, lang_tag) tuples.
+    Only include docs whose exact (page, AR/EN) pair was cited.
+    """
     if not cited_pages:
         return docs
-    return [d for d in docs if (d.metadata.get("page", 0) + 1) in cited_pages]
+    result = []
+    for d in docs:
+        page_num = d.metadata.get("page", 0) + 1
+        lang_tag = "AR" if ARABIC_PDF_PATH in d.metadata.get("source", "") else "EN"
+        if (page_num, lang_tag) in cited_pages:
+            result.append(d)
+    return result
 
 
-# ─── Snippet Extraction ───────────────────────────────────────
 _SNIPPET_STOPWORDS = frozenset({
-    "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
-    "have", "has", "had", "do", "does", "did", "will", "would", "could",
-    "should", "may", "might", "must", "shall", "can", "need",
-    "what", "which", "who", "whom", "this", "that", "these", "those",
-    "am", "i", "you", "he", "she", "it", "we", "they", "my", "your", "his", "her",
-    "their", "our", "its", "me", "him", "them", "us",
+    "the", "a", "an", "is", "are", "was", "were", "be", "been",
+    "have", "has", "had", "do", "does", "did", "will", "would",
+    "could", "should", "may", "might", "must", "shall", "can",
+    "what", "which", "who", "this", "that", "these", "those",
+    "am", "i", "you", "he", "she", "it", "we", "they",
+    "my", "your", "his", "her", "their", "our", "its",
     "of", "and", "or", "as", "at", "by", "for", "in", "on", "to", "with", "from",
-    "how", "when", "where", "why", "there", "here", "if", "about", "into", "than",
-    "tell", "please", "policy", "policies", "document",
-    "ما", "ماذا", "من", "في", "على", "هذا", "هذه", "ذلك", "التي", "الذي", "الى",
-    "هل", "و", "ف", "ل", "ب", "ك", "إن", "إلى", "عن", "أي", "لم", "لن", "قد",
+    "how", "when", "where", "why", "if", "about",
+    "tell", "please", "policy", "document",
+    "ما", "من", "في", "على", "هذا", "هذه", "هل", "و", "إلى", "عن",
 })
-
-
-def _snippet_query_tokens(query: str) -> list:
-    raw = re.findall(r"[\w\u0600-\u06FF]{2,}", (query or "").lower())
-    out = []
-    seen = set()
-    for w in raw:
-        if w in _SNIPPET_STOPWORDS or len(w) < 2:
-            continue
-        if w not in seen:
-            seen.add(w)
-            out.append(w)
-    return out
-
-
-def _wrap_snippet(page_text: str, start: int, end: int) -> str:
-    start = max(0, start)
-    end = min(len(page_text), end)
-    snippet = page_text[start:end].strip()
-    if start > 0:
-        snippet = "…" + snippet
-    if end < len(page_text):
-        snippet = snippet + "…"
-    return snippet
 
 
 def extract_snippet(page_text: str, query: str, window: int = 400) -> str:
     if not page_text:
         return ""
-    if window < 1:
-        window = 400
-
     n = len(page_text)
     if n <= window:
         return page_text.strip()
-
-    query_words = _snippet_query_tokens(query)
+    raw = re.findall(r"[\w\u0600-\u06FF]{2,}", (query or "").lower())
+    query_words = [w for w in raw if w not in _SNIPPET_STOPWORDS]
     if not query_words:
-        return _wrap_snippet(page_text, 0, window)
-
+        return page_text[:window].strip()
     text_lower = page_text.lower()
-
-    def score_window(s: int) -> int:
-        e = min(n, s + window)
-        chunk = text_lower[s:e]
-        return sum(1 for w in query_words if w in chunk)
-
     step = max(8, window // 16)
-    best_start = 0
-    best_score = -1
+    best_start, best_score = 0, -1
     for s in range(0, n - window + 1, step):
-        sc = score_window(s)
+        chunk = text_lower[s:min(n, s + window)]
+        sc = sum(1 for w in query_words if w in chunk)
         if sc > best_score:
-            best_score = sc
-            best_start = s
-
-    if best_score > 0:
-        refine_lo = max(0, best_start - step)
-        refine_hi = min(n - window, best_start + step)
-        for s in range(refine_lo, refine_hi + 1):
-            sc = score_window(s)
-            if sc > best_score:
-                best_score = sc
-                best_start = s
-
-    if best_score == 0:
-        positions = []
-        for w in query_words:
-            pos = text_lower.find(w)
-            if pos != -1:
-                positions.append((pos, pos + len(w)))
-        if positions:
-            span_lo = min(p[0] for p in positions)
-            span_hi = max(p[1] for p in positions)
-            center = (span_lo + span_hi) // 2
-            best_start = max(0, min(center - window // 2, n - window))
-        else:
-            best_start = 0
-
-    return _wrap_snippet(page_text, best_start, best_start + window)
+            best_score, best_start = sc, s
+    end = min(n, best_start + window)
+    snippet = page_text[best_start:end].strip()
+    if best_start > 0:
+        snippet = "…" + snippet
+    if end < n:
+        snippet += "…"
+    return snippet
 
 
-def anchor_for_pdf_search(
-    chunk_text: str,
-    query_en: str,
-    query_ar: str = "",
-    answer_excerpt: str = "",
-    max_len: int = 200,
-) -> str:
-    """
-    Build a phrase that PyMuPDF search_for() can locate on the PDF page.
-
-    Priority:
-    1. Try to find exact phrasing from the LLM answer inside the chunk text.
-       This lands the highlight on the cited sentence, not the section header.
-    2. Fall back to a query-matched snippet from the chunk.
-
-    max_len raised to 200 so PyMuPDF has a longer rope to match with.
-    """
+def anchor_for_pdf_search(chunk_text, query_en="", query_ar="", answer_excerpt="", max_len=200):
     if not chunk_text:
         return ""
-
-    # 1. Try to anchor on the answer's own phrasing
     if answer_excerpt:
-        clean_ans = re.sub(r"\s+", " ", answer_excerpt.strip())
-        # Try progressively shorter windows of the answer text
+        clean = re.sub(r"\s+", " ", answer_excerpt.strip())
         for length in (140, 100, 70, 50, 35):
-            if len(clean_ans) < length:
-                continue
-            candidate = clean_ans[:length].strip()
-            # Check if this phrase actually appears (case-insensitive) in the chunk
-            if candidate.lower() in chunk_text.lower():
-                return candidate
-
-    # 2. Fall back to best-matching snippet from chunk
-    blob = " ".join(p for p in (query_en or "", query_ar or "", answer_excerpt or "") if p)
-    win = min(max(500, max_len * 4), max(len(chunk_text), max_len + 40))
-    snippet = extract_snippet(chunk_text, blob, window=win)
-    s = snippet.strip()
-    if s.startswith("…"):
-        s = s[1:].lstrip()
-    if s.endswith("…"):
-        s = s[:-1].rstrip()
+            if len(clean) >= length and clean[:length].lower() in chunk_text.lower():
+                return clean[:length].strip()
+    blob = " ".join(p for p in (query_en, query_ar, answer_excerpt) if p)
+    snippet = extract_snippet(chunk_text, blob, window=max(500, max_len * 4))
+    s = re.sub(r"^…|…$", "", snippet).strip()
     s = re.sub(r"\s+", " ", s).strip()
-    if len(s) < 35:
-        s = re.sub(r"\s+", " ", chunk_text[:500]).strip()
-    return s[:max_len]
+    return s[:max_len] if len(s) >= 35 else chunk_text[:max_len]
 
 
-# ─── Confidence / Similarity Scores ──────────────────────────
-def get_doc_scores(query: str, docs: list, reranker) -> dict:
+def get_doc_scores(query, docs, reranker):
     if not docs or reranker is None:
         return {}
-    pairs = [(query, d.page_content) for d in docs]
     try:
-        scores = reranker.predict(pairs)
+        scores = reranker.predict([(query, d.page_content) for d in docs])
         return {id(d): float(s) for d, s in zip(docs, scores)}
     except Exception:
         return {}
 
 
-def batch_rerank_query_excerpts(reranker, query: str, docs: list, window: int = 480) -> list[float]:
+def batch_rerank_query_excerpts(reranker, query, docs, window=480):
     if not docs or reranker is None:
         return []
-    excerpts = []
-    for d in docs:
-        ex = extract_snippet(d.page_content, query, window=window)
-        if not ex.strip():
-            ex = (d.page_content or "")[: window + 80]
-        excerpts.append(ex)
+    excerpts = [extract_snippet(d.page_content, query, window) or d.page_content[:window] for d in docs]
     try:
-        pairs = list(zip([query] * len(docs), excerpts))
-        return [float(s) for s in reranker.predict(pairs)]
+        return [float(s) for s in reranker.predict(list(zip([query]*len(docs), excerpts)))]
     except Exception:
         return []
 
@@ -300,12 +209,11 @@ def score_to_confidence(raw_score: float) -> tuple:
     return "Low", "#c62828"
 
 
-def confidence_badge(raw_score: float, peer_scores: list[float] | None) -> tuple[str, str]:
+def confidence_badge(raw_score: float, peer_scores: list | None) -> tuple[str, str]:
     peers = [float(p) for p in (peer_scores or []) if p is not None]
     if len(peers) >= 2:
         lo, hi = min(peers), max(peers)
-        span = max(hi - lo, 1e-6)
-        norm = (float(raw_score) - lo) / span
+        norm = (float(raw_score) - lo) / max(hi - lo, 1e-6)
         if norm >= 0.5:
             return "Strong match", "#2e7d32"
         if norm >= 0.2:

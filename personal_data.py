@@ -211,7 +211,8 @@ def fetch_for_intent(employee_id: int, intent_topic: str) -> dict:
                                   "salary_history": get_payroll_history(employee_id)},
         "training":     lambda: {"training": get_training_record(employee_id, today.year)},
         "okr":          lambda: {"current_okrs": get_okrs(employee_id)},
-        "profile":      lambda: {},   # profile always fetched below
+        "profile":      lambda: {"latest_review": get_latest_review(employee_id),
+                                  "active_disciplinary": get_active_disciplinary(employee_id)},
         "disciplinary": lambda: {"active_disciplinary": get_active_disciplinary(employee_id)},
         "all":          lambda: get_full_personal_context(employee_id),
     }

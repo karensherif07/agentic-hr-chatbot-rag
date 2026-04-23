@@ -28,13 +28,13 @@ def run(conn, sql, params=None):
 def insert_employee(conn, data: dict) -> int:
     result = conn.execute(text("""
         INSERT INTO employees
-            (full_name, full_name_ar, email, password_hash, grade, job_title,
-             department, manager_id, hire_date, employment_type, work_model,
-             is_active, probation_end_date, phone)
+        (full_name, full_name_ar, email, password_hash, grade, job_title,
+        department, manager_id, hire_date, employment_type, work_model,
+        is_active, probation_end_date, phone, admin_role)
         VALUES
             (:full_name, :full_name_ar, :email, :password_hash, :grade, :job_title,
              :department, :manager_id, :hire_date, :employment_type, :work_model,
-             :is_active, :probation_end_date, :phone)
+             :is_active, :probation_end_date, :phone, :admin_role)
         RETURNING id
     """), data)
     return result.fetchone()[0]
@@ -149,7 +149,7 @@ with engine.begin() as conn:
         department='Executive', manager_id=None,
         hire_date=date(2017, 3, 1), employment_type='full-time',
         work_model='in-office', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0001'
+        probation_end_date=None, phone='+20-10-0000-0001',admin_role=None
     ))
 
     # G5 — HR Director
@@ -160,7 +160,7 @@ with engine.begin() as conn:
         department='Human Resources', manager_id=ceo_id,
         hire_date=date(2018, 6, 15), employment_type='full-time',
         work_model='in-office', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0002'
+        probation_end_date=None, phone='+20-10-0000-0002',admin_role='super_admin'
     ))
 
     # G4 — Engineering Manager
@@ -171,7 +171,7 @@ with engine.begin() as conn:
         department='Engineering', manager_id=ceo_id,
         hire_date=date(2019, 9, 1), employment_type='full-time',
         work_model='hybrid', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0003'
+        probation_end_date=None, phone='+20-10-0000-0003',admin_role=None
     ))
 
     # G4 — Product Manager
@@ -182,7 +182,7 @@ with engine.begin() as conn:
         department='Product', manager_id=ceo_id,
         hire_date=date(2020, 2, 1), employment_type='full-time',
         work_model='hybrid', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0004'
+        probation_end_date=None, phone='+20-10-0000-0004',admin_role=None
     ))
 
     # G3 — Senior Software Engineer (reports to eng_mgr)
@@ -193,7 +193,7 @@ with engine.begin() as conn:
         department='Engineering', manager_id=eng_mgr_id,
         hire_date=date(2021, 4, 15), employment_type='full-time',
         work_model='remote', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0005'
+        probation_end_date=None, phone='+20-10-0000-0005',admin_role=None
     ))
     # G3 — Senior Software Engineer (Karen Sherif)
     karen_id = insert_employee(conn, dict(
@@ -203,7 +203,7 @@ with engine.begin() as conn:
         department='Engineering', manager_id=eng_mgr_id, # Reports to Sara
         hire_date=date(2024, 1, 10), employment_type='full-time',
         work_model='remote', is_active=True,
-        probation_end_date=None, phone='+20-10-1234-5678'
+        probation_end_date=None, phone='+20-10-1234-5678',admin_role=None
     ))
 
     # G3 — HR Lead
@@ -214,7 +214,7 @@ with engine.begin() as conn:
         department='Human Resources', manager_id=hr_dir_id,
         hire_date=date(2020, 7, 1), employment_type='full-time',
         work_model='in-office', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0006'
+        probation_end_date=None, phone='+20-10-0000-0006',admin_role='hr_admin'
     ))
 
     # G2 — Software Engineer
@@ -225,7 +225,7 @@ with engine.begin() as conn:
         department='Engineering', manager_id=sen_eng_id,
         hire_date=date(2022, 11, 1), employment_type='full-time',
         work_model='hybrid', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0007'
+        probation_end_date=None, phone='+20-10-0000-0007',admin_role=None
     ))
 
     # G2 — Data Analyst
@@ -236,7 +236,7 @@ with engine.begin() as conn:
         department='Product', manager_id=prod_mgr_id,
         hire_date=date(2023, 3, 15), employment_type='full-time',
         work_model='hybrid', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0008'
+        probation_end_date=None, phone='+20-10-0000-0008',admin_role=None
     ))
 
     # G2 — HR Specialist
@@ -247,7 +247,7 @@ with engine.begin() as conn:
         department='Human Resources', manager_id=hr_lead_id,
         hire_date=date(2023, 8, 1), employment_type='full-time',
         work_model='in-office', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0009'
+        probation_end_date=None, phone='+20-10-0000-0009',admin_role=None
     ))
 
     # G1 — Junior Engineer (recently hired, in probation)
@@ -258,7 +258,7 @@ with engine.begin() as conn:
         department='Engineering', manager_id=eng2_id,
         hire_date=date(2026, 1, 15), employment_type='full-time',
         work_model='in-office', is_active=True,
-        probation_end_date=date(2026, 4, 15), phone='+20-10-0000-0010'
+        probation_end_date=date(2026, 4, 15), phone='+20-10-0000-0010',admin_role=None
     ))
 
     # G1 — Intern
@@ -269,7 +269,7 @@ with engine.begin() as conn:
         department='Engineering', manager_id=eng2_id,
         hire_date=date(2026, 2, 1), employment_type='intern',
         work_model='in-office', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0011'
+        probation_end_date=None, phone='+20-10-0000-0011',admin_role=None
     ))
 
     # Part-time contractor
@@ -280,7 +280,7 @@ with engine.begin() as conn:
         department='Product', manager_id=prod_mgr_id,
         hire_date=date(2025, 6, 1), employment_type='contractor',
         work_model='remote', is_active=True,
-        probation_end_date=None, phone='+20-10-0000-0012'
+        probation_end_date=None, phone='+20-10-0000-0012',admin_role=None
     ))
 
     print("✓ Employees inserted")
