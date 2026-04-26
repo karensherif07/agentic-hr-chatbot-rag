@@ -112,7 +112,14 @@ def clean_query(text: str) -> str:
 
 
 # ─── Page config + login ──────────────────────────────────────
-st.set_page_config(page_title="HR Assistant", layout="wide")
+st.set_page_config(page_title="HR Assistant", layout="wide", initial_sidebar_state="expanded")
+
+# Hide Streamlit default page navigation
+st.markdown("""
+<style>
+[data-testid="stSidebarNav"] {display: none;}
+</style>
+""", unsafe_allow_html=True)
 init_cookie_manager()
 require_login()
 
@@ -128,9 +135,9 @@ with st.sidebar:
         logout()
     st.divider()
 
-    # Analytics link — shown ONLY to admins
+    # Admin portal link — shown ONLY to admins
     if is_admin():
-        st.page_link("pages/admin_analytics.py", label="📊 Analytics Dashboard", icon="📊")
+        st.page_link("pages/admin_portal.py", label="⚙️ Admin Portal", icon="⚙️")
         st.divider()
 
     if st.button("🗑 Clear chat history"):
@@ -186,8 +193,13 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# ─── Admin gate: admins use admin portal, not chatbot ─────
+if is_admin():
+    st.info("👋 You are logged in as an HR administrator.\n\nUse the **⚙️ Admin Portal** button in the sidebar to access analytics, escalations, and system configuration.")
+    st.stop()
+
 st.title("💼 HR Assistant")
-st.caption("Ask in English, Arabic, or Franco Arabic.")
+st.caption("Ask in English, Arabic (MSA or Egyptian), or Franco Arabic.")
 
 # ─── Load models ──────────────────────────────────────────────
 try:
@@ -213,7 +225,12 @@ with chat_container:
 
 # ─── Helpers ──────────────────────────────────────────────────
 def _inject_adjacent_pages(docs_pool, retrieved):
-    """Inject page+1 chunks so cross-page lists are never cut off."""
+    """Inject page+1 chunks so cross-page lists are never cut off.
+    
+    FIX #1: Increased from 2 to 4 chunks per adjacent page
+    to ensure multi-page answers (like promotion criteria on p.5-6) 
+    are fully retrieved.
+    """
     injected      = set()
     retrieved_ids = {id(d) for d in retrieved}
     extra         = []
@@ -231,7 +248,7 @@ def _inject_adjacent_pages(docs_pool, retrieved):
                 extra.append(c)
                 retrieved_ids.add(id(c))
                 count += 1
-                if count >= 2:
+                if count >= 4:  # WAS: 2 → NOW: 4
                     break
     return retrieved + extra
 
@@ -265,17 +282,29 @@ def _invoke_llm(llm, prompt_template, **kwargs):
 
 
 def _run_rag(question, q_ar, q_en, lang, fa):
-    """Run retrieval + rerank and return (top_docs, scores_dict)."""
+    """Run retrieval + rerank and return (top_docs, scores_dict).
+    
+    FIX #2: For Arabic (including Egyptian) questions, translate to MSA first
+    before retrieval to improve recall. Hajj leave and other Egyptian-dialect
+    questions are answered from MSA policy text.
+    """
     ar_vs, ar_bm25, ar_docs = ar_index
     en_vs, en_bm25, en_docs = en_index
-    ar_base = (fa + " " + q_ar).strip() if lang == "franco" and fa else q_ar
+    
+    # FIX #2: If Arabic (Egyptian), translate to MSA for better retrieval
+    if lang == "arabic":
+        q_ar_for_retrieval = translate(st.session_state.ar_llm, q_ar, "Modern Standard Arabic (formal)")
+    else:
+        ar_base = (fa + " " + q_ar).strip() if lang == "franco" and fa else q_ar
+        q_ar_for_retrieval = ar_base
+    
     history_msgs = st.session_state.chat_history
-    q_ar_ret = build_retrieval_query(ar_base, history_msgs).replace('"','').replace("'",'')
+    q_ar_ret = build_retrieval_query(q_ar_for_retrieval, history_msgs).replace('"','').replace("'",'')
     q_en_ret = build_retrieval_query(q_en,    history_msgs).replace('"','').replace("'",'')
     docs_ar  = retrieve(q_ar_ret, ar_vs, ar_bm25, ar_docs, lambda t: normalize_arabic(t, ara_tokenizer))
     docs_en  = retrieve(q_en_ret, en_vs, en_bm25, en_docs, normalize_english)
     combined = rrf(docs_ar, docs_en)
-    top_docs, scores_dict = rerank(q_en, combined, reranker, top_n=6)
+    top_docs, scores_dict = rerank(q_en, combined, reranker, top_n=5)
     all_pool = ar_docs + en_docs
     top_docs = _dedupe_docs(_inject_adjacent_pages(all_pool, top_docs))
     return top_docs, scores_dict
@@ -315,7 +344,9 @@ if question:
                         st.session_state.chat_history,
                         st.session_state.conversation_summary
                     )
-                    intent, topic = classify_intent(question)
+                    # LLM-based intent classification — understands all 4 languages
+                    # natively without hardcoded patterns
+                    intent, topic = classify_intent(question, llm=en_llm)
                     personal_data_str = ""
                     top_docs, scores_dict = [], {}
 
@@ -366,21 +397,17 @@ if question:
                     _no_info    = is_no_info_answer(answer)
 
                     # ── Low-confidence regeneration ───────────────────────
-                    # If the top reranker score is very low, the retrieved chunks
-                    # likely don't contain the answer. Regenerate once with a
-                    # stronger retrieval (top_n=10) before giving up.
                     if (intent in ("policy", "hybrid") and scores_dict and not _no_info
                             and top_docs):
                         raw_score = _get_top_raw_score(scores_dict, cited_docs, top_docs)
                         if raw_score is not None and raw_score < _LOW_CONFIDENCE_THRESHOLD:
-                            # Re-retrieve with more chunks
                             ar_vs, ar_bm25, ar_docs = ar_index
                             en_vs, en_bm25, en_docs = en_index
                             ar_base = (fa + " " + q_ar).strip() if lang == "franco" and fa else q_ar
                             docs_ar  = retrieve(q_ar, ar_vs, ar_bm25, ar_docs, lambda t: normalize_arabic(t, ara_tokenizer))
                             docs_en  = retrieve(q_en, en_vs, en_bm25, en_docs, normalize_english)
                             combined2 = rrf(docs_ar, docs_en)
-                            top_docs2, scores_dict2 = rerank(q_en, combined2, reranker, top_n=10)
+                            top_docs2, scores_dict2 = rerank(q_en, combined2, reranker, top_n=8)
                             all_pool2 = ar_docs + en_docs
                             top_docs2 = _dedupe_docs(_inject_adjacent_pages(all_pool2, top_docs2))
                             if top_docs2:
@@ -399,7 +426,6 @@ if question:
                                 clean2      = strip_citations(raw2)
                                 answer2     = (clean2 if intent == "personal"
                                                else validate(clean2, lang, has_citations=bool(cited2)))
-                                # Use regenerated answer only if it's not also a "not found"
                                 if not is_no_info_answer(answer2):
                                     answer      = answer2
                                     top_docs    = top_docs2
@@ -499,6 +525,8 @@ if question:
                                lang, dialect, _no_info, question)
 
                     # ── Escalation to HR ──────────────────────────────────
+                    # FIX #3: Show escalation for ALL intents when no answer found
+                    # (was only showing for policy/hybrid, not personal)
                     if _no_info:
                         hr_email = _get_hr_email()
                         if hr_email:

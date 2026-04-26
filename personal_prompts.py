@@ -242,6 +242,15 @@ _PERSONAL_RULES_EN = (
     "7. No page citations — this data is from the live HR database.\n"
     "8. LANGUAGE LOCK: Reply in English only.\n"
     "9. ELIGIBILITY: When asked about bonus, promotion, scholarship, or leave eligibility, read the ELIGIBILITY PRE-CHECK block and state the YES/NO verdict directly with the reason given. Do not re-derive eligibility from raw fields.\n"
+    "NEVER DO THIS:\n"
+    "  • Give policy entitlement (e.g., '21 days') instead of actual remaining balance — use remaining_days only\n"
+    "  • State a salary range from job grade policy — ALWAYS use net_salary from the payroll data\n"
+    "  • Confabulate a performance rating — if no rating in performance_reviews, say not available\n"
+    "  • Mix entitled_days with remaining_days — remaining is what they have left to take\n"
+    "  • Infer probation status from hire_date — read the probation_status field exactly as written\n"
+    "  • Confuse pending (not yet taken) with approved (scheduled to happen) leave requests\n"
+    "  • Give base_salary when asked for net_salary — they are different (net = gross - taxes - deductions)\n"
+    "  • Say 'no disciplinary records' when active disciplinary actions exist — state them as listed\n"
 )
 
 _PERSONAL_RULES_AR = (

@@ -223,3 +223,38 @@ CREATE INDEX IF NOT EXISTS idx_analytics_employee ON analytics_log(employee_id);
 CREATE INDEX idx_employees_admin_role 
 ON employees(admin_role)
 WHERE admin_role IS NOT NULL;
+
+-- ─── 10. ANALYTICS EXTENSIONS (Admin + Monitoring) ───────────
+-- These fields support escalation handling and system health metrics.
+
+ALTER TABLE analytics_log
+ADD COLUMN IF NOT EXISTS resolved BOOLEAN DEFAULT FALSE;
+
+ALTER TABLE analytics_log
+ADD COLUMN IF NOT EXISTS response_time_ms FLOAT;
+-- Time taken by chatbot to generate response (in milliseconds)
+
+ALTER TABLE analytics_log
+ADD COLUMN IF NOT EXISTS error BOOLEAN DEFAULT FALSE;
+-- TRUE if LLM/API failure occurred during response generation
+
+-- Index to speed up escalation filtering
+CREATE INDEX IF NOT EXISTS idx_analytics_unanswered_resolved
+ON analytics_log(unanswered, resolved);
+
+
+-- ─── 11. ADMIN AUDIT LOG ─────────────────────────────────────
+-- Tracks all admin actions for accountability and system transparency.
+
+CREATE TABLE IF NOT EXISTS admin_audit_log (
+    id SERIAL PRIMARY KEY,
+    admin_id INT REFERENCES employees(id) ON DELETE SET NULL,
+    action TEXT NOT NULL,
+    resource_type TEXT,
+    resource_id INT,
+    performed_at TIMESTAMPTZ DEFAULT NOW(),
+    notes TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_audit_admin ON admin_audit_log(admin_id);
+CREATE INDEX IF NOT EXISTS idx_audit_time ON admin_audit_log(performed_at DESC);

@@ -1,139 +1,151 @@
 import re
+from functools import lru_cache
 
 # ─────────────────────────────────────────────────────────────
-# intent.py  —  personal | hybrid | policy classifier
-# ─────────────────────────────────────────────────────────────
-#
-# KEY FIX: English personal patterns use \bmy\b.{0,20}\b<keyword>\b
-# so "What is my current net salary?" still matches even though
-# adjectives sit between "my" and the keyword.
-# Old pattern r"my (salary|...)" required them to be adjacent.
+# intent.py — LLM-BASED INTENT CLASSIFIER
+# (FIXED: no unhashable ChatGroq in cache)
 # ─────────────────────────────────────────────────────────────
 
-PERSONAL_PATTERNS = [
+_CLASSIFICATION_PROMPT = """You are a classifier for an HR chatbot. Your only job is to classify the user's question into one of three intents.
 
-    # ── Leave ────────────────────────────────────────────────
-    # English — bounded wildcard between "my" and keyword
-    (r"\bmy\b.{0,25}\b(leave|vacation|days off|annual|sick|maternity|paternity|hajj|bereavement|absence|study leave)\b", "leave"),
-    (r"\bmy\b.{0,25}\b(leave balance|remaining days|remaining leave)\b", "leave"),
-    (r"(how many|how much).{0,30}\b(leave|days|vacation)\b.{0,30}\b(i have|left|remaining|got|balance|mine)\b", "leave"),
-    (r"\b(my leave|leave balance|my balance|my remaining)\b", "leave"),
-    # Arabic — first-person possessives only (رصيد إجازتي, not كم يوم)
-    (r"(رصيد إجازتي|إجازتي السنوية|إجازتي|أيامي المتبقية|يتبقى لي|رصيدي)", "leave"),
-    (r"كم يوم.{0,15}(لدي|عندي|متبقٍّ لي|تبقّى لي|لي)", "leave"),
-    # Franco
-    (r"(agazti|raseed bta3i|raseed agaza bta3i|kam yom 3andi|el balance bta3i|agazat bta3ti)", "leave"),
-    (r"(pending leave bta3i|talab agaza bta3i|my leave request)", "leave"),
+=== INTENT DEFINITIONS ===
 
-    # ── Performance ──────────────────────────────────────────
-    (r"\bmy\b.{0,25}\b(performance|rating|review|score|appraisal|evaluation)\b", "performance"),
-    (r"(describe|summarise|show).{0,30}(my performance|my ratings|how i.ve been doing)", "performance"),
-    (r"(تقييمي|أدائي|تقرير أدائي|مراجعتي الأخيرة|درجتي في التقييم)", "performance"),
-    (r"(taqyimi|adai|el rating bta3i|el review bta3i|el taqyim bta3i)", "performance"),
-    (r"(am i improving|my trend|my scores over time)", "performance"),
+PERSONAL — The question asks about THIS specific employee's own live data.
+The answer must come from a database (not policy documents).
+Signs: possessive words (my, I have, بتاعي, عندي, راتبي, bta3i, bta3ti),
+first-person ownership of a specific value.
+Examples:
+- "How many annual leave days do I have left?" → personal / leave
+- "What is my current net salary?" → personal / salary
+- "What was my last performance rating?" → personal / performance
+- "كم يوم إجازة متبقي عندي؟" → personal / leave
+- "أنا لسه في فترة التجربة والا خلصت؟" → personal / profile
+- "الاجازات البتاعتي الواقفة دلوقتي إيه؟" → personal / leave
+- "راتبي الصافي بتاع الشهر ده كام؟" → personal / salary
+- "Do I have any active disciplinary actions against me?" → personal / disciplinary
+- "raseed agaza bta3i kamet yom?" → personal / leave
+- "ana lesa fi probation wla 5alaset?" → personal / profile
+- "el okrs bta3ti 3amela ezay?" → personal / okr
 
-    # ── Salary ───────────────────────────────────────────────
-    (r"\bmy\b.{0,25}\b(salary|pay|payslip|payroll|income|net salary|gross salary)\b", "salary"),
-    (r"\b(my allowance|my allowances|my compensation)\b", "salary"),
-    (r"(راتبي|مرتبي|بدلاتي|صافي راتبي|إجمالي راتبي|راتبي الصافي|راتبي الشهري)", "salary"),
-    (r"(ratbi|el rateb bta3i|flous bta3ti|salary bta3i|el net bta3i|el rateb el net)", "salary"),
+HYBRID — The question needs BOTH the employee's personal data AND company policy to answer correctly.
+Signs: eligibility questions ("am I eligible", "can I", "do I qualify"),
+working hours (needs DB work_model + policy standard hours),
+leave availability (needs DB balance + policy entitlement).
+Examples:
+- "What are my working hours?" → hybrid / profile
+- "Am I eligible for a bonus this year?" → hybrid / all
+- "هل يحق لي التقدم للترقية؟" → hybrid / all
+- "ساعات شغلي إيه؟" → hybrid / profile
+- "Can I take study leave?" → hybrid / leave
+- "mawa3id shoghl bta3ti eh?" → hybrid / profile
+- "momken akhod bonus el sana di?" → hybrid / all
+- "هل أقدر آخد إجازة دلوقتي؟" → hybrid / leave
 
-    # ── Training ─────────────────────────────────────────────
-    (r"\bmy\b.{0,25}\b(training|training budget|courses|learning|development|certification)\b", "training"),
-    (r"(how much|how many).{0,30}(training|budget|courses).{0,30}(left|remaining|used|spent|i have)", "training"),
-    (r"(ميزانيتي التدريبية|دوراتي|رصيد تدريبي|ميزانية التدريب بتاعتي)", "training"),
-    (r"(budget bta3i|training bta3i|courses bta3ti|el training bta3i)", "training"),
+POLICY — General question about company rules answered from policy documents only.
+No personal data needed. The same answer applies to any employee.
+Signs: general "how many days", "what is the", "who approves", "what are the criteria".
+Examples:
+- "What are the promotion criteria?" → policy
+- "How many days is Hajj leave?" → policy
+- "What is the overtime rate?" → policy
+- "كم يوم إجازة سنوية يحق لموظف بخبرة أكثر من 10 سنوات؟" → policy
+- "ما مراحل الإجراء التأديبي التدريجي؟" → policy
+- "emta el bonus bta3i byigi w ana lazem 3amel eh?" → policy
+- "law 3andi inzar maktub a2dar a3terid 3aleih?" → policy
+- "What happens to my personal data if I leave the company?" → policy
 
-    # ── OKRs ─────────────────────────────────────────────────
-    (r"\bmy\b.{0,25}\b(okr|okrs|goal|goals|objective|target|kpi|key result)\b", "okr"),
-    (r"(أهدافي|مؤشراتي|okr بتاعتي|أهدافي الحالية)", "okr"),
-    (r"(okrs bta3ti|goals bta3ti|el okr bta3i|el okrs bta3ti)", "okr"),
+=== TOPICS (only for personal and hybrid) ===
+leave, salary, performance, training, okr, profile, disciplinary, all
 
-    # ── Profile ──────────────────────────────────────────────
-    (r"\bmy\b.{0,25}\b(profile|grade|job grade|department|manager|hire date|role|job title|title|employment type|work model)\b", "profile"),
-    (r"(when did i join|when did i start working)", "profile"),
-    (r"(درجتي الوظيفية|قسمي|مديري|تاريخ التحاقي|نموذج عملي)", "profile"),
-    (r"(grade bta3i|manager bta3i|my info|my details|el grade bta3i|el department bta3i)", "profile"),
+=== OUTPUT FORMAT (strict — no other text) ===
+INTENT: personal|hybrid|policy
+TOPIC: leave|salary|performance|training|okr|profile|disciplinary|all|none
 
-    # ── Disciplinary ─────────────────────────────────────────
-    (r"\bmy\b.{0,25}\b(warning|pip|disciplinary)\b", "disciplinary"),
-    (r"(any action against me|am i on pip|do i have a warning)", "disciplinary"),
-    (r"(إنذاراتي|هل عليّ إنذار|خطة تحسين أدائي|هل أنا على PIP)", "disciplinary"),
-    (r"(el inzar bta3i|ana 3ala pip|3andi inzar 3alaya)", "disciplinary"),
-
-    # ── Probation ────────────────────────────────────────────
-    (r"\bmy\b.{0,25}\bprobation\b", "profile"),
-    (r"(am i on probation|am i still on probation|probation status|is my probation over)", "profile"),
-    (r"(فترة تجربتي|هل أنا في فترة التجربة|هل انتهت فترة تجربتي)", "profile"),
-    # Franco — fixed: was "lesa fi el probation" but user writes "lesa fi probation"
-    (r"(lesa fi probation|probation bta3i|ana fi probation|lessa fi probation|el probation bta3i)", "profile"),
-    (r"(lesa|lessa).{0,10}probation", "profile"),
-]
-
-HYBRID_PATTERNS = [
-    # Working hours — needs work_model from DB + shift policy
-    r"(what are my working hours|what are my hours|my working hours|my work hours|hours do i work"
-    r"|when do i (start|finish|clock in|work)|my shift|my schedule|my start time|my work schedule"
-    r"|am i (remote|hybrid|office|on-?site)|work from home"
-    r"|ساعات عملي|مواعيد عملي|عدد ساعات عملي|جدول عملي|ساعات شغلي|مواعيد شغلي"
-    r"|mawa3id shoghl bta3i|working hours bta3i|kam sa3a bashtaghal|sa3at el shoghl bta3ti"
-    r"|mawa3id shoghl bta3ti|sa3at shoghl bta3i)",
-
-    # Leave eligibility — needs remaining balance from DB + policy entitlement
-    # "Can I take MORE leave" or "Can I take ANY leave" → hybrid
-    # Removed: "Can I take study leave" — that's a pure policy question
-    r"can i (take|get|have|request|apply).{0,10}(more|additional|extra|another).{0,15}(leave|agaza)",
-    r"can i (take|get).{0,10}(annual|sick|maternity|paternity|hajj|bereavement).{0,15}(leave|agaza)",
-    r"(هل أقدر آخد|ممكن آخد|هل يمكنني أخذ).{0,20}(إجازة|أجازة)",
-    r"(a2dar akhod|momken akhod).{0,20}agaza",
-
-    # Eligibility questions that need DB check + policy
-    r"(am i eligible|do i qualify).{0,30}(leave|bonus|scholarship|promotion|training|raise)",
-    r"(هل يحق لي|هل أستحق|هل يمكنني الحصول على).{0,20}(إجازة|مكافأة|منحة|ترقية|علاوة)",
-    r"(momken|ayezna3raf|a3raf).{0,20}(eligible|a5od|ahkel).{0,20}(leave|bonus|promotion|scholarship)",
-
-    # Bonus eligibility — needs disciplinary/tenure from DB + policy
-    r"(am i eligible for a bonus|do i get a bonus|will i get a bonus|هل سأحصل على مكافأة|momken akhod bonus)",
-
-    # Promotion eligibility — needs rating/tenure from DB + policy criteria
-    r"(am i eligible for.{0,10}promot|can i be promoted|هل يحق لي.{0,10}ترق|هل أستحق.{0,10}ترق|momken at2addam lel tar2eyya)",
-
-    # How much more leave / remaining eligibility
-    r"(how much more|كم يتبقى|remaining).{0,20}(allowed|policy|يسمح|entitl)",
-    r"(can i still get|هل يمكنني الحصول على|momken a5od).{0,20}(bonus|scholarship|leave|promotion)",
-]
+Question: {question}"""
 
 
-def _match(text: str, patterns: list) -> tuple[bool, str | None]:
-    t = text.lower()
-    for entry in patterns:
-        if isinstance(entry, tuple):
-            pattern, topic = entry
-            if re.search(pattern, t):
-                return True, topic
-        else:
-            if re.search(entry, t):
-                return True, None
-    return False, None
+# ─────────────────────────────────────────────────────────────
+# ✅ LLM REGISTRY (prevents caching unhashable objects)
+# ─────────────────────────────────────────────────────────────
+_LLM_REGISTRY = {}
 
 
-def classify_intent(question: str) -> tuple[str, str | None]:
+def _parse_response(text: str) -> tuple:
+    """Parse 'INTENT: X\\nTOPIC: Y' from LLM response."""
+    intent = "policy"
+    topic = None
+    for line in text.strip().splitlines():
+        line = line.strip()
+        if line.upper().startswith("INTENT:"):
+            val = line.split(":", 1)[1].strip().lower()
+            if val in ("personal", "hybrid", "policy"):
+                intent = val
+        elif line.upper().startswith("TOPIC:"):
+            val = line.split(":", 1)[1].strip().lower()
+            if val in ("leave", "salary", "performance", "training",
+                       "okr", "profile", "disciplinary", "all"):
+                topic = val
+    return intent, topic
+
+
+def _llm_classify(question: str, llm) -> tuple:
+    """Single structured LLM call."""
+    try:
+        prompt = _CLASSIFICATION_PROMPT.format(question=question)
+        res = llm.invoke(prompt)
+        return _parse_response(res.content)
+    except Exception as e:
+        print(f"[intent] LLM classify failed: {e} — defaulting to policy")
+        return "policy", None
+
+
+# ─────────────────────────────────────────────────────────────
+# ✅ FIXED CACHE (ONLY HASHABLE INPUTS)
+# ─────────────────────────────────────────────────────────────
+@lru_cache(maxsize=500)
+def _cached_classify(question: str, llm_id: str) -> tuple:
+    llm = _LLM_REGISTRY.get(llm_id)
+    if llm is None:
+        return "policy", None
+    return _llm_classify(question, llm)
+
+
+def classify_intent(question: str, llm=None) -> tuple:
     """
-    Returns (intent, topic).
-    intent : "personal" | "hybrid" | "policy"
-    topic  : "leave" | "performance" | "salary" | "training" |
-             "okr" | "profile" | "disciplinary" | "all" | None
+    Classify the user's question using the LLM.
     """
-    # Hybrid check first
-    is_hybrid, _ = _match(question, HYBRID_PATTERNS)
-    if is_hybrid:
-        _, topic = _match(question, PERSONAL_PATTERNS)
-        return "hybrid", (topic or "all")
+    if llm is None:
+        return _fallback_classify(question)
 
-    # Personal check
-    is_personal, topic = _match(question, PERSONAL_PATTERNS)
-    if is_personal:
-        return "personal", (topic or "all")
+    llm_id = str(id(llm))
 
-    # Default: policy RAG
+    # store LLM outside cache
+    _LLM_REGISTRY[llm_id] = llm
+
+    return _cached_classify(question, llm_id)
+
+
+# ─────────────────────────────────────────────────────────────
+# fallback (unchanged)
+# ─────────────────────────────────────────────────────────────
+_FB_PERSONAL = re.compile(
+    r"(\bmy\b.{0,25}\b(salary|leave|rating|performance|okr|goal|grade"
+    r"|probation|disciplinary|training)\b"
+    r"|راتبي|إجازتي|تقييمي|bta3i|bta3ti|raseed|عندي\b)",
+    re.IGNORECASE
+)
+
+_FB_HYBRID = re.compile(
+    r"(my working hours|my hours|am i eligible|can i be promoted"
+    r"|can i take study leave|ساعات شغلي|ساعات عملي|هل يحق لي"
+    r"|momken akhod bonus|mawa3id shoghl)",
+    re.IGNORECASE
+)
+
+
+def _fallback_classify(question: str) -> tuple:
+    if _FB_HYBRID.search(question):
+        return "hybrid", "all"
+    if _FB_PERSONAL.search(question):
+        return "personal", "all"
     return "policy", None
