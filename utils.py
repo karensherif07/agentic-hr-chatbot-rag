@@ -15,38 +15,42 @@ def translate(llm, text: str, target_language: str) -> str:
 
 
 def summarize_history(llm, chat_history: list, existing_summary: str = "") -> str:
+    """
+    Lazily summarize — only called every 4 turns, not after every message.
+    Cap at 40 words to save tokens.
+    """
     if not chat_history:
         return existing_summary or ""
+    # Only last 4 messages (2 turns) to keep prompt tiny
     lines = []
-    for msg in chat_history[-6:]:
-        role = "User" if msg["role"] == "user" else "Assistant"
-        lines.append(f"{role}: {msg['content'][:200]}")
+    for msg in chat_history[-4:]:
+        role = "U" if msg["role"] == "user" else "A"
+        lines.append(f"{role}: {msg['content'][:120]}")
     transcript = "\n".join(lines)
     prompt = (
-        "Summarize the conversation in one paragraph (max 80 words). "
-        "Keep key facts: topics, numbers, names, decisions.\n\n"
-        f"Previous summary: {existing_summary or 'None'}\n\n"
-        f"Latest exchange:\n{transcript}\n\nSummary:"
+        "Summarize in max 40 words. Keep: topics, numbers, decisions.\n"
+        f"Previous: {existing_summary or 'none'}\nNew:\n{transcript}\nSummary:"
     )
     try:
         res = llm.invoke(prompt)
-        return res.content.strip()
+        return res.content.strip()[:300]   # hard cap output
     except Exception:
-        return existing_summary or transcript
+        return existing_summary or ""
 
 
 def build_history_str(chat_history: list, conversation_summary: str = "") -> str:
-    # Token optimization: use summary when available (much shorter than raw history)
+    """Token-optimized: summary only (40 words), or last 1 turn if no summary."""
     if conversation_summary:
-        return f"Summary: {conversation_summary}"
+        # Already capped at 300 chars in summarize_history
+        return f"Context: {conversation_summary}"
     if not chat_history:
         return ""
-    # Only last 2 turns if no summary yet
-    recent = chat_history[-4:]
+    # No summary yet — send only the single most recent exchange
+    recent = chat_history[-2:]
     lines = []
     for msg in recent:
-        role = "User" if msg["role"] == "user" else "Asst"
-        lines.append(f"{role}: {msg['content'][:200]}")
+        role = "U" if msg["role"] == "user" else "A"
+        lines.append(f"{role}: {msg['content'][:150]}")
     return "\n".join(lines)
 
 

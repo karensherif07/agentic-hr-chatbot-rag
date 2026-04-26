@@ -282,29 +282,23 @@ def _invoke_llm(llm, prompt_template, **kwargs):
 
 
 def _run_rag(question, q_ar, q_en, lang, fa):
-    """Run retrieval + rerank and return (top_docs, scores_dict).
-    
-    FIX #2: For Arabic (including Egyptian) questions, translate to MSA first
-    before retrieval to improve recall. Hajj leave and other Egyptian-dialect
-    questions are answered from MSA policy text.
+    """
+    Retrieve + rerank (token-optimized).
+    top_n=3 instead of 5 — saves ~700 tokens of context per query.
+    Translation removed — multilingual embeddings handle cross-lingual retrieval.
     """
     ar_vs, ar_bm25, ar_docs = ar_index
     en_vs, en_bm25, en_docs = en_index
-    
-    # FIX #2: If Arabic (Egyptian), translate to MSA for better retrieval
-    if lang == "arabic":
-        q_ar_for_retrieval = translate(st.session_state.ar_llm, q_ar, "Modern Standard Arabic (formal)")
-    else:
-        ar_base = (fa + " " + q_ar).strip() if lang == "franco" and fa else q_ar
-        q_ar_for_retrieval = ar_base
-    
+
     history_msgs = st.session_state.chat_history
-    q_ar_ret = build_retrieval_query(q_ar_for_retrieval, history_msgs).replace('"','').replace("'",'')
-    q_en_ret = build_retrieval_query(q_en,    history_msgs).replace('"','').replace("'",'')
-    docs_ar  = retrieve(q_ar_ret, ar_vs, ar_bm25, ar_docs, lambda t: normalize_arabic(t, ara_tokenizer))
+    q_ar_ret = build_retrieval_query(q_ar, history_msgs).replace('"','').replace("'",'')
+    q_en_ret = build_retrieval_query(q_en, history_msgs).replace('"','').replace("'",'')
+
+    docs_ar  = retrieve(q_ar_ret, ar_vs, ar_bm25, ar_docs,
+                        lambda t: normalize_arabic(t, ara_tokenizer))
     docs_en  = retrieve(q_en_ret, en_vs, en_bm25, en_docs, normalize_english)
     combined = rrf(docs_ar, docs_en)
-    top_docs, scores_dict = rerank(q_en, combined, reranker, top_n=5)
+    top_docs, scores_dict = rerank(q_en_ret, combined, reranker, top_n=3)   # was 5
     all_pool = ar_docs + en_docs
     top_docs = _dedupe_docs(_inject_adjacent_pages(all_pool, top_docs))
     return top_docs, scores_dict
@@ -330,22 +324,25 @@ if question:
                     lang    = detect_language_type(question)
                     dialect = get_semantic_dialect(question, dialect_pipe) if lang == "arabic" else None
 
-                    # ── Build queries ─────────────────────────────────────
+                    # ── Build queries (token-optimized) ──────────────────────
+                    # Translation calls removed for English and Arabic —
+                    # FAISS embeddings are multilingual so we retrieve with the
+                    # original question against both indexes.
+                    # Only Franco needs conversion (it's not real Arabic script).
                     if lang == "english":
-                        q_en, q_ar, fa = question, translate(ar_llm, question, "Arabic"), ""
+                        q_en, q_ar, fa = question, question, ""
                     elif lang == "arabic":
-                        q_ar, q_en, fa = question, translate(en_llm, question, "English"), ""
-                    else:  # franco
+                        q_ar, q_en, fa = question, question, ""
+                    else:  # franco — must convert to Arabic for Arabic index
                         fa   = franco_to_arabic(question)
                         q_ar = translate(ar_llm, fa, "Modern Standard Arabic")
-                        q_en = translate(en_llm, q_ar, "English")
+                        q_en = question   # use original Franco for English index
 
-                    history_str   = build_history_str(
+                    history_str = build_history_str(
                         st.session_state.chat_history,
                         st.session_state.conversation_summary
                     )
-                    # LLM-based intent classification — understands all 4 languages
-                    # natively without hardcoded patterns
+                    # LLM-based intent classification
                     intent, topic = classify_intent(question, llm=en_llm)
                     personal_data_str = ""
                     top_docs, scores_dict = [], {}
@@ -501,10 +498,14 @@ if question:
                         "role": "assistant", "content": answer,
                         "is_arabic": is_arabic_script, "is_franco": is_franco,
                     })
-                    st.session_state.conversation_summary = summarize_history(
-                        en_llm, st.session_state.chat_history,
-                        st.session_state.conversation_summary
-                    )
+                    # LAZY SUMMARIZATION — only every 4 turns (8 messages)
+                    # Saves one full LLM call on 3 out of every 4 queries
+                    n_msgs = len(st.session_state.chat_history)
+                    if n_msgs % 8 == 0 or (n_msgs <= 4):
+                        st.session_state.conversation_summary = summarize_history(
+                            en_llm, st.session_state.chat_history,
+                            st.session_state.conversation_summary
+                        )
                     save_session(st.session_state.employee_id,
                                  st.session_state.chat_history,
                                  st.session_state.conversation_summary)
