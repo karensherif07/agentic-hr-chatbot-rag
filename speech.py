@@ -1,22 +1,3 @@
-"""
-speech.py — Text-to-speech and speech-to-text.
-
-STT strategy:
-- PRIMARY: Deepgram Nova-3 Arabic API
-    - Purpose-built for Arabic dialects (Egyptian, MSA, Gulf, Levantine)
-    - No local GPU needed, no ffmpeg required, ~40% lower WER than competitors
-    - Requires DEEPGRAM_API_KEY in .env
-    - Free tier: $200 credit, no credit card required
-    - Sign up: https://console.deepgram.com/signup
-
-- FALLBACK: Local Whisper (medium model)
-    - Used automatically if DEEPGRAM_API_KEY is not set or API call fails
-    - Requires ffmpeg on PATH and openai-whisper installed
-
-Installation:
-    pip install deepgram-sdk
-    Add DEEPGRAM_API_KEY=your_key_here to your .env file
-"""
 
 import io
 import os
@@ -103,7 +84,6 @@ def _detect_suffix(audio_bytes: bytes) -> str:
 # ═══════════════════════════════════════════════════════════════
 
 def deepgram_available() -> bool:
-    """True if DEEPGRAM_API_KEY is set and deepgram-sdk is installed."""
     if not _DEEPGRAM_API_KEY:
         return False
     try:
@@ -114,21 +94,10 @@ def deepgram_available() -> bool:
 
 
 def _transcribe_deepgram(audio_bytes: bytes) -> str | None:
-    """
-    Transcribe audio using Deepgram Nova-3 Arabic.
-
-    Strategy:
-    - Always sends to Nova-3 with language="ar" first (covers Egyptian,
-      MSA, Gulf, Levantine — Nova-3 handles dialect detection automatically)
-    - Nova-3 multilingual also handles English and code-switching natively
-    - Falls back to None on any API error so Whisper can take over
-    """
     try:
-        from deepgram import DeepgramClient, PrerecordedOptions, BufferSource
+        from deepgram import DeepgramClient
 
-        client = DeepgramClient(api_key=_DEEPGRAM_API_KEY)
-
-        # Determine MIME type from magic bytes
+        client   = DeepgramClient(api_key=_DEEPGRAM_API_KEY)
         suffix   = _detect_suffix(audio_bytes)
         mime_map = {
             ".wav":  "audio/wav",
@@ -139,28 +108,20 @@ def _transcribe_deepgram(audio_bytes: bytes) -> str | None:
         }
         mimetype = mime_map.get(suffix, "audio/webm")
 
-        payload: BufferSource = {"buffer": audio_bytes}
-
-        options = PrerecordedOptions(
+        # SDK v4+ API — no PrerecordedOptions import needed
+        response = client.listen.v1.media.transcribe_file(
+            request=audio_bytes,
             model=_DEEPGRAM_MODEL,
-            language=_DEEPGRAM_LANG_AR,   # Arabic — covers all dialects
-            smart_format=True,             # auto punctuation + formatting
+            language=_DEEPGRAM_LANG_AR,
+            smart_format=True,
             punctuate=True,
-            utterances=False,
-            filler_words=False,
-        )
-
-        response = client.listen.rest.v("1").transcribe_file(
-            payload, options, timeout=30
         )
 
         transcript = (
-            response["results"]["channels"][0]
-            ["alternatives"][0]["transcript"]
+            response.results.channels[0]
+            .alternatives[0].transcript
         )
         transcript = transcript.strip()
-
-        # Clean up punctuation artifacts at boundaries
         transcript = re.sub(r"^[.,،\s]+", "", transcript)
         transcript = re.sub(r"[.,،\s]+$",  "", transcript)
         transcript = re.sub(r"\s+", " ", transcript).strip()

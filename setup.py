@@ -23,48 +23,27 @@ api_key = os.getenv("GROQ_API_KEY")
 ARABIC_PDF_PATH  = "policies/ar_policy.pdf"
 ENGLISH_PDF_PATH = "policies/eng_policy.pdf"
 
-_HIGHLIGHT_COLOR   = (1.0, 0.95, 0.0)   # yellow
+_HIGHLIGHT_COLOR   = (1.0, 0.95, 0.0)
 _HIGHLIGHT_OPACITY = 0.35
 
 
-# ─── Search phrase candidates ──────────────────────────────────
-
 def _search_candidates(clip_text: str) -> list[str]:
-    """
-    Returns candidate phrases to try with PyMuPDF search_for().
-
-    Strategy (in priority order):
-    1. Sentence-level phrases extracted from the text — skipping short
-       header-like lines (< 40 chars) which are almost always section titles
-       that appear at the top of a chunk but are NOT the cited content.
-    2. Progressive prefix slices.
-    3. Middle-of-clip slices.
-
-    Shorter phrases match more reliably when line-breaks or hyphenation differ.
-    """
-    # Strip [Page N | AR/EN] citation tags that the LLM appends — they won't
-    # appear in the raw PDF text and will cause every search to fail.
     t = re.sub(r"\[Page\s*\d+[^\]]*\]", "", clip_text or "", flags=re.IGNORECASE)
     t = re.sub(r"\s+", " ", t).strip()
     if not t:
         return []
-
     candidates = []
     seen = set()
-
     def _add(s: str):
         s = s.strip()
         if s and s not in seen and len(s) >= 25:
             seen.add(s)
             candidates.append(s)
-
-    # 1. Sentence-level candidates — skip any sentence that looks like a header
-    #    (too short, or all-caps, or ends without a content word).
     sentences = re.split(r'(?<=[.!?؟])\s+|\n', t)
     content_sentences = [
         s.strip() for s in sentences
-        if len(s.strip()) >= 40  # skip short header lines
-        and not re.match(r'^[A-Z\s\d\-:،.]+$', s.strip())  # skip ALL-CAPS lines
+        if len(s.strip()) >= 40
+        and not re.match(r'^[A-Z\s\d\-:،.]+$', s.strip())
     ]
     for sent in content_sentences[:5]:
         s = sent.strip()
@@ -72,23 +51,17 @@ def _search_candidates(clip_text: str) -> list[str]:
             _add(s)
         elif len(s) > 200:
             _add(s[:180])
-
-    # 2. Prefix length candidates (fallback)
     for n in (180, 150, 120, 90, 65, 45):
         if len(t) >= n:
-            # Skip if this prefix looks like a short header/title
             prefix = t[:n].strip()
-            if len(prefix.split()) >= 5:  # at least 5 words
+            if len(prefix.split()) >= 5:
                 _add(prefix)
-
-    # 3. Middle slices
     if len(t) > 90:
         mid = len(t) // 3
         for n in (120, 80, 50):
             chunk = t[mid: mid + n]
             if len(chunk) >= 25:
                 _add(chunk)
-
     return candidates
 
 
@@ -101,11 +74,8 @@ def _rect_too_small(rect: fitz.Rect, page: fitz.Page) -> bool:
     return (w * h) < (pr.width * pr.height * 0.008)
 
 
-# ─── PDF rendering ─────────────────────────────────────────────
-
 @st.cache_data
 def render_page_to_image(pdf_path: str, page_num: int, zoom: float = 1.75) -> bytes:
-    """Render a full PDF page to PNG image bytes (no highlight)."""
     doc = fitz.open(pdf_path)
     page = doc.load_page(page_num - 1)
     pix = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom))
@@ -115,33 +85,13 @@ def render_page_to_image(pdf_path: str, page_num: int, zoom: float = 1.75) -> by
 
 
 @st.cache_data
-def render_page_highlighted(
-    pdf_path: str,
-    page_num: int,
-    clip_text: str,
-    zoom: float = 1.75,
-) -> bytes:
-    """
-    Renders the full PDF page with yellow highlight drawn over the region
-    that best matches clip_text.
-
-    clip_text should be built from the ANSWER excerpt + query (not the raw
-    chunk prefix) so that the highlight lands on the cited sentence/table row,
-    not on the section header.
-
-    Strategy:
-    1. Try sentence-level phrases first (most precise).
-    2. Fall through to shorter prefix phrases.
-    3. Fall back to the full page with no highlight if nothing matches.
-    """
+def render_page_highlighted(pdf_path: str, page_num: int, clip_text: str, zoom: float = 1.75) -> bytes:
     doc = fitz.open(pdf_path)
     page = doc.load_page(page_num - 1)
     matrix = fitz.Matrix(zoom, zoom)
-
     highlight_rects: list[fitz.Rect] = []
-
     for phrase in _search_candidates(clip_text):
-        found = page.search_for(phrase, quads=False)   # returns list[Rect]
+        found = page.search_for(phrase, quads=False)
         if not found:
             continue
         union = found[0]
@@ -151,31 +101,21 @@ def render_page_highlighted(
             continue
         highlight_rects = found
         break
-
     if highlight_rects:
         shape = page.new_shape()
         for rect in highlight_rects:
             padded = fitz.Rect(
-                rect.x0,
-                max(0, rect.y0 - 2),
-                rect.x1,
-                min(page.rect.height, rect.y1 + 2),
+                rect.x0, max(0, rect.y0 - 2),
+                rect.x1, min(page.rect.height, rect.y1 + 2),
             )
             shape.draw_rect(padded)
-        shape.finish(
-            fill=_HIGHLIGHT_COLOR,
-            color=None,
-            fill_opacity=_HIGHLIGHT_OPACITY,
-        )
+        shape.finish(fill=_HIGHLIGHT_COLOR, color=None, fill_opacity=_HIGHLIGHT_OPACITY)
         shape.commit()
-
     pix = page.get_pixmap(matrix=matrix)
     img_bytes = pix.tobytes("png")
     doc.close()
     return img_bytes
 
-
-# ─── Arabic NLP Stack ──────────────────────────────────────────
 
 @st.cache_resource
 def load_nlp_stack():
@@ -187,10 +127,17 @@ def load_nlp_stack():
     return dialect_pipe, ara_tokenizer
 
 
-# ─── Main setup ────────────────────────────────────────────────
-
 @st.cache_resource
 def setup():
+    """
+    Returns:
+        ar_index, en_index,
+        routing_llm,   — tool-calling orchestrator (llama-3.3-70b, small prompt)
+        en_llm,        — English answer generation (llama-3.3-70b)
+        ar_llm,        — Arabic / Franco answer generation (qwen3-32b, no thinking)
+        critique_llm,  — self-critique (llama-3.1-8b-instant, 131k ctx, cheap)
+        reranker, dialect_pipe, ara_tokenizer
+    """
     dialect_pipe, ara_tokenizer = load_nlp_stack()
 
     emb = HuggingFaceEmbeddings(
@@ -218,7 +165,41 @@ def setup():
     ar_index = build_index(ARABIC_PDF_PATH,  lambda t: normalize_arabic(t, ara_tokenizer))
     en_index = build_index(ENGLISH_PDF_PATH, normalize_english)
 
-    ar_llm = ChatGroq(groq_api_key=api_key, model_name="llama-3.3-70b-versatile", temperature=0)
-    en_llm = ChatGroq(groq_api_key=api_key, model_name="llama-3.3-70b-versatile", temperature=0)
+    # ── LLM roles ────────────────────────────────────────────────────────────
+    # routing_llm: orchestrator tool-calling loop — prompt is small (no context),
+    #              needs tool-calling support → llama-3.3-70b
+    routing_llm = ChatGroq(
+        groq_api_key=api_key,
+        model_name="llama-3.3-70b-versatile",
+        temperature=0,
+    )
+
+    # en_llm: English policy + hybrid answer generation — large context needed
+    en_llm = ChatGroq(
+        groq_api_key=api_key,
+        model_name="llama-3.3-70b-versatile",
+        temperature=0,
+    )
+
+    # ar_llm: Arabic / Egyptian / Franco answer generation
+    # qwen3-32b with thinking DISABLED via model_kwargs to prevent verbose output
+    ar_llm = ChatGroq(
+        groq_api_key=api_key,
+        model_name="qwen/qwen3-32b",
+        temperature=0,
+    )
+
+    # critique_llm: self-critique — tiny prompt, fast, 131k token limit on free tier
+    critique_llm = ChatGroq(
+        groq_api_key=api_key,
+        model_name="llama-3.1-8b-instant",
+        temperature=0,
+    )
+
     reranker = CrossEncoder("cross-encoder/mmarco-mMiniLMv2-L12-H384-v1")
-    return ar_index, en_index, ar_llm, en_llm, reranker, dialect_pipe, ara_tokenizer
+
+    return (
+        ar_index, en_index,
+        routing_llm, en_llm, ar_llm, critique_llm,
+        reranker, dialect_pipe, ara_tokenizer,
+    )
