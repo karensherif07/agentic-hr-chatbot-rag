@@ -481,3 +481,11 @@ with engine.begin() as conn:
 
     print("✓ Training records inserted")
     print("\n✅ Seed complete. Database is ready.")
+
+    insert_review(conn, karen_id, 'H1 2025', date(2025,6,30), 4, eng_mgr_id,
+    'Strong delivery on search feature', 'Documentation habits', 'Good first year')
+
+    insert_okr(conn, karen_id, 'H1 2026',
+    'Improve chatbot retrieval accuracy',
+    [{'kr':'Reduce unanswered rate below 10%','target':'10%','progress_pct':60,'status':'on-track'}],
+    60, 'on-track', date(2026,1,15))
