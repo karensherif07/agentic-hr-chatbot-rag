@@ -1,6 +1,27 @@
 import re
 
-ARABIC_PDF_PATH = "policies/ar_policy.pdf"
+# ── Import the path sets from setup so lang-tag detection stays in sync
+# with whatever PDFs are configured there.  Avoid a circular import by
+# importing only the constants (no functions).
+try:
+    from setup import ARABIC_PDF_PATH_SET, ENGLISH_PDF_PATH_SET
+    # Keep the legacy single-value name for any code that still uses it directly.
+    from setup import ARABIC_PDF_PATH
+except ImportError:
+    # Fallback for environments where setup hasn't been imported yet
+    ARABIC_PDF_PATH      = "policies/ar_policy.pdf"
+    ARABIC_PDF_PATH_SET  = {ARABIC_PDF_PATH}
+    ENGLISH_PDF_PATH_SET = {"policies/eng_policy.pdf"}
+
+
+def _is_arabic_source(source: str) -> bool:
+    """True if `source` belongs to any configured Arabic PDF."""
+    return any(p in source for p in ARABIC_PDF_PATH_SET)
+
+
+def _is_english_source(source: str) -> bool:
+    """True if `source` belongs to any configured English PDF."""
+    return any(p in source for p in ENGLISH_PDF_PATH_SET)
 
 
 def translate(llm, text: str, target_language: str) -> str:
@@ -21,7 +42,6 @@ def summarize_history(llm, chat_history: list, existing_summary: str = "") -> st
     """
     if not chat_history:
         return existing_summary or ""
-    # Only last 4 messages (2 turns) to keep prompt tiny
     lines = []
     for msg in chat_history[-4:]:
         role = "U" if msg["role"] == "user" else "A"
@@ -33,7 +53,7 @@ def summarize_history(llm, chat_history: list, existing_summary: str = "") -> st
     )
     try:
         res = llm.invoke(prompt)
-        return res.content.strip()[:300]   # hard cap output
+        return res.content.strip()[:300]
     except Exception:
         return existing_summary or ""
 
@@ -41,11 +61,9 @@ def summarize_history(llm, chat_history: list, existing_summary: str = "") -> st
 def build_history_str(chat_history: list, conversation_summary: str = "") -> str:
     """Token-optimized: summary only (40 words), or last 1 turn if no summary."""
     if conversation_summary:
-        # Already capped at 300 chars in summarize_history
         return f"Context: {conversation_summary}"
     if not chat_history:
         return ""
-    # No summary yet — send only the single most recent exchange
     recent = chat_history[-2:]
     lines = []
     for msg in recent:
@@ -62,7 +80,8 @@ def build_context(docs: list) -> str:
     out = []
     for d in sorted_docs:
         page_num = d.metadata.get("page", 0) + 1
-        lang_tag = "AR" if ARABIC_PDF_PATH in d.metadata.get("source", "") else "EN"
+        source   = d.metadata.get("source", "")
+        lang_tag = "AR" if _is_arabic_source(source) else "EN"
         out.append(f"[Page {page_num} | {lang_tag}]\n{d.page_content}")
     return "\n\n---\n\n".join(out)
 
@@ -117,13 +136,15 @@ def filter_cited_chunks(docs: list, cited_pages: set) -> list:
     """
     cited_pages is set of (page_num, lang_tag) tuples.
     Only include docs whose exact (page, AR/EN) pair was cited.
+    Works across all configured PDFs — no hard-coded path checks.
     """
     if not cited_pages:
         return docs
     result = []
     for d in docs:
         page_num = d.metadata.get("page", 0) + 1
-        lang_tag = "AR" if ARABIC_PDF_PATH in d.metadata.get("source", "") else "EN"
+        source   = d.metadata.get("source", "")
+        lang_tag = "AR" if _is_arabic_source(source) else "EN"
         if (page_num, lang_tag) in cited_pages:
             result.append(d)
     return result

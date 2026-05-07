@@ -1,5 +1,13 @@
+import os
 import re
 
+from langchain_groq import ChatGroq
+# api_key = os.getenv("GROQ_API_KEY")
+# llm = ChatGroq(
+#         groq_api_key=api_key,
+#         model_name="qwen/qwen3-32b",
+#         temperature=0,
+#     )
 # ── Franco tier-1: high-confidence Egyptian Arabic words written in Latin ──
 FRANCO_TIER1 = {
     "ana", "enta", "enti", "ehna", "entom", "howa", "hya", "homma",
@@ -75,12 +83,55 @@ FRANCO_WORDS = {
     "3amela": "عاملة", "3amel": "عامل",
     "byiji": "بيجي", "byigi": "بيجي",
     "segelak": "سجلك", "segelti": "سجلتي",
-    "okrs": "أهداف",
+    "okrs": "أهداف", "m4":"مش","msh":"مش","mesh":"مش","mish":"مش",
+    "3aiz":"عايز","3ayz":"عايز","3ayez":"عايز","3ayza":"عايزة",
+    "2ywa":"ايوه","ah":"اه","aha":"اه",
+    "fe":"في","fi":"في","fy":"في",
+    "kolo":"كله","kollo":"كله",
+    "ehna":"احنا","enta":"انت","enti":"انتي",
+    "y3ni":"يعني","3shan":"عشان","3ashan":"عشان",
 }
 
-# ── English stop words — enough coverage to distinguish English from Franco ──
-# Threshold: >= 2 hits → English. This catches normal English sentences
-# even if they happen to contain digit-like characters.
+
+# HR-Specific Mapping: Normalizes colloquial Egyptian HR terms to formal MSA[cite: 5]
+EGY_TO_MSA_WORDS = {
+    "عايز":"أريد","عايزة":"أريد","عاوز":"أريد","عاوزه":"أريد",
+    "أجازة":"إجازة","اجازه":"إجازة","اجازة":"إجازة","أجازتي":"إجازتي",
+    "مرتب":"راتب","المرتب":"الراتب","بقبض":"أستلم راتب","بياخد":"يأخذ","هياخد":"سيأخذ",
+    "ازاي":"كيف","إزاي":"كيف","فين":"أين","امتى":"متى","إمتى":"متى","إيه":"ماذا","ايه":"ماذا",
+    "دلوقتي":"الآن","مش":"ليس","ينفع":"هل يمكن","ممكن":"هل يمكن",
+    "بتاعي":"الخاص بي","بتاعتي":"الخاصة بي","شغلي":"عملي",
+    "برضه":"أيضاً","كمان":"أيضاً","لسه":"ما زال",
+    "ده":"هذا","دي":"هذه","دول":"هؤلاء","هو":"هو","هي":"هي","احنا":"نحن",
+    "عشان":"لأن","علشان":"لأن","فيه":"يوجد","مفيش":"لا يوجد",
+    "ليه":"لماذا","ليه":"لماذا","كده":"هكذا",
+    "يلا":"هيا","ماشي":"حسناً","تمام":"حسناً",
+
+    # HR / workplace
+    "شغل":"عمل","شغلي":"عملي","شغلك":"عملك",
+    "راتبي":"راتبي","بيشتغل":"يعمل","اشتغل":"عمل","اشتغلت":"عملت",
+    "اجازتي":"إجازتي","مواعيد":"مواعيد","ساعة":"ساعة","ساعات":"ساعات",
+    "فترة":"فترة","تجربة":"تجربة","فترة التجربة":"فترة الاختبار",
+
+    # verbs / intent
+    "عايز اعرف":"أريد أن أعرف","عايزة اعرف":"أريد أن أعرف",
+    "ممكن اعرف":"هل يمكنني معرفة","عايز اسأل":"أريد أن أسأل",
+    "عايزة اسأل":"أريد أن أسأل",
+}
+EGY_PHRASES = {
+    "مش عارف":"لا أعلم",
+    "مش فاهم":"لا أفهم",
+    "عايز اعرف":"أريد أن أعرف",
+    "عايزة اعرف":"أريد أن أعرف",
+    "ممكن اعرف":"هل يمكنني معرفة",
+    "فيه مشكلة":"هناك مشكلة",
+    "مفيش مشكلة":"لا توجد مشكلة",
+    "عايز اسأل":"أريد أن أسأل",
+    "عايزة اسأل":"أريد أن أسأل",
+    "ايه ده":"ما هذا",
+    "ليه كده":"لماذا هكذا",
+}
+
 ENGLISH_STOP_WORDS = {
     "the", "is", "are", "what", "how", "who", "where", "of", "and",
     "to", "for", "can", "i", "if", "do", "does", "will", "my", "me",
@@ -100,47 +151,32 @@ EGY_MARKERS = {
     "بتاعك", "شغلك", "مش عارف", "عايز أعرف", "ممكن",
 }
 
-
 def detect_language_type(text: str) -> str:
-    # Arabic script → arabic
     if re.search(r"[\u0600-\u06FF]", text):
         return "arabic"
-
     tokens = re.findall(r"[a-zA-Z0-9]+", text.lower())
     token_set = set(tokens)
-
-    # >= 2 English stop words → English (catches "Can I get a bonus if I am on a PIP?")
     en_hits = token_set & ENGLISH_STOP_WORDS
     if len(en_hits) >= 2:
         return "english"
-
-    # Franco tier-1 vocabulary hit
     if token_set & FRANCO_TIER1:
         return "franco"
-
-    # Franco digit-in-word heuristic (e.g. 3ayz, 7aga, 2ad)
     franco_hits = sum(
         1 for tok in tokens
         if len(tok) >= 2 and re.search(r"[a-z]", tok) and re.search(r"[23578]", tok)
     )
     if franco_hits >= 1:
         return "franco"
-
-    # Single English stop word
     if en_hits:
         return "english"
-
     return "english"
-
 
 def get_semantic_dialect(text: str, dialect_pipe) -> str:
     if not isinstance(text, str):
         return "msa"
-
     tokens = set(re.findall(r"[\u0600-\u06FF]+", text))
     if tokens & EGY_MARKERS:
         return "egyptian"
-
     try:
         res = dialect_pipe(text)[0]
         label = res['label'].upper()
@@ -148,9 +184,62 @@ def get_semantic_dialect(text: str, dialect_pipe) -> str:
             return "egyptian"
     except Exception:
         pass
-
     return "msa"
 
+from functools import lru_cache
+
+@lru_cache(maxsize=2000)
+def egyptian_to_msa(query: str, llm=None) -> str:
+    """
+    Hybrid Egyptian → MSA translation optimized for retrieval.
+    """
+
+    if not query:
+        return query
+
+    # ---------------------------
+    # 1. Phrase-level normalization (highest priority)
+    # ---------------------------
+    text = query
+    for k, v in EGY_PHRASES.items():
+        text = re.sub(rf"\b{k}\b", v, text)
+
+    for k, v in EGY_TO_MSA_WORDS.items():
+        text = re.sub(rf"\b{k}\b", v, text)
+
+    # ---------------------------
+    # 2. Franco → Arabic cleanup
+    # ---------------------------
+    # text = franco_to_arabic(text)
+
+#     # ---------------------------
+#     # 3. LLM refinement (CRITICAL STEP)
+#     # ---------------------------
+#     if llm is None:
+#         return text
+
+#     prompt = f"""
+# You are an expert Arabic linguist.
+
+# Convert the following Egyptian Arabic user query into Modern Standard Arabic (MSA).
+
+# Rules:
+# - Keep meaning EXACT
+# - Do NOT translate into English
+# - Remove slang completely
+# - Output a short retrieval-optimized query (not a sentence if possible)
+# - Prefer keywords over long phrasing
+
+# Query:
+# {text}
+
+# MSA:
+# """
+
+#     try:
+#         return llm.invoke(prompt).content.strip()
+#     except Exception:
+    return text
 
 def clean_pdf(text: str) -> str:
     text = re.sub(r"[\ufeff\u200b\u200c\u200d\u200e\u200f]", "", text)
@@ -159,7 +248,6 @@ def clean_pdf(text: str) -> str:
     text = re.sub(r" *\n *", "\n", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
-
 
 def normalize_arabic(text: str, ara_tokenizer) -> str:
     try:
@@ -172,10 +260,8 @@ def normalize_arabic(text: str, ara_tokenizer) -> str:
     segmented = re.sub(r"[\u064B-\u065F]", "", segmented)
     return segmented.lower()
 
-
 def normalize_english(text: str) -> str:
     return text.lower()
-
 
 def franco_to_arabic(text: str) -> str:
     words = text.lower().split()
@@ -189,7 +275,6 @@ def franco_to_arabic(text: str) -> str:
                 result = result.replace(digit, arabic_char)
             converted.append(result)
     return " ".join(converted)
-
 
 def tokenize(text: str) -> list:
     text = re.sub(r"[\"']", "", text)

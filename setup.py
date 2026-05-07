@@ -20,12 +20,41 @@ from nlp_utils import clean_pdf, normalize_arabic, normalize_english, tokenize
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
-ARABIC_PDF_PATH  = "policies/ar_policy.pdf"
-ENGLISH_PDF_PATH = "policies/eng_policy.pdf"
+# ── PDF catalogue ─────────────────────────────────────────────────────────────
+# Each entry is (file_path, short_doc_name).
+# short_doc_name MUST match the "ground_truth_doc" field in your eval JSON
+# so the evaluator can compare retrieved source against the gold standard.
+
+ARABIC_PDF_ENTRIES = [
+    ("policies/ar_policy.pdf",          "ar_policy.pdf"),
+    ("policies/ar_recruitment.pdf",     "ar_recruitment.pdf"),
+    ("policies/ar_payroll_finance.pdf", "ar_payroll_finance.pdf"),
+]
+
+ENGLISH_PDF_ENTRIES = [
+    ("policies/eng_policy.pdf",              "eng_policy.pdf"),
+    ("policies/eng_wellness_benefits.pdf",   "eng_wellness_benefits.pdf"),
+    ("policies/eng_training_development.pdf","eng_training_development.pdf"),
+    ("policies/eng_workplace_conduct.pdf",   "eng_workplace_conduct.pdf"),
+]
+
+# Convenience: plain path lists (used by retrieval / utils for lang detection)
+ARABIC_PDF_PATHS  = [p for p, _ in ARABIC_PDF_ENTRIES]
+ENGLISH_PDF_PATHS = [p for p, _ in ENGLISH_PDF_ENTRIES]
+
+# Sets for fast membership checks
+ARABIC_PDF_PATH_SET  = set(ARABIC_PDF_PATHS)
+ENGLISH_PDF_PATH_SET = set(ENGLISH_PDF_PATHS)
+
+# Backward-compat single-value aliases
+ARABIC_PDF_PATH  = ARABIC_PDF_PATHS[0]
+ENGLISH_PDF_PATH = ENGLISH_PDF_PATHS[0]
 
 _HIGHLIGHT_COLOR   = (1.0, 0.95, 0.0)
 _HIGHLIGHT_OPACITY = 0.35
 
+
+# ── Highlight helpers ─────────────────────────────────────────────────────────
 
 def _search_candidates(clip_text: str) -> list[str]:
     t = re.sub(r"\[Page\s*\d+[^\]]*\]", "", clip_text or "", flags=re.IGNORECASE)
@@ -34,11 +63,13 @@ def _search_candidates(clip_text: str) -> list[str]:
         return []
     candidates = []
     seen = set()
+
     def _add(s: str):
         s = s.strip()
         if s and s not in seen and len(s) >= 25:
             seen.add(s)
             candidates.append(s)
+
     sentences = re.split(r'(?<=[.!?؟])\s+|\n', t)
     content_sentences = [
         s.strip() for s in sentences
@@ -85,7 +116,9 @@ def render_page_to_image(pdf_path: str, page_num: int, zoom: float = 1.75) -> by
 
 
 @st.cache_data
-def render_page_highlighted(pdf_path: str, page_num: int, clip_text: str, zoom: float = 1.75) -> bytes:
+def render_page_highlighted(
+    pdf_path: str, page_num: int, clip_text: str, zoom: float = 1.75
+) -> bytes:
     doc = fitz.open(pdf_path)
     page = doc.load_page(page_num - 1)
     matrix = fitz.Matrix(zoom, zoom)
@@ -109,7 +142,9 @@ def render_page_highlighted(pdf_path: str, page_num: int, clip_text: str, zoom: 
                 rect.x1, min(page.rect.height, rect.y1 + 2),
             )
             shape.draw_rect(padded)
-        shape.finish(fill=_HIGHLIGHT_COLOR, color=None, fill_opacity=_HIGHLIGHT_OPACITY)
+        shape.finish(
+            fill=_HIGHLIGHT_COLOR, color=None, fill_opacity=_HIGHLIGHT_OPACITY
+        )
         shape.commit()
     pix = page.get_pixmap(matrix=matrix)
     img_bytes = pix.tobytes("png")
@@ -119,87 +154,131 @@ def render_page_highlighted(pdf_path: str, page_num: int, clip_text: str, zoom: 
 
 @st.cache_resource
 def load_nlp_stack():
-    dialect_pipe  = pipeline(
+    dialect_pipe = pipeline(
         "text-classification",
-        model="IbrahimAmin/marbertv2-arabic-written-dialect-classifier"
+        model="IbrahimAmin/marbertv2-arabic-written-dialect-classifier",
     )
     ara_tokenizer = AutoTokenizer.from_pretrained("aubmindlab/bert-base-arabertv02")
     return dialect_pipe, ara_tokenizer
 
 
-@st.cache_resource
+# ── Index builder ─────────────────────────────────────────────────────────────
+
+def _build_index(
+    pdf_entries: list[tuple[str, str]],
+    normalize_fn,
+    lang_tag: str,
+    emb,
+):
+    """
+    Load and index a list of (path, doc_name) PDF entries into a single
+    merged FAISS + BM25 index.
+
+    Each chunk's metadata carries:
+      • "source"   – the full file path (set by PyMuPDFLoader)
+      • "doc_name" – the short filename (e.g. "ar_policy.pdf").
+                     This is what the evaluator compares against
+                     ground_truth_doc in the eval JSON.
+      • "lang"     – "arabic" or "english"
+      • "page"     – 1-based page number (set by PyMuPDFLoader)
+
+    WHY doc_name?
+    PyMuPDFLoader sets metadata["source"] to the full path
+    (e.g. "policies/ar_policy.pdf").  Your eval JSON stores only the
+    filename ("ar_policy.pdf").  Storing doc_name gives retrieval and
+    evaluation code a single reliable key to compare without fragile
+    path-stripping logic.
+    """
+    all_docs = []
+
+    for path, doc_name in pdf_entries:
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"Missing policy PDF: {path}")
+
+        pages = PyMuPDFLoader(path).load()
+
+        for d in pages:
+            d.page_content = clean_pdf(d.page_content)
+            d.metadata["doc_type"] = "policy"
+            d.metadata["lang"]     = lang_tag
+            # ↓ NEW: short doc identifier used by evaluation & citation UI
+            d.metadata["doc_name"] = doc_name
+
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=200,
+            chunk_overlap=50,
+            separators=["\n\n", "\n", ".", "?", "!", " ", "---", "|"],
+        )
+        all_docs.extend(splitter.split_documents(pages))
+
+    # Prepend passage prefix required by multilingual-e5
+    for d in all_docs:
+        d.page_content = "passage: " + d.page_content
+
+    bm25_corpus = [tokenize(normalize_fn(d.page_content)) for d in all_docs]
+    vs   = FAISS.from_documents(all_docs, emb)
+    bm25 = BM25Okapi(bm25_corpus)
+    return vs, bm25, all_docs
+
+
+# ── Main setup ────────────────────────────────────────────────────────────────
+
 def setup():
     """
     Returns:
-        ar_index, en_index,
-        routing_llm,   — tool-calling orchestrator (llama-3.3-70b, small prompt)
-        en_llm,        — English answer generation (llama-3.3-70b)
-        ar_llm,        — Arabic / Franco answer generation (qwen3-32b, no thinking)
-        critique_llm,  — self-critique (llama-3.1-8b-instant, 131k ctx, cheap)
+        ar_index  – (FAISS, BM25, docs) for Arabic PDFs
+        en_index  – (FAISS, BM25, docs) for English PDFs
+        routing_llm   – tool-calling orchestrator (llama-3.3-70b)
+        en_llm        – English answer generation  (llama-3.3-70b)
+        ar_llm        – Arabic / Franco generation  (qwen3-32b, no thinking)
+        critique_llm  – self-critique               (llama-3.1-8b-instant)
         reranker, dialect_pipe, ara_tokenizer
     """
     dialect_pipe, ara_tokenizer = load_nlp_stack()
 
-    emb = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    emb = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large")
+
+    ar_index = _build_index(
+        ARABIC_PDF_ENTRIES,
+        lambda t: normalize_arabic(t, ara_tokenizer),
+        lang_tag="arabic",
+        emb=emb,
+    )
+    en_index = _build_index(
+        ENGLISH_PDF_ENTRIES,
+        normalize_english,
+        lang_tag="english",
+        emb=emb,
     )
 
-    def build_index(path: str, normalize_fn):
-        if not os.path.exists(path):
-            raise FileNotFoundError(f"Missing file: {path}")
-        pages = PyMuPDFLoader(path).load()
-        for d in pages:
-            d.page_content = clean_pdf(d.page_content)
-            d.metadata["doc_type"] = "policy"
-            d.metadata["lang"] = "arabic" if ARABIC_PDF_PATH in path else "english"
-        splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000, chunk_overlap=300,
-            separators=["\n\n", "\n", ".", "?", "!", " ", "---", "|"]
-        )
-        docs = splitter.split_documents(pages)
-        bm25_corpus = [tokenize(normalize_fn(d.page_content)) for d in docs]
-        vs   = FAISS.from_documents(docs, emb)
-        bm25 = BM25Okapi(bm25_corpus)
-        return vs, bm25, docs
-
-    ar_index = build_index(ARABIC_PDF_PATH,  lambda t: normalize_arabic(t, ara_tokenizer))
-    en_index = build_index(ENGLISH_PDF_PATH, normalize_english)
-
-    # ── LLM roles ────────────────────────────────────────────────────────────
-    # routing_llm: orchestrator tool-calling loop — prompt is small (no context),
-    #              needs tool-calling support → llama-3.3-70b
+    # ── LLM roles ─────────────────────────────────────────────────────────────
     routing_llm = ChatGroq(
         groq_api_key=api_key,
         model_name="llama-3.3-70b-versatile",
         temperature=0,
     )
-
-    # en_llm: English policy + hybrid answer generation — large context needed
     en_llm = ChatGroq(
         groq_api_key=api_key,
         model_name="llama-3.3-70b-versatile",
         temperature=0,
     )
-
-    # ar_llm: Arabic / Egyptian / Franco answer generation
-    # qwen3-32b with thinking DISABLED via model_kwargs to prevent verbose output
     ar_llm = ChatGroq(
         groq_api_key=api_key,
         model_name="qwen/qwen3-32b",
         temperature=0,
     )
-
-    # critique_llm: self-critique — tiny prompt, fast, 131k token limit on free tier
     critique_llm = ChatGroq(
         groq_api_key=api_key,
         model_name="llama-3.1-8b-instant",
         temperature=0,
     )
 
-    reranker = CrossEncoder("cross-encoder/mmarco-mMiniLMv2-L12-H384-v1")
+    reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")
 
     return (
         ar_index, en_index,
         routing_llm, en_llm, ar_llm, critique_llm,
         reranker, dialect_pipe, ara_tokenizer,
     )
+
+

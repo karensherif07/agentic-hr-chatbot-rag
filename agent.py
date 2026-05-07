@@ -23,10 +23,15 @@ from personal_data import (
     get_payroll_history, get_training_record, get_active_disciplinary,
 )
 from retrieval import retrieve, rerank, rrf
-from nlp_utils import normalize_arabic, normalize_english, detect_language_type, franco_to_arabic
+from nlp_utils import (
+    egyptian_to_msa, get_semantic_dialect,
+    normalize_arabic, normalize_english,
+    detect_language_type, franco_to_arabic,
+)
 from utils import (
     build_context, is_no_info_answer, validate,
-    get_cited_pages, strip_citations, filter_cited_chunks, ARABIC_PDF_PATH,
+    get_cited_pages, strip_citations, filter_cited_chunks,
+    ARABIC_PDF_PATH, _is_arabic_source,
 )
 from prompts import english_prompt, msa_prompt, egy_prompt, franco_prompt
 from personal_prompts import get_personal_prompt, get_hybrid_prompt, format_personal_data
@@ -46,7 +51,7 @@ Language (Arabic, Franco, English) does not change the routing logic."""
 _DB_KEYS = ["profile", "leave_data", "salary_data", "performance_data", "training_data", "disciplinary_data"]
 
 # Context truncation — keeps answer prompt within ~2,000 tokens
-_MAX_CHUNK_CHARS   = 800
+_MAX_CHUNK_CHARS    = 800
 _MAX_CONTEXT_CHUNKS = 5
 
 
@@ -58,7 +63,7 @@ def _build_context_truncated(docs: list) -> str:
     out = []
     for d in sorted_docs:
         page_num = d.metadata.get("page", 0) + 1
-        lang_tag = "AR" if ARABIC_PDF_PATH in d.metadata.get("source", "") else "EN"
+        lang_tag = "AR" if _is_arabic_source(d.metadata.get("source", "")) else "EN"
         content  = d.page_content[:_MAX_CHUNK_CHARS]
         if len(d.page_content) > _MAX_CHUNK_CHARS:
             content += "…"
@@ -98,22 +103,46 @@ def _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer):
         promotion criteria, disciplinary steps, data retention periods."""
         ar_vs, ar_bm25, ar_docs = ar_index
         en_vs, en_bm25, en_docs = en_index
-        q_lang   = detect_language_type(query)
-        ar_query = franco_to_arabic(query) if q_lang == "franco" else query
-        
-        # Retrieve from both indexes with higher k to avoid missing relevant chunks
-        docs_ar  = retrieve(ar_query, ar_vs, ar_bm25, ar_docs, lambda t: normalize_arabic(t, ara_tokenizer), k=15)
-        docs_en  = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=15)
-        
-        # Merge with RRF to combine signals
+
+        q_lang = detect_language_type(query)
+
+        # --- Build Arabic-side queries ---
+        if q_lang == "franco":
+            # Step 1: Latin → Arabic script
+            ar_query_raw = franco_to_arabic(query)
+            # Step 2: Egyptian dialect → MSA for better index coverage
+            ar_query_msa = egyptian_to_msa(ar_query_raw)
+            ar_queries = [ar_query_raw, ar_query_msa]
+        elif q_lang == "arabic":
+            # Check if colloquial Egyptian slipped through as "arabic"
+            if get_semantic_dialect(query, ara_tokenizer) == "egyptian":
+                ar_queries = [query, egyptian_to_msa(query)]
+            else:
+                ar_queries = [query]
+        else:
+            # English query — still search Arabic index with the English terms
+            # (cross-lingual retrieval catches bilingual chunks)
+            ar_queries = [query]
+
+        # Retrieve from Arabic index with all query variants, then fuse
+        ar_results = []
+        for q in ar_queries:
+            ar_results.append(
+                retrieve(q, ar_vs, ar_bm25, ar_docs,
+                         lambda t: normalize_arabic(t, ara_tokenizer),
+                         k=40)
+            )
+        docs_ar = rrf(*ar_results) if len(ar_results) > 1 else ar_results[0]
+
+        # English index always gets the original query
+        docs_en = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=40)
+
         combined = rrf(docs_ar, docs_en)
-        
-        # Rerank with more candidates to ensure quality
-        # top_n increased from 4 to 6 to capture more relevant context
         top_docs, scores = rerank(query, combined, reranker, top_n=6)
-        
+
         if not top_docs:
             return "No relevant policy found."
+
         retrieve_policy._last_docs   = top_docs
         retrieve_policy._last_scores = scores
         return _build_context_truncated(top_docs)
@@ -125,7 +154,8 @@ def _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer):
         and probation status. Use when the question is about the employee's
         own identity, status, or role attributes."""
         data = get_employee_profile(employee_id)
-        if not data: return "Profile not found."
+        if not data:
+            return "Profile not found."
         return json.dumps(data, default=str, ensure_ascii=False, indent=2)
 
     @tool
@@ -178,8 +208,10 @@ def _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer):
         data = get_active_disciplinary(employee_id)
         return json.dumps(data, default=str, ensure_ascii=False, indent=2)
 
-    tools = [retrieve_policy, get_profile, get_leave_data, get_salary_data,
-             get_performance_data, get_training_data, get_disciplinary_data]
+    tools = [
+        retrieve_policy, get_profile, get_leave_data, get_salary_data,
+        get_performance_data, get_training_data, get_disciplinary_data,
+    ]
     return tools, retrieve_policy
 
 
@@ -187,8 +219,10 @@ def _merge_db(tool_results):
     combined = {}
     for key in _DB_KEYS:
         if key in tool_results:
-            try: combined.update(json.loads(tool_results[key]))
-            except: pass
+            try:
+                combined.update(json.loads(tool_results[key]))
+            except Exception:
+                pass
     return combined
 
 
@@ -205,20 +239,28 @@ def _format_answer(lang, dialect, question, tool_results, history_str, en_llm, a
     if has_db and has_policy:
         res = _invoke_with_retry(llm, get_hybrid_prompt(lang, dialect).format(
             personal_data=format_personal_data(_merge_db(tool_results)),
-            policy_context=ctx, question=question, history=history_str,
+            policy_context=ctx,
+            question=question,
+            history=history_str,
         ))
     elif has_db:
         res = _invoke_with_retry(llm, get_personal_prompt(lang, dialect).format(
             personal_data=format_personal_data(_merge_db(tool_results)),
-            question=question, history=history_str,
+            question=question,
+            history=history_str,
         ))
     else:
         if not ctx:
             return "This information is not available in the policy documents."
-        prompt = (english_prompt if lang == "english" else
-                  franco_prompt  if lang == "franco"  else
-                  egy_prompt     if dialect == "egyptian" else msa_prompt)
-        res = _invoke_with_retry(llm, prompt.format(context=ctx, question=question, history=history_str))
+        prompt = (
+            english_prompt if lang == "english" else
+            franco_prompt  if lang == "franco"  else
+            egy_prompt     if dialect == "egyptian" else
+            msa_prompt
+        )
+        res = _invoke_with_retry(llm, prompt.format(
+            context=ctx, question=question, history=history_str,
+        ))
 
     return _strip_qwen_thinking(res.content)
 
@@ -231,21 +273,35 @@ JSON only: {{"adequate": true, "missing": ""}} or {{"adequate": false, "missing"
 def _critique(critique_llm, answer):
     try:
         res  = _invoke_with_retry(critique_llm, _CRITIQUE_PROMPT.format(answer=answer[:400]))
-        text = re.sub(r"^```json|^```|```$", "", _strip_qwen_thinking(res.content), flags=re.MULTILINE).strip()
+        text = re.sub(
+            r"^```json|^```|```$", "",
+            _strip_qwen_thinking(res.content),
+            flags=re.MULTILINE
+        ).strip()
         return json.loads(text)
-    except:
+    except Exception:
         return {"adequate": True, "missing": ""}
 
 
 def _infer_intent(tools_called):
-    db_set     = {"get_profile","get_leave_data","get_salary_data","get_performance_data","get_training_data","get_disciplinary_data"}
+    db_set     = {
+        "get_profile", "get_leave_data", "get_salary_data",
+        "get_performance_data", "get_training_data", "get_disciplinary_data",
+    }
     has_policy = "retrieve_policy" in tools_called
     has_db     = bool(set(tools_called) & db_set)
     intent     = "hybrid" if has_db and has_policy else ("personal" if has_db else "policy")
-    topic_map  = {"get_leave_data":"leave","get_salary_data":"salary","get_performance_data":"performance",
-                  "get_training_data":"training","get_disciplinary_data":"disciplinary","get_profile":"profile"}
+    topic_map  = {
+        "get_leave_data":        "leave",
+        "get_salary_data":       "salary",
+        "get_performance_data":  "performance",
+        "get_training_data":     "training",
+        "get_disciplinary_data": "disciplinary",
+        "get_profile":           "profile",
+    }
     for t in tools_called:
-        if t in topic_map: return intent, topic_map[t]
+        if t in topic_map:
+            return intent, topic_map[t]
     return intent, ("all" if has_db else "none")
 
 
@@ -253,13 +309,19 @@ def run_agent(
     question, employee_id, lang, dialect, history_str,
     ar_index, en_index, routing_llm, en_llm, ar_llm, critique_llm,
     reranker, ara_tokenizer,
-    max_iterations=3, skip_critique=True,   # skip_critique=True by default saves tokens
+    max_iterations=3,
+    skip_critique=True,   # True by default to save tokens in production
 ):
-    tools, retrieve_policy_ref = _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer)
+    tools, retrieve_policy_ref = _make_tools(
+        employee_id, ar_index, en_index, reranker, ara_tokenizer
+    )
     tool_map       = {t.name: t for t in tools}
     llm_with_tools = routing_llm.bind_tools(tools)
 
-    messages = [SystemMessage(content=_ORCHESTRATOR_SYSTEM), HumanMessage(content=question)]
+    messages = [
+        SystemMessage(content=_ORCHESTRATOR_SYSTEM),
+        HumanMessage(content=question),
+    ]
 
     tool_results: dict = {}
     tools_called: list = []
@@ -284,20 +346,25 @@ def run_agent(
                     scores_dict = getattr(retrieve_policy_ref, "_last_scores", {})
                     tool_results["policy_context"] = result
                 else:
-                    km = {"get_profile":"profile","get_leave_data":"leave_data","get_salary_data":"salary_data",
-                          "get_performance_data":"performance_data","get_training_data":"training_data",
-                          "get_disciplinary_data":"disciplinary_data"}
+                    km = {
+                        "get_profile":           "profile",
+                        "get_leave_data":        "leave_data",
+                        "get_salary_data":       "salary_data",
+                        "get_performance_data":  "performance_data",
+                        "get_training_data":     "training_data",
+                        "get_disciplinary_data": "disciplinary_data",
+                    }
                     tool_results[km.get(tname, tname)] = result
             except Exception as e:
                 result = f"Error: {e}"
             messages.append(ToolMessage(tool_call_id=tc["id"], content=result))
 
-    raw    = _format_answer(lang, dialect, question, tool_results, history_str, en_llm, ar_llm, top_docs)
-    cited  = get_cited_pages(raw)
-    cdocs  = filter_cited_chunks(top_docs, cited)
-    clean  = strip_citations(raw)
+    raw   = _format_answer(lang, dialect, question, tool_results, history_str, en_llm, ar_llm, top_docs)
+    cited = get_cited_pages(raw)
+    cdocs = filter_cited_chunks(top_docs, cited)
+    clean = strip_citations(raw)
     db_only = any(k in tool_results for k in _DB_KEYS) and not tool_results.get("policy_context")
-    answer = clean if db_only else validate(clean, lang, has_citations=bool(cited))
+    answer  = clean if db_only else validate(clean, lang, has_citations=bool(cited))
 
     if not skip_critique and not is_no_info_answer(answer):
         c = _critique(critique_llm, answer)
@@ -310,26 +377,34 @@ def run_agent(
             t2, s2 = rerank(rq, rrf(da2, de2), reranker, top_n=4)
             if t2:
                 tool_results["policy_context"] = _build_context_truncated(t2)
-                r2   = _format_answer(lang, dialect, question, tool_results, history_str, en_llm, ar_llm, t2)
-                c2   = get_cited_pages(r2)
-                cd2  = filter_cited_chunks(t2, c2)
-                cl2  = strip_citations(r2)
-                a2   = cl2 if db_only else validate(cl2, lang, has_citations=bool(c2))
+                r2  = _format_answer(lang, dialect, question, tool_results, history_str, en_llm, ar_llm, t2)
+                c2  = get_cited_pages(r2)
+                cd2 = filter_cited_chunks(t2, c2)
+                cl2 = strip_citations(r2)
+                a2  = cl2 if db_only else validate(cl2, lang, has_citations=bool(c2))
                 if not is_no_info_answer(a2):
                     answer, top_docs, scores_dict, cdocs = a2, t2, s2, cd2
 
     intent, topic = _infer_intent(tools_called)
-    pdata = (_build_personal_data_str(tool_results) if intent in ("personal","hybrid") else "")
+    pdata = (_build_personal_data_str(tool_results) if intent in ("personal", "hybrid") else "")
 
     return {
-        "answer": answer, "docs": top_docs, "cited_docs": cdocs,
-        "scores": scores_dict, "intent": intent, "topic": topic,
-        "tools_called": tools_called, "personal_data": pdata,
+        "answer":        answer,
+        "docs":          top_docs,
+        "cited_docs":    cdocs,
+        "scores":        scores_dict,
+        "intent":        intent,
+        "topic":         topic,
+        "tools_called":  tools_called,
+        "personal_data": pdata,
     }
 
 
 def _build_personal_data_str(tool_results):
     combined = _merge_db(tool_results)
-    if not combined: return ""
-    try: return format_personal_data(combined)
-    except: return ""
+    if not combined:
+        return ""
+    try:
+        return format_personal_data(combined)
+    except Exception:
+        return ""
