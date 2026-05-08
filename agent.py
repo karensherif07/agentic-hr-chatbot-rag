@@ -41,9 +41,11 @@ _ORCHESTRATOR_SYSTEM = """You are the routing layer of an HR chatbot for Horizon
 Call the right tools for the employee's question, then stop. Do not write an answer.
 
 DECISION RULE:
-Ask: "Is the answer the same for every employee at this company?"
-  YES → call retrieve_policy only. Never add personal data tools.
-  NO  → call the relevant personal tool(s). Also call retrieve_policy if you need policy to check eligibility.
+Ask: "Is this question related to HR, company policy, or this employee's work data?"
+  NO  -> call out_of_scope only. Do not call any other tool.
+  YES -> Ask: "Is the answer the same for every employee at this company?"
+    YES -> call retrieve_policy only. Never add personal data tools.
+    NO  -> call the relevant personal tool(s). Also call retrieve_policy if you need policy to check eligibility.
 
 Tool descriptions tell you exactly what each returns. Use them to pick the right tool.
 Language (Arabic, Franco, English) does not change the routing logic."""
@@ -183,9 +185,12 @@ def _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer):
 
     @tool
     def get_performance_data() -> str:
-        """Returns THIS employee's performance review history, latest rating,
-        performance trend, bonus multiplier, and current OKRs with progress.
-        Use when the question asks about their actual rating, review, or OKR status."""
+        """Returns THIS employee's personal performance data: latest review rating
+        and label, performance trend across past cycles, current OKRs with
+        individual key-result progress, and recent review history.
+        Use when the question is about the employee's own rating, review feedback,
+        OKR status or progress, or performance trend — NOT for asking what rating
+        thresholds or bonus multipliers the company policy defines."""
         return json.dumps({
             "latest_review":     get_latest_review(employee_id),
             "performance_trend": get_performance_trend(employee_id),
@@ -202,15 +207,28 @@ def _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer):
 
     @tool
     def get_disciplinary_data() -> str:
-        """Returns THIS employee's active disciplinary records: warnings and PIP.
-        Use when checking if they have active disciplinary actions,
-        or when checking bonus/promotion eligibility (PIP disqualifies)."""
+        """Returns THIS employee's currently active disciplinary actions on record:
+        verbal warnings, written warnings, or a Performance Improvement Plan (PIP)
+        that have not yet expired. Use when the employee asks about their own
+        disciplinary status, whether they are on a PIP, or what warnings are
+        currently active against them.
+        Do NOT use for questions about how the disciplinary process works in general
+        — those are policy questions answered by retrieve_policy."""
         data = get_active_disciplinary(employee_id)
         return json.dumps(data, default=str, ensure_ascii=False, indent=2)
+
+    @tool
+    def out_of_scope() -> str:
+        """Call this when the question has absolutely nothing to do with HR,
+        company policy, or the employee's personal work data.
+        Examples: weather, general knowledge, coding help, jokes, current events.
+        Do NOT call any other tool alongside this one."""
+        return "out_of_scope"
 
     tools = [
         retrieve_policy, get_profile, get_leave_data, get_salary_data,
         get_performance_data, get_training_data, get_disciplinary_data,
+        out_of_scope,
     ]
     return tools, retrieve_policy
 
@@ -283,14 +301,24 @@ def _critique(critique_llm, answer):
         return {"adequate": True, "missing": ""}
 
 
-def _infer_intent(tools_called):
+def _infer_intent(tools_called, policy_result: str = "") -> tuple[str, str]:
     db_set     = {
         "get_profile", "get_leave_data", "get_salary_data",
         "get_performance_data", "get_training_data", "get_disciplinary_data",
     }
     has_policy = "retrieve_policy" in tools_called
     has_db     = bool(set(tools_called) & db_set)
-    intent     = "hybrid" if has_db and has_policy else ("personal" if has_db else "policy")
+
+    # OOS detection 1: router explicitly called out_of_scope tool
+    if "out_of_scope" in tools_called:
+        return "out_of_scope", "none"
+
+    # OOS detection 2: only policy tool called, but nothing useful was retrieved
+    _NO_INFO = ("no relevant policy found", "not available")
+    if has_policy and not has_db and any(p in policy_result.lower() for p in _NO_INFO):
+        intent = "out_of_scope"
+    else:
+        intent = "hybrid" if has_db and has_policy else ("personal" if has_db else "policy")
     topic_map  = {
         "get_leave_data":        "leave",
         "get_salary_data":       "salary",
@@ -344,7 +372,12 @@ def run_agent(
                 if tname == "retrieve_policy":
                     top_docs    = getattr(retrieve_policy_ref, "_last_docs",   [])
                     scores_dict = getattr(retrieve_policy_ref, "_last_scores", {})
-                    tool_results["policy_context"] = result
+                    # OOS detection 3: reranker returned results but all scores are too low
+                    top_score = max(scores_dict.values(), default=0) if scores_dict else 0
+                    if top_score < 0.25:
+                        tool_results["policy_context"] = "No relevant policy found."
+                    else:
+                        tool_results["policy_context"] = result
                 else:
                     km = {
                         "get_profile":           "profile",
@@ -385,7 +418,8 @@ def run_agent(
                 if not is_no_info_answer(a2):
                     answer, top_docs, scores_dict, cdocs = a2, t2, s2, cd2
 
-    intent, topic = _infer_intent(tools_called)
+    policy_result = tool_results.get("policy_context", "")
+    intent, topic = _infer_intent(tools_called, policy_result)
     pdata = (_build_personal_data_str(tool_results) if intent in ("personal", "hybrid") else "")
 
     return {

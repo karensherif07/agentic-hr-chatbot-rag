@@ -128,7 +128,7 @@ with tabs[0]:
         with fc2:
             filter_intent = st.selectbox(
                 "Filter by intent",
-                ["All", "policy", "personal", "hybrid"],
+                ["All", "policy", "personal", "hybrid","out_of_scope"],
                 key="filter_intent",
             )
         with fc3:
