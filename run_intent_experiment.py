@@ -232,10 +232,21 @@ def _infer_intent_local(tools_called: List[str], tool_outputs: dict) -> tuple:
     has_policy = "retrieve_policy" in tools_called
     has_db     = bool(set(tools_called) & db_set)
 
-    if has_policy and not has_db and _detect_oos_from_tool_outputs(tools_called, tool_outputs):
+    # Explicit out_of_scope tool call always wins — never override with
+    # retrieval-based heuristics (low reranker score ≠ OOS topic).
+    if "out_of_scope" in tools_called:
         intent = "out_of_scope"
+    elif has_db and has_policy:
+        intent = "hybrid"
+    elif has_db:
+        intent = "personal"
+    elif has_policy:
+        intent = "policy"
     else:
-        intent = "hybrid" if has_db and has_policy else ("personal" if has_db else "policy")
+        # Nothing was called (e.g. LLM answered directly without tools).
+        # Fall back to out_of_scope — this only happens for genuinely OOS
+        # questions where the LLM skipped all tools.
+        intent = "out_of_scope"
 
     topic_map = {
         "get_leave_data":        "leave",
@@ -370,6 +381,48 @@ def _print_and_save(df: pd.DataFrame):
                   f"tools={row['tools_called']}")
         print()
 
+    # ── Per-class Precision / Recall / F1 ────────────────────────────────────
+    labels = ["policy", "personal", "hybrid", "out_of_scope"]
+    # Exclude ERROR rows from classification metrics (they inflate false negatives)
+    clf_df = df[df["inferred_intent"] != "ERROR"].copy()
+
+    prf_rows = []
+    for lbl in labels:
+        tp = int(((clf_df["expected_intent"] == lbl) & (clf_df["inferred_intent"] == lbl)).sum())
+        fp = int(((clf_df["expected_intent"] != lbl) & (clf_df["inferred_intent"] == lbl)).sum())
+        fn = int(((clf_df["expected_intent"] == lbl) & (clf_df["inferred_intent"] != lbl)).sum())
+        prec   = tp / (tp + fp) if (tp + fp) else 0.0
+        rec    = tp / (tp + fn) if (tp + fn) else 0.0
+        f1     = 2 * prec * rec / (prec + rec) if (prec + rec) else 0.0
+        support = int((clf_df["expected_intent"] == lbl).sum())
+        prf_rows.append({"intent": lbl, "precision": round(prec, 3),
+                         "recall": round(rec, 3), "f1": round(f1, 3), "support": support})
+
+    prf_df = pd.DataFrame(prf_rows).set_index("intent")
+    # Macro averages
+    macro = prf_df[["precision", "recall", "f1"]].mean().round(3)
+    prf_df.loc["macro_avg"] = [macro["precision"], macro["recall"], macro["f1"],
+                               int(clf_df.shape[0])]
+
+    print("── PRECISION / RECALL / F1 (excludes ERROR rows) ────────────────")
+    print(prf_df.to_string())
+    print()
+
+    # ── Confusion matrix ─────────────────────────────────────────────────────
+    all_labels = labels + (["ERROR"] if (df["inferred_intent"] == "ERROR").any() else [])
+    conf_df = pd.DataFrame(0, index=labels, columns=all_labels)
+    for _, row in df.iterrows():
+        exp = row["expected_intent"]
+        got = row["inferred_intent"]
+        if exp in conf_df.index and got in conf_df.columns:
+            conf_df.loc[exp, got] += 1
+    conf_df.index.name   = "expected \\ predicted"
+    conf_df.columns.name = None
+
+    print("── CONFUSION MATRIX (rows=expected, cols=predicted) ─────────────")
+    print(conf_df.to_string())
+    print()
+
     with pd.ExcelWriter(OUTPUT_XLSX, engine="openpyxl") as writer:
         df.to_excel(writer, sheet_name="Raw", index=False)
 
@@ -380,6 +433,9 @@ def _print_and_save(df: pd.DataFrame):
             {"metric": "Total Queries Completed",       "value": total},
             {"metric": "OOS Queries",                   "value": int(n_oos)},
             {"metric": "OOS Correctly Detected",        "value": int((oos_df["inferred_intent"] == "out_of_scope").sum()) if n_oos else 0},
+            {"metric": "Macro Precision",               "value": f"{macro['precision']:.3f}"},
+            {"metric": "Macro Recall",                  "value": f"{macro['recall']:.3f}"},
+            {"metric": "Macro F1",                      "value": f"{macro['f1']:.3f}"},
             {"metric": "ROUTING_ONLY mode",             "value": str(ROUTING_ONLY)},
             {"metric": "Report generated",              "value": datetime.now().isoformat()},
         ]).to_excel(writer, sheet_name="Overall", index=False)
@@ -388,6 +444,8 @@ def _print_and_save(df: pd.DataFrame):
         if not p_lang.empty:       p_lang.to_excel(writer,       sheet_name="By_Language")
         if not p_complexity.empty: p_complexity.to_excel(writer, sheet_name="By_Complexity")
         if not p_topic.empty:      p_topic.to_excel(writer,      sheet_name="By_Topic")
+        prf_df.to_excel(writer, sheet_name="Precision_Recall_F1")
+        conf_df.to_excel(writer, sheet_name="Confusion_Matrix")
 
         if not oos_df.empty:
             cols = ["query_id", "language", "expected_intent", "inferred_intent",
@@ -647,6 +705,44 @@ if __name__ == "__main__":
         print(f"Report-only mode: {len(done)} rows from {CHECKPOINT_FILE}")
         df = pd.DataFrame(list(done.values()))
         _print_and_save(df)
+
+    elif "--rerun-failed" in sys.argv:
+        # ── Selective re-evaluation of intent failures ────────────────────────
+        # Strips rows where intent_pass=False (wrong classification, not ERROR)
+        # OR inferred_intent=ERROR (connection failures) so they re-run.
+        # Rows that already PASSED are kept — won't be re-run.
+        #
+        # Usage:  python run_intent_experiment.py --rerun-failed
+        #
+        p = Path(CHECKPOINT_FILE)
+        if p.exists():
+            kept, removed = [], []
+            for line in p.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    row = json.loads(line)
+                    # Keep row only if it already passed — strip everything else
+                    should_remove = (
+                        not row.get("intent_pass", False)   # failed or ERROR
+                    )
+                    (removed if should_remove else kept).append(line)
+                except Exception:
+                    kept.append(line)
+
+            backup = CHECKPOINT_FILE + ".bak"
+            p.rename(backup)
+            print(f"  Backed up checkpoint → {backup}")
+
+            with open(CHECKPOINT_FILE, "w", encoding="utf-8") as f:
+                f.write("\n".join(kept) + ("\n" if kept else ""))
+
+            print(f"  Stripped {len(removed)} failed/ERROR row(s), kept {len(kept)} passing row(s).")
+        else:
+            print(f"  No checkpoint found — will run all queries.")
+
+        run_experiment()
 
     elif "--rerun-oos" in sys.argv:
         # ── Selective OOS re-evaluation ──────────────────────────────────────

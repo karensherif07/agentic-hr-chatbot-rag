@@ -1,10 +1,21 @@
 """
-agent.py — Agentic HR Assistant
+agent.py — Agentic HR Assistant  (two-stage architecture)
 
-Token-efficient design:
-  routing call  (8b):   ~300 tokens  — 14,400 RPD quota
-  answer call   (70b):  ~2,000 tokens — 1,000 RPD quota (English only)
-  answer call   (qwen): ~2,000 tokens — separate quota (Arabic/Franco)
+Architecture:
+  Stage 1 — Lightweight intent router (routing_llm / 8b)
+             Classifies: policy | personal | hybrid | out_of_scope
+
+  Stage 2 — Dynamic planner  (routing_llm / 8b)
+             hybrid:   retrieve_policy FIRST → planner reads context → selects DB tools
+             personal: planner selects DB tools directly (no policy lookup)
+             policy:   retrieve_policy only
+             OOS:      returns immediately
+
+Token budget:
+  routing call  (8b):   ~200 tokens  (was ~300)
+  planner call  (8b):   ~350 tokens  (was ~500)
+  answer call   (70b):  ~2,000 tokens
+  answer call   (qwen): ~2,000 tokens
   critique call (8b):   ~150 tokens  — skipped in test mode
 """
 
@@ -37,25 +48,79 @@ from prompts import english_prompt, msa_prompt, egy_prompt, franco_prompt
 from personal_prompts import get_personal_prompt, get_hybrid_prompt, format_personal_data
 
 
-_ORCHESTRATOR_SYSTEM = """You are the routing layer of an HR chatbot for Horizon Tech.
-Call the right tools for the employee's question, then stop. Do not write an answer.
+# =============================================================================
+# STAGE 1 — Intent Router prompt  (trimmed ~30% vs v1)
+# =============================================================================
+_ROUTER_SYSTEM = """HR chatbot intent router for Horizon Tech. Classify into one intent:
 
-DECISION RULE:
-Ask: "Is this question related to HR, company policy, or this employee's work data?"
-  NO  -> call out_of_scope only. Do not call any other tool.
-  YES -> Ask: "Is the answer the same for every employee at this company?"
-    YES -> call retrieve_policy only. Never add personal data tools.
-    NO  -> call the relevant personal tool(s). Also call retrieve_policy if you need policy to check eligibility.
+policy      — company rule/entitlement/procedure, same for all employees
+              Signal: no first-person pronouns; asks about "the company", a grade, or a role.
+              Examples: "What is the notice period for G3?", "What travel class does a G4 get?",
+              "What does health insurance cover for children?", "What are the gift acceptance limits?",
+              "What are the scholarship conditions?", "What is the per diem for business travel?"
+personal    — requires THIS employee's own DB data; no policy lookup needed
+              Signal: first-person pronouns — I/my/me/ana/bta3y/3andy/maratby/agaza bta3ty/
+              kam yom fadel 3andy/eih maratby/el rating bta3y/el OKRs bta3ty.
+              Examples: "How many leave days do I have?", "What is my net salary?",
+              "Am I on a PIP?", "What was my last performance rating?",
+              "kam yom agaza fadel 3andy?", "eih maratby el net?"
+hybrid      — requires BOTH a policy lookup AND this employee's personal data to answer
+              Signal: eligibility / entitlement / calculation that depends on the employee's
+              personal grade, rating, tenure, or status AND a policy rule.
+              Examples: "Am I eligible for the annual bonus?", "How much notice do I need to give?",
+              "Can I apply for a promotion?", "What gratuity would I get if I resign?",
+              "Can I switch to full remote?", "Am I eligible for the savings plan?",
+              "lw esta2elt hakhod end of service ad eih?", "ana mosta7e2 el bonus?",
+              "Am I on a PIP and what does that mean for my salary increment?"
+out_of_scope — completely unrelated to HR, company policy, or the employee's work data
+              Examples: weather, stock prices, coding tasks, writing personal emails
 
-Tool descriptions tell you exactly what each returns. Use them to pick the right tool.
-Language (Arabic, Franco, English) does not change the routing logic."""
+Question may be in English, Arabic (MSA), Egyptian dialect, or Franco-Arabic.
+Reply with JSON only: {"intent": "<policy|personal|hybrid|out_of_scope>"}"""
 
-_DB_KEYS = ["profile", "leave_data", "salary_data", "performance_data", "training_data", "disciplinary_data"]
 
-# Context truncation — keeps answer prompt within ~2,000 tokens
+# =============================================================================
+# STAGE 2 — DB Tool Planner prompt  (trimmed ~30% vs v1)
+# =============================================================================
+_PLANNER_SYSTEM = """HR chatbot data-fetching planner.
+Policy context is shown below (if any). Select only the personal data tools strictly needed to answer the question. Do not call retrieve_policy. Call each tool at most once. Do not speculate."""
+
+
+# =============================================================================
+# Constants
+# =============================================================================
+_DB_KEYS = ["profile", "leave_data", "salary_data", "performance_data",
+            "training_data", "disciplinary_data"]
+
 _MAX_CHUNK_CHARS    = 800
 _MAX_CONTEXT_CHUNKS = 5
 
+_NO_INFO_MARKERS = ("no relevant policy found", "not available")
+
+_KEY_MAP = {
+    "get_profile":           "profile",
+    "get_leave_data":        "leave_data",
+    "get_salary_data":       "salary_data",
+    "get_performance_data":  "performance_data",
+    "get_training_data":     "training_data",
+    "get_disciplinary_data": "disciplinary_data",
+}
+
+_TOPIC_MAP = {
+    "get_leave_data":        "leave",
+    "get_salary_data":       "salary",
+    "get_performance_data":  "performance",
+    "get_training_data":     "training",
+    "get_disciplinary_data": "disciplinary",
+    "get_profile":           "profile",
+}
+
+_DB_TOOL_NAMES = frozenset(_KEY_MAP)
+
+
+# =============================================================================
+# HELPERS
+# =============================================================================
 
 def _build_context_truncated(docs: list) -> str:
     sorted_docs = sorted(
@@ -69,8 +134,8 @@ def _build_context_truncated(docs: list) -> str:
         content  = d.page_content[:_MAX_CHUNK_CHARS]
         if len(d.page_content) > _MAX_CHUNK_CHARS:
             content += "…"
-        out.append(f"[Page {page_num} | {lang_tag}]\n{content}")
-    return "\n\n---\n\n".join(out)
+        out.append(f"[Page {page_num}|{lang_tag}]\n{content}")
+    return "\n---\n".join(out)
 
 
 def _strip_qwen_thinking(text: str) -> str:
@@ -79,7 +144,7 @@ def _strip_qwen_thinking(text: str) -> str:
 
 
 def _invoke_with_retry(llm, prompt, max_retries=3):
-    """Exponential backoff on 429 rate limit errors."""
+    """Exponential backoff on 429 rate-limit errors."""
     for attempt in range(max_retries):
         try:
             return llm.invoke(prompt)
@@ -95,145 +160,225 @@ def _invoke_with_retry(llm, prompt, max_retries=3):
     raise RuntimeError("LLM call failed after retries")
 
 
-def _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer):
+def _is_empty_policy(ctx: str) -> bool:
+    """True when policy retrieval returned nothing useful."""
+    if not ctx:
+        return True
+    return any(m in ctx.lower() for m in _NO_INFO_MARKERS)
 
-    @tool
-    def retrieve_policy(query: str) -> str:
-        """Search Horizon Tech HR policy PDFs (Arabic + English).
-        Use when the answer is a company rule, rate, procedure, or entitlement
-        that is the same for every employee — e.g. leave policy, overtime rate,
-        promotion criteria, disciplinary steps, data retention periods."""
-        ar_vs, ar_bm25, ar_docs = ar_index
-        en_vs, en_bm25, en_docs = en_index
 
-        q_lang = detect_language_type(query)
+# =============================================================================
+# POLICY RETRIEVAL
+# =============================================================================
 
-        # --- Build Arabic-side queries ---
-        if q_lang == "franco":
-            # Step 1: Latin → Arabic script
-            ar_query_raw = franco_to_arabic(query)
-            # Step 2: Egyptian dialect → MSA for better index coverage
-            ar_query_msa = egyptian_to_msa(ar_query_raw)
-            ar_queries = [ar_query_raw, ar_query_msa]
-        elif q_lang == "arabic":
-            # Check if colloquial Egyptian slipped through as "arabic"
-            if get_semantic_dialect(query, ara_tokenizer) == "egyptian":
-                ar_queries = [query, egyptian_to_msa(query)]
-            else:
-                ar_queries = [query]
+def _retrieve_policy(query, ar_index, en_index, reranker, ara_tokenizer):
+    """
+    Hybrid retrieval + reranking.
+    Returns (top_docs, scores_dict, context_str).
+    Returns ([], {}, "") when nothing useful is found.
+    """
+    ar_vs, ar_bm25, ar_docs = ar_index
+    en_vs, en_bm25, en_docs = en_index
+
+    q_lang = detect_language_type(query)
+
+    if q_lang == "franco":
+        ar_query_raw = franco_to_arabic(query)
+        ar_query_msa = egyptian_to_msa(ar_query_raw)
+        ar_queries   = [ar_query_raw, ar_query_msa]
+    elif q_lang == "arabic":
+        if get_semantic_dialect(query, ara_tokenizer) == "egyptian":
+            ar_queries = [query, egyptian_to_msa(query)]
         else:
-            # English query — still search Arabic index with the English terms
-            # (cross-lingual retrieval catches bilingual chunks)
             ar_queries = [query]
+    else:
+        ar_queries = [query]
 
-        # Retrieve from Arabic index with all query variants, then fuse
-        ar_results = []
-        for q in ar_queries:
-            ar_results.append(
-                retrieve(q, ar_vs, ar_bm25, ar_docs,
-                         lambda t: normalize_arabic(t, ara_tokenizer),
-                         k=40)
-            )
-        docs_ar = rrf(*ar_results) if len(ar_results) > 1 else ar_results[0]
+    ar_results = [
+        retrieve(q, ar_vs, ar_bm25, ar_docs,
+                 lambda t: normalize_arabic(t, ara_tokenizer), k=40)
+        for q in ar_queries
+    ]
+    docs_ar  = rrf(*ar_results) if len(ar_results) > 1 else ar_results[0]
+    docs_en  = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=40)
+    combined = rrf(docs_ar, docs_en)
 
-        # English index always gets the original query
-        docs_en = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=40)
+    top_docs, scores = rerank(query, combined, reranker, top_n=6)
+    if not top_docs:
+        return [], {}, ""
 
-        combined = rrf(docs_ar, docs_en)
-        top_docs, scores = rerank(query, combined, reranker, top_n=6)
+    top_score = max(scores.values(), default=0) if scores else 0
+    if top_score < 0.25:
+        return [], {}, "No relevant policy found."
 
-        if not top_docs:
-            return "No relevant policy found."
+    ctx = _build_context_truncated(top_docs)
+    return top_docs, scores, ctx
 
-        retrieve_policy._last_docs   = top_docs
-        retrieve_policy._last_scores = scores
-        return _build_context_truncated(top_docs)
+
+# =============================================================================
+# TOOL FACTORY  — DB tools only; retrieve_policy is never a planner tool
+# =============================================================================
+
+def _make_db_tools(employee_id):
 
     @tool
     def get_profile() -> str:
-        """Returns THIS employee's personal profile: name, grade, department,
-        hire date, employment type, work model (remote/hybrid/in-office),
-        and probation status. Use when the question is about the employee's
-        own identity, status, or role attributes."""
+        """Employee profile: name, grade, department, hire date, employment type,
+        work model, probation status."""
         data = get_employee_profile(employee_id)
-        if not data:
-            return "Profile not found."
-        return json.dumps(data, default=str, ensure_ascii=False, indent=2)
+        return json.dumps(data, default=str, ensure_ascii=False) if data else "Profile not found."
 
     @tool
     def get_leave_data() -> str:
-        """Returns THIS employee's leave balances (remaining days per leave type
-        for the current year) and their recent and pending leave requests.
-        Use when the question asks about their specific remaining leave days
-        or leave request history — not about the general leave policy."""
+        """Leave balances (remaining days per type, current year), pending requests,
+        and recent requests."""
         today = date.today()
         return json.dumps({
             "leave_balances":   get_leave_balance(employee_id, today.year),
             "pending_requests": get_pending_leave(employee_id),
             "recent_requests":  get_leave_requests(employee_id, limit=3),
-        }, default=str, ensure_ascii=False, indent=2)
+        }, default=str, ensure_ascii=False)
 
     @tool
     def get_salary_data() -> str:
-        """Returns THIS employee's latest salary breakdown: net salary, gross,
-        base, allowances, and deductions. Use when the question asks about
-        their specific salary amount or components."""
+        """Latest salary breakdown (net, gross, base, allowances, deductions)
+        and 3-month payroll history."""
         return json.dumps({
             "latest_salary":  get_latest_salary(employee_id),
             "salary_history": get_payroll_history(employee_id, months=3),
-        }, default=str, ensure_ascii=False, indent=2)
+        }, default=str, ensure_ascii=False)
 
     @tool
     def get_performance_data() -> str:
-        """Returns THIS employee's personal performance data: latest review rating
-        and label, performance trend across past cycles, current OKRs with
-        individual key-result progress, and recent review history.
-        Use when the question is about the employee's own rating, review feedback,
-        OKR status or progress, or performance trend — NOT for asking what rating
-        thresholds or bonus multipliers the company policy defines."""
+        """Employee's latest review rating, performance trend, current OKRs,
+        and recent review history. Use for personal rating/OKR questions."""
         return json.dumps({
             "latest_review":     get_latest_review(employee_id),
             "performance_trend": get_performance_trend(employee_id),
             "okrs":              get_okrs(employee_id),
             "history":           get_performance_history(employee_id, limit=2),
-        }, default=str, ensure_ascii=False, indent=2)
+        }, default=str, ensure_ascii=False)
 
     @tool
     def get_training_data() -> str:
-        """Returns THIS employee's training budget (total, used, remaining in USD),
-        training days used/remaining, and courses completed this year."""
+        """Training budget (total/used/remaining in USD), training days, and
+        courses completed this year."""
         data = get_training_record(employee_id, date.today().year)
-        return json.dumps(data or {}, default=str, ensure_ascii=False, indent=2)
+        return json.dumps(data or {}, default=str, ensure_ascii=False)
 
     @tool
     def get_disciplinary_data() -> str:
-        """Returns THIS employee's currently active disciplinary actions on record:
-        verbal warnings, written warnings, or a Performance Improvement Plan (PIP)
-        that have not yet expired. Use when the employee asks about their own
-        disciplinary status, whether they are on a PIP, or what warnings are
-        currently active against them.
-        Do NOT use for questions about how the disciplinary process works in general
-        — those are policy questions answered by retrieve_policy."""
+        """Active disciplinary actions: verbal/written warnings or PIP not yet
+        expired. Use for personal disciplinary status questions only."""
         data = get_active_disciplinary(employee_id)
-        return json.dumps(data, default=str, ensure_ascii=False, indent=2)
+        return json.dumps(data, default=str, ensure_ascii=False)
 
-    @tool
-    def out_of_scope() -> str:
-        """Call this when the question has absolutely nothing to do with HR,
-        company policy, or the employee's personal work data.
-        Examples: weather, general knowledge, coding help, jokes, current events.
-        Do NOT call any other tool alongside this one."""
-        return "out_of_scope"
-
-    tools = [
-        retrieve_policy, get_profile, get_leave_data, get_salary_data,
+    return [
+        get_profile, get_leave_data, get_salary_data,
         get_performance_data, get_training_data, get_disciplinary_data,
-        out_of_scope,
     ]
-    return tools, retrieve_policy
 
 
-def _merge_db(tool_results):
+# =============================================================================
+# STAGE 1 — Intent classification
+# =============================================================================
+
+def _classify_intent(question: str, routing_llm) -> str:
+    """
+    Calls routing_llm with the router prompt.
+    Returns: policy | personal | hybrid | out_of_scope
+    Falls back to 'hybrid' on parse error (safe default).
+    """
+    messages = [
+        SystemMessage(content=_ROUTER_SYSTEM),
+        HumanMessage(content=question),
+    ]
+    res  = _invoke_with_retry(routing_llm, messages)
+    text = _strip_qwen_thinking(res.content).strip()
+    text = re.sub(r"^```json|^```|```$", "", text, flags=re.MULTILINE).strip()
+
+    try:
+        intent = json.loads(text).get("intent", "hybrid").lower()
+        if intent in ("policy", "personal", "hybrid", "out_of_scope"):
+            return intent
+    except Exception:
+        pass
+
+    # Fuzzy fallback
+    for candidate in ("out_of_scope", "hybrid", "personal", "policy"):
+        if candidate in text.lower():
+            return candidate
+
+    return "hybrid"
+
+
+# =============================================================================
+# STAGE 2 — DB tool planner
+# =============================================================================
+
+def _run_planner(question: str, policy_context: str,
+                 routing_llm, db_tools: list) -> tuple[list, dict]:
+    """
+    Sends planner prompt + policy_context to routing_llm with DB tools bound.
+    Executes chosen tool calls (each at most once).
+    Returns (tools_called: list[str], tool_results: dict).
+    """
+    tool_map       = {t.name: t for t in db_tools}
+    llm_with_tools = routing_llm.bind_tools(db_tools)
+
+    # Keep planner user message concise — policy_context already trimmed upstream
+    planner_user = f"Question: {question}"
+    if policy_context:
+        planner_user += f"\n\nPolicy context:\n{policy_context}"
+    planner_user += "\n\nCall only the strictly needed personal data tools."
+
+    messages = [
+        SystemMessage(content=_PLANNER_SYSTEM),
+        HumanMessage(content=planner_user),
+    ]
+
+    tools_called: list = []
+    tool_results: dict = {}
+    called_set:   set  = set()
+
+    for _ in range(3):
+        response = _invoke_with_retry(llm_with_tools, messages)
+        messages.append(response)
+
+        if not response.tool_calls:
+            break
+
+        for tc in response.tool_calls:
+            tname = tc["name"]
+
+            if tname in called_set:
+                messages.append(ToolMessage(
+                    tool_call_id=tc["id"],
+                    content="Already called.",
+                ))
+                continue
+
+            called_set.add(tname)
+            tools_called.append(tname)
+
+            try:
+                fn     = tool_map[tname]
+                targs  = tc.get("args", {})
+                result = fn.invoke(targs) if targs else fn.invoke({})
+                tool_results[_KEY_MAP.get(tname, tname)] = result
+            except Exception as e:
+                result = f"Error: {e}"
+
+            messages.append(ToolMessage(tool_call_id=tc["id"], content=result))
+
+    return tools_called, tool_results
+
+
+# =============================================================================
+# ANSWER FORMATTER
+# =============================================================================
+
+def _merge_db(tool_results: dict) -> dict:
     combined = {}
     for key in _DB_KEYS:
         if key in tool_results:
@@ -248,11 +393,13 @@ def _pick_llm(lang, en_llm, ar_llm):
     return en_llm if lang == "english" else ar_llm
 
 
-def _format_answer(lang, dialect, question, tool_results, history_str, en_llm, ar_llm, top_docs):
+def _format_answer(lang, dialect, question, tool_results, history_str,
+                   en_llm, ar_llm, top_docs):
     has_policy = bool(tool_results.get("policy_context"))
     has_db     = any(k in tool_results for k in _DB_KEYS)
     llm        = _pick_llm(lang, en_llm, ar_llm)
-    ctx        = _build_context_truncated(top_docs) if top_docs else tool_results.get("policy_context", "")
+    ctx        = (_build_context_truncated(top_docs)
+                  if top_docs else tool_results.get("policy_context", ""))
 
     if has_db and has_policy:
         res = _invoke_with_retry(llm, get_hybrid_prompt(lang, dialect).format(
@@ -283,14 +430,24 @@ def _format_answer(lang, dialect, question, tool_results, history_str, en_llm, a
     return _strip_qwen_thinking(res.content)
 
 
-_CRITIQUE_PROMPT = """Is this HR answer complete?
-Answer: {answer}
-JSON only: {{"adequate": true, "missing": ""}} or {{"adequate": false, "missing": "what"}}"""
+# =============================================================================
+# CRITIQUE  (answer truncation raised to 800 chars for coverage)
+# =============================================================================
+
+# Tighter prompt — same information, ~20% fewer tokens
+_CRITIQUE_PROMPT = (
+    "Is this HR answer complete?\n"
+    "Answer: {answer}\n"
+    'JSON only: {{"adequate":true,"missing":""}} or {{"adequate":false,"missing":"what is missing"}}'
+)
 
 
-def _critique(critique_llm, answer):
+def _critique(critique_llm, answer: str) -> dict:
     try:
-        res  = _invoke_with_retry(critique_llm, _CRITIQUE_PROMPT.format(answer=answer[:400]))
+        res  = _invoke_with_retry(
+            critique_llm,
+            _CRITIQUE_PROMPT.format(answer=answer[:800])   # raised from 400
+        )
         text = re.sub(
             r"^```json|^```|```$", "",
             _strip_qwen_thinking(res.content),
@@ -301,116 +458,122 @@ def _critique(critique_llm, answer):
         return {"adequate": True, "missing": ""}
 
 
-def _infer_intent(tools_called, policy_result: str = "") -> tuple[str, str]:
-    db_set     = {
-        "get_profile", "get_leave_data", "get_salary_data",
-        "get_performance_data", "get_training_data", "get_disciplinary_data",
-    }
-    has_policy = "retrieve_policy" in tools_called
-    has_db     = bool(set(tools_called) & db_set)
+# =============================================================================
+# HELPERS — intent / topic inference
+# =============================================================================
 
-    # OOS detection 1: router explicitly called out_of_scope tool
-    if "out_of_scope" in tools_called:
-        return "out_of_scope", "none"
-
-    # OOS detection 2: only policy tool called, but nothing useful was retrieved
-    _NO_INFO = ("no relevant policy found", "not available")
-    if has_policy and not has_db and any(p in policy_result.lower() for p in _NO_INFO):
-        intent = "out_of_scope"
-    else:
-        intent = "hybrid" if has_db and has_policy else ("personal" if has_db else "policy")
-    topic_map  = {
-        "get_leave_data":        "leave",
-        "get_salary_data":       "salary",
-        "get_performance_data":  "performance",
-        "get_training_data":     "training",
-        "get_disciplinary_data": "disciplinary",
-        "get_profile":           "profile",
-    }
+def _infer_topic(tools_called: list) -> str:
     for t in tools_called:
-        if t in topic_map:
-            return intent, topic_map[t]
-    return intent, ("all" if has_db else "none")
+        if t in _TOPIC_MAP:
+            return _TOPIC_MAP[t]
+    return "none"
 
+
+def _build_personal_data_str(tool_results: dict) -> str:
+    combined = _merge_db(tool_results)
+    if not combined:
+        return ""
+    try:
+        return format_personal_data(combined)
+    except Exception:
+        return ""
+
+
+# =============================================================================
+# MAIN ENTRY POINT
+# =============================================================================
 
 def run_agent(
     question, employee_id, lang, dialect, history_str,
     ar_index, en_index, routing_llm, en_llm, ar_llm, critique_llm,
     reranker, ara_tokenizer,
     max_iterations=3,
-    skip_critique=True,   # True by default to save tokens in production
+    skip_critique=True,
 ):
-    tools, retrieve_policy_ref = _make_tools(
-        employee_id, ar_index, en_index, reranker, ara_tokenizer
-    )
-    tool_map       = {t.name: t for t in tools}
-    llm_with_tools = routing_llm.bind_tools(tools)
+    """
+    Two-stage agentic orchestration:
 
-    messages = [
-        SystemMessage(content=_ORCHESTRATOR_SYSTEM),
-        HumanMessage(content=question),
-    ]
+      Stage 1: _classify_intent()   — cheap router, single JSON token output
+      Stage 2: policy retrieval + _run_planner() — policy first, then DB tools
 
+    tools_called order:
+      hybrid   → ["retrieve_policy", <db_tools…>]
+      policy   → ["retrieve_policy"]
+      personal → [<db_tools…>]
+      OOS      → ["out_of_scope"]
+    """
+    db_tools     = _make_db_tools(employee_id)
     tool_results: dict = {}
     tools_called: list = []
     top_docs:     list = []
     scores_dict:  dict = {}
 
-    for _ in range(max_iterations):
-        response = _invoke_with_retry(llm_with_tools, messages)
-        messages.append(response)
-        if not response.tool_calls:
-            break
+    # ── Stage 1: classify intent ──────────────────────────────────────────────
+    intent = _classify_intent(question, routing_llm)
 
-        for tc in response.tool_calls:
-            tname = tc["name"]
-            targs = tc.get("args", {})
-            tools_called.append(tname)
-            try:
-                fn     = tool_map[tname]
-                result = fn.invoke(targs) if targs else fn.invoke({})
-                if tname == "retrieve_policy":
-                    top_docs    = getattr(retrieve_policy_ref, "_last_docs",   [])
-                    scores_dict = getattr(retrieve_policy_ref, "_last_scores", {})
-                    # OOS detection 3: reranker returned results but all scores are too low
-                    top_score = max(scores_dict.values(), default=0) if scores_dict else 0
-                    if top_score < 0.25:
-                        tool_results["policy_context"] = "No relevant policy found."
-                    else:
-                        tool_results["policy_context"] = result
-                else:
-                    km = {
-                        "get_profile":           "profile",
-                        "get_leave_data":        "leave_data",
-                        "get_salary_data":       "salary_data",
-                        "get_performance_data":  "performance_data",
-                        "get_training_data":     "training_data",
-                        "get_disciplinary_data": "disciplinary_data",
-                    }
-                    tool_results[km.get(tname, tname)] = result
-            except Exception as e:
-                result = f"Error: {e}"
-            messages.append(ToolMessage(tool_call_id=tc["id"], content=result))
+    # ── Stage 2: fetch data based on intent ───────────────────────────────────
 
-    raw   = _format_answer(lang, dialect, question, tool_results, history_str, en_llm, ar_llm, top_docs)
+    if intent == "out_of_scope":
+        tools_called = ["out_of_scope"]
+
+    elif intent == "policy":
+        top_docs, scores_dict, ctx = _retrieve_policy(
+            question, ar_index, en_index, reranker, ara_tokenizer
+        )
+        tools_called = ["retrieve_policy"]
+        tool_results["policy_context"] = ctx or ""
+
+    elif intent == "personal":
+        db_tools_called, db_results = _run_planner(
+            question, "",
+            routing_llm, db_tools,
+        )
+        tools_called = db_tools_called
+        tool_results.update(db_results)
+
+    else:  # hybrid
+        top_docs, scores_dict, ctx = _retrieve_policy(
+            question, ar_index, en_index, reranker, ara_tokenizer
+        )
+        # Normalise: treat empty string same as "no policy found"
+        ctx = ctx or ""
+        tool_results["policy_context"] = ctx
+
+        tools_called = [] if _is_empty_policy(ctx) else ["retrieve_policy"]
+
+        db_tools_called, db_results = _run_planner(
+            question, ctx,
+            routing_llm, db_tools,
+        )
+        tools_called.extend(db_tools_called)
+        tool_results.update(db_results)
+
+    # ── Format answer ─────────────────────────────────────────────────────────
+    raw   = _format_answer(lang, dialect, question, tool_results,
+                           history_str, en_llm, ar_llm, top_docs)
     cited = get_cited_pages(raw)
     cdocs = filter_cited_chunks(top_docs, cited)
     clean = strip_citations(raw)
-    db_only = any(k in tool_results for k in _DB_KEYS) and not tool_results.get("policy_context")
+
+    db_only = (any(k in tool_results for k in _DB_KEYS)
+               and not tool_results.get("policy_context"))
     answer  = clean if db_only else validate(clean, lang, has_citations=bool(cited))
 
+    # ── Optional critique pass ────────────────────────────────────────────────
     if not skip_critique and not is_no_info_answer(answer):
         c = _critique(critique_llm, answer)
         if not c.get("adequate") and c.get("missing"):
             rq = f"{question} {c['missing']}"
-            av, bv, adocs = ar_index
+            av, bv, adocs  = ar_index
             ev, bv2, edocs = en_index
-            da2 = retrieve(rq, av, bv, adocs, lambda t: normalize_arabic(t, ara_tokenizer))
+            da2 = retrieve(rq, av, bv, adocs,
+                           lambda t: normalize_arabic(t, ara_tokenizer))
             de2 = retrieve(rq, ev, bv2, edocs, normalize_english)
             t2, s2 = rerank(rq, rrf(da2, de2), reranker, top_n=4)
             if t2:
                 tool_results["policy_context"] = _build_context_truncated(t2)
-                r2  = _format_answer(lang, dialect, question, tool_results, history_str, en_llm, ar_llm, t2)
+                r2  = _format_answer(lang, dialect, question, tool_results,
+                                     history_str, en_llm, ar_llm, t2)
                 c2  = get_cited_pages(r2)
                 cd2 = filter_cited_chunks(t2, c2)
                 cl2 = strip_citations(r2)
@@ -418,9 +581,14 @@ def run_agent(
                 if not is_no_info_answer(a2):
                     answer, top_docs, scores_dict, cdocs = a2, t2, s2, cd2
 
-    policy_result = tool_results.get("policy_context", "")
-    intent, topic = _infer_intent(tools_called, policy_result)
-    pdata = (_build_personal_data_str(tool_results) if intent in ("personal", "hybrid") else "")
+    # ── Resolve final intent label ────────────────────────────────────────────
+    has_db_data = any(k in tool_results for k in _DB_KEYS)
+    if intent not in ("out_of_scope",) and is_no_info_answer(answer) and not has_db_data:
+        intent = "out_of_scope"
+
+    topic = _infer_topic(tools_called)
+    pdata = (_build_personal_data_str(tool_results)
+             if intent in ("personal", "hybrid") else "")
 
     return {
         "answer":        answer,
@@ -434,11 +602,82 @@ def run_agent(
     }
 
 
-def _build_personal_data_str(tool_results):
-    combined = _merge_db(tool_results)
-    if not combined:
-        return ""
-    try:
-        return format_personal_data(combined)
-    except Exception:
-        return ""
+# =============================================================================
+# BACK-COMPAT: _make_tools + _infer_intent for run_intent_experiment.py
+# _ORCHESTRATOR_SYSTEM is a SEPARATE prompt from _ROUTER_SYSTEM.
+# _ROUTER_SYSTEM  → used in _classify_intent(): outputs JSON, no tool calls.
+# _ORCHESTRATOR_SYSTEM → used in routing-only eval: LLM is bound with tools
+#   and MUST call them — never answer directly from memory.
+# =============================================================================
+
+_ORCHESTRATOR_SYSTEM = """You are an HR assistant for Horizon Tech. You MUST answer every question by calling one or more tools — never respond from memory or training knowledge.
+
+Tool selection rules:
+- retrieve_policy  → ANY question about a company rule, rate, procedure, entitlement, or policy
+                     (same answer for all employees). Always call this for policy questions even
+                     if you think you know the answer — the authoritative source is the PDF.
+                     Examples: notice period, travel class, health insurance coverage, gift limits,
+                     per diem rates, scholarship conditions, leave entitlements.
+- get_profile      → employee's grade, department, hire date, work model, probation status.
+- get_leave_data   → employee's personal leave balance and pending requests.
+- get_salary_data  → employee's personal salary breakdown and payroll history.
+- get_performance_data → employee's personal rating, OKRs, and review history.
+- get_training_data    → employee's personal training budget usage and courses.
+- get_disciplinary_data → employee's active warnings or PIP status.
+- out_of_scope     → ONLY when the question has absolutely nothing to do with HR,
+                     company policy, or the employee's work data (e.g. weather, stock price,
+                     coding tasks, personal email drafting).
+
+For questions that need BOTH a policy rule AND personal data (eligibility, calculations,
+entitlements that depend on grade/rating/tenure), call retrieve_policy AND the relevant
+personal data tool(s).
+
+Question language may be English, Arabic (MSA), Egyptian dialect, or Franco-Arabic."""
+
+
+def _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer):
+    """Legacy shim for run_intent_experiment.py (ROUTING_ONLY eval mode)."""
+
+    @tool
+    def retrieve_policy(query: str) -> str:
+        """Search Horizon Tech HR policy PDFs (Arabic + English).
+        Use when the answer is a company rule, rate, procedure, or entitlement
+        that is the same for every employee."""
+        top_docs, scores, ctx = _retrieve_policy(
+            query, ar_index, en_index, reranker, ara_tokenizer
+        )
+        retrieve_policy._last_docs   = top_docs
+        retrieve_policy._last_scores = scores
+        return ctx if ctx else "No relevant policy found."
+
+    @tool
+    def out_of_scope() -> str:
+        """Call when the question has nothing to do with HR, company policy,
+        or the employee's personal work data."""
+        return "out_of_scope"
+
+    db_tools  = _make_db_tools(employee_id)
+    all_tools = [retrieve_policy] + db_tools + [out_of_scope]
+    return all_tools, retrieve_policy
+
+
+def _infer_intent(tools_called, policy_result: str = "") -> tuple[str, str]:
+    """Legacy shim for run_intent_experiment.py."""
+    has_policy = "retrieve_policy" in tools_called
+    has_db     = bool(set(tools_called) & _DB_TOOL_NAMES)
+
+    # Explicit out_of_scope tool call always wins.
+    # Do NOT infer OOS from retrieval returning no-info — that is a retrieval
+    # quality issue, not proof the topic is out of scope.
+    if "out_of_scope" in tools_called:
+        intent = "out_of_scope"
+    elif has_db and has_policy:
+        intent = "hybrid"
+    elif has_db:
+        intent = "personal"
+    elif has_policy:
+        intent = "policy"
+    else:
+        intent = "out_of_scope"  # nothing called at all
+
+    return intent, _infer_topic(tools_called)

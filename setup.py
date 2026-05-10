@@ -254,7 +254,7 @@ def setup():
     # ── LLM roles ─────────────────────────────────────────────────────────────
     routing_llm = ChatGroq(
         groq_api_key=api_key,
-        model_name="llama-3.3-70b-versatile",
+        model_name="meta-llama/llama-4-scout-17b-16e-instruct",
         temperature=0,
     )
     en_llm = ChatGroq(
