@@ -2,13 +2,11 @@
 chat_ui.py — Answer rendering, expanders, history, analytics, escalation trigger.
 """
 
+import os
 import streamlit as st
-from setup import render_page_to_image
-from utils import is_no_info_answer, confidence_badge, summarize_history
+from setup import render_page_to_image, ARABIC_PDF_PATH_SET, ENGLISH_PDF_PATH_SET
+from utils import is_no_info_answer, confidence_badge, summarize_history, _is_arabic_source
 from sessions import save_session
-
-ARABIC_PDF_PATH  = "policies/ar_policy.pdf"
-ENGLISH_PDF_PATH = "policies/eng_policy.pdf"
 
 
 def log_query(employee_id, intent, topic, lang, dialect, is_no_info, question):
@@ -86,19 +84,24 @@ def render_answer(
             unique_pages: dict = {}
             for d in cited_docs:
                 p_no = d.metadata.get("page", 0) + 1
-                src  = (ARABIC_PDF_PATH
-                        if ARABIC_PDF_PATH in d.metadata.get("source", "")
-                        else ENGLISH_PDF_PATH)
+                src  = d.metadata.get("source", "")
                 if (src, p_no) not in unique_pages:
                     unique_pages[(src, p_no)] = d
             for (pdf, p_no), d in unique_pages.items():
-                src_label = "Arabic PDF" if pdf == ARABIC_PDF_PATH else "English PDF"
-                st.markdown(f"**📄 Page {p_no} — {src_label}**")
+                is_ar     = _is_arabic_source(pdf)
+                # Prefer the short doc_name stored at index time; fall back to basename
+                doc_name  = (
+                    d.metadata.get("doc_name")
+                    or os.path.basename(pdf)
+                    or ("Arabic Policy" if is_ar else "English Policy")
+                )
+                lang_flag = "🇸🇦" if is_ar else "🇬🇧"
+                st.markdown(f"**📄 Page {p_no} — {lang_flag} {doc_name}**")
                 try:
                     st.image(render_page_to_image(pdf, p_no), width=700)
                 except Exception:
-                    direction = "rtl" if pdf == ARABIC_PDF_PATH else "ltr"
-                    align     = "right" if direction == "rtl" else "left"
+                    direction = "rtl" if is_ar else "ltr"
+                    align     = "right" if is_ar else "left"
                     st.markdown(
                         f'<div style="direction:{direction};text-align:{align};'
                         f'background:#f9f9f9;padding:12px;border-left:3px solid #1976d2;">'
