@@ -95,6 +95,10 @@ _DB_KEYS = ["profile", "leave_data", "salary_data", "performance_data",
 _MAX_CHUNK_CHARS    = 800
 _MAX_CONTEXT_CHUNKS = 5
 
+# Candidate pool and reranker top-n — kept in sync with run_reranker_experiment.py
+_CANDIDATE_K    = 20
+_RERANKED_TOP_N = 5
+
 _NO_INFO_MARKERS = ("no relevant policy found", "not available")
 
 _KEY_MAP = {
@@ -168,48 +172,78 @@ def _is_empty_policy(ctx: str) -> bool:
 
 
 # =============================================================================
-# POLICY RETRIEVAL
+# POLICY RETRIEVAL  — mirrors run_reranker_experiment.py exactly
+#
+# Language dispatch logic (all branches):
+#   franco   : transliterate → MSA-expand both, RRF AR variants, RRF with EN
+#   egyptian : MSA-expand, RRF both AR variants, RRF with EN
+#   arabic   : dialect-detect; if egyptian → MSA-expand + RRF, then RRF with EN
+#              if MSA → AR only, then RRF with EN
+#   english  : EN first, then AR, RRF(EN, AR)
+#   fallback : EN only
+#
+# Candidate pool : _CANDIDATE_K = 20  (matches CANDIDATE_K in experiment)
+# Reranker top-n : _RERANKED_TOP_N = 5 (matches RERANKED_TOP_N in experiment)
+# No score threshold — let reranker ranking decide; don't silently drop results.
 # =============================================================================
 
 def _retrieve_policy(query, ar_index, en_index, reranker, ara_tokenizer):
     """
-    Hybrid retrieval + reranking.
+    Language-aware hybrid retrieval + reranking.
     Returns (top_docs, scores_dict, context_str).
     Returns ([], {}, "") when nothing useful is found.
     """
     ar_vs, ar_bm25, ar_docs = ar_index
     en_vs, en_bm25, en_docs = en_index
 
-    q_lang = detect_language_type(query)
+    norm_ar = lambda t: normalize_arabic(t, ara_tokenizer)
+    q_lang  = detect_language_type(query)
 
+    # ── language-aware candidate retrieval ───────────────────────────────────
     if q_lang == "franco":
-        ar_query_raw = franco_to_arabic(query)
-        ar_query_msa = egyptian_to_msa(ar_query_raw)
-        ar_queries   = [ar_query_raw, ar_query_msa]
+        ar_raw  = franco_to_arabic(query)
+        ar_msa  = egyptian_to_msa(ar_raw)
+        docs_ar = rrf(
+            retrieve(ar_raw, ar_vs, ar_bm25, ar_docs, norm_ar,         k=_CANDIDATE_K),
+            retrieve(ar_msa, ar_vs, ar_bm25, ar_docs, norm_ar,         k=_CANDIDATE_K),
+        )
+        docs_en = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
+        combined = rrf(docs_ar, docs_en)
+
+    elif q_lang == "egyptian":
+        ar_msa  = egyptian_to_msa(query)
+        docs_ar = rrf(
+            retrieve(query,   ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
+            retrieve(ar_msa,  ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
+        )
+        docs_en = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
+        combined = rrf(docs_ar, docs_en)
+
     elif q_lang == "arabic":
         if get_semantic_dialect(query, ara_tokenizer) == "egyptian":
-            ar_queries = [query, egyptian_to_msa(query)]
+            ar_msa  = egyptian_to_msa(query)
+            docs_ar = rrf(
+                retrieve(query,  ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
+                retrieve(ar_msa, ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
+            )
         else:
-            ar_queries = [query]
+            docs_ar = retrieve(query, ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K)
+        docs_en  = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
+        combined = rrf(docs_ar, docs_en)
+
+    elif q_lang == "english":
+        docs_en  = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
+        docs_ar  = retrieve(query, ar_vs, ar_bm25, ar_docs, norm_ar,           k=_CANDIDATE_K)
+        combined = rrf(docs_en, docs_ar)
+
     else:
-        ar_queries = [query]
+        # Fallback: English only
+        combined = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
 
-    ar_results = [
-        retrieve(q, ar_vs, ar_bm25, ar_docs,
-                 lambda t: normalize_arabic(t, ara_tokenizer), k=40)
-        for q in ar_queries
-    ]
-    docs_ar  = rrf(*ar_results) if len(ar_results) > 1 else ar_results[0]
-    docs_en  = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=40)
-    combined = rrf(docs_ar, docs_en)
-
-    top_docs, scores = rerank(query, combined, reranker, top_n=6)
+    # ── rerank ────────────────────────────────────────────────────────────────
+    top_docs, scores = rerank(query, combined, reranker, top_n=_RERANKED_TOP_N)
     if not top_docs:
         return [], {}, ""
-
-    top_score = max(scores.values(), default=0) if scores else 0
-    if top_score < 0.25:
-        return [], {}, "No relevant policy found."
 
     ctx = _build_context_truncated(top_docs)
     return top_docs, scores, ctx
@@ -563,13 +597,12 @@ def run_agent(
     if not skip_critique and not is_no_info_answer(answer):
         c = _critique(critique_llm, answer)
         if not c.get("adequate") and c.get("missing"):
+            # Re-run the full language-aware pipeline for the enriched query,
+            # not bare retrieve() calls — mirrors the main retrieval path.
             rq = f"{question} {c['missing']}"
-            av, bv, adocs  = ar_index
-            ev, bv2, edocs = en_index
-            da2 = retrieve(rq, av, bv, adocs,
-                           lambda t: normalize_arabic(t, ara_tokenizer))
-            de2 = retrieve(rq, ev, bv2, edocs, normalize_english)
-            t2, s2 = rerank(rq, rrf(da2, de2), reranker, top_n=4)
+            t2, s2, ctx2 = _retrieve_policy(
+                rq, ar_index, en_index, reranker, ara_tokenizer
+            )
             if t2:
                 tool_results["policy_context"] = _build_context_truncated(t2)
                 r2  = _format_answer(lang, dialect, question, tool_results,
