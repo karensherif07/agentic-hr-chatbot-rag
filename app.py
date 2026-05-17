@@ -173,8 +173,9 @@ try:
     (ar_index, en_index,
      routing_llm, en_llm, ar_llm, critique_llm,
      reranker, dialect_pipe, ara_tokenizer) = setup()
-    st.session_state.en_llm = en_llm
-    st.session_state.ar_llm = ar_llm
+    st.session_state.en_llm       = en_llm
+    st.session_state.ar_llm       = ar_llm
+    st.session_state.dialect_pipe = dialect_pipe   # stored so dialect detection is consistent
 except Exception as e:
     st.error(f"Setup Error: {e}")
     st.stop()
@@ -209,6 +210,7 @@ if question:
             with st.spinner("Thinking…"):
                 try:
                     lang    = detect_language_type(question)
+                    # Pass dialect_pipe (not ara_tokenizer) — matches agent.py requirement
                     dialect = get_semantic_dialect(question, dialect_pipe) if lang == "arabic" else None
 
                     history_str = build_history_str(
@@ -230,6 +232,7 @@ if question:
                         critique_llm=critique_llm,
                         reranker=reranker,
                         ara_tokenizer=ara_tokenizer,
+                        dialect_pipe=dialect_pipe,   # ← was missing before
                     )
 
                     answer            = result["answer"]

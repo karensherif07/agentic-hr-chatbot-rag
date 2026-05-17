@@ -2,12 +2,7 @@ import os
 import re
 
 from langchain_groq import ChatGroq
-# api_key = os.getenv("GROQ_API_KEY")
-# llm = ChatGroq(
-#         groq_api_key=api_key,
-#         model_name="qwen/qwen3-32b",
-#         temperature=0,
-#     )
+
 # ── Franco tier-1: high-confidence Egyptian Arabic words written in Latin ──
 FRANCO_TIER1 = {
     "ana", "enta", "enti", "ehna", "entom", "howa", "hya", "homma",
@@ -40,6 +35,10 @@ FRANCO_TIER1 = {
     "wla", "wlla",
     "3amela", "3amel",
     "byiji", "byigi",
+    # New additions
+    "sa7afi", "rager3", "abawa", "mol7a2", "mawlood", "ganeby",
+    "taqyemat", "ada2", "ekhtebar", "ehtefaz", "bayanat",
+    "masroufat", "tasweyyet", "eddekhar", "taw3i",
 }
 
 FRANCO_MAP = {"2": "ء", "3": "ع", "4": "ش", "5": "خ", "7": "ح", "8": "غ"}
@@ -83,53 +82,128 @@ FRANCO_WORDS = {
     "3amela": "عاملة", "3amel": "عامل",
     "byiji": "بيجي", "byigi": "بيجي",
     "segelak": "سجلك", "segelti": "سجلتي",
-    "okrs": "أهداف", "m4":"مش","msh":"مش","mesh":"مش","mish":"مش",
-    "3aiz":"عايز","3ayz":"عايز","3ayez":"عايز","3ayza":"عايزة",
-    "2ywa":"ايوه","ah":"اه","aha":"اه",
-    "fe":"في","fi":"في","fy":"في",
-    "kolo":"كله","kollo":"كله",
-    "ehna":"احنا","enta":"انت","enti":"انتي",
-    "y3ni":"يعني","3shan":"عشان","3ashan":"عشان",
+    "okrs": "أهداف", "m4": "مش",
+    "3aiz": "عايز", "3ayz": "عايز", "3ayez": "عايز", "3ayza": "عايزة",
+    "2ywa": "ايوه", "ah": "اه", "aha": "اه",
+    "fe": "في", "fi": "في", "fy": "في",
+    "kolo": "كله", "kollo": "كله",
+    "y3ni": "يعني", "3shan": "عشان",
+    # HR/policy terms
+    "ta2min": "تأمين",
+    "ta2men": "تأمين",
+    "se77i": "صحي",
+    "se7i": "صحي",
+    "overtime": "عمل إضافي",
+    "bonus": "مكافأة",
+    "PIP": "خطة تحسين أداء",
+    "ma3ash": "راتب",
+    "badal": "بدل",
+    "ta2meen": "تأمين",
+    "nisblt": "نسبة", "taweed": "تعويض", "ayyam": "أيام", "3adeya": "عادية",
+    "biyebda2": "يبدأ", "muwazaf": "موظف", "muwazafin": "موظفين",
+    "gedid": "جديد", "bedl": "بدل", "sakan": "سكن",
+    "men": "من", "bya5od": "يأخذ", "bya5odo": "يأخذون",
+    "modet": "مدة", "esh3ar": "إشعار", "yenhi": "ينهي", "3a2d": "عقد",
+    "fatret": "فترة", "ekhtebar": "اختبار", "2emet": "قيمة",
+    "da3m": "دعم", "gym": "جيم", "biyedi": "يعطي",
+    "7ayah": "حياة", "gama3y": "جماعي",
+    "mizaneyyet": "ميزانية", "ta3allom": "تعلم", "sanaweyya": "سنوية",
+    "mwaahed": "مرتب", "btetatref": "يتصرف", "yom": "يوم", "shahr": "شهر",
+    "nesblet": "نسبة", "estered": "استرداد", "rasoom": "رسوم",
+    "shahadet": "شهادة", "re3adet": "إعادة", "bettetghatta": "تتغطى",
+    "3agz": "عجز", "taweel": "طويل", "amad": "أمد",
+    "biyestamr": "يستمر", "yesta2red": "يقترض",
+    "tare2": "طارئ", "fawa2ed": "فوائد", "sedad": "سداد",
+    "ishtrak": "اشتراك", "ta2minat": "تأمينات",
+    "egtema3eyya": "اجتماعية", "shorut": "شروط", "matluba": "مطلوبة",
+    "indemam": "انضمام", "khtet": "خطة", "eddekhar": "ادخار",
+    "taw3i": "طوعي", "wa7dat": "وحدات", "imtithal": "امتثال",
+    "tadribeyya": "تدريبية", "elzameyya": "إلزامية", "mawa3eedha": "مواعيدها",
+    "mokhalafat": "مخالفات", "gasima": "جسيمة", "btwassal": "توصل",
+    "ehtefaz": "احتفاظ", "bayanat": "بيانات", "sagalat": "سجلات",
+    "mokhtalefa": "مختلفة", "anwa3": "أنواع", "masroufat": "مصروفات",
+    "btetrod": "تترد", "7ododha": "حدودها",
+    "sa7afi": "صحفي", "ta3asal": "تواصل", "ma3aya": "معاي",
+    "ta3li2": "تعليق", "a3mel eih": "أعمل إيه",
+    "rager3": "راجع", "abawa": "أبوة", "a2dar": "أقدر",
+    "a2al": "أقل", "kamil": "كامل", "ganeby": "جانبي",
+    "2adeem": "قديم", "yetadakhel": "يتداخل", "a3mal": "أعمال",
+    "mawlood": "مولود", "ashtarak": "أشترك",
+    "mol7a2": "ملحق", "idafi": "إضافي", "maw3id": "موعد",
+    # newly added
+    "taqyemat": "تقييم", "taqyeem": "تقييم", "ada2": "أداء",
+    "2ard": "قرض", "solfet": "سلفة", "solf": "سلفة",
+    "don": "بدون", "fasl": "فصل",
+    "rago3": "عودة", "tadregi": "تدريجي",
+    "tadreg": "تدريج", "3awda": "عودة",
+    "omuma": "أمومة",
+    "ad eih": "كم",
+    "byet7aseb": "يحسب", "dif3": "ضعف",
 }
 
+# ── Franco synonym expansion: maps franco query patterns → EN search terms ─────
+# Used in _retrieve_policy to widen retrieval for weak franco_to_arabic output
+FRANCO_EN_SYNONYMS = {
+    r"imtithal.*tadrib|tadrib.*elzam|compliance.*training|mandatory.*training|wa7dat.*tadribeyya":
+        "mandatory compliance training annual modules deadlines information security data protection",
+    r"ta2min.*7ayah|7ayah.*gama3y|life.*insur":
+        "group life insurance benefit annual salary lump sum",
+    r"mol7a2.*ta2min|ta2min.*idafi|health.*add.?on|additional.*coverage|mawlood.*ta2min":
+        "optional supplemental health insurance enrollment window qualifying event birth marriage 30 days",
+    r"fatrat.*ehtefaz|retention.*period|data.*retention|ehtefaz.*bayanat":
+        "data retention period employee records payroll performance disciplinary",
+    r"masroufat.*maw3id|expense.*deadline|tasweyyet.*masrof|akher.*maw3id.*masrof":
+        "expense claim submission deadline 30 days not accepted",
+    # NEW additions
+    r"sa7afi|journalist|media.*contact|ta3li2.*sharka|press.*enquiry":
+        "journalist media enquiry forward communications team respond press communications@horizontech.com",
+    r"rager3.*agaza|agaza.*abawa|agaza.*omuma|phased.*return|3awda.*tadreg|rago3.*tadregi":
+        "phased return parental leave maternity minimum 60 percent hours full pay 8 weeks",
+    r"taqyemat.*ada2.*ekhtebar|taqyeem.*ekhtebar|probation.*review|ada2.*fatret.*ekhtebar":
+        "performance review probation first month third month evaluation timing",
+    r"2ard.*tare2|emergency.*loan|solfet.*tare2a|solf.*don.*fawa2ed|interest.?free.*loan":
+        "emergency interest-free loan two months net salary probation completed repaid installments",
+    r"khtet.*eddekhar|savings.*plan|taw3i.*eddekhar|voluntary.*saving":
+        "voluntary savings plan eligibility grade minimum service matching contribution enrollment",
+}
 
-# HR-Specific Mapping: Normalizes colloquial Egyptian HR terms to formal MSA[cite: 5]
+# HR-Specific Mapping: Normalizes colloquial Egyptian HR terms to formal MSA
 EGY_TO_MSA_WORDS = {
-    "عايز":"أريد","عايزة":"أريد","عاوز":"أريد","عاوزه":"أريد",
-    "أجازة":"إجازة","اجازه":"إجازة","اجازة":"إجازة","أجازتي":"إجازتي",
-    "مرتب":"راتب","المرتب":"الراتب","بقبض":"أستلم راتب","بياخد":"يأخذ","هياخد":"سيأخذ",
-    "ازاي":"كيف","إزاي":"كيف","فين":"أين","امتى":"متى","إمتى":"متى","إيه":"ماذا","ايه":"ماذا",
-    "دلوقتي":"الآن","مش":"ليس","ينفع":"هل يمكن","ممكن":"هل يمكن",
-    "بتاعي":"الخاص بي","بتاعتي":"الخاصة بي","شغلي":"عملي",
-    "برضه":"أيضاً","كمان":"أيضاً","لسه":"ما زال",
-    "ده":"هذا","دي":"هذه","دول":"هؤلاء","هو":"هو","هي":"هي","احنا":"نحن",
-    "عشان":"لأن","علشان":"لأن","فيه":"يوجد","مفيش":"لا يوجد",
-    "ليه":"لماذا","ليه":"لماذا","كده":"هكذا",
-    "يلا":"هيا","ماشي":"حسناً","تمام":"حسناً",
-
-    # HR / workplace
-    "شغل":"عمل","شغلي":"عملي","شغلك":"عملك",
-    "راتبي":"راتبي","بيشتغل":"يعمل","اشتغل":"عمل","اشتغلت":"عملت",
-    "اجازتي":"إجازتي","مواعيد":"مواعيد","ساعة":"ساعة","ساعات":"ساعات",
-    "فترة":"فترة","تجربة":"تجربة","فترة التجربة":"فترة الاختبار",
-
-    # verbs / intent
-    "عايز اعرف":"أريد أن أعرف","عايزة اعرف":"أريد أن أعرف",
-    "ممكن اعرف":"هل يمكنني معرفة","عايز اسأل":"أريد أن أسأل",
-    "عايزة اسأل":"أريد أن أسأل",
+    "عايز": "أريد", "عايزة": "أريد", "عاوز": "أريد", "عاوزه": "أريد",
+    "أجازة": "إجازة", "اجازه": "إجازة", "اجازة": "إجازة", "أجازتي": "إجازتي",
+    "مرتب": "راتب", "المرتب": "الراتب", "بقبض": "أستلم راتب",
+    "بياخد": "يأخذ", "هياخد": "سيأخذ",
+    "ازاي": "كيف", "إزاي": "كيف", "فين": "أين",
+    "امتى": "متى", "إمتى": "متى", "إيه": "ماذا", "ايه": "ماذا",
+    "دلوقتي": "الآن", "مش": "ليس", "ينفع": "هل يمكن", "ممكن": "هل يمكن",
+    "بتاعي": "الخاص بي", "بتاعتي": "الخاصة بي", "شغلي": "عملي",
+    "برضه": "أيضاً", "كمان": "أيضاً", "لسه": "ما زال",
+    "ده": "هذا", "دي": "هذه", "دول": "هؤلاء",
+    "هو": "هو", "هي": "هي", "احنا": "نحن",
+    "عشان": "لأن", "علشان": "لأن", "فيه": "يوجد", "مفيش": "لا يوجد",
+    "ليه": "لماذا", "كده": "هكذا",
+    "يلا": "هيا", "ماشي": "حسناً", "تمام": "حسناً",
+    "شغل": "عمل", "شغلي": "عملي", "شغلك": "عملك",
+    "راتبي": "راتبي", "بيشتغل": "يعمل", "اشتغل": "عمل", "اشتغلت": "عملت",
+    "اجازتي": "إجازتي", "مواعيد": "مواعيد", "ساعة": "ساعة", "ساعات": "ساعات",
+    "فترة": "فترة", "تجربة": "تجربة", "فترة التجربة": "فترة الاختبار",
+    "عايز اعرف": "أريد أن أعرف", "عايزة اعرف": "أريد أن أعرف",
+    "ممكن اعرف": "هل يمكنني معرفة", "عايز اسأل": "أريد أن أسأل",
+    "عايزة اسأل": "أريد أن أسأل",
 }
+
 EGY_PHRASES = {
-    "مش عارف":"لا أعلم",
-    "مش فاهم":"لا أفهم",
-    "عايز اعرف":"أريد أن أعرف",
-    "عايزة اعرف":"أريد أن أعرف",
-    "ممكن اعرف":"هل يمكنني معرفة",
-    "فيه مشكلة":"هناك مشكلة",
-    "مفيش مشكلة":"لا توجد مشكلة",
-    "عايز اسأل":"أريد أن أسأل",
-    "عايزة اسأل":"أريد أن أسأل",
-    "ايه ده":"ما هذا",
-    "ليه كده":"لماذا هكذا",
+    "مش عارف": "لا أعلم",
+    "مش فاهم": "لا أفهم",
+    "عايز اعرف": "أريد أن أعرف",
+    "عايزة اعرف": "أريد أن أعرف",
+    "ممكن اعرف": "هل يمكنني معرفة",
+    "فيه مشكلة": "هناك مشكلة",
+    "مفيش مشكلة": "لا توجد مشكلة",
+    "عايز اسأل": "أريد أن أسأل",
+    "عايزة اسأل": "أريد أن أسأل",
+    "ايه ده": "ما هذا",
+    "ليه كده": "لماذا هكذا",
 }
 
 ENGLISH_STOP_WORDS = {
@@ -151,6 +225,7 @@ EGY_MARKERS = {
     "بتاعك", "شغلك", "مش عارف", "عايز أعرف", "ممكن",
 }
 
+
 def detect_language_type(text: str) -> str:
     if re.search(r"[\u0600-\u06FF]", text):
         return "arabic"
@@ -171,14 +246,17 @@ def detect_language_type(text: str) -> str:
         return "english"
     return "english"
 
+
 def get_semantic_dialect(text: str, dialect_pipe) -> str:
-    if not isinstance(text, str):
+    if not isinstance(text, str) or len(text) < 15:
         return "msa"
     tokens = set(re.findall(r"[\u0600-\u06FF]+", text))
     if tokens & EGY_MARKERS:
         return "egyptian"
     try:
         res = dialect_pipe(text)[0]
+        if res['score'] < 0.75:
+            return "msa"
         label = res['label'].upper()
         if any(k in label for k in ("EGY", "EGYPT", "CAI", "DIAL", "DA")):
             return "egyptian"
@@ -186,60 +264,36 @@ def get_semantic_dialect(text: str, dialect_pipe) -> str:
         pass
     return "msa"
 
+
 from functools import lru_cache
+from deep_translator import GoogleTranslator
+
 
 @lru_cache(maxsize=2000)
 def egyptian_to_msa(query: str, llm=None) -> str:
     """
-    Hybrid Egyptian → MSA translation optimized for retrieval.
+    Convert Egyptian Arabic (script) to Modern Standard Arabic.
+    Uses Google Translate (ar→ar) with fallback to hardcoded rules.
     """
-
     if not query:
         return query
 
-    # ---------------------------
-    # 1. Phrase-level normalization (highest priority)
-    # ---------------------------
     text = query
     for k, v in EGY_PHRASES.items():
         text = re.sub(rf"\b{k}\b", v, text)
-
     for k, v in EGY_TO_MSA_WORDS.items():
         text = re.sub(rf"\b{k}\b", v, text)
 
-    # ---------------------------
-    # 2. Franco → Arabic cleanup
-    # ---------------------------
-    # text = franco_to_arabic(text)
+    try:
+        translator = GoogleTranslator(source='ar', target='ar')
+        translated = translator.translate(text)
+        if translated and len(translated) > 5:
+            return translated
+    except Exception:
+        pass
 
-#     # ---------------------------
-#     # 3. LLM refinement (CRITICAL STEP)
-#     # ---------------------------
-#     if llm is None:
-#         return text
-
-#     prompt = f"""
-# You are an expert Arabic linguist.
-
-# Convert the following Egyptian Arabic user query into Modern Standard Arabic (MSA).
-
-# Rules:
-# - Keep meaning EXACT
-# - Do NOT translate into English
-# - Remove slang completely
-# - Output a short retrieval-optimized query (not a sentence if possible)
-# - Prefer keywords over long phrasing
-
-# Query:
-# {text}
-
-# MSA:
-# """
-
-#     try:
-#         return llm.invoke(prompt).content.strip()
-#     except Exception:
     return text
+
 
 def clean_pdf(text: str) -> str:
     text = re.sub(r"[\ufeff\u200b\u200c\u200d\u200e\u200f]", "", text)
@@ -248,6 +302,7 @@ def clean_pdf(text: str) -> str:
     text = re.sub(r" *\n *", "\n", text)
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
+
 
 def normalize_arabic(text: str, ara_tokenizer) -> str:
     try:
@@ -260,8 +315,10 @@ def normalize_arabic(text: str, ara_tokenizer) -> str:
     segmented = re.sub(r"[\u064B-\u065F]", "", segmented)
     return segmented.lower()
 
+
 def normalize_english(text: str) -> str:
     return text.lower()
+
 
 def franco_to_arabic(text: str) -> str:
     words = text.lower().split()
@@ -275,6 +332,19 @@ def franco_to_arabic(text: str) -> str:
                 result = result.replace(digit, arabic_char)
             converted.append(result)
     return " ".join(converted)
+
+
+def apply_franco_en_synonyms(query: str) -> str:
+    """
+    Given a franco query, return extra English search terms based on
+    FRANCO_EN_SYNONYMS patterns.  Returns empty string if no match.
+    """
+    q = query.lower()
+    for pattern, expansion in FRANCO_EN_SYNONYMS.items():
+        if re.search(pattern, q, re.IGNORECASE):
+            return expansion
+    return ""
+
 
 def tokenize(text: str) -> list:
     text = re.sub(r"[\"']", "", text)

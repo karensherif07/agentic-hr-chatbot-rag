@@ -32,10 +32,10 @@ ARABIC_PDF_ENTRIES = [
 ]
 
 ENGLISH_PDF_ENTRIES = [
-    ("policies/eng_policy.pdf",              "eng_policy.pdf"),
-    ("policies/eng_wellness_benefits.pdf",   "eng_wellness_benefits.pdf"),
-    ("policies/eng_training_development.pdf","eng_training_development.pdf"),
-    ("policies/eng_workplace_conduct.pdf",   "eng_workplace_conduct.pdf"),
+    ("policies/eng_policy.pdf",               "eng_policy.pdf"),
+    ("policies/eng_wellness_benefits.pdf",    "eng_wellness_benefits.pdf"),
+    ("policies/eng_training_development.pdf", "eng_training_development.pdf"),
+    ("policies/eng_workplace_conduct.pdf",    "eng_workplace_conduct.pdf"),
 ]
 
 # Convenience: plain path lists (used by retrieval / utils for lang detection)
@@ -54,7 +54,89 @@ _HIGHLIGHT_COLOR   = (1.0, 0.95, 0.0)
 _HIGHLIGHT_OPACITY = 0.35
 
 
-# ── Highlight helpers ─────────────────────────────────────────────────────────
+# ── Safe cleaning helpers ─────────────────────────────────────────────────────
+# Rules:
+#   hardcore_clean  — encoding artifacts only (null bytes, bidi marks). Safe always.
+#   safe_clean      — true boilerplate footers only. Never touches policy content.
+#
+# REMOVED from previous version (caused 52 false "not available" answers):
+#   aggressive_clean   — deleted lines containing "policy", "Horizon", "HR" which
+#                        are present in real policy sentences, destroying index quality.
+#   clean_index_text   — "Page \d+" regex wiped page-number citations that are part
+#                        of real table rows (e.g. "Page 9 — 21 days annual leave").
+#   is_bad_chunk       — word threshold of 35 was too high, dropping valid short facts.
+#   is_header_chunk    — word threshold of 30 and "page" in first 50 chars dropped
+#                        real chunks whose first word happened to be a page reference.
+
+def hardcore_clean(text: str) -> str:
+    """Remove encoding artifacts only. Never removes policy words."""
+    text = text.replace("\x00", " ")
+    text = re.sub(r"[\u200e\u200f\u202a-\u202e]", "", text)  # bidi control chars
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def safe_clean(text: str) -> str:
+    lines = text.splitlines()
+    cleaned = []
+    for line in lines:
+        stripped = line.strip()
+        # Strip leading punctuation that PDFs prepend (e.g. ". Confidential...")
+        stripped_for_check = stripped.lstrip('. ')
+        if re.fullmatch(
+            r"(Confidential\s*[—\-]\s*Internal Use Only.*"
+            r"|Version\s+\d+\.\d+.*"
+            r"|Page\s*\d+"
+            r"|سري\s*[—\-]\s*للاستخدام الداخلي فقط.*"
+            r"|Horizon Tech\s*[—\-]\s*Human Resources.*)",
+            stripped_for_check,
+            flags=re.IGNORECASE,
+        ):
+            continue
+        cleaned.append(line)
+    text = "\n".join(cleaned)
+    text = re.sub(r"[-|_]{5,}", " ", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def _is_boilerplate_chunk(text: str) -> bool:
+    """
+    True only when the entire chunk is footer / header stamp with no policy content.
+
+    Thresholds:
+      < 12 words  → too short to contain a policy fact
+      digit ratio > 0.45 → pure table of numbers with no prose (OCR artefact)
+
+    NOT filtered:
+      - chunks containing "policy", "Horizon", "HR" (real content words)
+      - chunks with "page" anywhere except at the very start of a short line
+      - chunks with word count 12-30 (short but may be a valid single-fact chunk)
+    """
+    t = text.strip()
+    if "\x00" in t:
+        return True
+    words = t.split()
+    if len(words) < 12:
+        return True
+    digit_ratio = sum(c.isdigit() for c in t) / max(len(t), 1)
+    if digit_ratio > 0.45:
+        return True
+    # Strip leading ". " before checking
+    t_check = t.lstrip('passage: ').lstrip('. ')
+    if re.fullmatch(
+        r"(Confidential\s*[—\-]\s*Internal Use Only.*"
+        r"|Version\s+\d+\.\d+.*"
+        r"|Page\s*\d+"
+        r"|سري\s*[—\-]\s*للاستخدام الداخلي فقط.*)",
+        t_check,
+        flags=re.IGNORECASE,
+    ):
+        return True
+    return False
+
+
+# ── Highlight helpers (used by Streamlit UI) ──────────────────────────────────
 
 def _search_candidates(clip_text: str) -> list[str]:
     t = re.sub(r"\[Page\s*\d+[^\]]*\]", "", clip_text or "", flags=re.IGNORECASE)
@@ -182,12 +264,11 @@ def _build_index(
       • "lang"     – "arabic" or "english"
       • "page"     – 1-based page number (set by PyMuPDFLoader)
 
-    WHY doc_name?
-    PyMuPDFLoader sets metadata["source"] to the full path
-    (e.g. "policies/ar_policy.pdf").  Your eval JSON stores only the
-    filename ("ar_policy.pdf").  Storing doc_name gives retrieval and
-    evaluation code a single reliable key to compare without fragile
-    path-stripping logic.
+    Cleaning pipeline (conservative by design):
+      1. hardcore_clean  — encoding artifacts only
+      2. clean_pdf       — from nlp_utils: normalises whitespace, line endings
+      3. safe_clean      — removes footer-only lines, never touches policy words
+      4. _is_boilerplate_chunk — drops chunks that are entirely footer/garbage
     """
     all_docs = []
 
@@ -195,21 +276,41 @@ def _build_index(
         if not os.path.exists(path):
             raise FileNotFoundError(f"Missing policy PDF: {path}")
 
-        pages = PyMuPDFLoader(path).load()
+        raw_pages = PyMuPDFLoader(path).load()
+        pages = []
 
-        for d in pages:
-            d.page_content = clean_pdf(d.page_content)
+        for d in raw_pages:
+            text = d.page_content
+
+            # Step 1 — encoding artifacts
+            text = hardcore_clean(text)
+            # Step 2 — whitespace / line-ending normalisation (from nlp_utils)
+            text = clean_pdf(text)
+            # Step 3 — footer-stamp lines only
+            text = safe_clean(text)
+
+            # Drop page if nothing meaningful survived
+            if len(text.split()) < 10:
+                continue
+
+            d.page_content = text
             d.metadata["doc_type"] = "policy"
             d.metadata["lang"]     = lang_tag
-            # ↓ NEW: short doc identifier used by evaluation & citation UI
             d.metadata["doc_name"] = doc_name
+
+            pages.append(d)
 
         splitter = RecursiveCharacterTextSplitter(
             chunk_size=200,
             chunk_overlap=50,
             separators=["\n\n", "\n", ".", "?", "!", " ", "---", "|"],
         )
-        all_docs.extend(splitter.split_documents(pages))
+        chunks = splitter.split_documents(pages)
+
+        # Drop chunks that are entirely boilerplate / too short / OCR garbage
+        chunks = [c for c in chunks if not _is_boilerplate_chunk(c.page_content)]
+
+        all_docs.extend(chunks)
 
     # Prepend passage prefix required by multilingual-e5
     for d in all_docs:
@@ -226,12 +327,12 @@ def _build_index(
 def setup():
     """
     Returns:
-        ar_index  – (FAISS, BM25, docs) for Arabic PDFs
-        en_index  – (FAISS, BM25, docs) for English PDFs
-        routing_llm   – tool-calling orchestrator (llama-3.3-70b)
-        en_llm        – English answer generation  (llama-3.3-70b)
-        ar_llm        – Arabic / Franco generation  (qwen3-32b, no thinking)
-        critique_llm  – self-critique               (llama-3.1-8b-instant)
+        ar_index      – (FAISS, BM25, docs) for Arabic PDFs
+        en_index      – (FAISS, BM25, docs) for English PDFs
+        routing_llm   – intent router          (llama-4-scout-17b)
+        en_llm        – English answer gen     (llama-3.3-70b-versatile)
+        ar_llm        – Arabic / Franco gen    (qwen3-32b)
+        critique_llm  – self-critique          (llama-3.1-8b-instant)
         reranker, dialect_pipe, ara_tokenizer
     """
     dialect_pipe, ara_tokenizer = load_nlp_stack()
@@ -280,5 +381,3 @@ def setup():
         routing_llm, en_llm, ar_llm, critique_llm,
         reranker, dialect_pipe, ara_tokenizer,
     )
-
-

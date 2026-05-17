@@ -92,12 +92,12 @@ Policy context is shown below (if any). Select only the personal data tools stri
 _DB_KEYS = ["profile", "leave_data", "salary_data", "performance_data",
             "training_data", "disciplinary_data"]
 
-_MAX_CHUNK_CHARS    = 800
-_MAX_CONTEXT_CHUNKS = 5
+_MAX_CHUNK_CHARS    = 600
+_MAX_CONTEXT_CHUNKS = 7   # matches _RERANKED_TOP_N
 
-# Candidate pool and reranker top-n — kept in sync with run_reranker_experiment.py
+# Candidate pool and reranker top-n — kept in sync with generate_answers.py
 _CANDIDATE_K    = 20
-_RERANKED_TOP_N = 5
+_RERANKED_TOP_N = 7
 
 _NO_INFO_MARKERS = ("no relevant policy found", "not available")
 
@@ -127,24 +127,55 @@ _DB_TOOL_NAMES = frozenset(_KEY_MAP)
 # =============================================================================
 
 def _build_context_truncated(docs: list) -> str:
-    sorted_docs = sorted(
-        docs[:_MAX_CONTEXT_CHUNKS],
-        key=lambda d: (d.metadata.get("source", ""), d.metadata.get("page", 0))
-    )
-    out = []
-    for d in sorted_docs:
+    chunks  = []
+    skipped = 0
+    for d in docs[:_MAX_CONTEXT_CHUNKS]:
+        content = d.page_content
+        if (_is_boilerplate(content)
+                or _is_corrupted_chunk(content)
+                or _looks_like_ocr_loop(content)):
+            skipped += 1
+            continue
         page_num = d.metadata.get("page", 0) + 1
         lang_tag = "AR" if _is_arabic_source(d.metadata.get("source", "")) else "EN"
-        content  = d.page_content[:_MAX_CHUNK_CHARS]
-        if len(d.page_content) > _MAX_CHUNK_CHARS:
-            content += "…"
-        out.append(f"[Page {page_num}|{lang_tag}]\n{content}")
-    return "\n---\n".join(out)
+        truncated = content[:_MAX_CHUNK_CHARS]
+        if len(content) > _MAX_CHUNK_CHARS:
+            truncated += "…"
+        chunks.append(f"[Page {page_num}|{lang_tag}]\n{truncated}")
+    if skipped:
+        print(f"[agent] Skipped {skipped} boilerplate/corrupted chunks")
+    return "\n---\n".join(chunks) if chunks else ""
 
 
-def _strip_qwen_thinking(text: str) -> str:
-    text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL)
+def _strip_think_blocks(text: str) -> str:
+    """
+    Remove <think>...</think> blocks.
+    Handles:
+    1. Well-formed <think>...</think> — strip the block.
+    2. Unclosed <think> (truncated by max_tokens) — strip everything from <think> onward.
+    3. No block — return unchanged.
+    """
+    # Case 1: well-formed block
+    cleaned = re.sub(
+        r"<think\b[^>]*>.*?</think>",
+        "",
+        text,
+        flags=re.DOTALL | re.IGNORECASE,
+    )
+    if cleaned != text:
+        return re.sub(r"\s{3,}", "\n\n", cleaned).strip()
+
+    # Case 2: unclosed <think> — everything after is reasoning, not an answer
+    unclosed = re.search(r"<think\b[^>]*>", text, re.IGNORECASE)
+    if unclosed:
+        before = text[:unclosed.start()].strip()
+        return before if len(before) > 10 else ""
+
     return re.sub(r"\s{3,}", "\n\n", text).strip()
+
+
+# Backward-compat alias
+_strip_qwen_thinking = _strip_think_blocks
 
 
 def _invoke_with_retry(llm, prompt, max_retries=3):
@@ -164,7 +195,164 @@ def _invoke_with_retry(llm, prompt, max_retries=3):
     raise RuntimeError("LLM call failed after retries")
 
 
+# =============================================================================
+# CHUNK QUALITY FILTERS  (mirrors generate_answers.py exactly)
+# =============================================================================
+
+_BOILERPLATE_PATTERNS = [
+    r"^Confidential\s*[—-]\s*Internal Use Only",
+    r"^سري\s*[—-]\s*للاستخدام الداخلي فقط",
+    r"^Mbps\s*\.",
+    r"^Page\s*\d+\s*$",
+    r"تاريخ النفاذ\s*سري",
+]
+_BOILERPLATE_RE = re.compile("|".join(_BOILERPLATE_PATTERNS), re.IGNORECASE | re.DOTALL)
+
+_GARBAGE_PATTERNS = [
+    r"[^\w\s\u0600-\u06FF]{15,}",
+    r"(.)\1{10,}",
+    r"\b[a-zA-Z]{1,2}\b(?:\s+\b[a-zA-Z]{1,2}\b){10,}",
+]
+_GARBAGE_RE = re.compile("|".join(_GARBAGE_PATTERNS), re.DOTALL)
+
+
+def _is_boilerplate(text: str) -> bool:
+    stripped = text.strip()
+    stripped_check = re.sub(r'^[.\s]+', '', stripped)
+    if len(stripped_check) < 50:
+        return True
+    if _BOILERPLATE_RE.search(stripped_check[:300]):
+        return True
+    _SIRI_ONLY = re.compile(
+        r'^[\.\s]*سري\s*[—\-–]\s*للاستخدام الداخلي فقط',
+        re.IGNORECASE
+    )
+    if _SIRI_ONLY.match(stripped):
+        return True
+    if 'سري' in stripped and 'للاستخدام الداخلي فقط' in stripped:
+        _POLICY_WORDS = re.compile(
+            r'(إجازة|راتب|موظف|بدل|تأمين|اشتراك|مكافأة|عمل إضافي|فترة|اختبار|تقييم|شهادة|تدريب|نفقة|مصروف)'
+        )
+        if not _POLICY_WORDS.search(stripped):
+            return True
+    _EN_STAMP = re.compile(
+        r'^[\.\s]*(Confidential\s*[—\-–]\s*Internal Use Only|'
+        r'Horizon Tech\s*[—\-–]\s*Human Resources)',
+        re.IGNORECASE
+    )
+    if _EN_STAMP.match(stripped) and len(stripped) < 300:
+        return True
+    return False
+
+
+def _looks_like_ocr_loop(text: str) -> bool:
+    lines = [l.strip() for l in text.splitlines() if l.strip()]
+    if len(lines) < 3:
+        return False
+    repeated = sum(1 for i in range(len(lines) - 1) if lines[i] == lines[i + 1])
+    if repeated >= 2:
+        return True
+    numeric_ratio = sum(
+        1 for tok in text.split() if any(c.isdigit() for c in tok)
+    ) / max(len(text.split()), 1)
+    return numeric_ratio > 0.35
+
+
+def _is_corrupted_chunk(text: str) -> bool:
+    t = text.strip()
+    if len(t) < 80:
+        return True
+    weird_ratio = sum(
+        1 for c in t
+        if not (c.isalnum() or c.isspace() or c in ".,:;!?-%()/")
+    ) / max(len(t), 1)
+    if weird_ratio > 0.30:
+        return True
+    if _GARBAGE_RE.search(t):
+        return True
+    words = t.split()
+    if len(words) < 15 and len(t) > 300:
+        return True
+    return False
+
+
+# ── Context instruction preambles (prepended to context in each prompt) ───────
+_AR_CONTEXT_INSTRUCTION = (
+    "استخدم جميع المقاطع التالية معاً للإجابة، بما فيها المقاطع باللغة الإنجليزية. "
+    "لا تتجاهل أي مقطع. أجب بشكل مباشر ومختصر بناءً على المعلومات المتاحة فقط.\n\n"
+)
+
+_EN_CONTEXT_INSTRUCTION = (
+    "ONLY use the passages labeled [Page N|EN] or [Page N|AR] below. "
+    "Some passages are in Arabic — read them too. "
+    "Do NOT use any knowledge from training. "
+    "If the answer isn't in these passages, say: "
+    "'This information is not available in the policy documents.' "
+    "Answer in 1-3 sentences maximum.\n\n"
+)
+
+_FRANCO_CONTEXT_INSTRUCTION = (
+    "Esta3mel kol el passages el gaya di — sawa el 3arabi w el inglizi. "
+    "Matb2ash ay passage. "
+    "Law el ma3loma mesh mawgoda: '2ol mesh mawgoda fel policy.' "
+    "Egabtak: Franco bass — la 3arabi wala inglizi.\n\n"
+)
+
+
+# =============================================================================
+# LOOP + FRANCO DETECTION  (mirrors generate_answers.py)
+# =============================================================================
+
 def _is_empty_policy(ctx: str) -> bool:
+    """True when policy retrieval returned nothing useful."""
+    if not ctx:
+        return True
+    return any(m in ctx.lower() for m in _NO_INFO_MARKERS)
+
+
+_LOOP_PATTERNS = [
+    r"(\[Page \d+\|(?:EN|AR)\]\n?){3,}",
+    r"(التسجيل\n){5,}",
+    r"(ليلة\n){5,}",
+    r"(الخدمات التالية\n){3,}",
+    r"(however:? the salary){3,}",
+    r"(التحديد\n\d+\n){5,}",
+    r"(سياسة الادخار\n){3,}",
+    r"(تنفيذ برنامج){3,}",
+    r"(هياخدك\s*تبعتك){3,}",
+    r"(تبعتك\s*وتبعتك){3,}",
+    r"(.{15,50})\1{4,}",
+]
+_LOOP_RE = re.compile("|".join(_LOOP_PATTERNS), re.DOTALL)
+
+
+def _is_looping(text: str) -> bool:
+    return bool(_LOOP_RE.search(text))
+
+
+_FRANCO_WORD_RE = re.compile(
+    r'\b(el|al|fe|fi|law|lw|bas|bs|msh|mesh|mish|ana|enta|enti|howa|hya|'
+    r'lazem|yalla|mashy|tamam|tayeb|momken|ya3ni|3ashan|keda|aywa|la2|'
+    r'leih|fein|emta|ezay|meen|eih|eh|da|di|dol|aho|ahi|'
+    r'biyedi|biyebda2|biyestamr|biyedfa3|byet7aseb|'
+    r'le7ad|men|3ala|mafish|feeh|fieh|walla|wala|'
+    r'shoghl|rateb|agaza|ta2min|muwazaf|gedid|'
+    r'[a-z]+[237][a-z]*|[a-z]*[237][a-z]+)\b',
+    re.IGNORECASE
+)
+
+
+def _is_franco(text: str) -> bool:
+    if not text or len(text) < 5:
+        return False
+    latin_chars  = len(re.findall(r'[a-zA-Z0-9 ]', text))
+    arabic_chars = len(re.findall(r'[\u0600-\u06FF]', text))
+    if latin_chars < 3 * max(arabic_chars, 1):
+        return False
+    return bool(_FRANCO_WORD_RE.search(text))
+
+
+
     """True when policy retrieval returned nothing useful."""
     if not ctx:
         return True
@@ -182,17 +370,20 @@ def _is_empty_policy(ctx: str) -> bool:
 #   english  : EN first, then AR, RRF(EN, AR)
 #   fallback : EN only
 #
-# Candidate pool : _CANDIDATE_K = 20  (matches CANDIDATE_K in experiment)
-# Reranker top-n : _RERANKED_TOP_N = 5 (matches RERANKED_TOP_N in experiment)
+# Candidate pool : _CANDIDATE_K = 20  (matches generate_answers.py)
+# Reranker top-n : _RERANKED_TOP_N = 7 (matches generate_answers.py)
 # No score threshold — let reranker ranking decide; don't silently drop results.
 # =============================================================================
 
-def _retrieve_policy(query, ar_index, en_index, reranker, ara_tokenizer):
+def _retrieve_policy(query, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe=None):
     """
     Language-aware hybrid retrieval + reranking.
+    Mirrors generate_answers.py _retrieve_policy() exactly.
     Returns (top_docs, scores_dict, context_str).
     Returns ([], {}, "") when nothing useful is found.
     """
+    from deep_translator import GoogleTranslator
+
     ar_vs, ar_bm25, ar_docs = ar_index
     en_vs, en_bm25, en_docs = en_index
 
@@ -201,26 +392,35 @@ def _retrieve_policy(query, ar_index, en_index, reranker, ara_tokenizer):
 
     # ── language-aware candidate retrieval ───────────────────────────────────
     if q_lang == "franco":
-        ar_raw  = franco_to_arabic(query)
-        ar_msa  = egyptian_to_msa(ar_raw)
+        franco_ar    = franco_to_arabic(query)
+        franco_norm  = egyptian_to_msa(franco_ar)
+        msa_query    = franco_norm
         docs_ar = rrf(
-            retrieve(ar_raw, ar_vs, ar_bm25, ar_docs, norm_ar,         k=_CANDIDATE_K),
-            retrieve(ar_msa, ar_vs, ar_bm25, ar_docs, norm_ar,         k=_CANDIDATE_K),
+            retrieve(franco_ar,  ar_vs, ar_bm25, ar_docs, norm_ar),
+            retrieve(msa_query,  ar_vs, ar_bm25, ar_docs, norm_ar),
         )
-        docs_en = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
+        try:
+            en_query2 = GoogleTranslator(source='ar', target='en').translate(franco_ar)
+        except Exception:
+            en_query2 = query
+        docs_en = rrf(
+            retrieve(en_query2,  en_vs, en_bm25, en_docs, normalize_english),
+            retrieve(msa_query,  en_vs, en_bm25, en_docs, normalize_english),
+        )
         combined = rrf(docs_ar, docs_en)
 
     elif q_lang == "egyptian":
-        ar_msa  = egyptian_to_msa(query)
-        docs_ar = rrf(
-            retrieve(query,   ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
-            retrieve(ar_msa,  ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
+        ar_msa   = egyptian_to_msa(query)
+        docs_ar  = rrf(
+            retrieve(query,  ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
+            retrieve(ar_msa, ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
         )
-        docs_en = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
+        docs_en  = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
         combined = rrf(docs_ar, docs_en)
 
     elif q_lang == "arabic":
-        if get_semantic_dialect(query, ara_tokenizer) == "egyptian":
+        # NOTE: get_semantic_dialect requires dialect_pipe, not ara_tokenizer
+        if get_semantic_dialect(query, dialect_pipe) == "egyptian":
             ar_msa  = egyptian_to_msa(query)
             docs_ar = rrf(
                 retrieve(query,  ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
@@ -240,13 +440,26 @@ def _retrieve_policy(query, ar_index, en_index, reranker, ara_tokenizer):
         # Fallback: English only
         combined = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
 
-    # ── rerank ────────────────────────────────────────────────────────────────
-    top_docs, scores = rerank(query, combined, reranker, top_n=_RERANKED_TOP_N)
+    # ── rerank — franco uses max(franco_ar, msa) scores ──────────────────────
+    if q_lang == "franco":
+        rerank_query     = franco_to_arabic(query)
+        rerank_query_msa = egyptian_to_msa(rerank_query)
+        pairs_ar  = [(rerank_query,     d.page_content) for d in combined]
+        pairs_msa = [(rerank_query_msa, d.page_content) for d in combined]
+        scores_ar  = reranker.predict(pairs_ar)
+        scores_msa = reranker.predict(pairs_msa)
+        scores = [max(a, b) for a, b in zip(scores_ar, scores_msa)]
+        ranked   = sorted(zip(combined, scores), key=lambda x: x[1], reverse=True)
+        top_docs = [d for d, _ in ranked[:_RERANKED_TOP_N]]
+        scores_dict = {id(d): float(s) for d, s in ranked[:_RERANKED_TOP_N]}
+    else:
+        top_docs, scores_dict = rerank(query, combined, reranker, top_n=_RERANKED_TOP_N)
+
     if not top_docs:
         return [], {}, ""
 
     ctx = _build_context_truncated(top_docs)
-    return top_docs, scores, ctx
+    return top_docs, scores_dict, ctx
 
 
 # =============================================================================
@@ -424,7 +637,7 @@ def _merge_db(tool_results: dict) -> dict:
 
 
 def _pick_llm(lang, en_llm, ar_llm):
-    return en_llm if lang == "english" else ar_llm
+    return en_llm if lang in ["english", "franco"] else ar_llm
 
 
 def _format_answer(lang, dialect, question, tool_results, history_str,
@@ -451,17 +664,21 @@ def _format_answer(lang, dialect, question, tool_results, history_str,
     else:
         if not ctx:
             return "This information is not available in the policy documents."
-        prompt = (
-            english_prompt if lang == "english" else
-            franco_prompt  if lang == "franco"  else
-            egy_prompt     if dialect == "egyptian" else
-            msa_prompt
-        )
+        # Prepend context instruction preamble (mirrors generate_answers.py)
+        if lang == "english":
+            augmented_ctx = _EN_CONTEXT_INSTRUCTION + ctx
+            prompt = english_prompt
+        elif lang == "franco":
+            augmented_ctx = _FRANCO_CONTEXT_INSTRUCTION + ctx
+            prompt = franco_prompt
+        else:
+            augmented_ctx = _AR_CONTEXT_INSTRUCTION + ctx
+            prompt = egy_prompt if dialect == "egyptian" else msa_prompt
         res = _invoke_with_retry(llm, prompt.format(
-            context=ctx, question=question, history=history_str,
+            context=augmented_ctx, question=question, history=history_str,
         ))
 
-    return _strip_qwen_thinking(res.content)
+    return _strip_think_blocks(res.content)
 
 
 # =============================================================================
@@ -520,7 +737,7 @@ def _build_personal_data_str(tool_results: dict) -> str:
 def run_agent(
     question, employee_id, lang, dialect, history_str,
     ar_index, en_index, routing_llm, en_llm, ar_llm, critique_llm,
-    reranker, ara_tokenizer,
+    reranker, ara_tokenizer, dialect_pipe=None,
     max_iterations=3,
     skip_critique=True,
 ):
@@ -552,7 +769,7 @@ def run_agent(
 
     elif intent == "policy":
         top_docs, scores_dict, ctx = _retrieve_policy(
-            question, ar_index, en_index, reranker, ara_tokenizer
+            question, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe
         )
         tools_called = ["retrieve_policy"]
         tool_results["policy_context"] = ctx or ""
@@ -567,7 +784,7 @@ def run_agent(
 
     else:  # hybrid
         top_docs, scores_dict, ctx = _retrieve_policy(
-            question, ar_index, en_index, reranker, ara_tokenizer
+            question, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe
         )
         # Normalise: treat empty string same as "no policy found"
         ctx = ctx or ""
@@ -601,7 +818,7 @@ def run_agent(
             # not bare retrieve() calls — mirrors the main retrieval path.
             rq = f"{question} {c['missing']}"
             t2, s2, ctx2 = _retrieve_policy(
-                rq, ar_index, en_index, reranker, ara_tokenizer
+                rq, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe
             )
             if t2:
                 tool_results["policy_context"] = _build_context_truncated(t2)
@@ -668,7 +885,7 @@ personal data tool(s).
 Question language may be English, Arabic (MSA), Egyptian dialect, or Franco-Arabic."""
 
 
-def _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer):
+def _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe=None):
     """Legacy shim for run_intent_experiment.py (ROUTING_ONLY eval mode)."""
 
     @tool
@@ -677,7 +894,7 @@ def _make_tools(employee_id, ar_index, en_index, reranker, ara_tokenizer):
         Use when the answer is a company rule, rate, procedure, or entitlement
         that is the same for every employee."""
         top_docs, scores, ctx = _retrieve_policy(
-            query, ar_index, en_index, reranker, ara_tokenizer
+            query, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe
         )
         retrieve_policy._last_docs   = top_docs
         retrieve_policy._last_scores = scores

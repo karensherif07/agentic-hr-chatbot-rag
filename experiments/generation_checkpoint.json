@@ -1,0 +1,2529 @@
+{
+  "C01_EN": {
+    "query_id": "C01_EN",
+    "concept_id": "C01",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "overtime",
+    "question": "What is the overtime compensation rate on weekdays?",
+    "contexts": [
+      "passage: 1.5× the hourly rate on weekdays and 2× the hourly rate on weekends or public holidays. ",
+      "passage: 7:00–10:00 AM +8 hours 1 hour Engineering, IT (manager approval) Night 10:00 PM 6:00 AM 1 hour Support (shift allowance applies) Overtime work beyond 8 hours in a day is compensated at 1",
+      "passage: 20% of base salary G4 and above Non-taxable Shift Allowance 25% of daily rate Night shift only Per shift worked Remote Work 800 EGP/month Approved remote roles Internet/utilities On-Call 200 EGP/day",
+      "passage: . During this period, the employee may work reduced hours (minimum 60% of standard hours) at full pay",
+      "passage: ﻣﻦ ﻣﻌﺪﻝ ﺍﻟﻴﻮﻡ25 ﻣﻮﻇﻔﻮ ﺍﻟﻮﺭﺩﻳﺔ ﺍﻟﻠﻴﻠﻴﺔ ﻧﻌﻢ ﺑﺪﻝ ﺍﻻﺳﺘﻌﺪﺍﺩ ﺟﻨﻴﻪ ﻳﻮﻡ200ﻣﻮﻇﻔﻮ ﺍﻟﻬﻨﺪﺳﺔ ﻋﻨﺪ ﺍﻟﺘﻔﻌﻴﻞ ﻧﻌﻢ ﺍﻟﻤﻜﺎﻓﺂﺕ ﻭﺍﻟﺤﻮﺍﻓﺰ ﺍﻟﺴﻨﻮﻳﺔ2"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "The overtime compensation rate on weekdays is 1.5× the hourly rate.",
+    "reference": "Overtime on weekdays is compensated at 1.5× the hourly rate.",
+    "timestamp": "2026-05-14T19:10:12.344536+00:00"
+  },
+  "C01_AR": {
+    "query_id": "C01_AR",
+    "concept_id": "C01",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "overtime",
+    "question": "ما هو معدل تعويض العمل الإضافي في أيام الأسبوع؟",
+    "contexts": [
+      "passage: 1.5× the hourly rate on weekdays and 2× the hourly rate on weekends or public holidays. ",
+      "passage: 20% of base salary G4 and above Non-taxable Shift Allowance 25% of daily rate Night shift only Per shift worked Remote Work 800 EGP/month Approved remote roles Internet/utilities On-Call 200 EGP/day",
+      "passage: 7:00–10:00 AM +8 hours 1 hour Engineering, IT (manager approval) Night 10:00 PM 6:00 AM 1 hour Support (shift allowance applies) Overtime work beyond 8 hours in a day is compensated at 1",
+      "passage: ﻣﻦ ﻣﻌﺪﻝ ﺍﻟﻴﻮﻡ25 ﻣﻮﻇﻔﻮ ﺍﻟﻮﺭﺩﻳﺔ ﺍﻟﻠﻴﻠﻴﺔ ﻧﻌﻢ ﺑﺪﻝ ﺍﻻﺳﺘﻌﺪﺍﺩ ﺟﻨﻴﻪ ﻳﻮﻡ200ﻣﻮﻇﻔﻮ ﺍﻟﻬﻨﺪﺳﺔ ﻋﻨﺪ ﺍﻟﺘﻔﻌﻴﻞ ﻧﻌﻢ ﺍﻟﻤﻜﺎﻓﺂﺕ ﻭﺍﻟﺤﻮﺍﻓﺰ ﺍﻟﺴﻨﻮﻳﺔ2",
+      "passage: . Reimbursement rates differ by tier: Tier Examples First Attempt Retake (max 1) Study Leave Tier 1 — Strategic AWS Solutions Architect, PMP, CFA, CISA 100% 50% Up to 3 days Tier 2 — Functional Google"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "معدل تعويض العمل الإضافي في أيام الأسبوع هو 1.5 ضعف معدّل الساعة .",
+    "reference": "يُعوَّض العمل الإضافي في أيام العمل بمعدل 1.5 ضعف الأجر الساعي.",
+    "timestamp": "2026-05-14T19:10:32.547118+00:00"
+  },
+  "C01_EG": {
+    "query_id": "C01_EG",
+    "concept_id": "C01",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "overtime",
+    "question": "إيه نسبة تعويض الأوفر تايم في أيام الشغل العادية؟",
+    "contexts": [
+      "passage: 7:00–10:00 AM +8 hours 1 hour Engineering, IT (manager approval) Night 10:00 PM 6:00 AM 1 hour Support (shift allowance applies) Overtime work beyond 8 hours in a day is compensated at 1",
+      "passage: 20% of base salary G4 and above Non-taxable Shift Allowance 25% of daily rate Night shift only Per shift worked Remote Work 800 EGP/month Approved remote roles Internet/utilities On-Call 200 EGP/day",
+      "passage: . During this period, the employee may work reduced hours (minimum 60% of standard hours) at full pay",
+      "passage: 1.5× the hourly rate on weekdays and 2× the hourly rate on weekends or public holidays. ",
+      "passage: ﺟﻨﻴﻪ ﻭﺟﺒﺔ150ﻓﺎﺗﻮﺭﺓ ﺿﺮﻳﺒﻴﺔ ﺍﺟﺘﻤﺎﻉ ﻋﻤﻞ ﻣﻊ ﻋﻤﻴﻞ ﺟﻨﻴﻪ ﺍﺟﺘﻤﺎﻉ500ﻓﺎﺗﻮﺭﺓ ﺍﺳﻢ ﺍﻟﻌﻤﻴﻞ ﻣﻮﺍﺻﻼﺕ ﺩﺍﺧﻞ ﺍﻟﻤﺪﻳﻨﺔ ﺟﻨﻴﻪ ﻳﻮﻡ200ﺇﻳﺼﺎﻝ ﺃﻭ ﺻﻮﺭﺓ ﺃﻭﺑﺮ ﺧﺪﻣﺔ ﺇﻧﺘﺮﻧﺖ ﻟﻠﻌﻤﻞ ﻋﻦ ﺑﻌﺪ ﺟﻨﻴﻪ ﺷﻬﺮ800ﻓﺎﺗﻮﺭﺓ ﺍﻟﺨﺪﻣﺔ ﻣﺴﺘﻠﺰﻣﺎﺕ ﻣﻜﺘﺒﻴﺔ ﺟﻨﻴﻪ"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "تعويض الأوفر تايم في أيام الشغل العادية هو 1.5 ضعف الساعة الأساسية .",
+    "reference": "الأوفر تايم في أيام الشغل العادية بيتحسب بـ 1.5 ضعف الأجر الساعي.",
+    "timestamp": "2026-05-14T19:10:54.507434+00:00"
+  },
+  "C02_EN": {
+    "query_id": "C02_EN",
+    "concept_id": "C02",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "health_insurance_start",
+    "question": "When does health insurance coverage begin for new employees?",
+    "contexts": [
+      "passage: . • Health insurance coverage begins from the first day of employment. 1",
+      "passage: .3 Health Insurance All full-time employees are enrolled in the company health insurance plan from their first day of employment",
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: 1. Health Insurance Plan 1.1 Plan Overview All full-time employees are automatically enrolled in Horizon Tech's group health insurance plan from their first day of employment",
+      "passage: .2 Extended Coverage — Optional Add-Ons Employees may enrol in optional supplemental coverage during the annual open enrolment window (October 1–15) or within 30 days of a qualifying life event"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "Health insurance coverage begins from the first day of employment.",
+    "reference": "Health insurance coverage begins from the first day of employment for all full-time employees.",
+    "timestamp": "2026-05-14T19:11:52.482096+00:00"
+  },
+  "C02_AR": {
+    "query_id": "C02_AR",
+    "concept_id": "C02",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "health_insurance_start",
+    "question": "متى تبدأ التغطية التأمينية الصحية للموظفين الجدد؟",
+    "contexts": [
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: . • Health insurance coverage begins from the first day of employment. 1",
+      "passage: .3 Health Insurance All full-time employees are enrolled in the company health insurance plan from their first day of employment",
+      "passage: 1. Health Insurance Plan 1.1 Plan Overview All full-time employees are automatically enrolled in Horizon Tech's group health insurance plan from their first day of employment",
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "تبدأ التغطية التأمينية الصحية للموظفين الجدد من اليوم الأول لتوظيفهم.",
+    "reference": "تبدأ التغطية التأمينية الصحية من اليوم الأول للعمل لجميع الموظفين بدوام كامل.",
+    "timestamp": "2026-05-14T19:12:21.580124+00:00"
+  },
+  "C02_EG": {
+    "query_id": "C02_EG",
+    "concept_id": "C02",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "health_insurance_start",
+    "question": "التأمين الصحي بيبدأ إمتى للموظف الجديد؟",
+    "contexts": [
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: . • Health insurance coverage begins from the first day of employment. 1",
+      "passage: .3 Health Insurance All full-time employees are enrolled in the company health insurance plan from their first day of employment",
+      "passage: 1. Health Insurance Plan 1.1 Plan Overview All full-time employees are automatically enrolled in Horizon Tech's group health insurance plan from their first day of employment",
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "التأمين الصحي بيبدأ من أول يوم عمل للموظف الجديد.",
+    "reference": "التأمين الصحي بيبدأ من أول يوم شغل لكل الموظفين بدوام كامل.",
+    "timestamp": "2026-05-14T19:12:42.162570+00:00"
+  },
+  "C03_EN": {
+    "query_id": "C03_EN",
+    "concept_id": "C03",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "housing_allowance",
+    "question": "What is the housing allowance and who is eligible?",
+    "contexts": [
+      "passage: .2 Allowances Allowance Amount Eligibility Notes Transportation 1,500 EGP/month All employees Taxable Mobile 500 EGP/month G2 and above Non-taxable Housing 20% of base salary G4 and above Non-taxable",
+      "passage: . Coverage extends to the employee's spouse and up to three dependent children",
+      "passage: . The subsidy is paid directly through payroll and is subject to an annual budget cap. Applications open in January each year and are processed on a first-come, first-served basis. 7",
+      "passage: . This applies to all characteristics including but not limited to gender, nationality, religion, age, and disability",
+      "passage: .4 Annual Bonus Eligible employees receive an annual performance bonus based on individual and company performance. The bonus pool is determined by the company's financial results"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "The housing allowance is 20% of base salary and it is eligible for G4 and above employees.",
+    "reference": "The housing allowance is 20% of the base salary. It is available to G4-grade employees and above.",
+    "timestamp": "2026-05-14T19:13:39.159205+00:00"
+  },
+  "C03_AR": {
+    "query_id": "C03_AR",
+    "concept_id": "C03",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "housing_allowance",
+    "question": "ما قيمة بدل السكن ومن يستحقه؟",
+    "contexts": [
+      "passage: ﺑﺪﻝ ﺍﻟﻤﻮﺍﺻﻼﺕ ﺟﻨﻴﻪ ﺷﻬﺮ1,500ﺟﻤﻴﻊ ﺍﻟﻤﻮﻇﻔﻴﻦ ﻧﻌﻢ ﺑﺪﻝ ﺍﻟﻤﻮﺑﺎﻳﻞ ﺟﻨﻴﻪ ﺷﻬﺮ500 ﻓﺄﻋﻠﻰ2 ﺍﻟﺪﺭﺟﺔ ﻻ ﺑﺪﻝ ﺍﻟﺴﻜﻦ ﻣﻦ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ20 ﻓﺄﻋﻠﻰ4 ﺍﻟﺪﺭﺟﺔ ﻻ ﺑﺪﻝ ﺍﻟﻮﺭﺩﻳﺔ ﺍﻟﻠﻴﻠﻴﺔ ﻣﻦ ﻣﻌﺪﻝ ﺍﻟﻴﻮﻡ25 ﻣﻮﻇﻔﻮ ﺍﻟﻮﺭﺩﻳﺔ ﺍﻟﻠﻴﻠﻴﺔ ﻧﻌﻢ ﺑﺪﻝ",
+      "passage: .2 بدالت المعيشة اليومية نوع السفر البدل اليومي يشمل داخل الدولة $100 الوجبات والمواصالت خارج الدولة — المنطقة العربية $200 الوجبات والمواصالت واإلنترنت خارج الدولة — دولي $250 الوجبات والمواصالت",
+      "passage: .2 :ﻳﺘﻜﻮﻥ ﺍﻟﺮﺍﺗﺐ ﺍﻹﺟﻤﺎﻟﻲ ﻣﻦ ﺍﻟﻌﻨﺎﺻﺮ ﺍﻟﺘﺎﻟﻴﺔ ﺍﻟﻤﻜﻮﻥ ﺍﻟﻘﻴﻤﺔ ﺍﻟﻨﺴﺒﺔ ﺍﻟﺸﺮﻁ ﺍﻟﺨﻀﻮﻉ ﻟﻠﻀﺮﻳﺒﺔ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﻳﺤﺪﺩ ﻋﻨﺪ ﺍﻟﺘﻌﻴﻴﻦ ﺃﻭ ﺍﻟﻤﺮﺍﺟﻌﺔ ﺟﻤﻴﻊ ﺍﻟﻤﻮﻇﻔﻴﻦ ﻧﻌﻢ ﺑﺪﻝ ﺍﻟﻤﻮﺍﺻﻼﺕ ﺟﻨﻴﻪ ﺷﻬﺮ1,500ﺟﻤﻴﻊ ﺍﻟﻤﻮﻇﻔﻴﻦ ﻧﻌﻢ ﺑﺪﻝ",
+      "passage: .الرسمي ●يُمنح بدل العمل عن بُعد بقيمة 800 جنيه مصري/شهر لتغطية تكاليف اإلنترنت .والمرافق ● سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .2 Allowances Allowance Amount Eligibility Notes Transportation 1,500 EGP/month All employees Taxable Mobile 500 EGP/month G2 and above Non-taxable Housing 20% of base salary G4 and above Non-taxable"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 4,
+    "answer": "بدل السكن  20% من الراتب الأساسي، ويستحقه الموظفون من الدرجة 4 فأعلى.",
+    "reference": "بدل السكن يعادل 20% من الراتب الأساسي، ويُمنح للموظفين من الدرجة G4 فأعلى، .",
+    "timestamp": "2026-05-14T19:14:00.304569+00:00"
+  },
+  "C03_EG": {
+    "query_id": "C03_EG",
+    "concept_id": "C03",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "housing_allowance",
+    "question": "بدل السكن قد إيه ومين اللي بياخده؟",
+    "contexts": [
+      "passage: ﺑﺪﻝ ﺍﻟﻤﻮﺍﺻﻼﺕ ﺟﻨﻴﻪ ﺷﻬﺮ1,500ﺟﻤﻴﻊ ﺍﻟﻤﻮﻇﻔﻴﻦ ﻧﻌﻢ ﺑﺪﻝ ﺍﻟﻤﻮﺑﺎﻳﻞ ﺟﻨﻴﻪ ﺷﻬﺮ500 ﻓﺄﻋﻠﻰ2 ﺍﻟﺪﺭﺟﺔ ﻻ ﺑﺪﻝ ﺍﻟﺴﻜﻦ ﻣﻦ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ20 ﻓﺄﻋﻠﻰ4 ﺍﻟﺪﺭﺟﺔ ﻻ ﺑﺪﻝ ﺍﻟﻮﺭﺩﻳﺔ ﺍﻟﻠﻴﻠﻴﺔ ﻣﻦ ﻣﻌﺪﻝ ﺍﻟﻴﻮﻡ25 ﻣﻮﻇﻔﻮ ﺍﻟﻮﺭﺩﻳﺔ ﺍﻟﻠﻴﻠﻴﺔ ﻧﻌﻢ ﺑﺪﻝ",
+      "passage: .2 :ﻳﺘﻜﻮﻥ ﺍﻟﺮﺍﺗﺐ ﺍﻹﺟﻤﺎﻟﻲ ﻣﻦ ﺍﻟﻌﻨﺎﺻﺮ ﺍﻟﺘﺎﻟﻴﺔ ﺍﻟﻤﻜﻮﻥ ﺍﻟﻘﻴﻤﺔ ﺍﻟﻨﺴﺒﺔ ﺍﻟﺸﺮﻁ ﺍﻟﺨﻀﻮﻉ ﻟﻠﻀﺮﻳﺒﺔ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﻳﺤﺪﺩ ﻋﻨﺪ ﺍﻟﺘﻌﻴﻴﻦ ﺃﻭ ﺍﻟﻤﺮﺍﺟﻌﺔ ﺟﻤﻴﻊ ﺍﻟﻤﻮﻇﻔﻴﻦ ﻧﻌﻢ ﺑﺪﻝ ﺍﻟﻤﻮﺍﺻﻼﺕ ﺟﻨﻴﻪ ﺷﻬﺮ1,500ﺟﻤﻴﻊ ﺍﻟﻤﻮﻇﻔﻴﻦ ﻧﻌﻢ ﺑﺪﻝ",
+      "passage: .2 بدالت المعيشة اليومية نوع السفر البدل اليومي يشمل داخل الدولة $100 الوجبات والمواصالت خارج الدولة — المنطقة العربية $200 الوجبات والمواصالت واإلنترنت خارج الدولة — دولي $250 الوجبات والمواصالت",
+      "passage: .الرسمي ●يُمنح بدل العمل عن بُعد بقيمة 800 جنيه مصري/شهر لتغطية تكاليف اإلنترنت .والمرافق ● سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: . The subsidy is applied as a direct corporate billing arrangement — employees do not pay up front and receive no cash equivalent"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 4,
+    "answer": "بدل السكن محسوب من الراتب الأساسي، وبيخده الموظفين اللي درجةهم 4 فما فوق.",
+    "reference": "بدل السكن بيكون 20% من الراتب الأساسي، وبياخده الموظفين من الدرجة G4 فأعلى، .",
+    "timestamp": "2026-05-14T19:14:33.922970+00:00"
+  },
+  "C04_EN": {
+    "query_id": "C04_EN",
+    "concept_id": "C04",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "probation_termination_notice",
+    "question": "What is the notice period required to terminate during probation?",
+    "contexts": [
+      "passage: . 1.2 Probation Period All new employees are subject to a probation period of 3 months, which may be extended to a maximum of 6 months at the discretion of the line manager and HR",
+      "passage: )التجربة 14 يوم عمل حتى 7 أيام ال 1 – 5 سنوات 21 يوم عمل حتى 7 أيام حتى 5 أيام 5 – 10 سنوات 25 يوم عمل حتى 10 أيام حتى 7 أيام أكثر من 10 سنوات 30 يوم عمل حتى 14 يوم حتى 10 أيام 8",
+      "passage: . • Either party may terminate the employment contract with 7 days written notice. • Performance is evaluated at the 1-month and 3-month marks",
+      "passage: .1 فترات اإلشعار عند الستقالة الدرجة الوظيفية فترة اإلشعار G1 – G2 (مستوى جديد / )متخصص 30 ًيوما G3 – G4 (مشرف / )مدير 60 ًيوما G5 فأعلى (مدير تنفيذي / مدير )إدارة 90 ًيوما 10",
+      "passage: .ﻣﻼﺣﻈﺔ: ﻳﻌﺪ ﺍﻛﺘﺸﺎﻑ ﺃﻱ ﺗﺰﻭﻳﺮ ﻓﻲ ﺍﻟﻮﺛﺎﺋﻖ ﺍﻟﻤﻘﺪﻣﺔ ﺳﺒﺒﺎ ﻓﻮﺭﻳﺎ ﻹﻟﻐﺎﺀ ﻋﺮﺽ ﺍﻟﻌﻤﻞ ﺃﻭ ﺇﻧﻬﺎﺀ ﺍﻟﺨﺪﻣﺔ ﺇﺫﺍ ﺍﻛﺘﺸﻒ ﺑﻌﺪ ﺍﻟﺘﻌﻴﻴﻦ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ3. ﻣﺪﺓ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ ﻭﺇﺟﺮﺍﺀﺍﺗﻬﺎ3"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "The notice period required to terminate, either the employee or the company, during probation is 7 days written.",
+    "reference": "During the probation period, either the employee or the company may terminate the contract with 7 days written notice.",
+    "timestamp": "2026-05-14T19:15:36.979942+00:00"
+  },
+  "C04_AR": {
+    "query_id": "C04_AR",
+    "concept_id": "C04",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "probation_termination_notice",
+    "question": "ما هي مدة الإشعار المطلوبة لإنهاء العقد خلال فترة الاختبار؟",
+    "contexts": [
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4",
+      "passage: . • Either party may terminate the employment contract with 7 days written notice. • Performance is evaluated at the 1-month and 3-month marks",
+      "passage: .1 فترات اإلشعار عند الستقالة الدرجة الوظيفية فترة اإلشعار G1 – G2 (مستوى جديد / )متخصص 30 ًيوما G3 – G4 (مشرف / )مدير 60 ًيوما G5 فأعلى (مدير تنفيذي / مدير )إدارة 90 ًيوما 10",
+      "passage: .ﻣﻼﺣﻈﺔ: ﻳﻌﺪ ﺍﻛﺘﺸﺎﻑ ﺃﻱ ﺗﺰﻭﻳﺮ ﻓﻲ ﺍﻟﻮﺛﺎﺋﻖ ﺍﻟﻤﻘﺪﻣﺔ ﺳﺒﺒﺎ ﻓﻮﺭﻳﺎ ﻹﻟﻐﺎﺀ ﻋﺮﺽ ﺍﻟﻌﻤﻞ ﺃﻭ ﺇﻧﻬﺎﺀ ﺍﻟﺨﺪﻣﺔ ﺇﺫﺍ ﺍﻛﺘﺸﻒ ﺑﻌﺪ ﺍﻟﺘﻌﻴﻴﻦ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ3. ﻣﺪﺓ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ ﻭﺇﺟﺮﺍﺀﺍﺗﻬﺎ3",
+      "passage: .1 :ﺗﺨﻀﻊ ﺟﻤﻴﻊ ﺍﻟﺘﻌﻴﻴﻨﺎﺕ ﺍﻟﺠﺪﻳﺪﺓ ﻟﻔﺘﺮﺓ ﺍﺧﺘﺒﺎﺭ ﻭﻓﻖ ﺍﻟﺠﺪﻭﻝ ﺍﻟﺰﻣﻨﻲ ﺍﻟﺘﺎﻟﻲ ﺍﻟﻔﺌﺔ ﺍﻟﻮﻇﻴﻔﻴﺔ ﻣﺪﺓ ﺍﻻﺧﺘﺒﺎﺭ ﺍﻷﺳﺎﺳﻴﺔ ﺍﻟﺘﻤﺪﻳﺪ ﺍﻟﻤﺴﻤﻮﺡ ﺟﻬﺔ ﺍﻟﻤﻮﺍﻓﻘﺔ ﻋﻠﻰ ﺍﻟﺘﻤﺪﻳﺪ 1 ﻣﻨﺴﻖ ﻣﺴﺎﻋﺪ ﺍﻟﺪﺭﺟﺔ ﺃﺷﻬﺮ3 ﺃﺷﻬﺮ6 ﺣﺘﻰ ﻣﺪﻳﺮ ﺍﻟﻘﺴﻢ 2 ﻣﺘﺨﺼﺺ"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 4,
+    "answer": "مدة الإشعار لأي من الطرفين المطلوبة لإنهاء العقد خلال فترة الاختبار هي 7 أيام فقط بإشعار كتابي.",
+    "reference": "يحق لأي من الطرفين إنهاء عقد العمل خلال فترة الاختبار بإشعار كتابي مدته 7 أيام فقط.",
+    "timestamp": "2026-05-14T19:15:55.791027+00:00"
+  },
+  "C04_EG": {
+    "query_id": "C04_EG",
+    "concept_id": "C04",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "probation_termination_notice",
+    "question": "مدة الإشعار عشان ينهي العقد في فترة الاختبار قد إيه؟",
+    "contexts": [
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4",
+      "passage: . • Either party may terminate the employment contract with 7 days written notice. • Performance is evaluated at the 1-month and 3-month marks",
+      "passage: .1 فترات اإلشعار عند الستقالة الدرجة الوظيفية فترة اإلشعار G1 – G2 (مستوى جديد / )متخصص 30 ًيوما G3 – G4 (مشرف / )مدير 60 ًيوما G5 فأعلى (مدير تنفيذي / مدير )إدارة 90 ًيوما 10",
+      "passage: )التجربة 14 يوم عمل حتى 7 أيام ال 1 – 5 سنوات 21 يوم عمل حتى 7 أيام حتى 5 أيام 5 – 10 سنوات 25 يوم عمل حتى 10 أيام حتى 7 أيام أكثر من 10 سنوات 30 يوم عمل حتى 14 يوم حتى 10 أيام 8",
+      "passage: . The process is as follows: Step Action Issued By Validity Period Step 1 Verbal Warning Line Manager 3 months Step 2 First Written Warning Line Manager + HR 6 months Step 3 Final Written Warning"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "مدة الإشعار عشان سواء الموظف أو الشركة ينهي العقد في فترة التجربة 7 أيام إشعار كتابي.",
+    "reference": "أي طرف، سواء الموظف أو الشركة، يقدر يُنهي العقد في فترة الاختبار بإشعار كتابي 7 أيام بس.",
+    "timestamp": "2026-05-14T19:16:14.074417+00:00"
+  },
+  "C05_EN": {
+    "query_id": "C05_EN",
+    "concept_id": "C05",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "gym_subsidy",
+    "question": "What is the gym subsidy for G1 and G2 employees?",
+    "contexts": [
+      "passage: . Employee Grade Monthly Gym Subsidy Eligible Facilities G1 – G2 Up to 300 EGP/month Standard network gyms G3 – G4 Up to 500 EGP/month Standard + Premium network G5 and above Up to 800 EGP/month All",
+      "passage: . Grade Annual Budget (USD) Paid Training Days Platform Subscription G1 – New Hire (0–1 yr) $2,500 5 days Included G2 – Specialist (1–5 yrs) $5,000 8 days Included G3 – Lead / Supervisor $8,000 10",
+      "passage: .2 Annual Wellness Reimbursement In addition to the gym subsidy, all employees with at least six months of service are eligible for an annual wellness reimbursement of up to 1,200 EGP per calendar",
+      "passage: .2 Allowances Allowance Amount Eligibility Notes Transportation 1,500 EGP/month All employees Taxable Mobile 500 EGP/month G2 and above Non-taxable Housing 20% of base salary G4 and above Non-taxable",
+      "passage: 4. Physical Wellness & Gym Benefit 4.1 Gym Subsidy Programme Horizon Tech subsidises gym memberships at a network of over 50 partner fitness centres across Egypt"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "The gym subsidy for G1 and G2 employees is up to 300 EGP/month, eligible at standard network gyms.",
+    "reference": "G1 and G2 employees receive a gym subsidy of up to 300 EGP per month at standard network gyms.",
+    "timestamp": "2026-05-14T19:17:17.773743+00:00"
+  },
+  "C05_AR": {
+    "query_id": "C05_AR",
+    "concept_id": "C05",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "gym_subsidy",
+    "question": "ما قيمة دعم عضوية النادي الرياضي لموظفي الدرجة G1 وG2؟",
+    "contexts": [
+      "passage: . Employee Grade Monthly Gym Subsidy Eligible Facilities G1 – G2 Up to 300 EGP/month Standard network gyms G3 – G4 Up to 500 EGP/month Standard + Premium network G5 and above Up to 800 EGP/month All",
+      "passage: . Grade Annual Budget (USD) Paid Training Days Platform Subscription G1 – New Hire (0–1 yr) $2,500 5 days Included G2 – Specialist (1–5 yrs) $5,000 8 days Included G3 – Lead / Supervisor $8,000 10",
+      "passage: .2 Allowances Allowance Amount Eligibility Notes Transportation 1,500 EGP/month All employees Taxable Mobile 500 EGP/month G2 and above Non-taxable Housing 20% of base salary G4 and above Non-taxable",
+      "passage: .1 فترات اإلشعار عند الستقالة الدرجة الوظيفية فترة اإلشعار G1 – G2 (مستوى جديد / )متخصص 30 ًيوما G3 – G4 (مشرف / )مدير 60 ًيوما G5 فأعلى (مدير تنفيذي / مدير )إدارة 90 ًيوما 10",
+      "passage: . Grade Job Level Base Salary Range (EGP/month) Annual Review G1 Junior / Coordinator 8,000 – 15,000 Yes G2 Specialist / Senior Specialist 15,000 – 28,000 Yes G3 Lead / Supervisor 28,000 – 45,000 Yes"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "دعم عضوية النادي الرياضي لموظفي الدرجة G1 وG2 هو حتى 300 جنيه مصري شهريًا، ويُسمح لهم بالاشتراك في الصالات الرياضية ذات الشبكة القياسية.",
+    "reference": "يحصل موظفو الدرجتين G1 وG2 على دعم لعضوية النادي الرياضي بحد أقصى 300 جنيه شهريًا في الأندية المعيارية. يُطبَّق الدعم كفوترة مباشرة على الشركة ولا يُصرف نقدًا.",
+    "timestamp": "2026-05-14T19:17:36.201169+00:00"
+  },
+  "C05_EG": {
+    "query_id": "C05_EG",
+    "concept_id": "C05",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "gym_subsidy",
+    "question": "إيه قيمة دعم الجيم لموظفي G1 وG2؟",
+    "contexts": [
+      "passage: . Employee Grade Monthly Gym Subsidy Eligible Facilities G1 – G2 Up to 300 EGP/month Standard network gyms G3 – G4 Up to 500 EGP/month Standard + Premium network G5 and above Up to 800 EGP/month All",
+      "passage: . Grade Annual Budget (USD) Paid Training Days Platform Subscription G1 – New Hire (0–1 yr) $2,500 5 days Included G2 – Specialist (1–5 yrs) $5,000 8 days Included G3 – Lead / Supervisor $8,000 10",
+      "passage: . Grade Job Level Base Salary Range (EGP/month) Annual Review G1 Junior / Coordinator 8,000 – 15,000 Yes G2 Specialist / Senior Specialist 15,000 – 28,000 Yes G3 Lead / Supervisor 28,000 – 45,000 Yes",
+      "passage: .2 Allowances Allowance Amount Eligibility Notes Transportation 1,500 EGP/month All employees Taxable Mobile 500 EGP/month G2 and above Non-taxable Housing 20% of base salary G4 and above Non-taxable",
+      "passage: Yes G3 Lead / Supervisor 28,000 – 45,000 Yes G4 Manager 45,000 – 70,000 Yes G5 Senior Manager / Director 70,000 – 120,000 Yes 2"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "دعم الجيم لموظفي G1 وG2 هو 300 جنيه شهريًا.",
+    "reference": "موظفو G1 وG2 بياخدوا دعم للجيم بحد أقصى 300 جنيه في الشهر في الأندية العادية في الشبكة.",
+    "timestamp": "2026-05-14T19:17:53.945198+00:00"
+  },
+  "C05_FR": {
+    "query_id": "C05_FR",
+    "concept_id": "C05",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "gym_subsidy",
+    "question": "eih 2emet da3m el gym le muwazafin G1 w G2?",
+    "contexts": [
+      "passage: . Employee Grade Monthly Gym Subsidy Eligible Facilities G1 – G2 Up to 300 EGP/month Standard network gyms G3 – G4 Up to 500 EGP/month Standard + Premium network G5 and above Up to 800 EGP/month All",
+      "passage: .1 فترات اإلشعار عند الستقالة الدرجة الوظيفية فترة اإلشعار G1 – G2 (مستوى جديد / )متخصص 30 ًيوما G3 – G4 (مشرف / )مدير 60 ًيوما G5 فأعلى (مدير تنفيذي / مدير )إدارة 90 ًيوما 10",
+      "passage: . Grade Annual Budget (USD) Paid Training Days Platform Subscription G1 – New Hire (0–1 yr) $2,500 5 days Included G2 – Specialist (1–5 yrs) $5,000 8 days Included G3 – Lead / Supervisor $8,000 10",
+      "passage: . Grade Job Level Base Salary Range (EGP/month) Annual Review G1 Junior / Coordinator 8,000 – 15,000 Yes G2 Specialist / Senior Specialist 15,000 – 28,000 Yes G3 Lead / Supervisor 28,000 – 45,000 Yes",
+      "passage: .2 Allowances Allowance Amount Eligibility Notes Transportation 1,500 EGP/month All employees Taxable Mobile 500 EGP/month G2 and above Non-taxable Housing 20% of base salary G4 and above Non-taxable"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "El gym subsidy le muwazafin G1 w G2: 300 gneih/shahr.",
+    "reference": "muwazafin G1 w G2 bya5du da3m lel gym le7ad 300 gneih fel shahr fe el andeyya el 3adiya.",
+    "timestamp": "2026-05-14T19:18:33.682774+00:00"
+  },
+  "C06_EN": {
+    "query_id": "C06_EN",
+    "concept_id": "C06",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "life_insurance",
+    "question": "How much is the group life insurance benefit?",
+    "contexts": [
+      "passage: . 2. Life & Disability Insurance 2.1 Group Life Insurance Horizon Tech provides all full-time employees with group life insurance at no cost to the employee",
+      "passage: to 8,000 EGP/year Orthodontics Rider 200 EGP Up to 15,000 EGP lifetime Enhanced Optical 80 EGP Up to 2,000 EGP/year Critical Illness Rider 120 EGP Lump sum 100,000 EGP Worldwide Emergency 180 EGP Up",
+      "passage: . The following add-ons are available at subsidised group rates: Add-On Plan Monthly Premium (Employee Share) Coverage Limit Enhanced Dental 150 EGP Up to 8,000 EGP/year Orthodontics Rider 200 EGP Up",
+      "passage: . The benefit is equal to two times (2×) the employee's annual gross salary, paid as a lump sum to the designated beneficiary in the event of death from any cause (accidental or natural)",
+      "passage: . Coverage Item Employee Spouse Children Outpatient Visits 100% 80% 80% Hospitalization 100% 90% 90% Dental 70% 50% 50% Optical 500 EGP/year 300 EGP/year 300 EGP/year Pharmacy 80% 70% 70% Confidential"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "The group life insurance benefit is equal to two times (2×) the employee's annual gross salary, paid as a lump sum to the designated beneficiary in the event of death from any cause.",
+    "reference": "The group life insurance benefit equals 2× the employee's annual gross salary, paid as a lump sum to the designated beneficiary in the event of death from any cause.",
+    "timestamp": "2026-05-14T19:19:01.232525+00:00"
+  },
+  "C06_AR": {
+    "query_id": "C06_AR",
+    "concept_id": "C06",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "life_insurance",
+    "question": "ما قيمة مزايا التأمين على الحياة الجماعي؟",
+    "contexts": [
+      "passage: . 2. Life & Disability Insurance 2.1 Group Life Insurance Horizon Tech provides all full-time employees with group life insurance at no cost to the employee",
+      "passage: to 8,000 EGP/year Orthodontics Rider 200 EGP Up to 15,000 EGP lifetime Enhanced Optical 80 EGP Up to 2,000 EGP/year Critical Illness Rider 120 EGP Lump sum 100,000 EGP Worldwide Emergency 180 EGP Up",
+      "passage: . The benefit is equal to two times (2×) the employee's annual gross salary, paid as a lump sum to the designated beneficiary in the event of death from any cause (accidental or natural)",
+      "passage: .2 Accidental Death & Dismemberment (AD&D) An additional AD&D; benefit is provided, equal to one times (1×) the annual gross salary, covering accidental death, permanent total disability, or the loss",
+      "passage: . The following add-ons are available at subsidised group rates: Add-On Plan Monthly Premium (Employee Share) Coverage Limit Enhanced Dental 150 EGP Up to 8,000 EGP/year Orthodontics Rider 200 EGP Up"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "تبلغ مزايا التأمين على الحياة الجماعي ضعفَي (2×) الراتب الإجمالي السنوي للموظف، وتُصرف مبلغًا إجماليًا للمستفيد المُعيَّن في حالة الوفاة لأي سبب. يُقدَّم هذا التأمين مجانًا للموظف.",
+    "reference": "تبلغ مزايا التأمين على الحياة الجماعي ضعفَي (2×) الراتب الإجمالي السنوي للموظف، وتُصرف مبلغًا إجماليًا للمستفيد المُعيَّن في حالة الوفاة لأي سبب. يُقدَّم هذا التأمين مجانًا للموظف.",
+    "timestamp": "2026-05-14T19:19:23.586408+00:00"
+  },
+  "C06_EG": {
+    "query_id": "C06_EG",
+    "concept_id": "C06",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "life_insurance",
+    "question": "التأمين على الحياة الجماعي بيدي قد إيه؟",
+    "contexts": [
+      "passage: . 2. Life & Disability Insurance 2.1 Group Life Insurance Horizon Tech provides all full-time employees with group life insurance at no cost to the employee",
+      "passage: . The plan is administered through MedCare Egypt and provides inpatient, outpatient, dental, optical, and emergency overseas coverage",
+      "passage: .5 ﻳﺘﺠﺎﻭﺯ ﺍﻟﺘﻮﻗﻌﺎﺕ4ﻳﺘﺠﺎﻭﺯ ﺍﻷﻫﺪﺍﻑ ﺑﺎﺳﺘﻤﺮﺍﺭ 15 ﺣﺘﻰ1.25 ﻳﺤﻘﻖ ﺍﻟﺘﻮﻗﻌﺎﺕ3ﻳﺤﻘﻖ ﺟﻤﻴﻊ ﺍﻷﻫﺪﺍﻑ 8 ﺣﺘﻰ1 ﻳﺤﺘﺎﺝ ﺗﺤﺴﻴﻨﺎ2ﻳﺤﻘﻖ ﺍﻷﻫﺪﺍﻑ ﺟﺰﺋﻴﺎ0 ﻏﻴﺮ ﻣﺮﺽ1ﻻ ﻳﺤﻘﻖ ﺍﻟﻤﺘﻄﻠﺒﺎﺕ ﺍﻷﺳﺎﺳﻴﺔ0 ﺍﻻﺳﺘﻘﻄﺎﻋﺎﺕ ﺍﻹﻟﺰﺍﻣﻴﺔ3. ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻻﺟﺘﻤﺎﻋﻴﺔ3",
+      "passage: covers: Health Insurance Plans, Life & Disability Insurance, Employee Assistance Programmes, Gym & Wellness Benefits, Retirement Savings, Financial Wellbeing Initiatives, and Parental Support",
+      "passage: .2 Accidental Death & Dismemberment (AD&D) An additional AD&D; benefit is provided, equal to one times (1×) the annual gross salary, covering accidental death, permanent total disability, or the loss"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "التأمين على الحياة الجماعي بيدي مبلغ يساوي 2 ضعف الراتب الإجمالي السنوي للموظف، وبيتدفع دفعة واحدة للمستفيد المسمى في حالة الوفاة من أي سبب. الشركة بتدفعه من غير أي تكلفة على الموظف.",
+    "reference": "التأمين على الحياة الجماعي بيدي مبلغ يساوي 2 ضعف الراتب الإجمالي السنوي للموظف، وبيتدفع دفعة واحدة للمستفيد المسمى في حالة الوفاة من أي سبب. الشركة بتدفعه من غير أي تكلفة على الموظف.",
+    "timestamp": "2026-05-14T19:19:45.440706+00:00"
+  },
+  "C07_EN": {
+    "query_id": "C07_EN",
+    "concept_id": "C07",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "g2_training_budget",
+    "question": "What is the annual learning budget for a G2 Specialist?",
+    "contexts": [
+      "passage: . Grade Annual Budget (USD) Paid Training Days Platform Subscription G1 – New Hire (0–1 yr) $2,500 5 days Included G2 – Specialist (1–5 yrs) $5,000 8 days Included G3 – Lead / Supervisor $8,000 10",
+      "passage: . Grade Job Level Base Salary Range (EGP/month) Annual Review G1 Junior / Coordinator 8,000 – 15,000 Yes G2 Specialist / Senior Specialist 15,000 – 28,000 Yes G3 Lead / Supervisor 28,000 – 45,000 Yes",
+      "passage: .1 Budget by Grade Each employee receives an annual learning budget that may be used for external courses, certification exams, online learning platforms, and approved books",
+      "passage: .0 | Effective Date: January 1, 2026 Classification: Confidential — Internal Use Only Department: Learning & Development (L&D) This policy covers: Annual Learning Budgets, Mandatory Compliance",
+      "passage: . Employee Grade Monthly Gym Subsidy Eligible Facilities G1 – G2 Up to 300 EGP/month Standard network gyms G3 – G4 Up to 500 EGP/month Standard + Premium network G5 and above Up to 800 EGP/month All"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "The annual learning budget for a G2 Specialist is $5,000.",
+    "reference": "A G2 Specialist receives an annual learning budget of $5,000 USD.",
+    "timestamp": "2026-05-14T19:20:47.874429+00:00"
+  },
+  "C07_AR": {
+    "query_id": "C07_AR",
+    "concept_id": "C07",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "g2_training_budget",
+    "question": "ما هي ميزانية التعلم السنوية لموظف من الدرجة G2؟",
+    "contexts": [
+      "passage: . Grade Annual Budget (USD) Paid Training Days Platform Subscription G1 – New Hire (0–1 yr) $2,500 5 days Included G2 – Specialist (1–5 yrs) $5,000 8 days Included G3 – Lead / Supervisor $8,000 10",
+      "passage: .2 Allowances Allowance Amount Eligibility Notes Transportation 1,500 EGP/month All employees Taxable Mobile 500 EGP/month G2 and above Non-taxable Housing 20% of base salary G4 and above Non-taxable",
+      "passage: .1 Budget by Grade Each employee receives an annual learning budget that may be used for external courses, certification exams, online learning platforms, and approved books",
+      "passage: . Grade Job Level Base Salary Range (EGP/month) Annual Review G1 Junior / Coordinator 8,000 – 15,000 Yes G2 Specialist / Senior Specialist 15,000 – 28,000 Yes G3 Lead / Supervisor 28,000 – 45,000 Yes",
+      "passage: . Employee Grade Monthly Gym Subsidy Eligible Facilities G1 – G2 Up to 300 EGP/month Standard network gyms G3 – G4 Up to 500 EGP/month Standard + Premium network G5 and above Up to 800 EGP/month All"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "الموظف من الدرجة G2 يحصل على ميزانية تعلم سنوية قدرها 5000 دولار أمريكي.",
+    "reference": "يحصل موظف الدرجة G2 على ميزانية تعلم سنوية قدرها 5,000 دولار.",
+    "timestamp": "2026-05-14T19:21:21.188509+00:00"
+  },
+  "C07_EG": {
+    "query_id": "C07_EG",
+    "concept_id": "C07",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "g2_training_budget",
+    "question": "ميزانية التعلم السنوية لموظف G2 قد إيه؟",
+    "contexts": [
+      "passage: . Grade Annual Budget (USD) Paid Training Days Platform Subscription G1 – New Hire (0–1 yr) $2,500 5 days Included G2 – Specialist (1–5 yrs) $5,000 8 days Included G3 – Lead / Supervisor $8,000 10",
+      "passage: .1 Budget by Grade Each employee receives an annual learning budget that may be used for external courses, certification exams, online learning platforms, and approved books",
+      "passage: . Grade Job Level Base Salary Range (EGP/month) Annual Review G1 Junior / Coordinator 8,000 – 15,000 Yes G2 Specialist / Senior Specialist 15,000 – 28,000 Yes G3 Lead / Supervisor 28,000 – 45,000 Yes",
+      "passage: .2 Allowances Allowance Amount Eligibility Notes Transportation 1,500 EGP/month All employees Taxable Mobile 500 EGP/month G2 and above Non-taxable Housing 20% of base salary G4 and above Non-taxable",
+      "passage: )ً(سنويا أيام التدريب المدفوعة موظف جديد ( 0 – 1 )سنة $2,500 5 أيام موظف متوسط ( 1 – 5 )سنوات $5,000 8 أيام مدير / قائد فريق $8,000 10 أيام مدير تنفيذي ( G4 )فأعلى $12,000 15 ًيوما 2"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "ميزانية التعلم السنوية للموظف G2 هي $5,000.",
+    "reference": "موظف G2 بياخد ميزانية تعلم سنوية قدرها 5,000 دولار.",
+    "timestamp": "2026-05-14T19:21:41.619882+00:00"
+  },
+  "C07_FR": {
+    "query_id": "C07_FR",
+    "concept_id": "C07",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "g2_training_budget",
+    "question": "eih mizaneyyet el ta3allom el sanaweyya le muwazaf G2?",
+    "contexts": [
+      "passage: .1 فترات اإلشعار عند الستقالة الدرجة الوظيفية فترة اإلشعار G1 – G2 (مستوى جديد / )متخصص 30 ًيوما G3 – G4 (مشرف / )مدير 60 ًيوما G5 فأعلى (مدير تنفيذي / مدير )إدارة 90 ًيوما 10",
+      "passage: .2 Allowances Allowance Amount Eligibility Notes Transportation 1,500 EGP/month All employees Taxable Mobile 500 EGP/month G2 and above Non-taxable Housing 20% of base salary G4 and above Non-taxable",
+      "passage: . Grade Job Level Base Salary Range (EGP/month) Annual Review G1 Junior / Coordinator 8,000 – 15,000 Yes G2 Specialist / Senior Specialist 15,000 – 28,000 Yes G3 Lead / Supervisor 28,000 – 45,000 Yes",
+      "passage: . Employee Grade Monthly Gym Subsidy Eligible Facilities G1 – G2 Up to 300 EGP/month Standard network gyms G3 – G4 Up to 500 EGP/month Standard + Premium network G5 and above Up to 800 EGP/month All",
+      "passage: . Grade Annual Budget (USD) Paid Training Days Platform Subscription G1 – New Hire (0–1 yr) $2,500 5 days Included G2 – Specialist (1–5 yrs) $5,000 8 days Included G3 – Lead / Supervisor $8,000 10"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "el mizaneyya sanaweyya le G2: $5,000.",
+    "reference": "muwazaf G2 bya5od mizaneyya ta3allom sanaweyya 5,000 dolar.",
+    "timestamp": "2026-05-14T19:22:24.782201+00:00"
+  },
+  "C08_EN": {
+    "query_id": "C08_EN",
+    "concept_id": "C08",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "salary_payment_day",
+    "question": "On which day of the month are salaries paid?",
+    "contexts": [
+      "passage: . ﺩﻭﺭﺓ ﺍﻟﺼﺮﻑ ﺍﻟﺸﻬﺮﻳﺔ4.1 .ﺃﺳﺒﻮﻉ، ﻳﺼﺮﻑ ﺍﻟﺮﺍﺗﺐ ﻓﻲ ﻳﻮﻡ ﺍﻟﻌﻤﻞ ﺍﻟﺴﺎﺑﻖ ﻣﺒﺎﺷﺮﺓ. ﻳﺮﺳﻞ ﻛﺸﻒ ﺍﻟﺮﺍﺗﺐ ﺍﻟﺘﻔﺼﻴﻠﻲ ﺇﻟﻜﺘﺮﻭﻧﻴﺎ ﺇﻟﻰ ﺍﻟﺒﺮﻳﺪ ﺍﻟﺮﺳﻤﻲ ﻟﻠﻤﻮﻇﻒ ﻓﻲ ﺍﻟﻴﻮﻡ ﺫﺍﺗﻪ ﺗﺼﺮﻑ ﺍﻟﺮﻭﺍﺗﺐ ﻓﻲ ﺍﻟﻴﻮﻡ ﺍﻟﺨﺎﻣﺲ ﻭﺍﻟﻌﺸﺮﻳﻦ ﻣﻦ ﻛﻞ ﺷﻬﺮ ﻣﻴﻼﺩﻱ",
+      "passage: . A mid-year check-in is held in June, and a formal annual appraisal takes place in December. Both the employee and manager submit evaluations independently before a calibration meeting is conducted",
+      "passage: . ﺗﺠﺮﻯ ﺍﻟﻤﺮﺍﺟﻌﺔ ﺍﻟﺴﻨﻮﻳﺔ ﻓﻲ ﺩﻳﺴﻤﺒﺮ ﺑﺎﻟﺘﻮﺍﺯﻱ ﻣﻊ ﺩﻭﺭﺓ ﺗﻘﻴﻴﻢ ﺍﻷﺩﺍﺀ ﺗﺤﺪﺩ ﺍﻟﺪﺭﺟﺔ ﺍﻟﻤﺴﻤﻰ ﺍﻟﻮﻇﻴﻔﻲ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﺩﻧﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﻣﺮﺍﺟﻌﺔ ﺳﻨﻮﻳﺔ 1ﻣﻨﺴﻖ ﻣﺴﺎﻋﺪ8,000 15,000ﻧﻌﻢ",
+      "passage: . The subsidy is paid directly through payroll and is subject to an annual budget cap. Applications open in January each year and are processed on a first-come, first-served basis. 7",
+      "passage: . ﻳﻮﻣﺎ ﻋﻠﻰ ﺗﺎﺭﻳﺦ ﺍﻟﻨﻔﻘﺔ30 ﻣﻼﺣﻈﺔ: ﻻ ﺗﻘﺒﻞ ﺍﻟﻤﻄﺎﻟﺒﺎﺕ ﺍﻟﻤﻘﺪﻣﺔ ﺑﻌﺪ ﻣﺮﻭﺭ"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "Salaries are paid on the 25th of each month.",
+    "reference": "Salaries are paid on the 25th of each month. If that date falls on an official holiday or weekend, salaries are paid on the preceding working day.",
+    "timestamp": "2026-05-14T19:22:45.781465+00:00"
+  },
+  "C08_AR": {
+    "query_id": "C08_AR",
+    "concept_id": "C08",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "salary_payment_day",
+    "question": "في أي يوم من الشهر تُصرف الرواتب؟",
+    "contexts": [
+      "passage: . ﺩﻭﺭﺓ ﺍﻟﺼﺮﻑ ﺍﻟﺸﻬﺮﻳﺔ4.1 .ﺃﺳﺒﻮﻉ، ﻳﺼﺮﻑ ﺍﻟﺮﺍﺗﺐ ﻓﻲ ﻳﻮﻡ ﺍﻟﻌﻤﻞ ﺍﻟﺴﺎﺑﻖ ﻣﺒﺎﺷﺮﺓ. ﻳﺮﺳﻞ ﻛﺸﻒ ﺍﻟﺮﺍﺗﺐ ﺍﻟﺘﻔﺼﻴﻠﻲ ﺇﻟﻜﺘﺮﻭﻧﻴﺎ ﺇﻟﻰ ﺍﻟﺒﺮﻳﺪ ﺍﻟﺮﺳﻤﻲ ﻟﻠﻤﻮﻇﻒ ﻓﻲ ﺍﻟﻴﻮﻡ ﺫﺍﺗﻪ ﺗﺼﺮﻑ ﺍﻟﺮﻭﺍﺗﺐ ﻓﻲ ﺍﻟﻴﻮﻡ ﺍﻟﺨﺎﻣﺲ ﻭﺍﻟﻌﺸﺮﻳﻦ ﻣﻦ ﻛﻞ ﺷﻬﺮ ﻣﻴﻼﺩﻱ",
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4",
+      "passage: ﺃﻳﺎﻡ ﻋﻤﻞ ﻣﻦ ﺗﺎﺭﻳﺦ ﺍﻟﺼﺮﻑ5 ﺧﻼﻝ 2ﺗﺘﻮﻟﻰ ﺇﺩﺍﺭﺓ ﺍﻟﺮﻭﺍﺗﺐ ﺍﻟﺘﺤﻘﻖ ﻣﻦ ﺍﻟﺒﻼﻍ ﻭﺍﻟﺮﺩ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺃﻳﺎﻡ ﻋﻤﻞ3 ﺧﻼﻝ 3ﺗﺴﻮﻳﺔ ﺍﻟﻔﺮﻭﻗﺎﺕ ﺍﻟﻤﺜﺒﺘﺔ ﺿﻤﻦ ﺍﻟﺮﺍﺗﺐ ﺍﻟﺘﺎﻟﻲ ﺃﻭ ﺑﺘﺤﻮﻳﻞ ﻋﺎﺟﻞ ﺣﺴﺐ ﺍﻟﺤﺎﻟﺔ ﺭﺍﺗﺐ ﺍﻟﺸﻬﺮ ﺍﻟﺘﺎﻟﻲ ﺃﻭ ﻓﻮﺭﻱ",
+      "passage: . ﺗﺠﺮﻯ ﺍﻟﻤﺮﺍﺟﻌﺔ ﺍﻟﺴﻨﻮﻳﺔ ﻓﻲ ﺩﻳﺴﻤﺒﺮ ﺑﺎﻟﺘﻮﺍﺯﻱ ﻣﻊ ﺩﻭﺭﺓ ﺗﻘﻴﻴﻢ ﺍﻷﺩﺍﺀ ﺗﺤﺪﺩ ﺍﻟﺪﺭﺟﺔ ﺍﻟﻤﺴﻤﻰ ﺍﻟﻮﻇﻴﻔﻲ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﺩﻧﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﻣﺮﺍﺟﻌﺔ ﺳﻨﻮﻳﺔ 1ﻣﻨﺴﻖ ﻣﺴﺎﻋﺪ8,000 15,000ﻧﻌﻢ",
+      "passage: . A mid-year check-in is held in June, and a formal annual appraisal takes place in December. Both the employee and manager submit evaluations independently before a calibration meeting is conducted"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 4,
+    "answer": "تُصرف الرواتب في اليوم الخامس والعشرين من كل شهر ميلادي.",
+    "reference": "تُصرف الرواتب في اليوم الخامس والعشرين من كل شهر ميلادي. إذا صادف ذلك اليوم إجازة رسمية أو عطلة نهاية الأسبوع، يُصرف الراتب في يوم العمل السابق مباشرة.",
+    "timestamp": "2026-05-14T19:23:04.702467+00:00"
+  },
+  "C08_EG": {
+    "query_id": "C08_EG",
+    "concept_id": "C08",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "salary_payment_day",
+    "question": "الرواتب بتتصرف في أنهي يوم من الشهر؟",
+    "contexts": [
+      "passage: . ﺩﻭﺭﺓ ﺍﻟﺼﺮﻑ ﺍﻟﺸﻬﺮﻳﺔ4.1 .ﺃﺳﺒﻮﻉ، ﻳﺼﺮﻑ ﺍﻟﺮﺍﺗﺐ ﻓﻲ ﻳﻮﻡ ﺍﻟﻌﻤﻞ ﺍﻟﺴﺎﺑﻖ ﻣﺒﺎﺷﺮﺓ. ﻳﺮﺳﻞ ﻛﺸﻒ ﺍﻟﺮﺍﺗﺐ ﺍﻟﺘﻔﺼﻴﻠﻲ ﺇﻟﻜﺘﺮﻭﻧﻴﺎ ﺇﻟﻰ ﺍﻟﺒﺮﻳﺪ ﺍﻟﺮﺳﻤﻲ ﻟﻠﻤﻮﻇﻒ ﻓﻲ ﺍﻟﻴﻮﻡ ﺫﺍﺗﻪ ﺗﺼﺮﻑ ﺍﻟﺮﻭﺍﺗﺐ ﻓﻲ ﺍﻟﻴﻮﻡ ﺍﻟﺨﺎﻣﺲ ﻭﺍﻟﻌﺸﺮﻳﻦ ﻣﻦ ﻛﻞ ﺷﻬﺮ ﻣﻴﻼﺩﻱ",
+      "passage: ﺃﻳﺎﻡ ﻋﻤﻞ ﻣﻦ ﺗﺎﺭﻳﺦ ﺍﻟﺼﺮﻑ5 ﺧﻼﻝ 2ﺗﺘﻮﻟﻰ ﺇﺩﺍﺭﺓ ﺍﻟﺮﻭﺍﺗﺐ ﺍﻟﺘﺤﻘﻖ ﻣﻦ ﺍﻟﺒﻼﻍ ﻭﺍﻟﺮﺩ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺃﻳﺎﻡ ﻋﻤﻞ3 ﺧﻼﻝ 3ﺗﺴﻮﻳﺔ ﺍﻟﻔﺮﻭﻗﺎﺕ ﺍﻟﻤﺜﺒﺘﺔ ﺿﻤﻦ ﺍﻟﺮﺍﺗﺐ ﺍﻟﺘﺎﻟﻲ ﺃﻭ ﺑﺘﺤﻮﻳﻞ ﻋﺎﺟﻞ ﺣﺴﺐ ﺍﻟﺤﺎﻟﺔ ﺭﺍﺗﺐ ﺍﻟﺸﻬﺮ ﺍﻟﺘﺎﻟﻲ ﺃﻭ ﻓﻮﺭﻱ",
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4",
+      "passage: . ﺇﺫﺍ ﺻﺎﺩﻑ ﻳﻮﻡ ﺍﻟﺼﺮﻑ ﻋﻄﻠﺔ ﺭﺳﻤﻴﺔ ﺃﻭ ﻧﻬﺎﻳﺔ ﺇﺟﺮﺍﺀﺍﺕ ﺗﺼﺤﻴﺢ ﺍﻷﺧﻄﺎﺀ ﻓﻲ ﺍﻟﺮﺍﺗﺐ4",
+      "passage: . ﺗﺠﺮﻯ ﺍﻟﻤﺮﺍﺟﻌﺔ ﺍﻟﺴﻨﻮﻳﺔ ﻓﻲ ﺩﻳﺴﻤﺒﺮ ﺑﺎﻟﺘﻮﺍﺯﻱ ﻣﻊ ﺩﻭﺭﺓ ﺗﻘﻴﻴﻢ ﺍﻷﺩﺍﺀ ﺗﺤﺪﺩ ﺍﻟﺪﺭﺟﺔ ﺍﻟﻤﺴﻤﻰ ﺍﻟﻮﻇﻴﻔﻲ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﺩﻧﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﻣﺮﺍﺟﻌﺔ ﺳﻨﻮﻳﺔ 1ﻣﻨﺴﻖ ﻣﺴﺎﻋﺪ8,000 15,000ﻧﻌﻢ"
+    ],
+    "context_sources": [
+      "AR"
+    ],
+    "n_en_chunks": 0,
+    "n_ar_chunks": 5,
+    "answer": "الرواتب بتصرف في اليوم ﺍﻟﺨﺎﻣﺲ والعشرين من كل شهر ميلادي.",
+    "reference": "الرواتب بتتصرف في يوم 25 من كل شهر.",
+    "timestamp": "2026-05-14T19:23:31.609696+00:00"
+  },
+  "C09_EN": {
+    "query_id": "C09_EN",
+    "concept_id": "C09",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "tier1_cert_reimbursement",
+    "question": "What is the reimbursement rate for a Tier 1 certification first attempt, and is a retake covered?",
+    "contexts": [
+      "passage: . Reimbursement rates differ by tier: Tier Examples First Attempt Retake (max 1) Study Leave Tier 1 — Strategic AWS Solutions Architect, PMP, CFA, CISA 100% 50% Up to 3 days Tier 2 — Functional Google",
+      "passage: 100% 50% Up to 3 days Tier 2 — Functional Google Analytics, Scrum Master, ITIL 100% 25% Up to 2 days Tier 3 — Foundational Microsoft Office Specialist, CompTIA A+ 80% Not covered None 6",
+      "passage: . 5. Certification Reimbursement & Exam Policy 5.1 Certification Tiers Horizon Tech categorises professional certifications into three tiers based on strategic alignment and market value",
+      "passage: . • International conferences also require sign-off from the department's VP or equivalent. 5. Certification Reimbursement & Exam Policy 5",
+      "passage: Annual Learning Budgets, Mandatory Compliance Training, Internal Learning Paths, External Conference Attendance, Certification Reimbursement, Mentorship Programme, and Leadership Academy"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "The reimbursement rate for a Tier 1 certification first attempt is 100%, and a retake is covered up to 50%.",
+    "reference": "The first attempt at a Tier 1 strategic certification is reimbursed at 100%, plus up to 3 days of paid study leave. One retake is covered at 50% reimbursement.",
+    "timestamp": "2026-05-14T19:24:28.100407+00:00"
+  },
+  "C09_AR": {
+    "query_id": "C09_AR",
+    "concept_id": "C09",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "tier1_cert_reimbursement",
+    "question": "ما نسبة استرداد المصاريف عند التقدم لأول مرة لشهادة من المستوى الأول، وهل تُغطَّى إعادة الاختبار؟",
+    "contexts": [
+      "passage: . Reimbursement rates differ by tier: Tier Examples First Attempt Retake (max 1) Study Leave Tier 1 — Strategic AWS Solutions Architect, PMP, CFA, CISA 100% 50% Up to 3 days Tier 2 — Functional Google",
+      "passage: . 5. Certification Reimbursement & Exam Policy 5.1 Certification Tiers Horizon Tech categorises professional certifications into three tiers based on strategic alignment and market value",
+      "passage: 100% 50% Up to 3 days Tier 2 — Functional Google Analytics, Scrum Master, ITIL 100% 25% Up to 2 days Tier 3 — Foundational Microsoft Office Specialist, CompTIA A+ 80% Not covered None 6",
+      "passage: .السنوي الشروط :واألحكام ●تغطية كاملة لرسوم الدراسة بحد أقصى 15,000 دوالر ًسنويا للدراسات العليا المتعلقة بمجال عمل .الموظف ●يُشترط الحصول على موافقة مدير القسم ومدير الموارد البشرية قبل",
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "نسبة استرداد المصاريف عند التقدم لأول مرة لشهادة من المستوى الأول هي 100%، وتُغطَّى إعادة الاختبار بنسبة 50% (حد أقصى مرة واحدة).",
+    "reference": "نسبة استرداد المصاريف عند التقدم لأول مرة لشهادة من المستوى الأول هي 100%، وتُغطَّى إعادة الاختبار بنسبة 50% (حد أقصى مرة واحدة).",
+    "timestamp": "2026-05-14T19:24:49.746973+00:00"
+  },
+  "C09_EG": {
+    "query_id": "C09_EG",
+    "concept_id": "C09",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "tier1_cert_reimbursement",
+    "question": "نسبة استرداد رسوم شهادة Tier 1 في أول محاولة قد إيه، وإعادة الاختبار بتتغطى؟",
+    "contexts": [
+      "passage: . Reimbursement rates differ by tier: Tier Examples First Attempt Retake (max 1) Study Leave Tier 1 — Strategic AWS Solutions Architect, PMP, CFA, CISA 100% 50% Up to 3 days Tier 2 — Functional Google",
+      "passage: 100% 50% Up to 3 days Tier 2 — Functional Google Analytics, Scrum Master, ITIL 100% 25% Up to 2 days Tier 3 — Foundational Microsoft Office Specialist, CompTIA A+ 80% Not covered None 6",
+      "passage: . 5. Certification Reimbursement & Exam Policy 5.1 Certification Tiers Horizon Tech categorises professional certifications into three tiers based on strategic alignment and market value",
+      "passage: .25× 3 – Meets Expectations Fully achieves all set objectives Up to 8% 1× 2 – Needs Improvement Partially meets objectives; PIP may be initiated 0% 0× 1 – Unsatisfactory Fails to meet basic job",
+      "passage: .السنوي الشروط :واألحكام ●تغطية كاملة لرسوم الدراسة بحد أقصى 15,000 دوالر ًسنويا للدراسات العليا المتعلقة بمجال عمل .الموظف ●يُشترط الحصول على موافقة مدير القسم ومدير الموارد البشرية قبل"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "نسبة استرداد رسوم شهادة Tier 1 في أول محاولة هي 100%، وإعادة الاختبار بتتغطي 50% (بس ممكن تيجي مرة واحدة بس).",
+    "reference": "أول محاولة لشهادات Tier 1 الاستراتيجية زي  بتترد 100%، مع لحد 3 أيام إجازة دراسة مدفوعة. إعادة الاختبار مرة واحدة بس بتترد 50%، ومفيش تغطية لأي محاولات تانية.",
+    "timestamp": "2026-05-14T19:25:10.195102+00:00"
+  },
+  "C09_FR": {
+    "query_id": "C09_FR",
+    "concept_id": "C09",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "tier1_cert_reimbursement",
+    "question": "eih nisblet estered rasoom shahadet Tier 1 fel awel mara, w e3adet el ekhtebar bettetghatta?",
+    "contexts": [
+      "passage: ﺃﺷﻬﺮ6 ﺣﺘﻰ ﻣﺪﻳﺮ ﺍﻟﻘﺴﻢ 5 ﻣﺪﻳﺮ ﺃﻭﻝ ﺍﻟﺪﺭﺟﺔ ﺃﺷﻬﺮ3 ﺃﺷﻬﺮ6 ﺣﺘﻰ ﻣﺪﻳﺮ ﺍﻟﻘﺴﻢ ﺣﻘﻮﻕ ﺍﻟﻤﻮﻇﻒ ﺃﺛﻨﺎﺀ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ3",
+      "passage: . Reimbursement rates differ by tier: Tier Examples First Attempt Retake (max 1) Study Leave Tier 1 — Strategic AWS Solutions Architect, PMP, CFA, CISA 100% 50% Up to 3 days Tier 2 — Functional Google",
+      "passage: employees (rated 4 or 5 in their most recent review) identified for future senior leadership roles",
+      "passage: .المباشر ●المشاركة في مقابلة الخروج مع HR . ●استالم التسوية المالية النهائية خالل 10 أيام عمل من آخر .يوم سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .1 اإلجراء التأديبي التدريجي تتبع الشركة ًنهجا ًتأديبيا ًتدريجيا يهدف إلى تصحيح السلوك قبل اللجوء إلى :الفصل المرحلة اإلجراء من يُصدره مدة الصالحية 1 تحذير شفهي المدير المباشر 3 أشهر 2 إنذار كتابي أول"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "awel mara le  Tier 1 btetrod 100%, ma3 le7ad 3 ayyam agaza deraseyya madf3a. e3adet el ekhtebar mara wa7da bas btetrod 50%",
+    "reference": "awel mara le shahadat Tier 1 btetrod 100%, ma3 le7ad 3 ayyam agaza deraseyya madf3a. e3adet el ekhtebar mara wa7da bas btetrod 50%",
+    "timestamp": "2026-05-14T19:26:01.012882+00:00"
+  },
+  "C10_EN": {
+    "query_id": "C10_EN",
+    "concept_id": "C10",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "ltd_benefit",
+    "question": "What does the long-term disability benefit pay, and for how long?",
+    "contexts": [
+      "passage: .3 Long-Term Disability (LTD) Employees who are unable to work for more than 90 consecutive days due to a medically certified disability will receive a monthly LTD benefit equal to 60% of their last",
+      "passage: . The LTD benefit continues for a maximum of 24 months or until the employee is medically certified as fit to return to work, whichever occurs first. 3. Employee Assistance Programme (EAP) 3",
+      "passage: )التجربة 14 يوم عمل حتى 7 أيام ال 1 – 5 سنوات 21 يوم عمل حتى 7 أيام حتى 5 أيام 5 – 10 سنوات 25 يوم عمل حتى 10 أيام حتى 7 أيام أكثر من 10 سنوات 30 يوم عمل حتى 14 يوم حتى 10 أيام 8",
+      "passage: to 8,000 EGP/year Orthodontics Rider 200 EGP Up to 15,000 EGP lifetime Enhanced Optical 80 EGP Up to 2,000 EGP/year Critical Illness Rider 120 EGP Lump sum 100,000 EGP Worldwide Emergency 180 EGP Up",
+      "passage: .5 راتب شهري عن كل سنة 3 – 5 سنوات راتب شهري كامل عن كل سنة أكثر من 5 سنوات 1.5 راتب شهري عن كل سنة 10"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "The Long-Term Disability (LTD) benefit pays a monthly benefit equal to 60% of the employee's last salary. The LTD benefit continues for a maximum of 24 months or until the employee is medically certified as fit to return to work, whichever occurs first.",
+    "reference": "The long-term disability (LTD) benefit pays 60% of the employee's last drawn base salary per month. It continues for a maximum of 24 months, or until the employee is medically certified as fit to return to work, whichever comes first.",
+    "timestamp": "2026-05-14T19:26:17.862816+00:00"
+  },
+  "C10_AR": {
+    "query_id": "C10_AR",
+    "concept_id": "C10",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "ltd_benefit",
+    "question": "ما قيمة مزايا العجز طويل الأمد ومدتها؟",
+    "contexts": [
+      "passage: .3 Long-Term Disability (LTD) Employees who are unable to work for more than 90 consecutive days due to a medically certified disability will receive a monthly LTD benefit equal to 60% of their last",
+      "passage: . The LTD benefit continues for a maximum of 24 months or until the employee is medically certified as fit to return to work, whichever occurs first. 3. Employee Assistance Programme (EAP) 3",
+      "passage: . The benefit is equal to two times (2×) the employee's annual gross salary, paid as a lump sum to the designated beneficiary in the event of death from any cause (accidental or natural)",
+      "passage: )التجربة 14 يوم عمل حتى 7 أيام ال 1 – 5 سنوات 21 يوم عمل حتى 7 أيام حتى 5 أيام 5 – 10 سنوات 25 يوم عمل حتى 10 أيام حتى 7 أيام أكثر من 10 سنوات 30 يوم عمل حتى 14 يوم حتى 10 أيام 8",
+      "passage: .2 فترات الحتفاظ بالبيانات نوع البيانات مدة الحتفاظ ملفات الموظفين النشطين طوال فترة الخدمة + 7 سنوات بيانات الرواتب والمالية 10 سنوات سجالت األداء والتأديب 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "مزايا العجز طويل الأمد (LTD) تُقدَّر بـ 60% من آخر راتب شهري للموظف الذي يعجز عن العمل لأكثر من 90 يومًا متواصلة بسبب إعاقة معتمدة طبيًا، وتستمر هذه المزايا لمدة أقصاها 24 شهرًا أو حتى يُثبت الطبيب قدرة الموظف على العودة إلى العمل، أيهما يحدث أولاً [Page 3 | EN].",
+    "reference": "يُقدِّم مزايا العجز طويل الأمد 60% من آخر راتب أساسي مسحوب شهريًا، ويستمر لمدة أقصاها 24 شهرًا أو حتى يُصادق الطبيب على قدرة الموظف على العودة للعمل، أيهما أقرب. يُطبَّق بعد 90 يومًا متواصلة من العجز المُثبَت طبيًا.",
+    "timestamp": "2026-05-14T19:26:36.965055+00:00"
+  },
+  "C10_EG": {
+    "query_id": "C10_EG",
+    "concept_id": "C10",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "ltd_benefit",
+    "question": "بدل العجز طويل الأمد بيدفع قد إيه وبيستمر قد إيه؟",
+    "contexts": [
+      "passage: .3 Long-Term Disability (LTD) Employees who are unable to work for more than 90 consecutive days due to a medically certified disability will receive a monthly LTD benefit equal to 60% of their last",
+      "passage: .2 Accidental Death & Dismemberment (AD&D) An additional AD&D; benefit is provided, equal to one times (1×) the annual gross salary, covering accidental death, permanent total disability, or the loss",
+      "passage: to 8,000 EGP/year Orthodontics Rider 200 EGP Up to 15,000 EGP lifetime Enhanced Optical 80 EGP Up to 2,000 EGP/year Critical Illness Rider 120 EGP Lump sum 100,000 EGP Worldwide Emergency 180 EGP Up",
+      "passage: . The LTD benefit continues for a maximum of 24 months or until the employee is medically certified as fit to return to work, whichever occurs first. 3. Employee Assistance Programme (EAP) 3",
+      "passage: .الرسمي ●يُمنح بدل العمل عن بُعد بقيمة 800 جنيه مصري/شهر لتغطية تكاليف اإلنترنت .والمرافق ● سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "بدل العجز طويل الأمد ده بيقدر يدفع 60% من آخر راتب شهري ، وبيستمر لحد 24 شهر أو لحد ما يثبت طبيًا إنك قادر ترجع للعمل، أي الوضع اللي بيكون أقرب [Page 3 | EN].",
+    "reference": "بدل العجز طويل الأمد بيدفع 60% من آخر راتب أساسي كل شهر. بيستمر بحد أقصى 24 شهر أو لحد ما الطبيب يقول إن الموظف قادر يرجع يشتغل، أيهما أقرب. وده بيبدأ بعد 90 يوم متواصل من العجز المُثبَت طبيًا.",
+    "timestamp": "2026-05-14T19:26:56.261198+00:00"
+  },
+  "C11_EN": {
+    "query_id": "C11_EN",
+    "concept_id": "C11",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "emergency_loan",
+    "question": "How much can an employee borrow as an emergency interest-free loan, and what are the repayment terms?",
+    "contexts": [
+      "passage: .1 Emergency Interest-Free Loans Employees who have completed their probation period may apply for an emergency salary advance of up to two months' net salary, repayable over a maximum of 12 equal",
+      "passage: Horizon Tech | Employee HandbookEmployment, Compensation & Conduct Policies Coverage Item Employee Spouse Children Emergency (Abroad) 100% up to $5,000 — — 2",
+      "passage: sum 100,000 EGP Worldwide Emergency 180 EGP Up to $15,000 per event 1",
+      "passage: . Coverage Item Employee Spouse Children Outpatient Visits 100% 80% 80% Hospitalization 100% 90% 90% Dental 70% 50% 50% Optical 500 EGP/year 300 EGP/year 300 EGP/year Pharmacy 80% 70% 70% Confidential",
+      "passage: net salary, repayable over a maximum of 12 equal monthly instalments via payroll deduction"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "An employee can borrow up to two months' net salary as an emergency interest-free loan, repayable over a maximum of 12 equal monthly instalments via payroll deduction.",
+    "reference": "Employees who have completed their probation period may borrow up to two months' net salary as an emergency interest-free loan. It is repayable over a maximum of 12 equal monthly instalments via payroll deduction. Only one active loan is permitted at a time, and approval requires sign-off from both HR and Finance.",
+    "timestamp": "2026-05-14T19:28:05.954241+00:00"
+  },
+  "C11_AR": {
+    "query_id": "C11_AR",
+    "concept_id": "C11",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "emergency_loan",
+    "question": "كم يمكن للموظف اقتراضه كقرض طارئ بدون فوائد وما شروط السداد؟",
+    "contexts": [
+      "passage: .1 Emergency Interest-Free Loans Employees who have completed their probation period may apply for an emergency salary advance of up to two months' net salary, repayable over a maximum of 12 equal",
+      "passage: .1 :ﺗﺴﺪﺩ ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ ﺍﻟﻤﻮﺛﻘﺔ ﺍﻟﺘﻲ ﻳﺘﺤﻤﻠﻬﺎ ﺍﻟﻤﻮﻇﻒ ﺑﺴﺒﺐ ﻣﻬﺎﻡ ﺍﻟﻌﻤﻞ ﻭﻓﻖ ﺍﻟﺤﺪﻭﺩ ﺍﻟﺘﺎﻟﻴﺔ ﻧﻮﻉ ﺍﻟﻨﻔﻘﺔ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺍﻟﻤﺴﺘﻨﺪﺍﺕ ﺍﻟﻤﻄﻠﻮﺑﺔ ﻭﺟﺒﺎﺕ ﺍﻟﻌﻤﻞ ﺍﻟﻔﺮﺩﻳﺔ ﺟﻨﻴﻪ ﻭﺟﺒﺔ150ﻓﺎﺗﻮﺭﺓ ﺿﺮﻳﺒﻴﺔ ﺍﺟﺘﻤﺎﻉ ﻋﻤﻞ ﻣﻊ ﻋﻤﻴﻞ ﺟﻨﻴﻪ",
+      "passage: .التسجيل ●يلتزم الموظف بالبقاء في الشركة مدة ال تقل عن سنتين بعد الحصول على .المنحة ●يُعاد تقديم طلب المنحة ًسنويا ويُقيَّم ًبناء على األداء الوظيفي",
+      "passage: .السنوي الشروط :واألحكام ●تغطية كاملة لرسوم الدراسة بحد أقصى 15,000 دوالر ًسنويا للدراسات العليا المتعلقة بمجال عمل .الموظف ●يُشترط الحصول على موافقة مدير القسم ومدير الموارد البشرية قبل",
+      "passage: . Approval is subject to HR and Finance sign-off. Only one active loan is permitted at any time. 6"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "الموظف الذي أنهى فترة التجربة يمكنه اقتراض قرض طارئ بدون فوائد حتى شهرين من راتبه الصافي، ويشترط سداده خلال 12 دفعة متساوية كحد أقصى [Page 5 | EN]. كما أن الموافقة تخضع لتوقيع الموارد البشرية والمالية، ولا يُسمح بقرض نشط واحد في أي وقت [Page 5 | EN].",
+    "reference": "يحق للموظف الذي أتمَّ فترة الاختبار الاقتراض بما يصل إلى شهرين من صافي الراتب كقرض طارئ بدون فوائد. يُسدَّد على 12 قسطًا شهريًا متساويًا كحد أقصى عبر خصم الراتب. لا يُسمح بأكثر من قرض نشط واحد في آنٍ واحد، ويشترط الحصول على موافقة الموارد البشرية والمالية.",
+    "timestamp": "2026-05-14T19:28:26.122410+00:00"
+  },
+  "C11_EG": {
+    "query_id": "C11_EG",
+    "concept_id": "C11",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "emergency_loan",
+    "question": "الموظف يقدر يقترض قد إيه كقرض طارئ بدون فوايد وإيه شروط السداد؟",
+    "contexts": [
+      "passage: .1 Emergency Interest-Free Loans Employees who have completed their probation period may apply for an emergency salary advance of up to two months' net salary, repayable over a maximum of 12 equal",
+      "passage: .1 :ﺗﺴﺪﺩ ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ ﺍﻟﻤﻮﺛﻘﺔ ﺍﻟﺘﻲ ﻳﺘﺤﻤﻠﻬﺎ ﺍﻟﻤﻮﻇﻒ ﺑﺴﺒﺐ ﻣﻬﺎﻡ ﺍﻟﻌﻤﻞ ﻭﻓﻖ ﺍﻟﺤﺪﻭﺩ ﺍﻟﺘﺎﻟﻴﺔ ﻧﻮﻉ ﺍﻟﻨﻔﻘﺔ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺍﻟﻤﺴﺘﻨﺪﺍﺕ ﺍﻟﻤﻄﻠﻮﺑﺔ ﻭﺟﺒﺎﺕ ﺍﻟﻌﻤﻞ ﺍﻟﻔﺮﺩﻳﺔ ﺟﻨﻴﻪ ﻭﺟﺒﺔ150ﻓﺎﺗﻮﺭﺓ ﺿﺮﻳﺒﻴﺔ ﺍﺟﺘﻤﺎﻉ ﻋﻤﻞ ﻣﻊ ﻋﻤﻴﻞ ﺟﻨﻴﻪ",
+      "passage: . Approval is subject to HR and Finance sign-off. Only one active loan is permitted at any time. 6",
+      "passage: .التسجيل ●يلتزم الموظف بالبقاء في الشركة مدة ال تقل عن سنتين بعد الحصول على .المنحة ●يُعاد تقديم طلب المنحة ًسنويا ويُقيَّم ًبناء على األداء الوظيفي",
+      "passage: .3 إجراءات الطوارئ تُجرى تدريبات اإلخالء الطارئ مرتين ًسنويا على .األقل يتحمل كل قسم مسؤولية تعيين مسؤول طوارئ يكون نقطة التصال الرئيسية في ح الت .األزمات سري — لالستخدام الداخلي فقط | اإلصدار 2"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "الموظف اللي اتم تجربته ممكن يقرضه قرض طارئ بس ما يزيد على شهرين راتب صافي، وسداده كده على 12 قسط متساوي كحد أقصى . الشروط دياله:  \n1. موظف مفيش عندو قرض نشط تاني في نفس الوقت.  \n2. موافقة HR والمالية.  \n3. مفيش فوائد على القرض.  \n\nأيهو، لو عايز تقرضه كده، خليه يتأكد من إنه اتم تجربته أولًا [Page 5 | EN].",
+    "reference": "الموظف اللي خلّص فترة الاختبار يقدر يقترض لحد شهرين صافي مرتب كقرض طارئ بدون فوايد. بيتسدد على 12 قسط شهري متساوي كحد أقصى من الراتب. مسموح بس بقرض واحد نشط في نفس الوقت، ولازم يعتمده الموارد البشرية والمالية.",
+    "timestamp": "2026-05-14T19:28:49.241031+00:00"
+  },
+  "C12_AR": {
+    "query_id": "C12_AR",
+    "concept_id": "C12",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "social_insurance_rate",
+    "question": "ما نسبة اشتراك الموظف في التأمينات الاجتماعية وما نسبة صاحب العمل؟",
+    "contexts": [
+      "passage: . ﺗﺤﺘﺴﺐ ﺍﻻﺷﺘﺮﺍﻛﺎﺕ ﻋﻠﻰ ﻣﻜﻮﻧﻲ ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ ﻭﺍﻟﻤﺘﻐﻴﺮ2019 ﻟﺴﻨﺔ148 ﺍﻻﺟﺘﻤﺎﻋﻴﺔ ﻭﻓﻖ ﻗﺎﻧﻮﻥ ﺍﻟﺘﺄﻣﻴﻦ ﺍﻻﺟﺘﻤﺎﻋﻲ ﻭﺍﻟﻤﻌﺎﺷﺎﺕ ﺭﻗﻢ ﺗﻄﺒﻖ ﺍﺷﺘﺮﺍﻛﺎﺕ ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻟﻄﺮﻑ ﻧﺴﺒﺔ ﺍﻻﺳﺘﻘﻄﺎﻉ ﺍﻷﺳﺎﺱ ﺍﻟﺤﺴﺎﺑﻲ ﺣﺼﺔ ﺍﻟﻤﻮﻇﻒ11 ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ",
+      "passage: . • After 3 years: 75% of matched contributions vest. • After 4 years: 100% of matched contributions vest. 6. Financial Wellbeing Initiatives",
+      "passage: . Vesting of the company match is as follows: • After 1 year of plan participation: 25% of matched contributions vest. • After 2 years: 50% of matched contributions vest",
+      "passage: . Coverage Item Employee Spouse Children Outpatient Visits 100% 80% 80% Hospitalization 100% 90% 90% Dental 70% 50% 50% Optical 500 EGP/year 300 EGP/year 300 EGP/year Pharmacy 80% 70% 70% Confidential",
+      "passage: . 5. Retirement & Savings 5.1 Social Insurance All employees are enrolled in Egypt's national social insurance scheme in accordance with the Social Insurance and Pensions Law No. 148 of 2019"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "يسدد الموظف 11% من الأجر الثابت والمتغير كاشتراك في التأمينات الاجتماعية، بينما يسدد صاحب العمل 18.75%، ليبلغ إجمالي الاشتراك 29.75%.",
+    "reference": "يسدد الموظف 11% من الأجر الثابت والمتغير كاشتراك في التأمينات الاجتماعية، بينما يسدد صاحب العمل 18.75%، ليبلغ إجمالي الاشتراك 29.75%.",
+    "timestamp": "2026-05-14T19:30:14.621774+00:00"
+  },
+  "C12_EG": {
+    "query_id": "C12_EG",
+    "concept_id": "C12",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "social_insurance_rate",
+    "question": "نسبة اشتراك الموظف في التأمينات الاجتماعية قد إيه ونسبة الشركة؟",
+    "contexts": [
+      "passage: . ﺗﺤﺘﺴﺐ ﺍﻻﺷﺘﺮﺍﻛﺎﺕ ﻋﻠﻰ ﻣﻜﻮﻧﻲ ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ ﻭﺍﻟﻤﺘﻐﻴﺮ2019 ﻟﺴﻨﺔ148 ﺍﻻﺟﺘﻤﺎﻋﻴﺔ ﻭﻓﻖ ﻗﺎﻧﻮﻥ ﺍﻟﺘﺄﻣﻴﻦ ﺍﻻﺟﺘﻤﺎﻋﻲ ﻭﺍﻟﻤﻌﺎﺷﺎﺕ ﺭﻗﻢ ﺗﻄﺒﻖ ﺍﺷﺘﺮﺍﻛﺎﺕ ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻟﻄﺮﻑ ﻧﺴﺒﺔ ﺍﻻﺳﺘﻘﻄﺎﻉ ﺍﻷﺳﺎﺱ ﺍﻟﺤﺴﺎﺑﻲ ﺣﺼﺔ ﺍﻟﻤﻮﻇﻒ11 ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ",
+      "passage: . Vesting of the company match is as follows: • After 1 year of plan participation: 25% of matched contributions vest. • After 2 years: 50% of matched contributions vest",
+      "passage: . • After 3 years: 75% of matched contributions vest. • After 4 years: 100% of matched contributions vest. 6. Financial Wellbeing Initiatives",
+      "passage: . Coverage Item Employee Spouse Children Outpatient Visits 100% 80% 80% Hospitalization 100% 90% 90% Dental 70% 50% 50% Optical 500 EGP/year 300 EGP/year 300 EGP/year Pharmacy 80% 70% 70% Confidential",
+      "passage: . 5. Retirement & Savings 5.1 Social Insurance All employees are enrolled in Egypt's national social insurance scheme in accordance with the Social Insurance and Pensions Law No. 148 of 2019"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "الموظف بيدفع 11% من الأجر الثابت والمتغير كاشتراك في التأمينات الاجتماعية، والشركة بتدفع 18.75%، والإجمالي 29.75%.",
+    "reference": "الموظف بيدفع 11% من الأجر الثابت والمتغير كاشتراك في التأمينات الاجتماعية، والشركة بتدفع 18.75%، والإجمالي 29.75%.",
+    "timestamp": "2026-05-14T19:30:34.664365+00:00"
+  },
+  "C13_EN": {
+    "query_id": "C13_EN",
+    "concept_id": "C13",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "confidentiality_post_employment",
+    "question": "How long do confidentiality obligations continue after an employee leaves the company?",
+    "contexts": [
+      "passage: .2 Obligations During & After Employment Confidentiality obligations apply for the duration of employment and continue for a period of three (3) years after the termination of employment for most",
+      "passage: .التسجيل ●يلتزم الموظف بالبقاء في الشركة مدة ال تقل عن سنتين بعد الحصول على .المنحة ●يُعاد تقديم طلب المنحة ًسنويا ويُقيَّم ًبناء على األداء الوظيفي",
+      "passage: . Trade secrets and client data obligations are perpetual. Employees must: • Not copy, transmit, or store confidential information on personal devices or unapproved cloud services",
+      "passage: . • Return or destroy all confidential materials upon termination. • Obtain written approval from Legal before sharing any proprietary information with a third party. 3. Social Media Policy 3",
+      "passage: . • Passwords must be updated every 90 days and must comply with the company's complexity standards. • Approved AI tools must not be used to process confidential client or employee data"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "Confidentiality obligations continue for a period of three (3) years after the termination of employment.",
+    "reference": "Confidentiality obligations continue for 3 years after the termination of employment for most information categories.",
+    "timestamp": "2026-05-14T19:31:35.408684+00:00"
+  },
+  "C13_AR": {
+    "query_id": "C13_AR",
+    "concept_id": "C13",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "confidentiality_post_employment",
+    "question": "كم تستمر التزامات السرية بعد مغادرة الموظف للشركة؟",
+    "contexts": [
+      "passage: .2 Obligations During & After Employment Confidentiality obligations apply for the duration of employment and continue for a period of three (3) years after the termination of employment for most",
+      "passage: .المباشر ●المشاركة في مقابلة الخروج مع HR . ●استالم التسوية المالية النهائية خالل 10 أيام عمل من آخر .يوم سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .التسجيل ●يلتزم الموظف بالبقاء في الشركة مدة ال تقل عن سنتين بعد الحصول على .المنحة ●يُعاد تقديم طلب المنحة ًسنويا ويُقيَّم ًبناء على األداء الوظيفي",
+      "passage: 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين غير المقبولين 6 أشهر فقط المراسالت اإللكترونية الداخلية 3 سنوات سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: . Trade secrets and client data obligations are perpetual. Employees must: • Not copy, transmit, or store confidential information on personal devices or unapproved cloud services"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "التزامات السرية تستمر لمدة 3 سنوات بعد إنهاء العمل بالنسبة لمعظم البيانات، بينما تكون التزامات حماية المعرفة التجارية وبيانات العملاء دائمة (غير محدودة). [Page 2 | EN]",
+    "reference": "تستمر التزامات السرية لمدة 3 سنوات بعد إنهاء عقد العمل لمعظم فئات المعلومات. أما الالتزامات المتعلقة بالأسرار التجارية وبيانات العملاء فهي دائمة ولا تنقضي.",
+    "timestamp": "2026-05-14T19:31:55.105623+00:00"
+  },
+  "C13_EG": {
+    "query_id": "C13_EG",
+    "concept_id": "C13",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "confidentiality_post_employment",
+    "question": "التزامات السرية بتستمر قد إيه بعد ما الموظف يسيب الشركة؟",
+    "contexts": [
+      "passage: .2 Obligations During & After Employment Confidentiality obligations apply for the duration of employment and continue for a period of three (3) years after the termination of employment for most",
+      "passage: . Trade secrets and client data obligations are perpetual. Employees must: • Not copy, transmit, or store confidential information on personal devices or unapproved cloud services",
+      "passage: .التسجيل ●يلتزم الموظف بالبقاء في الشركة مدة ال تقل عن سنتين بعد الحصول على .المنحة ●يُعاد تقديم طلب المنحة ًسنويا ويُقيَّم ًبناء على األداء الوظيفي",
+      "passage: . سياسة الخصوصية وحماية البيانات 11.1 التزامات الموظف تلتزم الشركة بأعلى معايير حماية البيانات وفق اللوائح المحلية",
+      "passage: .بالموظف ●امتالك حصة ملكية في شركة .منافسة ●أي عالقة مالية مع طرف تجاري .للشركة سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "السرية بتستمر 3 سنين بعد ما تخلص عقد العمل، وسرى التفاصيل دي كتلاقيها في . أما عن أسرار الشركة والبيانات الخاصة بالعملاء، فده يبقا سري لحد ما يخلص العمر، أيوه! [Page 2 | EN].",
+    "reference": "التزامات السرية بتستمر 3 سنين بعد إنهاء عقد الشغل لمعظم أنواع المعلومات. أما اللي بيخص الأسرار التجارية وبيانات العملاء فالتزاماته دايمة ومبتنتهيش.",
+    "timestamp": "2026-05-14T19:32:23.891004+00:00"
+  },
+  "C14_EN": {
+    "query_id": "C14_EN",
+    "concept_id": "C14",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "ar_policy.pdf",
+    "topic": "mental_health_leave",
+    "question": "How many mental health leave days are employees entitled to, and are they paid?",
+    "contexts": [
+      "passage: اشتراك في تطبيقات التأمل مجاني لجميع الموظفين جلسات استشارة نفسية مجهولة حتى 6 جلسات ًسنويا خط دعم نفسي متاح 24/7 إجازة صحة نفسية يومان مدفوعان ًسنويا 1",
+      "passage: 8 days Included G3 – Lead / Supervisor $8,000 10 days Included G4 – Manager $10,000 12 days Included G5 – Senior Manager / Director $12,000 15 days Included 1",
+      "passage: . • Mid-cycle amendments require written approval from both the line manager and department head. • Employees new to their role have a 30-day grace period before OKRs are formally set. 3",
+      "passage: .3 Long-Term Disability (LTD) Employees who are unable to work for more than 90 consecutive days due to a medically certified disability will receive a monthly LTD benefit equal to 60% of their last",
+      "passage: كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام عمل نعم شهادة الميالد إجازة الوفاة 3 – 5 أيام نعم شهادة الوفاة إجازة الحج 20 يوم عمل (مرة )واحدة نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "Employees are entitled to 2 mental health leave days per year, and they are paid.",
+    "reference": "All employees are entitled to 2 paid mental health leave days per year.",
+    "timestamp": "2026-05-14T19:33:21.095068+00:00"
+  },
+  "C14_AR": {
+    "query_id": "C14_AR",
+    "concept_id": "C14",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "ar_policy.pdf",
+    "topic": "mental_health_leave",
+    "question": "كم عدد أيام إجازة الصحة النفسية وهل هي مدفوعة الأجر؟",
+    "contexts": [
+      "passage: اشتراك في تطبيقات التأمل مجاني لجميع الموظفين جلسات استشارة نفسية مجهولة حتى 6 جلسات ًسنويا خط دعم نفسي متاح 24/7 إجازة صحة نفسية يومان مدفوعان ًسنويا 1",
+      "passage: .2 أنواع اإلجازات األخرى نوع اإلجازة المدة مدفوعة؟ المستندات المطلوبة إجازة الزواج 5 أيام عمل نعم عقد الزواج (خالل 30 )ًيوما إجازة األمومة 90 ًيوما كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام",
+      "passage: كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام عمل نعم شهادة الميالد إجازة الوفاة 3 – 5 أيام نعم شهادة الوفاة إجازة الحج 20 يوم عمل (مرة )واحدة نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10",
+      "passage: .1 اإلجازة السنوية تُحتسب اإلجازة السنوية ًبناء على سنوات الخبرة وفق الجدول :أدناه سنوات الخدمة أيام اإلجازة السنوية الترحيل المسموح صرف الرصيد 0 – 1 (بعد )التجربة 14 يوم عمل حتى 7 أيام ال 1 – 5 سنوات",
+      "passage: نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10 أيام/سنة نعم جدول المتحانات الرسمي إجازة بدون راتب حتى 30 يوماً/سنة ال موافقة المدير + HR سري — لالستخدام الداخلي فقط | اإلصدار 2"
+    ],
+    "context_sources": [
+      "AR"
+    ],
+    "n_en_chunks": 0,
+    "n_ar_chunks": 5,
+    "answer": "إجازة الصحة النفسية مدفوعة الأجر وتُمنح يومان سنوياً.",
+    "reference": "يستحق جميع الموظفين يومَين مدفوعَي الأجر سنويًا كإجازة صحة نفسية.",
+    "timestamp": "2026-05-14T19:33:37.991403+00:00"
+  },
+  "C14_EG": {
+    "query_id": "C14_EG",
+    "concept_id": "C14",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "ar_policy.pdf",
+    "topic": "mental_health_leave",
+    "question": "كام يوم إجازة صحة نفسية الموظف بياخد وهل هي مدفوعة؟",
+    "contexts": [
+      "passage: اشتراك في تطبيقات التأمل مجاني لجميع الموظفين جلسات استشارة نفسية مجهولة حتى 6 جلسات ًسنويا خط دعم نفسي متاح 24/7 إجازة صحة نفسية يومان مدفوعان ًسنويا 1",
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: .2 أنواع اإلجازات األخرى نوع اإلجازة المدة مدفوعة؟ المستندات المطلوبة إجازة الزواج 5 أيام عمل نعم عقد الزواج (خالل 30 )ًيوما إجازة األمومة 90 ًيوما كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام",
+      "passage: .2 الصحة النفسية ورفاهية الموظف تدرك الشركة أهمية الصحة النفسية لإلنتاجية والوالء ،الوظيفي وتوفر الخدمات التالية ًمجانا لجميع :موظفيها الخدمة التفاصيل اشتراك في تطبيقات التأمل مجاني لجميع الموظفين",
+      "passage: نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10 أيام/سنة نعم جدول المتحانات الرسمي إجازة بدون راتب حتى 30 يوماً/سنة ال موافقة المدير + HR سري — لالستخدام الداخلي فقط | اإلصدار 2"
+    ],
+    "context_sources": [
+      "AR"
+    ],
+    "n_en_chunks": 0,
+    "n_ar_chunks": 5,
+    "answer": "الموظف بياخد يومين إجازة صحة نفسية مدفوعين سنوياً.",
+    "reference": "كل الموظفين بياخدوا يومين إجازة صحة نفسية في السنة ومدفوعين.",
+    "timestamp": "2026-05-14T19:33:56.726900+00:00"
+  },
+  "C15_EN": {
+    "query_id": "C15_EN",
+    "concept_id": "C15",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "ar_recruitment.pdf",
+    "topic": "probation_review_timing",
+    "question": "When are performance evaluations conducted during probation?",
+    "contexts": [
+      "passage: . 1.2 Probation Period All new employees are subject to a probation period of 3 months, which may be extended to a maximum of 6 months at the discretion of the line manager and HR",
+      "passage: . • Either party may terminate the employment contract with 7 days written notice. • Performance is evaluated at the 1-month and 3-month marks",
+      "passage: . During the probation period: • Annual leave accrual begins but cannot be taken until after probation is successfully completed",
+      "passage: . ﻋﺪﻡ ﻭﺟﻮﺩ ﺧﻄﺔ ﺗﺤﺴﻴﻦ ﺃﺩﺍﺀ ﺳﺎﺭﻳﺔ ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺳﺘﺤﻘﺎﻕ . ﻳﺤﻘﻖ ﺍﻟﺘﻮﻗﻌﺎﺕ« ﺃﻭ ﺃﻋﻠﻰ ﻓﻲ ﺁﺧﺮ ﺩﻭﺭﺓ ﺗﻘﻴﻴﻢ3» ﺍﻟﺤﺼﻮﻝ ﻋﻠﻰ ﺗﻘﻴﻴﻢ ﺃﺩﺍﺀ ﺗﻘﻴﻴﻢ ﺍﻷﺩﺍﺀ ﺍﻟﻮﺻﻒ ﻧﺴﺒﺔ ﺍﻟﺮﺍﺗﺐ ﺍﻟﺴﻨﻮﻱ ﻣﻌﺎﻣﻞ ﺍﻟﺰﻳﺎﺩﺓ",
+      "passage: . ﺗﺠﺮﻯ ﺍﻟﻤﺮﺍﺟﻌﺔ ﺍﻟﺴﻨﻮﻳﺔ ﻓﻲ ﺩﻳﺴﻤﺒﺮ ﺑﺎﻟﺘﻮﺍﺯﻱ ﻣﻊ ﺩﻭﺭﺓ ﺗﻘﻴﻴﻢ ﺍﻷﺩﺍﺀ ﺗﺤﺪﺩ ﺍﻟﺪﺭﺟﺔ ﺍﻟﻤﺴﻤﻰ ﺍﻟﻮﻇﻴﻔﻲ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﺩﻧﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﻣﺮﺍﺟﻌﺔ ﺳﻨﻮﻳﺔ 1ﻣﻨﺴﻖ ﻣﺴﺎﻋﺪ8,000 15,000ﻧﻌﻢ"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "Performance evaluations are conducted at the 1-month and 3-month marks during the probation period.",
+    "reference": "Performance is evaluated at the end of the 1st month and again at the end of the 3rd month during the probation period.",
+    "timestamp": "2026-05-14T19:35:00.861985+00:00"
+  },
+  "C15_AR": {
+    "query_id": "C15_AR",
+    "concept_id": "C15",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "ar_recruitment.pdf",
+    "topic": "probation_review_timing",
+    "question": "متى تُجرى تقييمات الأداء خلال فترة الاختبار؟",
+    "contexts": [
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4",
+      "passage: . ﺗﺠﺮﻯ ﺍﻟﻤﺮﺍﺟﻌﺔ ﺍﻟﺴﻨﻮﻳﺔ ﻓﻲ ﺩﻳﺴﻤﺒﺮ ﺑﺎﻟﺘﻮﺍﺯﻱ ﻣﻊ ﺩﻭﺭﺓ ﺗﻘﻴﻴﻢ ﺍﻷﺩﺍﺀ ﺗﺤﺪﺩ ﺍﻟﺪﺭﺟﺔ ﺍﻟﻤﺴﻤﻰ ﺍﻟﻮﻇﻴﻔﻲ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﺩﻧﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﻣﺮﺍﺟﻌﺔ ﺳﻨﻮﻳﺔ 1ﻣﻨﺴﻖ ﻣﺴﺎﻋﺪ8,000 15,000ﻧﻌﻢ",
+      "passage: . ﻋﺪﻡ ﻭﺟﻮﺩ ﺧﻄﺔ ﺗﺤﺴﻴﻦ ﺃﺩﺍﺀ ﺳﺎﺭﻳﺔ ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺳﺘﺤﻘﺎﻕ . ﻳﺤﻘﻖ ﺍﻟﺘﻮﻗﻌﺎﺕ« ﺃﻭ ﺃﻋﻠﻰ ﻓﻲ ﺁﺧﺮ ﺩﻭﺭﺓ ﺗﻘﻴﻴﻢ3» ﺍﻟﺤﺼﻮﻝ ﻋﻠﻰ ﺗﻘﻴﻴﻢ ﺃﺩﺍﺀ ﺗﻘﻴﻴﻢ ﺍﻷﺩﺍﺀ ﺍﻟﻮﺻﻒ ﻧﺴﺒﺔ ﺍﻟﺮﺍﺗﺐ ﺍﻟﺴﻨﻮﻱ ﻣﻌﺎﻣﻞ ﺍﻟﺰﻳﺎﺩﺓ",
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: .ﻣﻼﺣﻈﺔ: ﻳﻌﺪ ﺍﻛﺘﺸﺎﻑ ﺃﻱ ﺗﺰﻭﻳﺮ ﻓﻲ ﺍﻟﻮﺛﺎﺋﻖ ﺍﻟﻤﻘﺪﻣﺔ ﺳﺒﺒﺎ ﻓﻮﺭﻳﺎ ﻹﻟﻐﺎﺀ ﻋﺮﺽ ﺍﻟﻌﻤﻞ ﺃﻭ ﺇﻧﻬﺎﺀ ﺍﻟﺨﺪﻣﺔ ﺇﺫﺍ ﺍﻛﺘﺸﻒ ﺑﻌﺪ ﺍﻟﺘﻌﻴﻴﻦ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ3. ﻣﺪﺓ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ ﻭﺇﺟﺮﺍﺀﺍﺗﻬﺎ3"
+    ],
+    "context_sources": [
+      "AR"
+    ],
+    "n_en_chunks": 0,
+    "n_ar_chunks": 5,
+    "answer": "تُجرى تقييمات الأداء خلال فترة الاختبار في نهاية الشهرين الأول والثالث.",
+    "reference": "يُجرى تقييم الأداء في نهاية الشهر الأول ونهاية الشهر الثالث خلال فترة الاختبار.",
+    "timestamp": "2026-05-14T19:35:18.807616+00:00"
+  },
+  "C15_EG": {
+    "query_id": "C15_EG",
+    "concept_id": "C15",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "ar_recruitment.pdf",
+    "topic": "probation_review_timing",
+    "question": "تقييمات الأداء بتتعمل إمتى في فترة الاختبار؟",
+    "contexts": [
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4",
+      "passage: . ﻋﺪﻡ ﻭﺟﻮﺩ ﺧﻄﺔ ﺗﺤﺴﻴﻦ ﺃﺩﺍﺀ ﺳﺎﺭﻳﺔ ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺳﺘﺤﻘﺎﻕ . ﻳﺤﻘﻖ ﺍﻟﺘﻮﻗﻌﺎﺕ« ﺃﻭ ﺃﻋﻠﻰ ﻓﻲ ﺁﺧﺮ ﺩﻭﺭﺓ ﺗﻘﻴﻴﻢ3» ﺍﻟﺤﺼﻮﻝ ﻋﻠﻰ ﺗﻘﻴﻴﻢ ﺃﺩﺍﺀ ﺗﻘﻴﻴﻢ ﺍﻷﺩﺍﺀ ﺍﻟﻮﺻﻒ ﻧﺴﺒﺔ ﺍﻟﺮﺍﺗﺐ ﺍﻟﺴﻨﻮﻱ ﻣﻌﺎﻣﻞ ﺍﻟﺰﻳﺎﺩﺓ",
+      "passage: . ﺗﺠﺮﻯ ﺍﻟﻤﺮﺍﺟﻌﺔ ﺍﻟﺴﻨﻮﻳﺔ ﻓﻲ ﺩﻳﺴﻤﺒﺮ ﺑﺎﻟﺘﻮﺍﺯﻱ ﻣﻊ ﺩﻭﺭﺓ ﺗﻘﻴﻴﻢ ﺍﻷﺩﺍﺀ ﺗﺤﺪﺩ ﺍﻟﺪﺭﺟﺔ ﺍﻟﻤﺴﻤﻰ ﺍﻟﻮﻇﻴﻔﻲ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﺩﻧﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺟﻨﻴﻪ ﺷﻬﺮ ﻣﺮﺍﺟﻌﺔ ﺳﻨﻮﻳﺔ 1ﻣﻨﺴﻖ ﻣﺴﺎﻋﺪ8,000 15,000ﻧﻌﻢ",
+      "passage: . • Either party may terminate the employment contract with 7 days written notice. • Performance is evaluated at the 1-month and 3-month marks",
+      "passage: . Note: All OKRs must be documented in the HR system within the first 30 days of each performance period. Changes mid-cycle require written approval from both the line manager and the department head"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "تقييم الأداء بيتم في نهية الشهور الأولى والثالث ، وده كتاعه مذكور في الشروط ديال التقييم دورياً.",
+    "reference": "تقييم الأداء بيتعمل في نهاية الشهر الأول ونهاية الشهر التالت في فترة الاختبار.",
+    "timestamp": "2026-05-14T19:35:39.153847+00:00"
+  },
+  "C16_AR": {
+    "query_id": "C16_AR",
+    "concept_id": "C16",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "expense_claim_deadline",
+    "question": "ما هو الموعد النهائي لتقديم طلب تسوية المصروفات بعد تكبُّد النفقة؟",
+    "contexts": [
+      "passage: .الرسمية ●يُقدَّم تقرير تسوية النفقات والفواتير األصلية خالل 7 أيام عمل من .العودة ●النفقات غير الموثقة ال تُسدَّد بأي حال من .األحوال سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .2 :ﻳﻘﺪﻡ ﻃﻠﺐ ﺗﺴﻮﻳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﻋﺒﺮ ﺍﻟﺒﻮﺍﺑﺔ ﺍﻹﻟﻜﺘﺮﻭﻧﻴﺔ ﻭﻓﻖ ﺍﻟﺨﻄﻮﺍﺕ ﺍﻟﺘﺎﻟﻴﺔ ﺍﻟﺨﻄﻮﺓ ﺍﻹﺟﺮﺍﺀ ﺍﻹﻃﺎﺭ ﺍﻟﺰﻣﻨﻲ 1ﺍﺳﺘﻴﻔﺎﺀ ﻧﻤﻮﺫﺝ ﻃﻠﺐ ﺍﻟﺘﺴﻮﻳﺔ ﺇﻟﻜﺘﺮﻭﻧﻴﺎ ﻣﻊ ﺇﺭﻓﺎﻕ ﺍﻟﻔﻮﺍﺗﻴﺮ ﺍﻷﺻﻠﻴﺔ 2ﺍﻋﺘﻤﺎﺩ ﺍﻟﻤﺪﻳﺮ ﺍﻟﻤﺒﺎﺷﺮ ﻟﻠﻄﻠﺐ ﺃﻳﺎﻡ ﻋﻤﻞ3",
+      "passage: .). Reimbursement requests must be submitted via the HR Portal with original receipts within 60 days of the qualifying expenditure. Unused balances do not carry over to the following year. 5",
+      "passage: . ﻳﻮﻣﺎ ﻋﻠﻰ ﺗﺎﺭﻳﺦ ﺍﻟﻨﻔﻘﺔ30 ﻣﻼﺣﻈﺔ: ﻻ ﺗﻘﺒﻞ ﺍﻟﻤﻄﺎﻟﺒﺎﺕ ﺍﻟﻤﻘﺪﻣﺔ ﺑﻌﺪ ﻣﺮﻭﺭ",
+      "passage: .المباشر ●المشاركة في مقابلة الخروج مع HR . ●استالم التسوية المالية النهائية خالل 10 أيام عمل من آخر .يوم سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 4,
+    "answer": "الموعد النهائي 30 يوم من تاريخ النفقة دي.",
+    "reference": "يجب تقديم طلب تسوية المصروفات خلال 30 يومًا من تاريخ تكبُّد النفقة.",
+    "timestamp": "2026-05-14T19:37:05.772685+00:00"
+  },
+  "C16_EG": {
+    "query_id": "C16_EG",
+    "concept_id": "C16",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "expense_claim_deadline",
+    "question": "آخر موعد لتقديم طلب تسوية المصروفات بعد الصرف قد إيه؟",
+    "contexts": [
+      "passage: .2 :ﻳﻘﺪﻡ ﻃﻠﺐ ﺗﺴﻮﻳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﻋﺒﺮ ﺍﻟﺒﻮﺍﺑﺔ ﺍﻹﻟﻜﺘﺮﻭﻧﻴﺔ ﻭﻓﻖ ﺍﻟﺨﻄﻮﺍﺕ ﺍﻟﺘﺎﻟﻴﺔ ﺍﻟﺨﻄﻮﺓ ﺍﻹﺟﺮﺍﺀ ﺍﻹﻃﺎﺭ ﺍﻟﺰﻣﻨﻲ 1ﺍﺳﺘﻴﻔﺎﺀ ﻧﻤﻮﺫﺝ ﻃﻠﺐ ﺍﻟﺘﺴﻮﻳﺔ ﺇﻟﻜﺘﺮﻭﻧﻴﺎ ﻣﻊ ﺇﺭﻓﺎﻕ ﺍﻟﻔﻮﺍﺗﻴﺮ ﺍﻷﺻﻠﻴﺔ 2ﺍﻋﺘﻤﺎﺩ ﺍﻟﻤﺪﻳﺮ ﺍﻟﻤﺒﺎﺷﺮ ﻟﻠﻄﻠﺐ ﺃﻳﺎﻡ ﻋﻤﻞ3",
+      "passage: .). Reimbursement requests must be submitted via the HR Portal with original receipts within 60 days of the qualifying expenditure. Unused balances do not carry over to the following year. 5",
+      "passage: .الرسمية ●يُقدَّم تقرير تسوية النفقات والفواتير األصلية خالل 7 أيام عمل من .العودة ●النفقات غير الموثقة ال تُسدَّد بأي حال من .األحوال سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .المباشر ●المشاركة في مقابلة الخروج مع HR . ●استالم التسوية المالية النهائية خالل 10 أيام عمل من آخر .يوم سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: . ﻳﻮﻣﺎ ﻋﻠﻰ ﺗﺎﺭﻳﺦ ﺍﻟﻨﻔﻘﺔ30 ﻣﻼﺣﻈﺔ: ﻻ ﺗﻘﺒﻞ ﺍﻟﻤﻄﺎﻟﺒﺎﺕ ﺍﻟﻤﻘﺪﻣﺔ ﺑﻌﺪ ﻣﺮﻭﺭ"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 4,
+    "answer": "آخر موعد 30 يوم من تاريخ الصرف، وإلا ما يُقبلش.",
+    "reference": "طلب تسوية المصروفات لازم يتقدم خلال 30 يوم من تاريخ الصرف. المطالبات اللي بتتقدم بعد 30 يوم مش بتتقبلش في أي حال.",
+    "timestamp": "2026-05-14T19:37:29.522433+00:00"
+  },
+  "C17_EN": {
+    "query_id": "C17_EN",
+    "concept_id": "C17",
+    "language": "english",
+    "complexity": "L3",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "savings_plan_eligibility",
+    "question": "What are all the conditions required to join the voluntary savings plan?",
+    "contexts": [
+      "passage: . 5.2 Voluntary Savings Plan Employees at grade G3 and above may participate in Horizon Tech's voluntary deferred savings plan",
+      "passage: . • Employees must have completed at least 6 months of service in the calendar year to be eligible",
+      "passage: . ﺍﻟﺘﺄﺧﺮ ﻓﻲ ﺗﻘﺪﻳﻤﻬﺎ ﻗﺪ ﻳﺆﺩﻱ ﺇﻟﻰ ﺗﺄﺟﻴﻞ ﻣﻮﻋﺪ ﺍﻻﻧﻀﻤﺎﻡ ﺍﻟﻤﺴﺘﻨﺪ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﻤﻼﺣﻈﺎﺕ ﺑﻄﺎﻗﺔ ﺍﻟﺮﻗﻢ ﺍﻟﻘﻮﻣﻲ ﺃﻭ ﺟﻮﺍﺯ ﺍﻟﺴﻔﺮ ﻧﺴﺨﺔ ﺳﺎﺭﻳﺔ ﺍﻟﻤﻔﻌﻮﻝ ﺍﻟﺸﻬﺎﺩﺍﺕ ﺍﻟﺪﺭﺍﺳﻴﺔ ﻭﺍﻟﻤﻬﻨﻴﺔ ﻣﻮﺛﻘﺔ ﺭﺳﻤﻴﺎ ﺷﻬﺎﺩﺓ ﺍﻟﺨﺒﺮﺓ ﻣﻦ ﺁﺧﺮ ﺟﻬﺔ ﻋﻤﻞ ﺇﻥ",
+      "passage: . Nominees must be at grade G3 or above, have at least two years of tenure, and have received no active disciplinary warnings. Confidential — Internal Use Only | Version 2.0 | January 2026",
+      "passage: .والدولية يتعين على جميع :الموظفين ●الحصول على إذن صريح قبل معالجة أو مشاركة أي بيانات شخصية للعمالء أو .الموظفين ●عدم تخزين البيانات الحساسة على أجهزة شخصية أو خدمات تخزين سحابية غير"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "To join the voluntary savings plan, employees must be at grade G3 or above and have completed at least 6 months of service in the calendar year .",
+    "reference": "To join the voluntary savings plan, the employee must: (1) be at grade G3 or above; (2) have completed the probation period.",
+    "timestamp": "2026-05-14T19:38:26.579349+00:00"
+  },
+  "C17_AR": {
+    "query_id": "C17_AR",
+    "concept_id": "C17",
+    "language": "arabic",
+    "complexity": "L3",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "savings_plan_eligibility",
+    "question": "ما جميع الشروط المطلوبة للانضمام إلى خطة الادخار الطوعي؟",
+    "contexts": [
+      "passage: . ﺍﻟﺘﺄﺧﺮ ﻓﻲ ﺗﻘﺪﻳﻤﻬﺎ ﻗﺪ ﻳﺆﺩﻱ ﺇﻟﻰ ﺗﺄﺟﻴﻞ ﻣﻮﻋﺪ ﺍﻻﻧﻀﻤﺎﻡ ﺍﻟﻤﺴﺘﻨﺪ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﻤﻼﺣﻈﺎﺕ ﺑﻄﺎﻗﺔ ﺍﻟﺮﻗﻢ ﺍﻟﻘﻮﻣﻲ ﺃﻭ ﺟﻮﺍﺯ ﺍﻟﺴﻔﺮ ﻧﺴﺨﺔ ﺳﺎﺭﻳﺔ ﺍﻟﻤﻔﻌﻮﻝ ﺍﻟﺸﻬﺎﺩﺍﺕ ﺍﻟﺪﺭﺍﺳﻴﺔ ﻭﺍﻟﻤﻬﻨﻴﺔ ﻣﻮﺛﻘﺔ ﺭﺳﻤﻴﺎ ﺷﻬﺎﺩﺓ ﺍﻟﺨﺒﺮﺓ ﻣﻦ ﺁﺧﺮ ﺟﻬﺔ ﻋﻤﻞ ﺇﻥ",
+      "passage: . 5.2 Voluntary Savings Plan Employees at grade G3 and above may participate in Horizon Tech's voluntary deferred savings plan",
+      "passage: . Nominees must be at grade G3 or above, have at least two years of tenure, and have received no active disciplinary warnings. Confidential — Internal Use Only | Version 2.0 | January 2026",
+      "passage: . ﺍﻟﺘﺤﻘﻖ ﻣﻦ ﺍﻟﺸﻬﺎﺩﺍﺕ ﺍﻷﻛﺎﺩﻳﻤﻴﺔ ﻭﺍﻟﻤﻬﻨﻴﺔ . ﺍﻻﺳﺘﻔﺴﺎﺭ ﻋﻦ ﺍﻟﺴﺠﻞ ﺍﻟﻮﻇﻴﻔﻲ ﻣﻦ ﺍﻟﻤﺮﺍﺟﻊ ﺍﻟﻤﺬﻛﻮﺭﺓ . ﺍﻟﺘﺤﻘﻖ ﻣﻦ ﻫﻮﻳﺔ ﺍﻟﻤﺘﻘﺪﻡ ﺑﻄﺎﻗﺔ ﺭﻗﻢ ﻗﻮﻣﻲ ﺃﻭ ﺟﻮﺍﺯ ﺳﻔﺮ ﺳﺎﺭ . ﺍﻟﺘﺤﻘﻖ ﻣﻦ ﺧﻠﻮ ﺍﻟﺴﺠﻞ ﺍﻟﺠﻨﺎﺋﻲ ﻟﻸﺩﻭﺍﺭ ﺍﻟﺘﻲ ﺗﺴﺘﻠﺰﻡ ﺫﻟﻚ",
+      "passage: . • Employees must have completed at least 6 months of service in the calendar year to be eligible"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "الشروط المطلوبة للانضمام إلى خطة الادخار الطوعي هي:  \n1. أن يكون الموظف من المرتبة G3 فما فوق [Page 4 | EN].  \n2. أن يكمل الموظف على الأقل 6 أشهر من الخدمة في السنة الميلادية [Page 4 | EN].  \n\nملاحظة: الشروط الأخرى مثل \"المرتبة G3 أو أعلى مع 2 سنوات من الخدمة وخلو السجل التأديبي\" [Page 4 | EN] تُشير إلى متطلبات تخص ترشيحات أو سياسات أخرى غير خطة الادخار الطوعي.",
+    "reference": "للانضمام لخطة الادخار الطوعي يجب أن يكون الموظف: (1) من الدرجة G3 أو أعلى؛ (2) قد أتمَّ فترة الاختبار. يُساهم الموظف بنسبة تتراوح بين 2% و10% من راتبه الأساسي شهريًا قبل خصم الضريبة. تقابل الشركة هذه المساهمة بنسبة تصل إلى 4% من الراتب الأساسي. تُستحَق مساهمة الشركة بنسبة 25% بعد سنة من المشاركة، و50% بعد سنتين، و75% بعد ثلاث سنوات، و100% بعد أربع سنوات.",
+    "timestamp": "2026-05-14T19:38:56.976565+00:00"
+  },
+  "C17_EG": {
+    "query_id": "C17_EG",
+    "concept_id": "C17",
+    "language": "egyptian",
+    "complexity": "L3",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "savings_plan_eligibility",
+    "question": "إيه كل الشروط المطلوبة للانضمام لخطة الادخار الطوعي؟",
+    "contexts": [
+      "passage: . ﺍﻟﺘﺄﺧﺮ ﻓﻲ ﺗﻘﺪﻳﻤﻬﺎ ﻗﺪ ﻳﺆﺩﻱ ﺇﻟﻰ ﺗﺄﺟﻴﻞ ﻣﻮﻋﺪ ﺍﻻﻧﻀﻤﺎﻡ ﺍﻟﻤﺴﺘﻨﺪ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﻤﻼﺣﻈﺎﺕ ﺑﻄﺎﻗﺔ ﺍﻟﺮﻗﻢ ﺍﻟﻘﻮﻣﻲ ﺃﻭ ﺟﻮﺍﺯ ﺍﻟﺴﻔﺮ ﻧﺴﺨﺔ ﺳﺎﺭﻳﺔ ﺍﻟﻤﻔﻌﻮﻝ ﺍﻟﺸﻬﺎﺩﺍﺕ ﺍﻟﺪﺭﺍﺳﻴﺔ ﻭﺍﻟﻤﻬﻨﻴﺔ ﻣﻮﺛﻘﺔ ﺭﺳﻤﻴﺎ ﺷﻬﺎﺩﺓ ﺍﻟﺨﺒﺮﺓ ﻣﻦ ﺁﺧﺮ ﺟﻬﺔ ﻋﻤﻞ ﺇﻥ",
+      "passage: . 5.2 Voluntary Savings Plan Employees at grade G3 and above may participate in Horizon Tech's voluntary deferred savings plan",
+      "passage: . ﺍﻟﺘﺤﻘﻖ ﻣﻦ ﺍﻟﺸﻬﺎﺩﺍﺕ ﺍﻷﻛﺎﺩﻳﻤﻴﺔ ﻭﺍﻟﻤﻬﻨﻴﺔ . ﺍﻻﺳﺘﻔﺴﺎﺭ ﻋﻦ ﺍﻟﺴﺠﻞ ﺍﻟﻮﻇﻴﻔﻲ ﻣﻦ ﺍﻟﻤﺮﺍﺟﻊ ﺍﻟﻤﺬﻛﻮﺭﺓ . ﺍﻟﺘﺤﻘﻖ ﻣﻦ ﻫﻮﻳﺔ ﺍﻟﻤﺘﻘﺪﻡ ﺑﻄﺎﻗﺔ ﺭﻗﻢ ﻗﻮﻣﻲ ﺃﻭ ﺟﻮﺍﺯ ﺳﻔﺮ ﺳﺎﺭ . ﺍﻟﺘﺤﻘﻖ ﻣﻦ ﺧﻠﻮ ﺍﻟﺴﺠﻞ ﺍﻟﺠﻨﺎﺋﻲ ﻟﻸﺩﻭﺍﺭ ﺍﻟﺘﻲ ﺗﺴﺘﻠﺰﻡ ﺫﻟﻚ",
+      "passage: . Nominees must be at grade G3 or above, have at least two years of tenure, and have received no active disciplinary warnings. Confidential — Internal Use Only | Version 2.0 | January 2026",
+      "passage: . • Employees must have completed at least 6 months of service in the calendar year to be eligible"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "عشان تنضم لخطة الادخار الطوعي لازم يكون الموظف: (1) من درجة G3 أو أعلى؛ (2) خلّص فترة الاختبار. الموظف يقدر يساهم بنسبة من 2% لحد 10% من راتبه الأساسي كل شهر قبل الضريبة. الشركة بتطابق المساهمة لحد 4% من الراتب الأساسي. مساهمة الشركة بتستحق 25% بعد سنة، 50% بعد سنتين، 75% بعد 3 سنين، و100% بعد 4 سنين.",
+    "reference": "عشان تنضم لخطة الادخار الطوعي لازم يكون الموظف: (1) من درجة G3 أو أعلى؛ (2) خلّص فترة الاختبار. الموظف يقدر يساهم بنسبة من 2% لحد 10% من راتبه الأساسي كل شهر قبل الضريبة. الشركة بتطابق المساهمة لحد 4% من الراتب الأساسي. مساهمة الشركة بتستحق 25% بعد سنة، 50% بعد سنتين، 75% بعد 3 سنين، و100% بعد 4 سنين.",
+    "timestamp": "2026-05-14T19:39:18.634575+00:00"
+  },
+  "C18_EN": {
+    "query_id": "C18_EN",
+    "concept_id": "C18",
+    "language": "english",
+    "complexity": "L3",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "mandatory_training_modules",
+    "question": "What are all the mandatory annual compliance training modules and their deadlines?",
+    "contexts": [
+      "passage: . 2. Mandatory Compliance Training 2.1 Annual Mandatory Modules All employees must complete the following compliance training modules annually",
+      "passage: . Module Audience Format Annual Deadline Information Security Awareness All staff Online (1 hr) 31 March Data Protection & GDPR Principles All staff Online (1",
+      "passage: Annual Learning Budgets, Mandatory Compliance Training, Internal Learning Paths, External Conference Attendance, Certification Reimbursement, Mentorship Programme, and Leadership Academy",
+      "passage: .0 | Effective Date: January 1, 2026 Classification: Confidential — Internal Use Only Department: Learning & Development (L&D) This policy covers: Annual Learning Budgets, Mandatory Compliance",
+      "passage: . Completion is tracked automatically in the HR Learning Management System (LMS). Non-completion by the deadline may result in a disciplinary note on the employee's record"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "The mandatory annual compliance training modules are: \n1. Information Security Awareness, which is online (1 hr) with a deadline of 31 March [Page 2|EN], \n2. Data Protection & GDPR Principles, which is online (1 hr) with a deadline of 31 March [Page 2|EN]. \nNote that the deadline for Data Protection & GDPR Principles is not explicitly stated on the provided page, but based on the format, it can be inferred that it might be similar to Information Security Awareness [Page 2|EN].",
+    "reference": "All employees must complete: Information Security Awareness (1 hr online, deadline 31 March); Data Protection & GDPR Principles (1.5 hrs online, deadline 31 March); Anti-Bribery & Corruption (1 hr online, deadline 30 June); Workplace Harassment Prevention (1 hr online, deadline 30 June); Fire Safety & Emergency Procedures (2 hrs in-person, deadline 30 September); AI Ethics & Acceptable Use (45 min online, deadline 31 March). Additionally, G3 and above must complete Manager Essentials (3 hrs online, deadline 31 March).",
+    "timestamp": "2026-05-14T19:40:12.786311+00:00"
+  },
+  "C18_AR": {
+    "query_id": "C18_AR",
+    "concept_id": "C18",
+    "language": "arabic",
+    "complexity": "L3",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "mandatory_training_modules",
+    "question": "ما جميع وحدات الامتثال التدريبية السنوية الإلزامية ومواعيد إتمامها؟",
+    "contexts": [
+      "passage: . 2. Mandatory Compliance Training 2.1 Annual Mandatory Modules All employees must complete the following compliance training modules annually",
+      "passage: Annual Learning Budgets, Mandatory Compliance Training, Internal Learning Paths, External Conference Attendance, Certification Reimbursement, Mentorship Programme, and Leadership Academy",
+      "passage: .0 | Effective Date: January 1, 2026 Classification: Confidential — Internal Use Only Department: Learning & Development (L&D) This policy covers: Annual Learning Budgets, Mandatory Compliance",
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4",
+      "passage: . Module Audience Format Annual Deadline Information Security Awareness All staff Online (1 hr) 31 March Data Protection & GDPR Principles All staff Online (1"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "يجب على جميع الموظفين إتمام: الوعي بأمن المعلومات (ساعة أونلاين، 31 مارس)؛ حماية البيانات ومبادئ GDPR (ساعة ونصف أونلاين، 31 مارس)؛ مكافحة الرشوة والفساد (ساعة أونلاين، 30 يونيو)؛ منع التحرش في مكان العمل (ساعة أونلاين، 30 يونيو)؛ السلامة من الحرائق وإجراءات الطوارئ (ساعتان حضوري، 30 سبتمبر)؛ أخلاقيات الذكاء الاصطناعي والاستخدام المقبول (45 دقيقة أونلاين، 31 مارس). ويجب على الدرجة G3 فأعلى إكمال أساسيات الإدارة (3 ساعات أونلاين، 31 مارس).",
+    "reference": "يجب على جميع الموظفين إتمام: الوعي بأمن المعلومات (ساعة أونلاين، 31 مارس)؛ حماية البيانات ومبادئ GDPR (ساعة ونصف أونلاين، 31 مارس)؛ مكافحة الرشوة والفساد (ساعة أونلاين، 30 يونيو)؛ منع التحرش في مكان العمل (ساعة أونلاين، 30 يونيو)؛ السلامة من الحرائق وإجراءات الطوارئ (ساعتان حضوري، 30 سبتمبر)؛ أخلاقيات الذكاء الاصطناعي والاستخدام المقبول (45 دقيقة أونلاين، 31 مارس). ويجب على الدرجة G3 فأعلى إكمال أساسيات الإدارة (3 ساعات أونلاين، 31 مارس).",
+    "timestamp": "2026-05-14T19:40:33.842635+00:00"
+  },
+  "C18_EG": {
+    "query_id": "C18_EG",
+    "concept_id": "C18",
+    "language": "egyptian",
+    "complexity": "L3",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "mandatory_training_modules",
+    "question": "إيه كل وحدات الامتثال التدريبية الإلزامية السنوية ومواعيدها؟",
+    "contexts": [
+      "passage: . 2. Mandatory Compliance Training 2.1 Annual Mandatory Modules All employees must complete the following compliance training modules annually",
+      "passage: Annual Learning Budgets, Mandatory Compliance Training, Internal Learning Paths, External Conference Attendance, Certification Reimbursement, Mentorship Programme, and Leadership Academy",
+      "passage: .0 | Effective Date: January 1, 2026 Classification: Confidential — Internal Use Only Department: Learning & Development (L&D) This policy covers: Annual Learning Budgets, Mandatory Compliance",
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4",
+      "passage: .5 hrs) 31 March Anti-Bribery & Corruption All staff Online (1 hr) 30 June Workplace Harassment Prevention All staff Online (1 hr) 30 June Fire Safety & Emergency Procedures All staff In-person (2"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "كل الموظفين لازم يخلصوا: الوعي بأمن المعلومات (ساعة أونلاين، 31 مارس)؛ حماية البيانات ومبادئ GDPR (ساعة ونص أونلاين، 31 مارس)؛ مكافحة الرشوة والفساد (ساعة أونلاين، 30 يونيو)؛ منع التحرش (ساعة أونلاين، 30 يونيو)؛ السلامة من الحرائق وإجراءات الطوارئ (ساعتين حضوري، 30 سبتمبر)؛ أخلاقيات الذكاء الاصطناعي (45 دقيقة أونلاين، 31 مارس). والدرجة G3 فأعلى لازم يخلصوا كمان أساسيات الإدارة (3 ساعات أونلاين، 31 مارس).",
+    "reference": "كل الموظفين لازم يخلصوا: الوعي بأمن المعلومات (ساعة أونلاين، 31 مارس)؛ حماية البيانات ومبادئ GDPR (ساعة ونص أونلاين، 31 مارس)؛ مكافحة الرشوة والفساد (ساعة أونلاين، 30 يونيو)؛ منع التحرش (ساعة أونلاين، 30 يونيو)؛ السلامة من الحرائق وإجراءات الطوارئ (ساعتين حضوري، 30 سبتمبر)؛ أخلاقيات الذكاء الاصطناعي (45 دقيقة أونلاين، 31 مارس). والدرجة G3 فأعلى لازم يخلصوا كمان أساسيات الإدارة (3 ساعات أونلاين، 31 مارس).",
+    "timestamp": "2026-05-14T19:41:03.690245+00:00"
+  },
+  "C19_EN": {
+    "query_id": "C19_EN",
+    "concept_id": "C19",
+    "language": "english",
+    "complexity": "L3",
+    "source_doc": "eng_policy.pdf",
+    "topic": "gross_misconduct",
+    "question": "What offences constitute gross misconduct and lead to immediate termination?",
+    "contexts": [
+      "passage: .2 Gross Misconduct — Immediate Termination The following offences may result in immediate termination without prior notice or severance: • Theft, fraud, or deliberate falsification of company records",
+      "passage: .2 المخالفات الجسيمة — الفصل الفوري تستوجب الح الت التالية إنهاء الخدمة ًفورا دون إشعار :مسبق ●السرقة أو الحتيال أو تزوير مستندات .الشركة ●العتداء الجسدي أو التهديد الجسيم داخل بيئة",
+      "passage: or any adverse change in working conditions — is itself a serious violation of this policy and will be subject to immediate disciplinary action, up to and including termination",
+      "passage: .1 Protected Disclosures Horizon Tech encourages employees to report suspected misconduct, fraud, safety violations, or unethical behaviour without fear of retaliation",
+      "passage: .معتمدة ●اإلبالغ الفوري عن أي اختراق للبيانات أو شك في الوصول غير المصرح .به ●حذف أو إعادة بيانات العمالء عند إتمام الغرض منها أو عند انتهاء فترة الحتفاظ .المقررة 11"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "Theft, fraud, or deliberate falsification of company records [Page 9|EN], and physical assault or serious threats within the work environment [Page 10|AR].",
+    "reference": "The following offences result in immediate termination without prior notice or severance: (1) theft, fraud, or deliberate falsification of company records; (2) physical assault or serious threats of violence in the workplace; (3) disclosure of confidential or sensitive information to unauthorised parties; (4) reporting to work under the influence of alcohol or controlled substances; (5) serious breaches of health, safety, or data protection regulations.",
+    "timestamp": "2026-05-14T19:42:01.127856+00:00"
+  },
+  "C19_AR": {
+    "query_id": "C19_AR",
+    "concept_id": "C19",
+    "language": "arabic",
+    "complexity": "L3",
+    "source_doc": "eng_policy.pdf",
+    "topic": "gross_misconduct",
+    "question": "ما المخالفات الجسيمة التي تستوجب الفصل الفوري؟",
+    "contexts": [
+      "passage: .2 المخالفات الجسيمة — الفصل الفوري تستوجب الح الت التالية إنهاء الخدمة ًفورا دون إشعار :مسبق ●السرقة أو الحتيال أو تزوير مستندات .الشركة ●العتداء الجسدي أو التهديد الجسيم داخل بيئة",
+      "passage: .2 Gross Misconduct — Immediate Termination The following offences may result in immediate termination without prior notice or severance: • Theft, fraud, or deliberate falsification of company records",
+      "passage: .2 مكافأة نهاية الخدمة يستحق الموظف الذي ّأتم سنة خدمة كاملة مكافأة نهاية الخدمة عند انتهاء العقد (باستثناء ح الت الفصل بسبب المخالفات :)الجسيمة سنوات الخدمة مقدار المكافأة 1 – 3 سنوات 0",
+      "passage: or any adverse change in working conditions — is itself a serious violation of this policy and will be subject to immediate disciplinary action, up to and including termination",
+      "passage: .العمل ●إفشاء معلومات سرية ألطراف غير مصرح .لها ●الحضور للعمل تحت تأثير الكحول أو المواد .المخدرة ●النتهاكات الجسيمة ألنظمة حماية البيانات أو أمن .المعلومات سري — لالستخدام الداخلي فقط | اإلصدار 2"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "المخالفات الجسيمة التي تستوجب الفصل الفوري تشمل:  \n● السرقة أو الاحتيال أو تزوير مستندات الشركة [Page 10 | AR].  \n● العتداء الجسدي أو التهديد الجسيم داخل بيئة العمل [Page 10 | AR].  \n● الإفصاح عن معلومات سرية لطرف غير مصرح له [Page 10 | AR].  \n● الحضور للعمل تحت تأثير الكحول أو المواد المخدرة [Page 10 | AR].  \n● الإنتهاكات الجسيمة لأنظمة حماية البيانات أو أمن المعلومات [Page 10 | AR].  \n● أي تغيير سلبي في ظروف العمل، مما يُعتبر انتهاكًا جسيمًا للسياسة [Page 4 | EN].  \n● التلاعب المتعمد في سجلات الشركة (مثل تزوير السجلات) [Page 9 | EN].",
+    "reference": "تستوجب الحالات التالية إنهاء الخدمة فورًا دون إشعار مسبق أو مكافأة: (1) السرقة أو الاحتيال أو تزوير مستندات الشركة؛ (2) الاعتداء الجسدي أو التهديد الجسيم داخل بيئة العمل؛ (3) إفشاء معلومات سرية لأطراف غير مصرح لها؛ (4) الحضور للعمل تحت تأثير الكحول أو المواد المخدرة؛ (5) الانتهاكات الجسيمة لأنظمة الصحة والسلامة أو حماية البيانات.",
+    "timestamp": "2026-05-14T19:42:20.171560+00:00"
+  },
+  "C19_EG": {
+    "query_id": "C19_EG",
+    "concept_id": "C19",
+    "language": "egyptian",
+    "complexity": "L3",
+    "source_doc": "eng_policy.pdf",
+    "topic": "gross_misconduct",
+    "question": "إيه المخالفات الجسيمة اللي بتوصل للفصل الفوري؟",
+    "contexts": [
+      "passage: .2 المخالفات الجسيمة — الفصل الفوري تستوجب الح الت التالية إنهاء الخدمة ًفورا دون إشعار :مسبق ●السرقة أو الحتيال أو تزوير مستندات .الشركة ●العتداء الجسدي أو التهديد الجسيم داخل بيئة",
+      "passage: .2 Gross Misconduct — Immediate Termination The following offences may result in immediate termination without prior notice or severance: • Theft, fraud, or deliberate falsification of company records",
+      "passage: .2 مكافأة نهاية الخدمة يستحق الموظف الذي ّأتم سنة خدمة كاملة مكافأة نهاية الخدمة عند انتهاء العقد (باستثناء ح الت الفصل بسبب المخالفات :)الجسيمة سنوات الخدمة مقدار المكافأة 1 – 3 سنوات 0",
+      "passage: .العمل ●إفشاء معلومات سرية ألطراف غير مصرح .لها ●الحضور للعمل تحت تأثير الكحول أو المواد .المخدرة ●النتهاكات الجسيمة ألنظمة حماية البيانات أو أمن .المعلومات سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: or any adverse change in working conditions — is itself a serious violation of this policy and will be subject to immediate disciplinary action, up to and including termination"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "المخالفات الجسيمة اللي بتوصل للفصل الفوري ديه:  \n● السرقة أو الاحتيال أو تزوير مستندات الشركة [Page 9 | EN].  \n● الاعتداء الجسدي أو التهديد الجسيم داخل بيئة العمل [Page 10 | AR].  \n● إفشاء معلومات سرية للطرف غير المصرح له [Page 10 | AR].  \n● الحضور للعمل تحت تأثير الكحول أو المواد المخدرة [Page 10 | AR].  \n● الانتهاكات الجسيمة لأنظمة حماية البيانات أو أمن المعلومات [Page 10 | AR].  \n● أي تغيير سلبي في ظروف العمل، ده كله مخالفة جسيمة وبيعرضك للفصل [Page 4 | EN].",
+    "reference": "الحالات دي بتوصل للفصل الفوري من غير إشعار أو مكافأة: (1) السرقة أو الاحتيال أو تزوير مستندات الشركة؛ (2) الاعتداء الجسدي أو التهديد داخل بيئة الشغل؛ (3) إفشاء معلومات سرية لأطراف مش مصرحلهم؛ (4) الحضور للشغل تحت تأثير كحول أو مخدرات؛ (5) انتهاكات جسيمة لأنظمة الصحة والسلامة أو حماية البيانات.",
+    "timestamp": "2026-05-14T19:42:39.241533+00:00"
+  },
+  "C19_FR": {
+    "query_id": "C19_FR",
+    "concept_id": "C19",
+    "language": "franco",
+    "complexity": "L3",
+    "source_doc": "eng_policy.pdf",
+    "topic": "gross_misconduct",
+    "question": "eih el mokhalafat el gasima ely btwassal lel fasl el fawri?",
+    "contexts": [
+      "passage: سياسات الموارد البشرية — الصحة ،والسالمة ،اإلجازات السفر والمزيد | شركة أفق التقنية 6 . التنوع واإلنصاف والشمول ( DEI ) 6",
+      "passage: سياسات الموارد البشرية — الصحة ،والسالمة ،اإلجازات السفر والمزيد | شركة أفق التقنية 5 . الستخدام األخالقي للذكاء الصطناعي والتكنولوجيا 5",
+      "passage: .المعلومات سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .2 المخالفات الجسيمة — الفصل الفوري تستوجب الح الت التالية إنهاء الخدمة ًفورا دون إشعار :مسبق ●السرقة أو الحتيال أو تزوير مستندات .الشركة ●العتداء الجسدي أو التهديد الجسيم داخل بيئة",
+      "passage: سياسات الموارد البشرية — الصحة ،والسالمة ،اإلجازات السفر والمزيد | شركة أفق التقنية 10 . إنهاء الخدمة والمغادرة 10",
+      "passage: سياسات الموارد البشرية — الصحة ،والسالمة ،اإلجازات السفر والمزيد | شركة أفق التقنية 9 . النضباط واإلجراءات التأديبية 9",
+      "passage: . ﻳﻮﻣﺎ ﻋﻠﻰ ﺗﺎﺭﻳﺦ ﺍﻟﻨﻔﻘﺔ30 ﻣﻼﺣﻈﺔ: ﻻ ﺗﻘﺒﻞ ﺍﻟﻤﻄﺎﻟﺒﺎﺕ ﺍﻟﻤﻘﺪﻣﺔ ﺑﻌﺪ ﻣﺮﻭﺭ"
+    ],
+    "context_sources": [
+      "AR"
+    ],
+    "n_en_chunks": 0,
+    "n_ar_chunks": 7,
+    "answer": "el 7alat diy btwassal lel fasl el fawri men gher esh3ar aw moka2fa: (1) el sar2a aw el e7tiyyal aw tazweer mostanadaat el sharka; (2) el e3teda2 el gasedi aw el tahdeed gowwa el shoghl; (3) efsha2 ma3lumat serreyya le atraf mesh masre7lohom; (4) el 7udur lel shoghl ta7t ta2theer kohol aw mokhadarat; (5) entehaakat gasema le enzmet el se77a wel salama aw 7imayyet el bayanat.",
+    "reference": "el 7alat diy btwassal lel fasl el fawri men gher esh3ar aw moka2fa: (1) el sar2a aw el e7tiyyal aw tazweer mostanadaat el sharka; (2) el e3teda2 el gasedi aw el tahdeed gowwa el shoghl; (3) efsha2 ma3lumat serreyya le atraf mesh masre7lohom; (4) el 7udur lel shoghl ta7t ta2theer kohol aw mokhadarat; (5) entehaakat gasema le enzmet el se77a wel salama aw 7imayyet el bayanat.",
+    "timestamp": "2026-05-14T21:27:30.729936+00:00"
+  },
+  "C20_EN": {
+    "query_id": "C20_EN",
+    "concept_id": "C20",
+    "language": "english",
+    "complexity": "L3",
+    "source_doc": "ar_policy.pdf",
+    "topic": "data_retention",
+    "question": "What are the data retention periods for different types of employee records?",
+    "contexts": [
+      "passage: .2 فترات الحتفاظ بالبيانات نوع البيانات مدة الحتفاظ ملفات الموظفين النشطين طوال فترة الخدمة + 7 سنوات بيانات الرواتب والمالية 10 سنوات سجالت األداء والتأديب 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين",
+      "passage: . All proceedings are documented and retained in the employee's file for the applicable validity period. 5",
+      "passage: 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين غير المقبولين 6 أشهر فقط المراسالت اإللكترونية الداخلية 3 سنوات سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: . • Passwords must be updated every 90 days and must comply with the company's complexity standards. • Approved AI tools must not be used to process confidential client or employee data",
+      "passage: .3 Employee Categories Category Contract Type Benefits Notice Period Full-Time Indefinite / Fixed-term Full 30 days Part-Time Fixed-term Pro-rata 14 days Contractor Project-based None Per contract"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "The data retention periods for different types of employee records are: \n- Active employee files are retained for the duration of their service + 7 years [Page 12|AR], \n- Payroll and financial data are retained for 10 years [Page 12|AR], \n- Performance and disciplinary records are retained for 5 years from the date of termination [Page 12|AR]. \nAdditionally, all proceedings are documented and retained in the employee's file for the applicable validity period [Page 9|EN].",
+    "reference": "Active employee files are retained for the duration of service plus 7 years. Payroll and financial data are retained for 10 years. Performance and disciplinary records are kept for 5 years from the termination date. Unsuccessful applicant data is kept for 6 months only. Internal email correspondence is retained for 3 years.",
+    "timestamp": "2026-05-14T19:43:40.629879+00:00"
+  },
+  "C20_AR": {
+    "query_id": "C20_AR",
+    "concept_id": "C20",
+    "language": "arabic",
+    "complexity": "L3",
+    "source_doc": "ar_policy.pdf",
+    "topic": "data_retention",
+    "question": "ما هي فترات الاحتفاظ بالبيانات لأنواع مختلفة من سجلات الموظفين؟",
+    "contexts": [
+      "passage: .2 فترات الحتفاظ بالبيانات نوع البيانات مدة الحتفاظ ملفات الموظفين النشطين طوال فترة الخدمة + 7 سنوات بيانات الرواتب والمالية 10 سنوات سجالت األداء والتأديب 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين",
+      "passage: 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين غير المقبولين 6 أشهر فقط المراسالت اإللكترونية الداخلية 3 سنوات سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: .1 فترات اإلشعار عند الستقالة الدرجة الوظيفية فترة اإلشعار G1 – G2 (مستوى جديد / )متخصص 30 ًيوما G3 – G4 (مشرف / )مدير 60 ًيوما G5 فأعلى (مدير تنفيذي / مدير )إدارة 90 ًيوما 10",
+      "passage: .معتمدة ●اإلبالغ الفوري عن أي اختراق للبيانات أو شك في الوصول غير المصرح .به ●حذف أو إعادة بيانات العمالء عند إتمام الغرض منها أو عند انتهاء فترة الحتفاظ .المقررة 11",
+      "passage: . All proceedings are documented and retained in the employee's file for the applicable validity period. 5"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 4,
+    "answer": "فترات الحفاظ على البيانات تختلف حسب نوع السجلات كما يلي:  \n- **ملفات الموظفين النشطين**: طوال فترة الخدمة + 7 سنوات [Page 12 | AR].  \n- **بيانات الرواتب والمالية**: 10 سنوات [Page 12 | AR].  \n- **سجلات الأداء والتأديب**: 5 سنوات من تاريخ الإنهاء [Page 12 | AR].  \n- **بيانات المتقدمين غير المقبولين**: 6 أشهر فقط [Page 12 | AR].  \n- **المراسلات الإلكترونية الداخلية**: 3 سنوات [Page 12 | AR].  \n\nكما تُحتفظ بجميع الإجراءات المُستندية في ملف الموظف لفترة الصلاحية المُعينة [Page 9 | EN].",
+    "reference": "ملفات الموظفين النشطين: طوال فترة الخدمة + 7 سنوات. بيانات الرواتب والمالية: 10 سنوات. سجلات الأداء والتأديب: 5 سنوات من تاريخ الإنهاء. بيانات المتقدمين غير المقبولين: 6 أشهر فقط. المراسلات الإلكترونية الداخلية: 3 سنوات.",
+    "timestamp": "2026-05-14T19:44:01.878864+00:00"
+  },
+  "C20_EG": {
+    "query_id": "C20_EG",
+    "concept_id": "C20",
+    "language": "egyptian",
+    "complexity": "L3",
+    "source_doc": "ar_policy.pdf",
+    "topic": "data_retention",
+    "question": "فترات الاحتفاظ بالبيانات لأنواع السجلات المختلفة إيه؟",
+    "contexts": [
+      "passage: .2 فترات الحتفاظ بالبيانات نوع البيانات مدة الحتفاظ ملفات الموظفين النشطين طوال فترة الخدمة + 7 سنوات بيانات الرواتب والمالية 10 سنوات سجالت األداء والتأديب 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين",
+      "passage: 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين غير المقبولين 6 أشهر فقط المراسالت اإللكترونية الداخلية 3 سنوات سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: .معتمدة ●اإلبالغ الفوري عن أي اختراق للبيانات أو شك في الوصول غير المصرح .به ●حذف أو إعادة بيانات العمالء عند إتمام الغرض منها أو عند انتهاء فترة الحتفاظ .المقررة 11",
+      "passage: .1 فترات اإلشعار عند الستقالة الدرجة الوظيفية فترة اإلشعار G1 – G2 (مستوى جديد / )متخصص 30 ًيوما G3 – G4 (مشرف / )مدير 60 ًيوما G5 فأعلى (مدير تنفيذي / مدير )إدارة 90 ًيوما 10",
+      "passage: )التجربة 14 يوم عمل حتى 7 أيام ال 1 – 5 سنوات 21 يوم عمل حتى 7 أيام حتى 5 أيام 5 – 10 سنوات 25 يوم عمل حتى 10 أيام حتى 7 أيام أكثر من 10 سنوات 30 يوم عمل حتى 14 يوم حتى 10 أيام 8"
+    ],
+    "context_sources": [
+      "AR"
+    ],
+    "n_en_chunks": 0,
+    "n_ar_chunks": 5,
+    "answer": "فترة الاحتفاظ بالبيانات كده:  \n- ملفات الموظفين النشطين: طول فترة الخدمة + 7 سنين.  \n- بيانات الرواتب والمالية: 10 سنين.  \n- سجلات الأداء والتأديب: 5 سنين من تاريخ إنهاء الخدمة.  \n- بيانات المتقدمين غير المقبولين: 6 أشهر.  \n- المراسلات الإلكترونية الداخلية: 3 سنين.  \n\n[Page 12 | AR]",
+    "reference": "ملفات الموظفين النشطين: طول فترة الخدمة + 7 سنين. بيانات الرواتب والمالية: 10 سنين. سجلات الأداء والتأديب: 5 سنين من تاريخ الإنهاء. بيانات المتقدمين اللي اترفضوا: 6 شهور بس. المراسلات الإلكترونية الداخلية: 3 سنين.",
+    "timestamp": "2026-05-14T19:44:22.476266+00:00"
+  },
+  "C21_EN": {
+    "query_id": "C21_EN",
+    "concept_id": "C21",
+    "language": "english",
+    "complexity": "L3",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "reimbursable_expenses",
+    "question": "What expense types are reimbursable and what are their limits?",
+    "contexts": [
+      "passage: .2 Approved Expenditure Categories The following categories are eligible for reimbursement from the learning budget: • Online course fees (Coursera, Udemy Business, LinkedIn Learning, Pluralsight)",
+      "passage: .1 :ﺗﺴﺪﺩ ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ ﺍﻟﻤﻮﺛﻘﺔ ﺍﻟﺘﻲ ﻳﺘﺤﻤﻠﻬﺎ ﺍﻟﻤﻮﻇﻒ ﺑﺴﺒﺐ ﻣﻬﺎﻡ ﺍﻟﻌﻤﻞ ﻭﻓﻖ ﺍﻟﺤﺪﻭﺩ ﺍﻟﺘﺎﻟﻴﺔ ﻧﻮﻉ ﺍﻟﻨﻔﻘﺔ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺍﻟﻤﺴﺘﻨﺪﺍﺕ ﺍﻟﻤﻄﻠﻮﺑﺔ ﻭﺟﺒﺎﺕ ﺍﻟﻌﻤﻞ ﺍﻟﻔﺮﺩﻳﺔ ﺟﻨﻴﻪ ﻭﺟﺒﺔ150ﻓﺎﺗﻮﺭﺓ ﺿﺮﻳﺒﻴﺔ ﺍﺟﺘﻤﺎﻉ ﻋﻤﻞ ﻣﻊ ﻋﻤﻴﻞ ﺟﻨﻴﻪ",
+      "passage: . • Workshop or bootcamp registration fees. All expenditures require pre-approval via the L&D; request form on the Horizon Portal. Post-purchase reimbursement without prior approval may be denied. 2",
+      "passage: .). Reimbursement requests must be submitted via the HR Portal with original receipts within 60 days of the qualifying expenditure. Unused balances do not carry over to the following year. 5",
+      "passage: Business calls, email, approved appsPersonal streaming services, rooting/jailbreaking Company Credit Card Pre-approved business expenses only Personal purchases, cash advances Office Equipment Print,"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "The following categories are eligible for reimbursement from the learning budget: Online course fees (Coursera, Udemy Business, LinkedIn Learning, Pluralsight) and Workshop or bootcamp registration fees [Page 2|EN]. The maximum limit for reimbursement is not specified, but expenditures require pre-approval via the L&D request form on the Horizon Portal [Page 2|EN]. Reimbursement requests must be submitted via the HR Portal with original receipts within 60 days of the qualifying expenditure [Page 4|EN]. Unused balances do not carry over to the following year [Page 4|EN]. Additionally, professional expenses that are reimbursable include: ﺟﻨﻴﻪ ﻭﺟﺒﺔ150ﻓﺎﺗﻮﺭﺓ ﺿﺮﻳﺒﻴﺔ ﺍﺟﺘﻤﺎﻝ ﻋﻤﻞ ﻣﻊ ﻋﻤﻴﻞ ﺟﻨﻴﻪ [Page 4|AR].",
+    "reference": "The following professional expenses are reimbursable: individual work meals up to 150 EGP per meal (tax invoice required); client business meetings up to 500 EGP per meeting (invoice + client name required); internal city transport up to 200 EGP per day (receipt or Uber screenshot); remote work internet up to 800 EGP per month (service bill); office supplies up to 300 EGP per month (original invoice). All claims must be submitted within 30 days.",
+    "timestamp": "2026-05-14T19:45:29.278534+00:00"
+  },
+  "C21_AR": {
+    "query_id": "C21_AR",
+    "concept_id": "C21",
+    "language": "arabic",
+    "complexity": "L3",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "reimbursable_expenses",
+    "question": "ما أنواع النفقات القابلة للتسوية وما حدودها القصوى؟",
+    "contexts": [
+      "passage: .1 :ﺗﺴﺪﺩ ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ ﺍﻟﻤﻮﺛﻘﺔ ﺍﻟﺘﻲ ﻳﺘﺤﻤﻠﻬﺎ ﺍﻟﻤﻮﻇﻒ ﺑﺴﺒﺐ ﻣﻬﺎﻡ ﺍﻟﻌﻤﻞ ﻭﻓﻖ ﺍﻟﺤﺪﻭﺩ ﺍﻟﺘﺎﻟﻴﺔ ﻧﻮﻉ ﺍﻟﻨﻔﻘﺔ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺍﻟﻤﺴﺘﻨﺪﺍﺕ ﺍﻟﻤﻄﻠﻮﺑﺔ ﻭﺟﺒﺎﺕ ﺍﻟﻌﻤﻞ ﺍﻟﻔﺮﺩﻳﺔ ﺟﻨﻴﻪ ﻭﺟﺒﺔ150ﻓﺎﺗﻮﺭﺓ ﺿﺮﻳﺒﻴﺔ ﺍﺟﺘﻤﺎﻉ ﻋﻤﻞ ﻣﻊ ﻋﻤﻴﻞ ﺟﻨﻴﻪ",
+      "passage: 2026 ﻳﻨﺎﻳﺮ1 2.0 ﺳﺮﻱ ﻟﻼﺳﺘﺨﺪﺍﻡ ﺍﻟﺪﺍﺧﻠﻲ ﻓﻘﻂ ﺍﻹﺻﺪﺍﺭ ﺳﻴﺎﺳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﻭﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ5. ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻘﺎﺑﻠﺔ ﻟﻠﺘﺴﻮﻳﺔ5",
+      "passage: .الرسمية ●يُقدَّم تقرير تسوية النفقات والفواتير األصلية خالل 7 أيام عمل من .العودة ●النفقات غير الموثقة ال تُسدَّد بأي حال من .األحوال سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: ﺑﻌﺪ ﺟﻨﻴﻪ ﺷﻬﺮ800ﻓﺎﺗﻮﺭﺓ ﺍﻟﺨﺪﻣﺔ ﻣﺴﺘﻠﺰﻣﺎﺕ ﻣﻜﺘﺒﻴﺔ ﺟﻨﻴﻪ ﺷﻬﺮ300ﻓﺎﺗﻮﺭﺓ ﺃﺻﻠﻴﺔ ﺇﺟﺮﺍﺀﺍﺕ ﺗﻘﺪﻳﻢ ﻃﻠﺒﺎﺕ ﺍﻟﺘﺴﻮﻳﺔ5",
+      "passage: net salary, repayable over a maximum of 12 equal monthly instalments via payroll deduction"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 4,
+    "answer": "النفقات المهنية القابلة للتسوية وحدودها: وجبات العمل الفردية حتى 150 جنيهًا للوجبة (فاتورة ضريبية مطلوبة)؛ اجتماعات العمل مع عملاء حتى 500 جنيه للاجتماع (فاتورة + اسم العميل)؛ مواصلات داخل المدينة حتى 200 جنيه يوميًا (إيصال أو صورة أوبر)؛ خدمة إنترنت للعمل عن بعد حتى 800 جنيه شهريًا (فاتورة الخدمة)؛ مستلزمات مكتبية حتى 300 جنيه شهريًا (فاتورة أصلية). جميع المطالبات خلال 30 يومًا.",
+    "reference": "النفقات المهنية القابلة للتسوية وحدودها: وجبات العمل الفردية حتى 150 جنيهًا للوجبة (فاتورة ضريبية مطلوبة)؛ اجتماعات العمل مع عملاء حتى 500 جنيه للاجتماع (فاتورة + اسم العميل)؛ مواصلات داخل المدينة حتى 200 جنيه يوميًا (إيصال أو صورة أوبر)؛ خدمة إنترنت للعمل عن بعد حتى 800 جنيه شهريًا (فاتورة الخدمة)؛ مستلزمات مكتبية حتى 300 جنيه شهريًا (فاتورة أصلية). جميع المطالبات خلال 30 يومًا.",
+    "timestamp": "2026-05-14T19:45:50.929318+00:00"
+  },
+  "C21_EG": {
+    "query_id": "C21_EG",
+    "concept_id": "C21",
+    "language": "egyptian",
+    "complexity": "L3",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "reimbursable_expenses",
+    "question": "إيه أنواع المصروفات اللي بتترد وما هي حدودها؟",
+    "contexts": [
+      "passage: .1 :ﺗﺴﺪﺩ ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ ﺍﻟﻤﻮﺛﻘﺔ ﺍﻟﺘﻲ ﻳﺘﺤﻤﻠﻬﺎ ﺍﻟﻤﻮﻇﻒ ﺑﺴﺒﺐ ﻣﻬﺎﻡ ﺍﻟﻌﻤﻞ ﻭﻓﻖ ﺍﻟﺤﺪﻭﺩ ﺍﻟﺘﺎﻟﻴﺔ ﻧﻮﻉ ﺍﻟﻨﻔﻘﺔ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺍﻟﻤﺴﺘﻨﺪﺍﺕ ﺍﻟﻤﻄﻠﻮﺑﺔ ﻭﺟﺒﺎﺕ ﺍﻟﻌﻤﻞ ﺍﻟﻔﺮﺩﻳﺔ ﺟﻨﻴﻪ ﻭﺟﺒﺔ150ﻓﺎﺗﻮﺭﺓ ﺿﺮﻳﺒﻴﺔ ﺍﺟﺘﻤﺎﻉ ﻋﻤﻞ ﻣﻊ ﻋﻤﻴﻞ ﺟﻨﻴﻪ",
+      "passage: 2026 ﻳﻨﺎﻳﺮ1 2.0 ﺳﺮﻱ ﻟﻼﺳﺘﺨﺪﺍﻡ ﺍﻟﺪﺍﺧﻠﻲ ﻓﻘﻂ ﺍﻹﺻﺪﺍﺭ ﺳﻴﺎﺳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﻭﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ5. ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻘﺎﺑﻠﺔ ﻟﻠﺘﺴﻮﻳﺔ5",
+      "passage: ﺳﻴﺎﺳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﺗﻐﻄﻲ ﻫﺬﻩ ﺍﻟﻮﺛﻴﻘﺔ: ﻫﻴﻜﻞ ﺍﻟﺮﻭﺍﺗﺐ، ﺍﻟﺒﺪﻻﺕ، ﺍﻟﻤﻜﺎﻓﺂﺕ ﺍﻟﺴﻨﻮﻳﺔ، ﺍﻻﺳﺘﻘﻄﺎﻋﺎﺕ ﺍﻹﻟﺰﺍﻣﻴﺔ، ﺇﺟﺮﺍﺀﺍﺕ ﺍﻟﺼﺮﻑ، ﺳﻴﺎﺳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ",
+      "passage: .0 ﺍﻹﺻﺪﺍﺭ ﺍﻟﺘﺼﻨﻴﻒ: ﺳﺮﻱ ﻟﻼﺳﺘﺨﺪﺍﻡ ﺍﻟﺪﺍﺧﻠﻲ ﻓﻘﻂ ﺍﻟﻘﺴﻢ ﺍﻟﻤﺴﺆﻭﻝ: ﺍﻟﻤﻮﺍﺭﺩ ﺍﻟﺒﺸﺮﻳﺔ ﻫﻴﻜﻞ ﺍﻟﺮﻭﺍﺗﺐ ﺍﻟﺒﺪﻻﺕ ﺍﻟﻤﻜﺎﻓﺂﺕ ﺍﻟﺴﻨﻮﻳﺔ ﺍﻻﺳﺘﻘﻄﺎﻋﺎﺕ ﺍﻹﻟﺰﺍﻣﻴﺔ ﺇﺟﺮﺍﺀﺍﺕ ﺍﻟﺼﺮﻑ ﺳﻴﺎﺳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﺗﻐﻄﻲ ﻫﺬﻩ ﺍﻟﻮﺛﻴﻘﺔ: ﻫﻴﻜﻞ ﺍﻟﺮﻭﺍﺗﺐ،",
+      "passage: .2 :ﻳﻘﺪﻡ ﻃﻠﺐ ﺗﺴﻮﻳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﻋﺒﺮ ﺍﻟﺒﻮﺍﺑﺔ ﺍﻹﻟﻜﺘﺮﻭﻧﻴﺔ ﻭﻓﻖ ﺍﻟﺨﻄﻮﺍﺕ ﺍﻟﺘﺎﻟﻴﺔ ﺍﻟﺨﻄﻮﺓ ﺍﻹﺟﺮﺍﺀ ﺍﻹﻃﺎﺭ ﺍﻟﺰﻣﻨﻲ 1ﺍﺳﺘﻴﻔﺎﺀ ﻧﻤﻮﺫﺝ ﻃﻠﺐ ﺍﻟﺘﺴﻮﻳﺔ ﺇﻟﻜﺘﺮﻭﻧﻴﺎ ﻣﻊ ﺇﺭﻓﺎﻕ ﺍﻟﻔﻮﺍﺗﻴﺮ ﺍﻷﺻﻠﻴﺔ 2ﺍﻋﺘﻤﺎﺩ ﺍﻟﻤﺪﻳﺮ ﺍﻟﻤﺒﺎﺷﺮ ﻟﻠﻄﻠﺐ ﺃﻳﺎﻡ ﻋﻤﻞ3"
+    ],
+    "context_sources": [
+      "AR"
+    ],
+    "n_en_chunks": 0,
+    "n_ar_chunks": 5,
+    "answer": "ده نوعين:  \n1. وجبات العمل الفردية: بحد أقصى 150 جنيه لكل وجبة، وبيجي فاتورة ضريبية.  \n2. اجتماع عمل مع عميل: بحد أقصى 2026 جنيه.  \n\n[Page 4 | AR]",
+    "reference": "المصروفات القابلة للتسوية وحدودها: وجبات الشغل الفردية لحد 150 جنيه للوجبة (فاتورة ضريبية)؛ اجتماعات العمل مع عملاء لحد 500 جنيه للاجتماع (فاتورة + اسم العميل)؛ مواصلات جوّه المدينة لحد 200 جنيه في اليوم (إيصال أو صورة أوبر)؛ إنترنت للشغل عن بعد لحد 800 جنيه في الشهر (فاتورة الخدمة)؛ مستلزمات مكتبية لحد 300 جنيه في الشهر (فاتورة أصلية). كل المطالبات خلال 30 يوم.",
+    "timestamp": "2026-05-14T19:46:12.715384+00:00"
+  },
+  "C22_EN": {
+    "query_id": "C22_EN",
+    "concept_id": "C22",
+    "language": "english",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "journalist_contact",
+    "question": "A journalist contacted me directly for a comment about the company. What should I do?",
+    "contexts": [
+      "passage: . Employees who are contacted directly by journalists or media organisations must not respond and should forward the enquiry to communications@horizontech.com immediately.",
+      "passage: . 3.3 Media & Press Enquiries All media enquiries — including requests for interviews, comments, or statements — must be directed to the Communications team",
+      "passage: . • Employees must not make statements that could mislead the public about the company's products or financials. 3",
+      "passage: . Employees should contact the EAP directly via the dedicated hotline or the Horizon Portal for referrals.",
+      "passage: .1 :ﺗﺘﺒﻊ ﺍﻟﺸﺮﻛﺔ ﻧﻤﻮﺫﺟﺎ ﻣﻮﺣﺪﺍ ﻟﻠﻤﻘﺎﺑﻼﺕ ﻳﻀﻤﻦ ﺗﻘﻴﻴﻤﺎ ﻣﻨﺼﻔﺎ ﻭﻣﻮﺿﻮﻋﻴﺎ ﻟﺠﻤﻴﻊ ﺍﻟﻤﺘﻘﺪﻣﻴﻦ ﺍﻟﻤﺮﺣﻠﺔ ﺍﻟﻨﻮﻉ ﺍﻟﻤﺪﺓ ﺍﻟﻤﻘﻴﻢ ﻓﺮﺯ ﺍﻟﺴﻴﺮﺓ ﺍﻟﺬﺍﺗﻴﺔ1ﻣﺮﺍﺟﻌﺔ ﻣﻮﺍﺭﺩ ﺑﺸﺮﻳﺔ ﺍﻟﻤﻮﺍﺭﺩ ﺍﻟﺒﺸﺮﻳﺔ ﻣﻘﺎﺑﻠﺔ ﻫﺎﺗﻔﻴﺔ ﺃﻭﻟﻴﺔ2ﺗﻠﻴﻔﻮﻥ ﻓﻴﺪﻳﻮ"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "You should not respond and forward the enquiry to communications@horizontech.com immediately [Page 3|EN]. All media enquiries must be directed to the Communications team [Page 3|EN].",
+    "reference": "You must not respond to the journalist. You should immediately forward the enquiry to the Communications team at communications@horizontech.com. All media enquiries — including interview requests, comments, or statements — must be directed to the Communications team only.",
+    "timestamp": "2026-05-14T19:47:11.702246+00:00"
+  },
+  "C22_AR": {
+    "query_id": "C22_AR",
+    "concept_id": "C22",
+    "language": "arabic",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "journalist_contact",
+    "question": "تواصل معي صحفي مباشرة يطلب تعليقًا عن الشركة. ماذا يجب أن أفعل؟",
+    "contexts": [
+      "passage: . Employees who are contacted directly by journalists or media organisations must not respond and should forward the enquiry to communications@horizontech.com immediately.",
+      "passage: . 3.3 Media & Press Enquiries All media enquiries — including requests for interviews, comments, or statements — must be directed to the Communications team",
+      "passage: . Employees should contact the EAP directly via the dedicated hotline or the Horizon Portal for referrals.",
+      "passage: . ﻳﺠﺐ ﺍﻟﺤﺼﻮﻝ ﻋﻠﻰ ﻣﻮﺍﻓﻘﺔ ﺍﻟﻤﺪﻳﺮ ﺍﻟﻤﺒﺎﺷﺮ ﻗﺒﻞ ﺗﻘﺪﻳﻢ ﺍﻟﻄﻠﺐ ﻣﺮﺍﺣﻞ ﺍﻟﻤﻘﺎﺑﻼﺕ ﻭﺍﻻﺧﺘﻴﺎﺭ2. ﻧﻤﻮﺫﺝ ﺍﻟﻤﻘﺎﺑﻠﺔ ﺍﻟﻤﻮﺣﺪ2",
+      "passage: .1 :ﺗﺘﺒﻊ ﺍﻟﺸﺮﻛﺔ ﻧﻤﻮﺫﺟﺎ ﻣﻮﺣﺪﺍ ﻟﻠﻤﻘﺎﺑﻼﺕ ﻳﻀﻤﻦ ﺗﻘﻴﻴﻤﺎ ﻣﻨﺼﻔﺎ ﻭﻣﻮﺿﻮﻋﻴﺎ ﻟﺠﻤﻴﻊ ﺍﻟﻤﺘﻘﺪﻣﻴﻦ ﺍﻟﻤﺮﺣﻠﺔ ﺍﻟﻨﻮﻉ ﺍﻟﻤﺪﺓ ﺍﻟﻤﻘﻴﻢ ﻓﺮﺯ ﺍﻟﺴﻴﺮﺓ ﺍﻟﺬﺍﺗﻴﺔ1ﻣﺮﺍﺟﻌﺔ ﻣﻮﺍﺭﺩ ﺑﺸﺮﻳﺔ ﺍﻟﻤﻮﺍﺭﺩ ﺍﻟﺒﺸﺮﻳﺔ ﻣﻘﺎﺑﻠﺔ ﻫﺎﺗﻔﻴﺔ ﺃﻭﻟﻴﺔ2ﺗﻠﻴﻔﻮﻥ ﻓﻴﺪﻳﻮ"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "يجب ألا ترد على الصحفي مباشرة، ويُشترط توجيه الطلب فورًا إلى فريق التواصل عبر إرسال الاستفسار إلى البريد الإلكتروني communications@horizontech.com [Page 3 | EN].",
+    "reference": "يجب ألا تردَّ على الصحفي. يجب إحالة الاستفسار فورًا إلى فريق الاتصالات على العنوان communications@horizontech.com. جميع الاستفسارات الإعلامية — بما فيها طلبات المقابلات والتعليقات والبيانات — يجب توجيهها إلى فريق الاتصالات حصرًا.",
+    "timestamp": "2026-05-14T19:47:40.421560+00:00"
+  },
+  "C23_EN": {
+    "query_id": "C23_EN",
+    "concept_id": "C23",
+    "language": "english",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "phased_return_parental",
+    "question": "I am returning from paternity leave. Can I work reduced hours at full pay?",
+    "contexts": [
+      "passage: . During this period, the employee may work reduced hours (minimum 60% of standard hours) at full pay",
+      "passage: . 7.3 Flexible Return from Parental Leave Employees returning from maternity or paternity leave may request a phased return-to-work arrangement for up to eight weeks",
+      "passage: كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام عمل نعم شهادة الميالد إجازة الوفاة 3 – 5 أيام نعم شهادة الوفاة إجازة الحج 20 يوم عمل (مرة )واحدة نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10",
+      "passage: . For HR policies on Leave, Travel, Remote Work, DEI, and Offboarding, please refer to the Arabic-language companion handbook. Confidential — Internal Use Only | Version 2.0 | January 2026Page 1",
+      "passage: 7:00–10:00 AM +8 hours 1 hour Engineering, IT (manager approval) Night 10:00 PM 6:00 AM 1 hour Support (shift allowance applies) Overtime work beyond 8 hours in a day is compensated at 1"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "During the return from parental leave, you may request a phased return-to-work arrangement for up to eight weeks, and you may work reduced hours (minimum 60% of standard hours) at full pay [Page 5|EN].",
+    "reference": "Yes. Employees returning from maternity or paternity leave may request a phased return-to-work arrangement for up to 8 weeks. During this period, you may work reduced hours (minimum 60% of standard hours) at full pay. The phased return plan must be agreed with your line manager and HR at least 2 weeks before your scheduled return date.",
+    "timestamp": "2026-05-14T19:49:07.601611+00:00"
+  },
+  "C23_AR": {
+    "query_id": "C23_AR",
+    "concept_id": "C23",
+    "language": "arabic",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "phased_return_parental",
+    "question": "أعود من إجازة أبوة. هل يمكنني العمل بساعات مخفَّضة براتب كامل؟",
+    "contexts": [
+      "passage: . During this period, the employee may work reduced hours (minimum 60% of standard hours) at full pay",
+      "passage: . 7.3 Flexible Return from Parental Leave Employees returning from maternity or paternity leave may request a phased return-to-work arrangement for up to eight weeks",
+      "passage: كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام عمل نعم شهادة الميالد إجازة الوفاة 3 – 5 أيام نعم شهادة الوفاة إجازة الحج 20 يوم عمل (مرة )واحدة نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10",
+      "passage: .المبنى ●إمكانية تعديل ساعات العمل لمراعاة الحتياجات الدينية أو الصحية .الخاصة ● سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .2 أنواع اإلجازات األخرى نوع اإلجازة المدة مدفوعة؟ المستندات المطلوبة إجازة الزواج 5 أيام عمل نعم عقد الزواج (خالل 30 )ًيوما إجازة األمومة 90 ًيوما كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "نعم. يحق للموظفين العائدين من إجازة الأمومة أو الأبوة طلب نظام عودة تدريجية لمدة تصل إلى 8 أسابيع. خلال هذه الفترة يمكنك العمل بساعات مخفضة (بحد أدنى 60% من ساعات العمل المعيارية) براتب كامل. يجب الاتفاق على خطة العودة التدريجية مع مديرك المباشر وإدارة الموارد البشرية قبل أسبوعين على الأقل من موعد العودة المقرر.",
+    "reference": "نعم. يحق للموظفين العائدين من إجازة الأمومة أو الأبوة طلب نظام عودة تدريجية لمدة تصل إلى 8 أسابيع. خلال هذه الفترة يمكنك العمل بساعات مخفضة (بحد أدنى 60% من ساعات العمل المعيارية) براتب كامل. يجب الاتفاق على خطة العودة التدريجية مع مديرك المباشر وإدارة الموارد البشرية قبل أسبوعين على الأقل من موعد العودة المقرر.",
+    "timestamp": "2026-05-14T19:49:26.441173+00:00"
+  },
+  "C23_EG": {
+    "query_id": "C23_EG",
+    "concept_id": "C23",
+    "language": "egyptian",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "phased_return_parental",
+    "question": "أنا راجع من إجازة أبوة. أقدر أشتغل بساعات أقل براتب كامل؟",
+    "contexts": [
+      "passage: . During this period, the employee may work reduced hours (minimum 60% of standard hours) at full pay",
+      "passage: . 7.3 Flexible Return from Parental Leave Employees returning from maternity or paternity leave may request a phased return-to-work arrangement for up to eight weeks",
+      "passage: كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام عمل نعم شهادة الميالد إجازة الوفاة 3 – 5 أيام نعم شهادة الوفاة إجازة الحج 20 يوم عمل (مرة )واحدة نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10",
+      "passage: .2 أنواع اإلجازات األخرى نوع اإلجازة المدة مدفوعة؟ المستندات المطلوبة إجازة الزواج 5 أيام عمل نعم عقد الزواج (خالل 30 )ًيوما إجازة األمومة 90 ًيوما كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام",
+      "passage: نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10 أيام/سنة نعم جدول المتحانات الرسمي إجازة بدون راتب حتى 30 يوماً/سنة ال موافقة المدير + HR سري — لالستخدام الداخلي فقط | اإلصدار 2"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "أيوه. الموظفين الراجعين من إجازة أمومة أو أبوة يقدروا يطلبوا نظام عودة تدريجية لمدة لحد 8 أسابيع. في الفترة دي تقدر تشتغل بساعات أقل (بحد أدنى 60% من الساعات العادية) براتب كامل. لازم تتفق على خطة العودة مع مديرك المباشر والموارد البشرية على الأقل أسبوعين قبل موعد الرجوع.",
+    "reference": "أيوه. الموظفين الراجعين من إجازة أمومة أو أبوة يقدروا يطلبوا نظام عودة تدريجية لمدة لحد 8 أسابيع. في الفترة دي تقدر تشتغل بساعات أقل (بحد أدنى 60% من الساعات العادية) براتب كامل. لازم تتفق على خطة العودة مع مديرك المباشر والموارد البشرية على الأقل أسبوعين قبل موعد الرجوع.",
+    "timestamp": "2026-05-14T19:49:55.512474+00:00"
+  },
+  "C24_EN": {
+    "query_id": "C24_EN",
+    "concept_id": "C24",
+    "language": "english",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "side_project_ip",
+    "question": "I have a pre-existing tech side project that may overlap with Horizon Tech's business. What must I do?",
+    "contexts": [
+      "passage: .2 Pre-Existing IP & Side Projects Employees who have pre-existing IP or who wish to engage in personal projects that may overlap with Horizon Tech's business areas must disclose this in writing to",
+      "passage: . • Holding an ownership stake in a competing business. • Any financial relationship with a third party that conducts business with Horizon Tech. 4",
+      "passage: .2 Obligations Summary The following obligations apply to all individuals engaged by Horizon Tech regardless of employment type, seniority, or location: • Act honestly and in good faith in all",
+      "passage: 1. Ethical Standards & Core Obligations 1.1 The Horizon Tech Code of Ethics Horizon Tech is committed to conducting business with the highest ethical standards",
+      "passage: .1 Protected Disclosures Horizon Tech encourages employees to report suspected misconduct, fraud, safety violations, or unethical behaviour without fear of retaliation"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "You must disclose this in writing to Horizon Tech [Page 5|EN].",
+    "reference": "You must disclose the pre-existing intellectual property or side project in writing to Horizon Techk",
+    "timestamp": "2026-05-14T19:50:54.346567+00:00"
+  },
+  "C24_AR": {
+    "query_id": "C24_AR",
+    "concept_id": "C24",
+    "language": "arabic",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "side_project_ip",
+    "question": "لديّ مشروع جانبي تقني سابق قد يتداخل مع أعمال أفق التقنية. ماذا يجب أن أفعل؟",
+    "contexts": [
+      "passage: .2 Pre-Existing IP & Side Projects Employees who have pre-existing IP or who wish to engage in personal projects that may overlap with Horizon Tech's business areas must disclose this in writing to",
+      "passage: .1 نماذج العمل المعتمدة تعتمد شركة أفق التقنية نماذج عمل مرنة لتحقيق التوازن بين متطلبات العمل واحتياجات :الموظفين النموذج أيام الحضور أيام العمل عن بُعد الموافقة المطلوبة حضور كامل 5 أيام/أسبوع — —",
+      "passage: .السابقة لالستفسار عن السياسات الواردة في هذا ،الدليل يُرجى التواصل مع قسم الموارد :البشرية البريد :اإللكتروني hr@horizontech",
+      "passage: . Personal opinions shared publicly must be clearly identified as personal and must not be presented as representing the views of Horizon Tech. Confidential — Internal Use Only | Version 2",
+      "passage: . • Holding an ownership stake in a competing business. • Any financial relationship with a third party that conducts business with Horizon Tech. 4"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 2,
+    "answer": "يجب الإفصاح عن المشروع الجانبي بشكل كتابي إلى قسم الموارد البشرية في شركة أفق التقنية وفقًا للسياسة المذكورة في [Page 5 | EN]. كما يمكن التواصل مع قسم الموارد البشرية عبر البريد الإلكتروني hr@horizontech للحصول على توضيحات إضافية [Page 13 | AR].",
+    "reference": "يجب الإفصاح عن الملكية الفكرية الموجودة مسبقًا أو المشروع الجانبي كتابيًا لقسم القانون والامتثال قبل الاستمرار في هذه الأنشطة أو البدء بها. تُقيَّم الموافقة على أساس كل حالة على حدة لتحديد أي تعارض محتمل في المصالح وتفاديه. عدم الإفصاح يُعدُّ انتهاكًا لالتزامات عقد العمل.",
+    "timestamp": "2026-05-14T19:51:13.470690+00:00"
+  },
+  "C24_EG": {
+    "query_id": "C24_EG",
+    "concept_id": "C24",
+    "language": "egyptian",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "side_project_ip",
+    "question": "عندي مشروع جانبي تقني قديم ممكن يتداخل مع أعمال أفق التقنية. أعمل إيه؟",
+    "contexts": [
+      "passage: .2 Pre-Existing IP & Side Projects Employees who have pre-existing IP or who wish to engage in personal projects that may overlap with Horizon Tech's business areas must disclose this in writing to",
+      "passage: .1 نماذج العمل المعتمدة تعتمد شركة أفق التقنية نماذج عمل مرنة لتحقيق التوازن بين متطلبات العمل واحتياجات :الموظفين النموذج أيام الحضور أيام العمل عن بُعد الموافقة المطلوبة حضور كامل 5 أيام/أسبوع — —",
+      "passage: . ﺗﻄﺒﻖ ﻫﺬﻩ ﺍﻟﻤﻨﻬﺠﻴﺔ ﻓﻲ ﺟﻤﻴﻊ ﻣﺮﺍﺣﻞ ﺍﻻﺳﺘﻘﻄﺎﺏ ﻣﻦ ﺍﻹﻋﻼﻥ ﻋﻦ ﺍﻟﻮﻇﻴﻔﺔ ﻭﺣﺘﻰ ﺇﺻﺪﺍﺭ ﻋﺮﺽ ﺍﻟﻌﻤﻞ ﺗﺘﺒﻨﻰ ﺷﺮﻛﺔ ﺃﻓﻖ ﺍﻟﺘﻘﻨﻴﺔ ﻣﻨﻬﺠﻴﺔ ﺗﻮﻇﻴﻒ ﻗﺎﺋﻤﺔ ﻋﻠﻰ ﺍﻟﺠﺪﺍﺭﺓ ﻭﺍﻟﻜﻔﺎﺀﺓ ﺣﺼﺮﺍ، ﻣﻊ ﺍﻟﺘﺰﺍﻡ ﺻﺎﺭﻡ ﻗﻨﻮﺍﺕ ﺍﻹﻋﻼﻥ ﺍﻟﻮﻇﻴﻔﻲ ﺍﻟﻤﻌﺘﻤﺪﺓ1",
+      "passage: 2026 ﻳﻨﺎﻳﺮ1 2.0 ﺳﺮﻱ ﻟﻼﺳﺘﺨﺪﺍﻡ ﺍﻟﺪﺍﺧﻠﻲ ﻓﻘﻂ ﺍﻹﺻﺪﺍﺭ ﺷﺮﻛﺔ ﺃﻓﻖ ﺍﻟﺘﻘﻨﻴﺔ ﺩﻟﻴﻞ ﺍﻟﺘﻮﻇﻴﻒ ﻭﺍﻟﺘﺄﻫﻴﻞ ﻭﺍﻻﺧﺘﺒﺎﺭ ﺳﻴﺎﺳﺎﺕ ﺍﻻﺳﺘﻘﻄﺎﺏ ﻭﺇﺟﺮﺍﺀﺍﺕ ﺍﻻﺧﺘﺒﺎﺭ ﻭﺑﺮﺍﻣﺞ ﺍﻟﺘﺄﻫﻴﻞ ﻟﻠﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ 2026 ﻳﻨﺎﻳﺮ1 : ﺗﺎﺭﻳﺦ ﺍﻟﻨﻔﺎﺫ2",
+      "passage: Horizon Tech | Employee HandbookEmployment, Compensation & Conduct Policies 1. Employment Terms & Conditions 1"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "يجب عليك تكتب رسمي لشركة أفق التقنية وتُفصح عن المشروع ده عشان مفيش تداخل مع أنشطتهم. [Page 5 | EN]",
+    "reference": "لازم تفصح عن الملكية الفكرية أو المشروع الجانبي كتابيًا لقسم القانون والامتثال قبل ما تكمل فيه أو تبدأه. الموافقة بتتقيم على أساس كل حالة على حدة عشان يتحدد أي تعارض محتمل ويتم تفاديه. عدم الإفصاح يُعتبر انتهاك لالتزامات عقد الشغل.",
+    "timestamp": "2026-05-14T19:51:31.897867+00:00"
+  },
+  "C25_EN": {
+    "query_id": "C25_EN",
+    "concept_id": "C25",
+    "language": "english",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "I just had a baby. When can I enrol in an additional health insurance add-on, and what is the deadline?",
+    "contexts": [
+      "passage: .2 Extended Coverage — Optional Add-Ons Employees may enrol in optional supplemental coverage during the annual open enrolment window (October 1–15) or within 30 days of a qualifying life event",
+      "passage: .3 Health Insurance All full-time employees are enrolled in the company health insurance plan from their first day of employment",
+      "passage: .0 | Effective Date: January 1, 2026 Classification: Confidential — Internal Use Only Department: Human Resources & Employee Experience This handbook covers: Health Insurance Plans, Life & Disability",
+      "passage: . Employees who have completed two or more years of service and are enrolled in the company health plan may apply for a one-time fertility assistance grant of up to 20,000 EGP",
+      "passage: . The following add-ons are available at subsidised group rates: Add-On Plan Monthly Premium (Employee Share) Coverage Limit Enhanced Dental 150 EGP Up to 8,000 EGP/year Orthodontics Rider 200 EGP Up"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 0,
+    "answer": "You can enrol in an optional supplemental coverage during the annual open enrolment window (October 1–15) or within 30 days of a qualifying life event [Page 2|EN].",
+    "reference": "You may enrol in optional supplemental health insurance add-ons within 30 days of a qualifying life event, such as the birth of a child. Outside this window, enrolment is only possible during the annual open enrolment period (October 1–15). Missing the 30-day window means waiting until the next open enrolment.",
+    "timestamp": "2026-05-14T19:52:36.335180+00:00"
+  },
+  "C25_AR": {
+    "query_id": "C25_AR",
+    "concept_id": "C25",
+    "language": "arabic",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "رُزقت بطفل مؤخرًا. متى يمكنني الاشتراك في ملحق تأمين صحي إضافي وما هو الموعد النهائي؟",
+    "contexts": [
+      "passage: .2 Extended Coverage — Optional Add-Ons Employees may enrol in optional supplemental coverage during the annual open enrolment window (October 1–15) or within 30 days of a qualifying life event",
+      "passage: . • After 3 years: 75% of matched contributions vest. • After 4 years: 100% of matched contributions vest. 6. Financial Wellbeing Initiatives",
+      "passage: . Coverage extends to the employee's legal spouse and up to three dependent children under the age of 25. 1",
+      "passage: or within 30 days of a qualifying life event (marriage, birth, or adoption)",
+      "passage: . ﺗﺤﺘﺴﺐ ﺍﻻﺷﺘﺮﺍﻛﺎﺕ ﻋﻠﻰ ﻣﻜﻮﻧﻲ ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ ﻭﺍﻟﻤﺘﻐﻴﺮ2019 ﻟﺴﻨﺔ148 ﺍﻻﺟﺘﻤﺎﻋﻴﺔ ﻭﻓﻖ ﻗﺎﻧﻮﻥ ﺍﻟﺘﺄﻣﻴﻦ ﺍﻻﺟﺘﻤﺎﻋﻲ ﻭﺍﻟﻤﻌﺎﺷﺎﺕ ﺭﻗﻢ ﺗﻄﺒﻖ ﺍﺷﺘﺮﺍﻛﺎﺕ ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻟﻄﺮﻑ ﻧﺴﺒﺔ ﺍﻻﺳﺘﻘﻄﺎﻉ ﺍﻷﺳﺎﺱ ﺍﻟﺤﺴﺎﺑﻲ ﺣﺼﺔ ﺍﻟﻤﻮﻇﻒ11 ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 1,
+    "answer": "أنت ممكن تاشتري ملحق التأمين الصحي الإضافي إما خلال فترة التسجيل السنوية (أكتوبر 1–15) أو في 30 يوم من حدث مهم زي ولادة الطفل. عشانك رزقت مؤخرًا، الموعد النهائي ده 30 يوم من تاريخ الولادة. [Page 2 | EN]",
+    "reference": "يمكنك الاشتراك في ملحقات التأمين الصحي الاختيارية خلال 30 يومًا من وقوع حدث مؤهِّل في حياتك كميلاد طفل. خارج هذه النافذة، لا يُتاح الاشتراك إلا خلال فترة التسجيل المفتوحة السنوية (1-15 أكتوبر). فوات الـ 30 يومًا يعني الانتظار حتى التسجيل المفتوح التالي.",
+    "timestamp": "2026-05-14T19:53:02.707263+00:00"
+  },
+  "C25_EG": {
+    "query_id": "C25_EG",
+    "concept_id": "C25",
+    "language": "egyptian",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "عندي مولود جديد. إمتى أقدر أشترك في ملحق تأمين صحي إضافي وإيه آخر موعد؟",
+    "contexts": [
+      "passage: .2 Extended Coverage — Optional Add-Ons Employees may enrol in optional supplemental coverage during the annual open enrolment window (October 1–15) or within 30 days of a qualifying life event",
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: . Coverage Item Employee Spouse Children Outpatient Visits 100% 80% 80% Hospitalization 100% 90% 90% Dental 70% 50% 50% Optical 500 EGP/year 300 EGP/year 300 EGP/year Pharmacy 80% 70% 70% Confidential",
+      "passage: . ﺗﺤﺘﺴﺐ ﺍﻻﺷﺘﺮﺍﻛﺎﺕ ﻋﻠﻰ ﻣﻜﻮﻧﻲ ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ ﻭﺍﻟﻤﺘﻐﻴﺮ2019 ﻟﺴﻨﺔ148 ﺍﻻﺟﺘﻤﺎﻋﻴﺔ ﻭﻓﻖ ﻗﺎﻧﻮﻥ ﺍﻟﺘﺄﻣﻴﻦ ﺍﻻﺟﺘﻤﺎﻋﻲ ﻭﺍﻟﻤﻌﺎﺷﺎﺕ ﺭﻗﻢ ﺗﻄﺒﻖ ﺍﺷﺘﺮﺍﻛﺎﺕ ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻟﻄﺮﻑ ﻧﺴﺒﺔ ﺍﻻﺳﺘﻘﻄﺎﻉ ﺍﻷﺳﺎﺱ ﺍﻟﺤﺴﺎﺑﻲ ﺣﺼﺔ ﺍﻟﻤﻮﻇﻒ11 ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ",
+      "passage: .المباشر ●المشاركة في مقابلة الخروج مع HR . ●استالم التسوية المالية النهائية خالل 10 أيام عمل من آخر .يوم سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 3,
+    "answer": "أنت تقدر تشترك في ملحق التأمين الصحي الإضافي إما خلال فترة التسجيل السنوي (أكتوبر 1–15) أو في أول 30 يوم من حدث مهم زي ولادة مولود جديد. آخر موعد بعد الحدث 30 يوم، وإلا خلاص مفيش فرصة [Page 2 | EN].",
+    "reference": "تقدر تشترك في ملحقات التأمين الصحي الاختيارية خلال 30 يوم من حدث مؤهِّل زي ميلاد طفل. برّا المدة دي، الاشتراك بيبقى متاح بس في فترة التسجيل المفتوح السنوي (1-15 أكتوبر). لو فاتت الـ 30 يوم، هتستنى لحد التسجيل المفتوح الجاي.",
+    "timestamp": "2026-05-14T19:53:26.601589+00:00"
+  },
+  "C04_FR": {
+    "query_id": "C04_FR",
+    "concept_id": "C04",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "probation_termination_notice",
+    "question": "modet el esh3ar 3ashan yenhi el 3a2d fe fatret el ekhtebar ad eih?",
+    "contexts": [
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4",
+      "passage: . • Either party may terminate the employment contract with 7 days written notice. • Performance is evaluated at the 1-month and 3-month marks",
+      "passage: .1 فترات اإلشعار عند الستقالة الدرجة الوظيفية فترة اإلشعار G1 – G2 (مستوى جديد / )متخصص 30 ًيوما G3 – G4 (مشرف / )مدير 60 ًيوما G5 فأعلى (مدير تنفيذي / مدير )إدارة 90 ًيوما 10",
+      "passage: )التجربة 14 يوم عمل حتى 7 أيام ال 1 – 5 سنوات 21 يوم عمل حتى 7 أيام حتى 5 أيام 5 – 10 سنوات 25 يوم عمل حتى 10 أيام حتى 7 أيام أكثر من 10 سنوات 30 يوم عمل حتى 14 يوم حتى 10 أيام 8",
+      "passage: .3 Employee Categories Category Contract Type Benefits Notice Period Full-Time Indefinite / Fixed-term Full 30 days Part-Time Fixed-term Pro-rata 14 days Contractor Project-based None Per contract",
+      "passage: .1 :ﺗﺨﻀﻊ ﺟﻤﻴﻊ ﺍﻟﺘﻌﻴﻴﻨﺎﺕ ﺍﻟﺠﺪﻳﺪﺓ ﻟﻔﺘﺮﺓ ﺍﺧﺘﺒﺎﺭ ﻭﻓﻖ ﺍﻟﺠﺪﻭﻝ ﺍﻟﺰﻣﻨﻲ ﺍﻟﺘﺎﻟﻲ ﺍﻟﻔﺌﺔ ﺍﻟﻮﻇﻴﻔﻴﺔ ﻣﺪﺓ ﺍﻻﺧﺘﺒﺎﺭ ﺍﻷﺳﺎﺳﻴﺔ ﺍﻟﺘﻤﺪﻳﺪ ﺍﻟﻤﺴﻤﻮﺡ ﺟﻬﺔ ﺍﻟﻤﻮﺍﻓﻘﺔ ﻋﻠﻰ ﺍﻟﺘﻤﺪﻳﺪ 1 ﻣﻨﺴﻖ ﻣﺴﺎﻋﺪ ﺍﻟﺪﺭﺟﺔ ﺃﺷﻬﺮ3 ﺃﺷﻬﺮ6 ﺣﺘﻰ ﻣﺪﻳﺮ ﺍﻟﻘﺴﻢ 2 ﻣﺘﺨﺼﺺ",
+      "passage: .1 اإلجراء التأديبي التدريجي تتبع الشركة ًنهجا ًتأديبيا ًتدريجيا يهدف إلى تصحيح السلوك قبل اللجوء إلى :الفصل المرحلة اإلجراء من يُصدره مدة الصالحية 1 تحذير شفهي المدير المباشر 3 أشهر 2 إنذار كتابي أول"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 5,
+    "answer": "ay taraf, el muwazaf aw el sharka, ye2dar yenhi el 3a2d fe fatret el ekhtebar be esh3ar ketaby 7 ayyam bas.",
+    "reference": "ay taraf, el muwazaf aw el sharka, ye2dar yenhi el 3a2d fe fatret el ekhtebar be esh3ar ketaby 7 ayyam bas.",
+    "timestamp": "2026-05-15T12:13:11.772936+00:00"
+  },
+  "C08_FR": {
+    "query_id": "C08_FR",
+    "concept_id": "C08",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "salary_payment_day",
+    "question": "el mwaahed btetatref fe anhi yom men el shahr?",
+    "contexts": [
+      "passage: . ﺩﻭﺭﺓ ﺍﻟﺼﺮﻑ ﺍﻟﺸﻬﺮﻳﺔ4.1 .ﺃﺳﺒﻮﻉ، ﻳﺼﺮﻑ ﺍﻟﺮﺍﺗﺐ ﻓﻲ ﻳﻮﻡ ﺍﻟﻌﻤﻞ ﺍﻟﺴﺎﺑﻖ ﻣﺒﺎﺷﺮﺓ. ﻳﺮﺳﻞ ﻛﺸﻒ ﺍﻟﺮﺍﺗﺐ ﺍﻟﺘﻔﺼﻴﻠﻲ ﺇﻟﻜﺘﺮﻭﻧﻴﺎ ﺇﻟﻰ ﺍﻟﺒﺮﻳﺪ ﺍﻟﺮﺳﻤﻲ ﻟﻠﻤﻮﻇﻒ ﻓﻲ ﺍﻟﻴﻮﻡ ﺫﺍﺗﻪ ﺗﺼﺮﻑ ﺍﻟﺮﻭﺍﺗﺐ ﻓﻲ ﺍﻟﻴﻮﻡ ﺍﻟﺨﺎﻣﺲ ﻭﺍﻟﻌﺸﺮﻳﻦ ﻣﻦ ﻛﻞ ﺷﻬﺮ ﻣﻴﻼﺩﻱ",
+      "passage: .المباشر ●المشاركة في مقابلة الخروج مع HR . ●استالم التسوية المالية النهائية خالل 10 أيام عمل من آخر .يوم سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10 أيام/سنة نعم جدول المتحانات الرسمي إجازة بدون راتب حتى 30 يوماً/سنة ال موافقة المدير + HR سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: شفهي المدير المباشر 3 أشهر 2 إنذار كتابي أول المدير + HR 6 أشهر 3 إنذار كتابي نهائي مدير القسم + HR 12 ًشهرا 4 خطة تحسين األداء ( PIP ) مدير HR 90 ًيوما 5 إنهاء الخدمة الرئيس التنفيذي / HR — 9",
+      "passage: ﺃﻳﺎﻡ ﻋﻤﻞ ﻣﻦ ﺗﺎﺭﻳﺦ ﺍﻟﺼﺮﻑ5 ﺧﻼﻝ 2ﺗﺘﻮﻟﻰ ﺇﺩﺍﺭﺓ ﺍﻟﺮﻭﺍﺗﺐ ﺍﻟﺘﺤﻘﻖ ﻣﻦ ﺍﻟﺒﻼﻍ ﻭﺍﻟﺮﺩ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺃﻳﺎﻡ ﻋﻤﻞ3 ﺧﻼﻝ 3ﺗﺴﻮﻳﺔ ﺍﻟﻔﺮﻭﻗﺎﺕ ﺍﻟﻤﺜﺒﺘﺔ ﺿﻤﻦ ﺍﻟﺮﺍﺗﺐ ﺍﻟﺘﺎﻟﻲ ﺃﻭ ﺑﺘﺤﻮﻳﻞ ﻋﺎﺟﻞ ﺣﺴﺐ ﺍﻟﺤﺎﻟﺔ ﺭﺍﺗﺐ ﺍﻟﺸﻬﺮ ﺍﻟﺘﺎﻟﻲ ﺃﻭ ﻓﻮﺭﻱ",
+      "passage: .2 :ﻓﻲ ﺣﺎﻝ ﺍﻛﺘﺸﺎﻑ ﺃﻱ ﺧﻄﺄ ﻓﻲ ﺍﻟﺮﺍﺗﺐ ﺍﻟﻤﺼﺮﻭﻑ، ﻳﺠﺐ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺨﻄﻮﺓ ﺍﻹﺟﺮﺍﺀ ﺍﻹﻃﺎﺭ ﺍﻟﺰﻣﻨﻲ 1ﺗﻘﺪﻳﻢ ﺑﻼﻍ ﺭﺳﻤﻲ ﻋﺒﺮ ﺍﻟﺒﻮﺍﺑﺔ ﻣﻊ ﺇﺭﻓﺎﻕ ﻛﺸﻒ ﺍﻟﺮﺍﺗﺐ ﺍﻟﻤﻮﺿﺢ ﺑﻪ ﺍﻟﺨﻄﺄ ﺃﻳﺎﻡ ﻋﻤﻞ ﻣﻦ ﺗﺎﺭﻳﺦ ﺍﻟﺼﺮﻑ5 ﺧﻼﻝ 2ﺗﺘﻮﻟﻰ ﺇﺩﺍﺭﺓ ﺍﻟﺮﻭﺍﺗﺐ",
+      "passage: . ﺇﺫﺍ ﺻﺎﺩﻑ ﻳﻮﻡ ﺍﻟﺼﺮﻑ ﻋﻄﻠﺔ ﺭﺳﻤﻴﺔ ﺃﻭ ﻧﻬﺎﻳﺔ ﺇﺟﺮﺍﺀﺍﺕ ﺗﺼﺤﻴﺢ ﺍﻷﺧﻄﺎﺀ ﻓﻲ ﺍﻟﺮﺍﺗﺐ4"
+    ],
+    "context_sources": [
+      "AR"
+    ],
+    "n_en_chunks": 0,
+    "n_ar_chunks": 7,
+    "answer": "el mwaahed btet3raf fe yom 25 men kol shahr. lw el yom da wa2af weekend, byet3raf el rateb fe yom el shoghl ely 2abalo 3al tool.",
+    "reference": "el mwaahed btet3raf fe yom 25 men kol shahr. lw el yom da wa2af 3otla rasmeyya aw weekend, byet3raf el rateb fe yom el shoghl ely 2abalo 3al tool.",
+    "timestamp": "2026-05-15T12:16:35.778653+00:00"
+  },
+  "C14_FR": {
+    "query_id": "C14_FR",
+    "concept_id": "C14",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "ar_policy.pdf",
+    "topic": "mental_health_leave",
+    "question": "kam yom agaza se77a nafseyya el muwazaf bya5od w hey madf3a?",
+    "contexts": [
+      "passage: اشتراك في تطبيقات التأمل مجاني لجميع الموظفين جلسات استشارة نفسية مجهولة حتى 6 جلسات ًسنويا خط دعم نفسي متاح 24/7 إجازة صحة نفسية يومان مدفوعان ًسنويا 1",
+      "passage: نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10 أيام/سنة نعم جدول المتحانات الرسمي إجازة بدون راتب حتى 30 يوماً/سنة ال موافقة المدير + HR سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام عمل نعم شهادة الميالد إجازة الوفاة 3 – 5 أيام نعم شهادة الوفاة إجازة الحج 20 يوم عمل (مرة )واحدة نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10",
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: .1 اإلجازة السنوية تُحتسب اإلجازة السنوية ًبناء على سنوات الخبرة وفق الجدول :أدناه سنوات الخدمة أيام اإلجازة السنوية الترحيل المسموح صرف الرصيد 0 – 1 (بعد )التجربة 14 يوم عمل حتى 7 أيام ال 1 – 5 سنوات",
+      "passage: جميع الموظفين الدرجة السياحية المتميزة رحلة طويلة (أكثر من 6 )ساعات حتى مستوى G3 الدرجة السياحية المتميزة رحلة طويلة (أكثر من 6 )ساعات مديرون G4 فأعلى درجة رجال األعمال رحلة خاصة / استثنائية بموافقة",
+      "passage: . ﺇﺫﺍ ﺻﺎﺩﻑ ﻳﻮﻡ ﺍﻟﺼﺮﻑ ﻋﻄﻠﺔ ﺭﺳﻤﻴﺔ ﺃﻭ ﻧﻬﺎﻳﺔ ﺇﺟﺮﺍﺀﺍﺕ ﺗﺼﺤﻴﺢ ﺍﻷﺧﻄﺎﺀ ﻓﻲ ﺍﻟﺮﺍﺗﺐ4"
+    ],
+    "context_sources": [
+      "AR"
+    ],
+    "n_en_chunks": 0,
+    "n_ar_chunks": 7,
+    "answer": "yomein fel sana w madf3in.",
+    "reference": "yomein fel sana w madf3in.",
+    "timestamp": "2026-05-15T13:08:27.502993+00:00"
+  },
+  "C16_EN": {
+    "query_id": "C16_EN",
+    "concept_id": "C16",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "expense_claim_deadline",
+    "question": "What is the deadline to submit an expense claim after the expense is incurred?",
+    "contexts": [
+      "passage: . ﻳﻮﻣﺎ ﻋﻠﻰ ﺗﺎﺭﻳﺦ ﺍﻟﻨﻔﻘﺔ30 ﻣﻼﺣﻈﺔ: ﻻ ﺗﻘﺒﻞ ﺍﻟﻤﻄﺎﻟﺒﺎﺕ ﺍﻟﻤﻘﺪﻣﺔ ﺑﻌﺪ ﻣﺮﻭﺭ",
+      "passage: .). Reimbursement requests must be submitted via the HR Portal with original receipts within 60 days of the qualifying expenditure. Unused balances do not carry over to the following year. 5",
+      "passage: .الرسمية ●يُقدَّم تقرير تسوية النفقات والفواتير األصلية خالل 7 أيام عمل من .العودة ●النفقات غير الموثقة ال تُسدَّد بأي حال من .األحوال سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .التسجيل ●يلتزم الموظف بالبقاء في الشركة مدة ال تقل عن سنتين بعد الحصول على .المنحة ●يُعاد تقديم طلب المنحة ًسنويا ويُقيَّم ًبناء على األداء الوظيفي",
+      "passage: .2 :ﻳﻘﺪﻡ ﻃﻠﺐ ﺗﺴﻮﻳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﻋﺒﺮ ﺍﻟﺒﻮﺍﺑﺔ ﺍﻹﻟﻜﺘﺮﻭﻧﻴﺔ ﻭﻓﻖ ﺍﻟﺨﻄﻮﺍﺕ ﺍﻟﺘﺎﻟﻴﺔ ﺍﻟﺨﻄﻮﺓ ﺍﻹﺟﺮﺍﺀ ﺍﻹﻃﺎﺭ ﺍﻟﺰﻣﻨﻲ 1ﺍﺳﺘﻴﻔﺎﺀ ﻧﻤﻮﺫﺝ ﻃﻠﺐ ﺍﻟﺘﺴﻮﻳﺔ ﺇﻟﻜﺘﺮﻭﻧﻴﺎ ﻣﻊ ﺇﺭﻓﺎﻕ ﺍﻟﻔﻮﺍﺗﻴﺮ ﺍﻷﺻﻠﻴﺔ 2ﺍﻋﺘﻤﺎﺩ ﺍﻟﻤﺪﻳﺮ ﺍﻟﻤﺒﺎﺷﺮ ﻟﻠﻄﻠﺐ ﺃﻳﺎﻡ ﻋﻤﻞ3",
+      "passage: .المباشر ●المشاركة في مقابلة الخروج مع HR . ●استالم التسوية المالية النهائية خالل 10 أيام عمل من آخر .يوم سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: . • Applications must be submitted at least 30 days before the event. • Employees must share a written summary of key takeaways within 10 days of returning"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 5,
+    "answer": "The deadline to submit an expense claim after the expense is incurred is within 30 days of the qualifying expenditure [Page 4|EN].",
+    "reference": "Expense claims must be submitted within 30 days of the date the expense was incurred. Claims submitted after 30 days are not accepted under any circumstances.",
+    "timestamp": "2026-05-15T13:10:31.062227+00:00"
+  },
+  "C22_EG": {
+    "query_id": "C22_EG",
+    "concept_id": "C22",
+    "language": "egyptian",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "journalist_contact",
+    "question": "صحفي تواصل معايا مباشرة يطلب تعليق عن الشركة. أعمل إيه؟",
+    "contexts": [
+      "passage: . Employees who are contacted directly by journalists or media organisations must not respond and should forward the enquiry to communications@horizontech.com immediately.",
+      "passage: . 3.3 Media & Press Enquiries All media enquiries — including requests for interviews, comments, or statements — must be directed to the Communications team",
+      "passage: صياغة المسودات والتقارير إدخال بيانات العمالء أو بياناتهم الشخصية توليد أفكار وعروض تقديمية مشاركة األكواد البرمجية المملوكة للشركة تلخيص الوثائق العامة استخدام األدوات غير المعتمدة ًرسميا دعم مهام",
+      "passage: .4 Social Media & External Communications Employees must not publish, share, or discuss confidential company information, client data, or proprietary processes on any public platform or social media",
+      "passage: .1 :ﺗﺘﺒﻊ ﺍﻟﺸﺮﻛﺔ ﻧﻤﻮﺫﺟﺎ ﻣﻮﺣﺪﺍ ﻟﻠﻤﻘﺎﺑﻼﺕ ﻳﻀﻤﻦ ﺗﻘﻴﻴﻤﺎ ﻣﻨﺼﻔﺎ ﻭﻣﻮﺿﻮﻋﻴﺎ ﻟﺠﻤﻴﻊ ﺍﻟﻤﺘﻘﺪﻣﻴﻦ ﺍﻟﻤﺮﺣﻠﺔ ﺍﻟﻨﻮﻉ ﺍﻟﻤﺪﺓ ﺍﻟﻤﻘﻴﻢ ﻓﺮﺯ ﺍﻟﺴﻴﺮﺓ ﺍﻟﺬﺍﺗﻴﺔ1ﻣﺮﺍﺟﻌﺔ ﻣﻮﺍﺭﺩ ﺑﺸﺮﻳﺔ ﺍﻟﻤﻮﺍﺭﺩ ﺍﻟﺒﺸﺮﻳﺔ ﻣﻘﺎﺑﻠﺔ ﻫﺎﺗﻔﻴﺔ ﺃﻭﻟﻴﺔ2ﺗﻠﻴﻔﻮﻥ ﻓﻴﺪﻳﻮ",
+      "passage: .1 اإلجراء التأديبي التدريجي تتبع الشركة ًنهجا ًتأديبيا ًتدريجيا يهدف إلى تصحيح السلوك قبل اللجوء إلى :الفصل المرحلة اإلجراء من يُصدره مدة الصالحية 1 تحذير شفهي المدير المباشر 3 أشهر 2 إنذار كتابي أول",
+      "passage: .2 اإلفصاح عن تضارب المصالح يجب على الموظفين اإلفصاح الفوري لقسم الموارد البشرية عن أي حالة تتعارض فيها مصلحة شخصية أو مالية مع مصالح ،الشركة بما في :ذلك ●العمل مع موردين أو شركاء لهم صلة شخصية أو"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 4,
+    "answer": "ده مش مسموح، أنت لازم ترد على الصحفي أو وسيلة الإعلام دي؟ لأ! هياخد الإيميل ده كله وتبعته لـ communications@horizontech.com فورًا [Page 3 | EN]. أي تحقيقات أو طلبات تعليق ممكن تيجي من وسائل إعلام، ممكن ترد بس تبعتها لفريق العلاقات العامة [Page 3 | EN].",
+    "reference": "متردش على الصحفي خالص. لازم تحول الاستفسار فورًا لفريق الاتصالات على communications@horizontech.com. كل الاستفسارات الإعلامية — بما فيها طلبات المقابلات والتعليقات — لازم توجه لفريق الاتصالات بس.",
+    "timestamp": "2026-05-15T13:14:34.025188+00:00"
+  },
+  "C10_FR": {
+    "query_id": "C10_FR",
+    "concept_id": "C10",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "ltd_benefit",
+    "question": "badl el 3agz el taweel el amad biyedfa3 ad eih w biyestamr ad eih?",
+    "contexts": [
+      "passage: .3 Long-Term Disability (LTD) Employees who are unable to work for more than 90 consecutive days due to a medically certified disability will receive a monthly LTD benefit equal to 60% of their last",
+      "passage: . ﻳﻮﻣﺎ90 ﻫﻴﻜﻞ ﺑﺮﻧﺎﻣﺞ ﺍﻟﺘﺄﻫﻴﻞ4.1 : ﻳﻮﻣﺎ ﻭﻳﻘﺴﻢ ﺇﻟﻰ ﺛﻼﺙ ﻣﺮﺍﺣﻞ ﺭﺋﻴﺴﻴﺔ90 ﻳﺴﺘﻤﺮ ﺑﺮﻧﺎﻣﺞ ﺍﻟﺘﺄﻫﻴﻞ ﺍﻟﺸﺎﻣﻞ",
+      "passage: death, permanent total disability, or the loss of a limb or sight resulting from an accident",
+      "passage: .2 Accidental Death & Dismemberment (AD&D) An additional AD&D; benefit is provided, equal to one times (1×) the annual gross salary, covering accidental death, permanent total disability, or the loss",
+      "passage: .5× 4 – Exceeds Expectations Consistently surpasses targets Up to 15% 1",
+      "passage: to 8,000 EGP/year Orthodontics Rider 200 EGP Up to 15,000 EGP lifetime Enhanced Optical 80 EGP Up to 2,000 EGP/year Critical Illness Rider 120 EGP Lump sum 100,000 EGP Worldwide Emergency 180 EGP Up",
+      "passage: .5 ﻳﺘﺠﺎﻭﺯ ﺍﻟﺘﻮﻗﻌﺎﺕ4ﻳﺘﺠﺎﻭﺯ ﺍﻷﻫﺪﺍﻑ ﺑﺎﺳﺘﻤﺮﺍﺭ 15 ﺣﺘﻰ1.25 ﻳﺤﻘﻖ ﺍﻟﺘﻮﻗﻌﺎﺕ3ﻳﺤﻘﻖ ﺟﻤﻴﻊ ﺍﻷﻫﺪﺍﻑ 8 ﺣﺘﻰ1 ﻳﺤﺘﺎﺝ ﺗﺤﺴﻴﻨﺎ2ﻳﺤﻘﻖ ﺍﻷﻫﺪﺍﻑ ﺟﺰﺋﻴﺎ0 ﻏﻴﺮ ﻣﺮﺽ1ﻻ ﻳﺤﻘﻖ ﺍﻟﻤﺘﻄﻠﺒﺎﺕ ﺍﻷﺳﺎﺳﻴﺔ0 ﺍﻻﺳﺘﻘﻄﺎﻋﺎﺕ ﺍﻹﻟﺰﺍﻣﻴﺔ3. ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻻﺟﺘﻤﺎﻋﻴﺔ3"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 2,
+    "answer": "El LTD biyedfa3 60% el salary [Page 3 | EN], w biyestamr 24 shahr.",
+    "reference": "badl el 3agz el taweel el amad biyedfa3 60% men a5er rateb asasy kol shahr. biyestamr le7ad 24 shahr aw le7ad ma el doktor ye2ul en el muwazaf 2adar yerga3 yeshtaghal, ayahoma a2rab. w da biyebda2 ba3d 90 yom motawasel men el 3agz el mothabbet tebbyan.",
+    "timestamp": "2026-05-15T14:45:16.506745+00:00"
+  },
+  "C18_FR": {
+    "query_id": "C18_FR",
+    "concept_id": "C18",
+    "language": "franco",
+    "complexity": "L3",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "mandatory_training_modules",
+    "question": "eih kol wa7dat el imtithal el tadribeyya el elzameyya el sanaweyya w mawa3eedha?",
+    "contexts": [
+      "passage: . 2. Mandatory Compliance Training 2.1 Annual Mandatory Modules All employees must complete the following compliance training modules annually",
+      "passage: .1 المحفظة التعليمية السنوية يُمنح كل موظف محفظة تعليمية سنوية تُستخدم في الدورات التدريبية والشهادات المعتمدة وفق الجدول :التالي الفئة الوظيفية قيمة المحفظة )ً(سنويا أيام التدريب المدفوعة موظف جديد (",
+      "passage: .3 إجراءات الطوارئ تُجرى تدريبات اإلخالء الطارئ مرتين ًسنويا على .األقل يتحمل كل قسم مسؤولية تعيين مسؤول طوارئ يكون نقطة التصال الرئيسية في ح الت .األزمات سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: )ً(سنويا أيام التدريب المدفوعة موظف جديد ( 0 – 1 )سنة $2,500 5 أيام موظف متوسط ( 1 – 5 )سنوات $5,000 8 أيام مدير / قائد فريق $8,000 10 أيام مدير تنفيذي ( G4 )فأعلى $12,000 15 ًيوما 2",
+      "passage: Annual Learning Budgets, Mandatory Compliance Training, Internal Learning Paths, External Conference Attendance, Certification Reimbursement, Mentorship Programme, and Leadership Academy",
+      "passage: basics People Leadership Team leads, managers 6 months Coaching, feedback, HR basics Client Solutions Sales, Pre-sales, CS 3 months Consultative selling, CRM, negotiation Finance & Compliance",
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 4,
+    "answer": "El wa7dat el imtithal el tadribeyya el elzameyya el sanaweyya: kol el 3amal men 7asab el modules el elzameyya fel tadrib el 3ala el 3adala 3ala 7asab el 3am",
+    "reference": "kol el muwazafin lazem yekhalasu: wa3y amn el ma3lomat (sa3a online, 31 Mares); 7imayyet el bayanat w GDPR (sa3a w nos online, 31 Mares); mokafahet el reshwa wel fasad (sa3a online, 30 Yunyu); men3 el taharrush (sa3a online, 30 Yunyu); salamet el 7ara2e2 (sa3ateen 7aduri, 30 Sebtamber); akhlaqiyyat el AI (45 de2i2a online, 31 Mares). wel grade G3 fa2 lazem yekhalasu kaman asasiyyat el edara (3 sa3at online, 31 Mares).",
+    "timestamp": "2026-05-15T14:50:58.080752+00:00"
+  },
+  "C23_FR": {
+    "query_id": "C23_FR",
+    "concept_id": "C23",
+    "language": "franco",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "phased_return_parental",
+    "question": "ana rager3 men agaza abawa. a2dar ashtaghal besa3at a2al be rateb kamil?",
+    "contexts": [
+      "passage: . During this period, the employee may work reduced hours (minimum 60% of standard hours) at full pay",
+      "passage: كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام عمل نعم شهادة الميالد إجازة الوفاة 3 – 5 أيام نعم شهادة الوفاة إجازة الحج 20 يوم عمل (مرة )واحدة نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10",
+      "passage: .2 :ﻳﺘﻜﻮﻥ ﺍﻟﺮﺍﺗﺐ ﺍﻹﺟﻤﺎﻟﻲ ﻣﻦ ﺍﻟﻌﻨﺎﺻﺮ ﺍﻟﺘﺎﻟﻴﺔ ﺍﻟﻤﻜﻮﻥ ﺍﻟﻘﻴﻤﺔ ﺍﻟﻨﺴﺒﺔ ﺍﻟﺸﺮﻁ ﺍﻟﺨﻀﻮﻉ ﻟﻠﻀﺮﻳﺒﺔ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ ﻳﺤﺪﺩ ﻋﻨﺪ ﺍﻟﺘﻌﻴﻴﻦ ﺃﻭ ﺍﻟﻤﺮﺍﺟﻌﺔ ﺟﻤﻴﻊ ﺍﻟﻤﻮﻇﻔﻴﻦ ﻧﻌﻢ ﺑﺪﻝ ﺍﻟﻤﻮﺍﺻﻼﺕ ﺟﻨﻴﻪ ﺷﻬﺮ1,500ﺟﻤﻴﻊ ﺍﻟﻤﻮﻇﻔﻴﻦ ﻧﻌﻢ ﺑﺪﻝ",
+      "passage: نعم تصريح الحج إجازة الدراسة/ المتحانات حتى 10 أيام/سنة نعم جدول المتحانات الرسمي إجازة بدون راتب حتى 30 يوماً/سنة ال موافقة المدير + HR سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: .5 راتب شهري عن كل سنة 3 – 5 سنوات راتب شهري كامل عن كل سنة أكثر من 5 سنوات 1.5 راتب شهري عن كل سنة 10",
+      "passage: .2 أنواع اإلجازات األخرى نوع اإلجازة المدة مدفوعة؟ المستندات المطلوبة إجازة الزواج 5 أيام عمل نعم عقد الزواج (خالل 30 )ًيوما إجازة األمومة 90 ًيوما كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام",
+      "passage: ﺟﻨﻴﻪ ﺷﻬﺮ ﻣﺮﺍﺟﻌﺔ ﺳﻨﻮﻳﺔ 1ﻣﻨﺴﻖ ﻣﺴﺎﻋﺪ8,000 15,000ﻧﻌﻢ 2ﻣﺘﺨﺼﺺ ﻣﺘﺨﺼﺺ ﺃﻭﻝ15,000 28,000ﻧﻌﻢ 3ﻗﺎﺋﺪ ﻓﺮﻳﻖ ﻣﺸﺮﻑ28,000 45,000ﻧﻌﻢ 4ﻣﺪﻳﺮ45,000 70,000ﻧﻌﻢ 5ﻣﺪﻳﺮ ﺃﻭﻝ ﻣﺪﻳﺮ ﺇﺩﺍﺭﺓ70,000 120,000ﻧﻌﻢ ﻣﻜﻮﻧﺎﺕ ﺍﻟﺮﺍﺗﺐ ﺍﻹﺟﻤﺎﻟﻲ1"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 6,
+    "answer": "aywa. el muwazafin el rag3een men agaza omuma aw abawa ye2daru yetlabu nezam 3awda tadrageya le modet le7ad 8 asabi3. fe el fatrah di te2dar teshtaghal besa3at a2al (bel 7ad el adna 60% men el sa3at el 3adeya) be rateb kamil. lazem tettafe2 3ala khettet el 3awda ma3 muderak el mubashir wel HR 2ala el a2al osboo3ain 2abel maw3id el rogo3.",
+    "reference": "aywa. el muwazafin el rag3een men agaza omuma aw abawa ye2daru yetlabu nezam 3awda tadrageya le modet le7ad 8 asabi3. fe el fatrah di te2dar teshtaghal besa3at a2al (bel 7ad el adna 60% men el sa3at el 3adeya) be rateb kamil. lazem tettafe2 3ala khettet el 3awda ma3 muderak el mubashir wel HR 2ala el a2al osboo3ain 2abel maw3id el rogo3.",
+    "timestamp": "2026-05-15T14:55:13.066470+00:00"
+  },
+  "C01_FR": {
+    "query_id": "C01_FR",
+    "concept_id": "C01",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "overtime",
+    "question": "eih nisbit taweed el overtime fi ayyam el shoghl el 3adeya?",
+    "contexts": [
+      "passage: )ً(سنويا أيام التدريب المدفوعة موظف جديد ( 0 – 1 )سنة $2,500 5 أيام موظف متوسط ( 1 – 5 )سنوات $5,000 8 أيام مدير / قائد فريق $8,000 10 أيام مدير تنفيذي ( G4 )فأعلى $12,000 15 ًيوما 2",
+      "passage: 20% of base salary G4 and above Non-taxable Shift Allowance 25% of daily rate Night shift only Per shift worked Remote Work 800 EGP/month Approved remote roles Internet/utilities On-Call 200 EGP/day",
+      "passage: . Reimbursement rates differ by tier: Tier Examples First Attempt Retake (max 1) Study Leave Tier 1 — Strategic AWS Solutions Architect, PMP, CFA, CISA 100% 50% Up to 3 days Tier 2 — Functional Google",
+      "passage: .3 Long-Term Disability (LTD) Employees who are unable to work for more than 90 consecutive days due to a medically certified disability will receive a monthly LTD benefit equal to 60% of their last",
+      "passage: 8 days Included G3 – Lead / Supervisor $8,000 10 days Included G4 – Manager $10,000 12 days Included G5 – Senior Manager / Director $12,000 15 days Included 1",
+      "passage: .5× the hourly rate on weekdays and 2× the hourly rate on weekends or public holidays. 1",
+      "passage: . During this period, the employee may work reduced hours (minimum 60% of standard hours) at full pay"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 6,
+    "n_ar_chunks": 1,
+    "answer": "byet7aseb be 1.5 de3f el ogr el sa3i.",
+    "reference": "byet7aseb be 1.5 de3f el ogr el sa3i.",
+    "timestamp": "2026-05-15T19:25:57.637357+00:00"
+  },
+  "C02_FR": {
+    "query_id": "C02_FR",
+    "concept_id": "C02",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "health_insurance_start",
+    "question": "el ta2min el se77i biyebda2 emta lel muwazaf el gedid?",
+    "contexts": [
+      "passage: . • Health insurance coverage begins from the first day of employment. 1",
+      "passage: .3 Health Insurance All full-time employees are enrolled in the company health insurance plan from their first day of employment",
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: 1. Health Insurance Plan 1.1 Plan Overview All full-time employees are automatically enrolled in Horizon Tech's group health insurance plan from their first day of employment",
+      "passage: . The LTD benefit continues for a maximum of 24 months or until the employee is medically certified as fit to return to work, whichever occurs first. 3. Employee Assistance Programme (EAP) 3",
+      "passage: ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ ﺍﺟﺘﻴﺎﺯ ﺍﻻﺧﺘﺒﺎﺭ ﺇﻧﻬﺎﺀ ﺍﻟﻌﻘﺪ ﻣﻦ ﺃﻱ ﻃﺮﻑ ﺃﻳﺎﻡ ﻓﻘﻂ7 ﺑﺈﺷﻌﺎﺭ ﻛﺘﺎﺑﻲ ﻣﺪﺗﻪ ﺗﻘﻴﻴﻤﺎﺕ ﺍﻷﺩﺍﺀ ﺍﻟﺪﻭﺭﻳﺔ ﻓﻲ ﻧﻬﺎﻳﺔ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ ﻭﺍﻟﺸﻬﺮ ﺍﻟﺜﺎﻟﺚ ﺑﺮﻧﺎﻣﺞ ﺗﺄﻫﻴﻞ ﺍﻟﻤﻮﻇﻔﻴﻦ ﺍﻟﺠﺪﺩ4",
+      "passage: . Coverage extends to the employee's legal spouse and up to three dependent children under the age of 25. 1"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 2,
+    "answer": "El ta2min el se77i biyebda2 men el yawm el awal lel muwazaf el gedid.",
+    "reference": "el ta2min el se77i biyebda2 men awel yom shoghl le kol el muwazafin bel dawam el kamil.",
+    "timestamp": "2026-05-15T19:27:32.799580+00:00"
+  },
+  "C12_FR": {
+    "query_id": "C12_FR",
+    "concept_id": "C12",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "social_insurance_rate",
+    "question": "eih nisblet ishtrak el muwazaf fe el ta2minat el egtema3eyya w eih nisblet el sharka?",
+    "contexts": [
+      "passage: . ﺗﺤﺘﺴﺐ ﺍﻻﺷﺘﺮﺍﻛﺎﺕ ﻋﻠﻰ ﻣﻜﻮﻧﻲ ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ ﻭﺍﻟﻤﺘﻐﻴﺮ2019 ﻟﺴﻨﺔ148 ﺍﻻﺟﺘﻤﺎﻋﻴﺔ ﻭﻓﻖ ﻗﺎﻧﻮﻥ ﺍﻟﺘﺄﻣﻴﻦ ﺍﻻﺟﺘﻤﺎﻋﻲ ﻭﺍﻟﻤﻌﺎﺷﺎﺕ ﺭﻗﻢ ﺗﻄﺒﻖ ﺍﺷﺘﺮﺍﻛﺎﺕ ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻟﻄﺮﻑ ﻧﺴﺒﺔ ﺍﻻﺳﺘﻘﻄﺎﻉ ﺍﻷﺳﺎﺱ ﺍﻟﺤﺴﺎﺑﻲ ﺣﺼﺔ ﺍﻟﻤﻮﻇﻒ11 ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ",
+      "passage: . 5. Retirement & Savings 5.1 Social Insurance All employees are enrolled in Egypt's national social insurance scheme in accordance with the Social Insurance and Pensions Law No. 148 of 2019",
+      "passage: .بالموظف ●امتالك حصة ملكية في شركة .منافسة ●أي عالقة مالية مع طرف تجاري .للشركة سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .2 الصحة النفسية ورفاهية الموظف تدرك الشركة أهمية الصحة النفسية لإلنتاجية والوالء ،الوظيفي وتوفر الخدمات التالية ًمجانا لجميع :موظفيها الخدمة التفاصيل اشتراك في تطبيقات التأمل مجاني لجميع الموظفين",
+      "passage: اشتراك في تطبيقات التأمل مجاني لجميع الموظفين جلسات استشارة نفسية مجهولة حتى 6 جلسات ًسنويا خط دعم نفسي متاح 24/7 إجازة صحة نفسية يومان مدفوعان ًسنويا 1",
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: .1 :ﺗﺴﺪﺩ ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ ﺍﻟﻤﻮﺛﻘﺔ ﺍﻟﺘﻲ ﻳﺘﺤﻤﻠﻬﺎ ﺍﻟﻤﻮﻇﻒ ﺑﺴﺒﺐ ﻣﻬﺎﻡ ﺍﻟﻌﻤﻞ ﻭﻓﻖ ﺍﻟﺤﺪﻭﺩ ﺍﻟﺘﺎﻟﻴﺔ ﻧﻮﻉ ﺍﻟﻨﻔﻘﺔ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺍﻟﻤﺴﺘﻨﺪﺍﺕ ﺍﻟﻤﻄﻠﻮﺑﺔ ﻭﺟﺒﺎﺕ ﺍﻟﻌﻤﻞ ﺍﻟﻔﺮﺩﻳﺔ ﺟﻨﻴﻪ ﻭﺟﺒﺔ150ﻓﺎﺗﻮﺭﺓ ﺿﺮﻳﺒﻴﺔ ﺍﺟﺘﻤﺎﻉ ﻋﻤﻞ ﻣﻊ ﻋﻤﻴﻞ ﺟﻨﻴﻪ"
+    ],
+    "context_sources": [
+      "EN",
+      "AR"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 6,
+    "answer": "El ishtrak el muwazaf fe el ta2minat el egtema3eyya huwa 11% (men el passage fe Page 3|AR), w el sharka  bitedf3 18.75%, wel ijmali 29.75%.",
+    "reference": "el muwazaf biyedfa3 11% men el agr el thabet wel motghayyer ke ishtrak fe el ta2minat el egtema3eyya, wel sharka bitedf3 18.75%, wel ijmali 29.75%.",
+    "timestamp": "2026-05-15T19:44:45.492387+00:00"
+  },
+  "C03_FR": {
+    "query_id": "C03_FR",
+    "concept_id": "C03",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "housing_allowance",
+    "question": "bedl el sakan ad eih w meen ely bya5odo?",
+    "contexts": [
+      "passage: ﺑﺪﻝ ﺍﻟﻤﻮﺍﺻﻼﺕ ﺟﻨﻴﻪ ﺷﻬﺮ1,500ﺟﻤﻴﻊ ﺍﻟﻤﻮﻇﻔﻴﻦ ﻧﻌﻢ ﺑﺪﻝ ﺍﻟﻤﻮﺑﺎﻳﻞ ﺟﻨﻴﻪ ﺷﻬﺮ500 ﻓﺄﻋﻠﻰ2 ﺍﻟﺪﺭﺟﺔ ﻻ ﺑﺪﻝ ﺍﻟﺴﻜﻦ ﻣﻦ ﺍﻟﺮﺍﺗﺐ ﺍﻷﺳﺎﺳﻲ20 ﻓﺄﻋﻠﻰ4 ﺍﻟﺪﺭﺟﺔ ﻻ ﺑﺪﻝ ﺍﻟﻮﺭﺩﻳﺔ ﺍﻟﻠﻴﻠﻴﺔ ﻣﻦ ﻣﻌﺪﻝ ﺍﻟﻴﻮﻡ25 ﻣﻮﻇﻔﻮ ﺍﻟﻮﺭﺩﻳﺔ ﺍﻟﻠﻴﻠﻴﺔ ﻧﻌﻢ ﺑﺪﻝ",
+      "passage: .الرسمي ●يُمنح بدل العمل عن بُعد بقيمة 800 جنيه مصري/شهر لتغطية تكاليف اإلنترنت .والمرافق ● سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .2 بدالت المعيشة اليومية نوع السفر البدل اليومي يشمل داخل الدولة $100 الوجبات والمواصالت خارج الدولة — المنطقة العربية $200 الوجبات والمواصالت واإلنترنت خارج الدولة — دولي $250 الوجبات والمواصالت",
+      "passage: ﻣﻦ ﻣﻌﺪﻝ ﺍﻟﻴﻮﻡ25 ﻣﻮﻇﻔﻮ ﺍﻟﻮﺭﺩﻳﺔ ﺍﻟﻠﻴﻠﻴﺔ ﻧﻌﻢ ﺑﺪﻝ ﺍﻻﺳﺘﻌﺪﺍﺩ ﺟﻨﻴﻪ ﻳﻮﻡ200ﻣﻮﻇﻔﻮ ﺍﻟﻬﻨﺪﺳﺔ ﻋﻨﺪ ﺍﻟﺘﻔﻌﻴﻞ ﻧﻌﻢ ﺍﻟﻤﻜﺎﻓﺂﺕ ﻭﺍﻟﺤﻮﺍﻓﺰ ﺍﻟﺴﻨﻮﻳﺔ2",
+      "passage: ﺑﻌﺪ ﺟﻨﻴﻪ ﺷﻬﺮ800ﻓﺎﺗﻮﺭﺓ ﺍﻟﺨﺪﻣﺔ ﻣﺴﺘﻠﺰﻣﺎﺕ ﻣﻜﺘﺒﻴﺔ ﺟﻨﻴﻪ ﺷﻬﺮ300ﻓﺎﺗﻮﺭﺓ ﺃﺻﻠﻴﺔ ﺇﺟﺮﺍﺀﺍﺕ ﺗﻘﺪﻳﻢ ﻃﻠﺒﺎﺕ ﺍﻟﺘﺴﻮﻳﺔ5",
+      "passage: . The subsidy is applied as a direct corporate billing arrangement — employees do not pay up front and receive no cash equivalent",
+      "passage: . ﻳﻮﻣﺎ ﻋﻠﻰ ﺗﺎﺭﻳﺦ ﺍﻟﻨﻔﻘﺔ30 ﻣﻼﺣﻈﺔ: ﻻ ﺗﻘﺒﻞ ﺍﻟﻤﻄﺎﻟﺒﺎﺕ ﺍﻟﻤﻘﺪﻣﺔ ﺑﻌﺪ ﻣﺮﻭﺭ"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 6,
+    "answer": "Bedl el sakan ad eih w meen ely bya5odo? \nMesh mawgoda fel policy.",
+    "reference": "bedl el sakan byekun 20% men el rateb el asasy, w bya5odo el muwazafin men grade G4 fe2 wala a3la, w mesh betit2a5od menno darayeb.",
+    "timestamp": "2026-05-15T20:03:52.983605+00:00"
+  },
+  "C06_FR": {
+    "query_id": "C06_FR",
+    "concept_id": "C06",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "life_insurance",
+    "question": "el ta2min 3ala el 7ayah el gama3y biyedi ad eih?",
+    "contexts": [
+      "passage: . 2. Life & Disability Insurance 2.1 Group Life Insurance Horizon Tech provides all full-time employees with group life insurance at no cost to the employee",
+      "passage: .2 Accidental Death & Dismemberment (AD&D) An additional AD&D; benefit is provided, equal to one times (1×) the annual gross salary, covering accidental death, permanent total disability, or the loss",
+      "passage: to 8,000 EGP/year Orthodontics Rider 200 EGP Up to 15,000 EGP lifetime Enhanced Optical 80 EGP Up to 2,000 EGP/year Critical Illness Rider 120 EGP Lump sum 100,000 EGP Worldwide Emergency 180 EGP Up",
+      "passage: . Coverage Item Employee Spouse Children Outpatient Visits 100% 80% 80% Hospitalization 100% 90% 90% Dental 70% 50% 50% Optical 500 EGP/year 300 EGP/year 300 EGP/year Pharmacy 80% 70% 70% Confidential",
+      "passage: . Employees should contact the EAP directly via the dedicated hotline or the Horizon Portal for referrals.",
+      "passage: .2 Extended Coverage — Optional Add-Ons Employees may enrol in optional supplemental coverage during the annual open enrolment window (October 1–15) or within 30 days of a qualifying life event",
+      "passage: . The following add-ons are available at subsidised group rates: Add-On Plan Monthly Premium (Employee Share) Coverage Limit Enhanced Dental 150 EGP Up to 8,000 EGP/year Orthodontics Rider 200 EGP Up"
+    ],
+    "context_sources": [
+      "EN"
+    ],
+    "n_en_chunks": 7,
+    "n_ar_chunks": 0,
+    "answer": "El ta2min 3ala el 7ayah el gama3y biyedi ad 100% li el mozwag, 90% li el zawg, w 90% li el atfal.",
+    "reference": "el ta2min 3ala el 7ayah el gama3y biyedi mablag yesawi 2 dif3 el rateb el ejmali el sanawi lel muwazaf, w biyetdfa3 daf3a wa7da lel mostafid el mosamma fe 7alet el wafah men ay sabab. el sharka betdfa3o bi don ay taklufa 3al muwazaf.",
+    "timestamp": "2026-05-15T20:05:44.499336+00:00"
+  },
+  "C11_FR": {
+    "query_id": "C11_FR",
+    "concept_id": "C11",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "emergency_loan",
+    "question": "el muwazaf ye2dar yesta2red ad eih ke2ard tare2 bi don fawa2ed w eih shorut el sedad?",
+    "contexts": [
+      "passage: .1 Emergency Interest-Free Loans Employees who have completed their probation period may apply for an emergency salary advance of up to two months' net salary, repayable over a maximum of 12 equal",
+      "passage: . The benefit is equal to two times (2×) the employee's annual gross salary, paid as a lump sum to the designated beneficiary in the event of death from any cause (accidental or natural)",
+      "passage: . • Any single procedure estimated to cost more than 5,000 EGP. • All overseas medical procedures claimed under the travel emergency benefit",
+      "passage: .2 Accidental Death & Dismemberment (AD&D) An additional AD&D; benefit is provided, equal to one times (1×) the annual gross salary, covering accidental death, permanent total disability, or the loss",
+      "passage: .2 اشتراطات العمل عن بُعد ●توفير اتصال إنترنت مستقر ال يقل عن 20 Mbps . ●الحضور في الجتماعات الفتراضية بالكاميرا مفتوحة إال ألسباب .مبررة ●الستجابة لرسائل العمل خالل 30 دقيقة في أوقات الدوام",
+      "passage: .3 إجراءات الطوارئ تُجرى تدريبات اإلخالء الطارئ مرتين ًسنويا على .األقل يتحمل كل قسم مسؤولية تعيين مسؤول طوارئ يكون نقطة التصال الرئيسية في ح الت .األزمات سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: . ﺍﻟﻤﻜﺎﻓﺄﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻋﻠﻰ ﺍﻷﺩﺍﺀ2.1 .ﺗﻤﻨﺢ ﺍﻟﻤﻜﺎﻓﺄﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻟﻠﻤﻮﻇﻔﻴﻦ ﺍﻟﻤﺆﻫﻠﻴﻦ ﺑﻨﺎﺀ ﻋﻠﻰ ﺗﻘﻴﻴﻢ ﺍﻷﺩﺍﺀ ﺍﻟﻔﺮﺩﻱ ﻭﻧﺘﺎﺋﺞ ﺍﻟﺸﺮﻛﺔ :ﺷﺮﻭﻁ ﺍﻻﺳﺘﺤﻘﺎﻕ . ﺃﺷﻬﺮ ﺧﺪﻣﺔ ﻓﻌﻠﻴﺔ ﻋﻠﻰ ﺍﻷﻗﻞ ﺧﻼﻝ ﺍﻟﺴﻨﺔ ﺍﻟﺘﻘﻮﻳﻤﻴﺔ6 ﺇﺗﻤﺎﻡ"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 3,
+    "answer": "El muwazaf ye2dar yesta2red ad eih ke2ard tare2 bi don fawa2ed, w el shorut el sedad howa el takayyef el fardi w nata2ij el sharika, w lazem ye2dar yesta2red 6 shohoor khidma, w el fawa2ed el muwazaf ye2dar yesta2redha howa el mukafa2a el sanawiya, w el mukafa2a el sanawiya tamnah lel muwazafin el mu2ahilin, w el shorut el sedad howa el takayyef el fardi w nata2ij el sharika.",
+    "reference": "el muwazaf ely 5alas fatret el ekhtebar ye2dar yesta2red le7ad shahrain net mrateb ke2ard tare2 bi don fawa2ed. byetraded 3ala 12 2est shahri motasawi ke7ad a2sa men el rateb. masmo7 bas be2ard wa7ed nasha2 fe nafs el wa2t, w lazem yetamedo HR wel maliyya.",
+    "timestamp": "2026-05-15T20:10:44.624044+00:00"
+  },
+  "C12_EN": {
+    "query_id": "C12_EN",
+    "concept_id": "C12",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "social_insurance_rate",
+    "question": "What is the employee's social insurance contribution rate, and what is the employer's share?",
+    "contexts": [
+      "passage: . Under this plan, employees may elect to contribute between 2% and 10% of their base salary each month on a pre-tax basis. Horizon Tech matches contributions up to 4% of base salary",
+      "passage: . The following add-ons are available at subsidised group rates: Add-On Plan Monthly Premium (Employee Share) Coverage Limit Enhanced Dental 150 EGP Up to 8,000 EGP/year Orthodontics Rider 200 EGP Up",
+      "passage: . ﺗﺤﺘﺴﺐ ﺍﻻﺷﺘﺮﺍﻛﺎﺕ ﻋﻠﻰ ﻣﻜﻮﻧﻲ ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ ﻭﺍﻟﻤﺘﻐﻴﺮ2019 ﻟﺴﻨﺔ148 ﺍﻻﺟﺘﻤﺎﻋﻴﺔ ﻭﻓﻖ ﻗﺎﻧﻮﻥ ﺍﻟﺘﺄﻣﻴﻦ ﺍﻻﺟﺘﻤﺎﻋﻲ ﻭﺍﻟﻤﻌﺎﺷﺎﺕ ﺭﻗﻢ ﺗﻄﺒﻖ ﺍﺷﺘﺮﺍﻛﺎﺕ ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻟﻄﺮﻑ ﻧﺴﺒﺔ ﺍﻻﺳﺘﻘﻄﺎﻉ ﺍﻷﺳﺎﺱ ﺍﻟﺤﺴﺎﺑﻲ ﺣﺼﺔ ﺍﻟﻤﻮﻇﻒ11 ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ",
+      "passage: . Vesting of the company match is as follows: • After 1 year of plan participation: 25% of matched contributions vest. • After 2 years: 50% of matched contributions vest",
+      "passage: . • After 3 years: 75% of matched contributions vest. • After 4 years: 100% of matched contributions vest. 6. Financial Wellbeing Initiatives",
+      "passage: . Coverage Item Employee Spouse Children Outpatient Visits 100% 80% 80% Hospitalization 100% 90% 90% Dental 70% 50% 50% Optical 500 EGP/year 300 EGP/year 300 EGP/year Pharmacy 80% 70% 70% Confidential",
+      "passage: . 5. Retirement & Savings 5.1 Social Insurance All employees are enrolled in Egypt's national social insurance scheme in accordance with the Social Insurance and Pensions Law No. 148 of 2019"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 6,
+    "n_ar_chunks": 1,
+    "answer": "This information is not available in the policy documents.",
+    "reference": "The employee contributes 11% of the fixed and variable wage components for social insurance. The employer contributes 18.75%, bringing the total combined rate to 29.75%.",
+    "timestamp": "2026-05-15T20:11:21.525159+00:00"
+  },
+  "C13_FR": {
+    "query_id": "C13_FR",
+    "concept_id": "C13",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "confidentiality_post_employment",
+    "question": "eltezamat el sereyya btestamar ad eih ba3d ma el muwazaf yesib el sharka?",
+    "contexts": [
+      "passage: .بالموظف ●امتالك حصة ملكية في شركة .منافسة ●أي عالقة مالية مع طرف تجاري .للشركة سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: ﺃﺷﻬﺮ6 ﺣﺘﻰ ﻣﺪﻳﺮ ﺍﻟﻘﺴﻢ 5 ﻣﺪﻳﺮ ﺃﻭﻝ ﺍﻟﺪﺭﺟﺔ ﺃﺷﻬﺮ3 ﺃﺷﻬﺮ6 ﺣﺘﻰ ﻣﺪﻳﺮ ﺍﻟﻘﺴﻢ ﺣﻘﻮﻕ ﺍﻟﻤﻮﻇﻒ ﺃﺛﻨﺎﺀ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ3",
+      "passage: ﻣﻦ ﻣﻌﺪﻝ ﺍﻟﻴﻮﻡ25 ﻣﻮﻇﻔﻮ ﺍﻟﻮﺭﺩﻳﺔ ﺍﻟﻠﻴﻠﻴﺔ ﻧﻌﻢ ﺑﺪﻝ ﺍﻻﺳﺘﻌﺪﺍﺩ ﺟﻨﻴﻪ ﻳﻮﻡ200ﻣﻮﻇﻔﻮ ﺍﻟﻬﻨﺪﺳﺔ ﻋﻨﺪ ﺍﻟﺘﻔﻌﻴﻞ ﻧﻌﻢ ﺍﻟﻤﻜﺎﻓﺂﺕ ﻭﺍﻟﺤﻮﺍﻓﺰ ﺍﻟﺴﻨﻮﻳﺔ2",
+      "passage: .com البوابة :اإللكترونية Horizon Portal (اإلنترانت )الداخلي لالطالع على سياسات التوظيف والرواتب وإدارة األداء وقواعد ،السلوك يُرجى الرجوع إلى الدليل الرفيق باللغة",
+      "passage: .المخاطر ّيُعد الحفاظ على سالمة جميع الموظفين مسؤولية مشتركة بين اإلدارة والموظفين على حدٍّ .سواء يجب على جميع :الموظفين ●اإلبالغ الفوري عن أي أعطال في األجهزة الكهربائية أو مرافق",
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: employees (rated 4 or 5 in their most recent review) identified for future senior leadership roles"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 6,
+    "answer": "Eltezamat el sereyya btestamar ad eih ba3d ma el muwazaf yesib el sharka? \nMesh mawgoda fel policy.",
+    "reference": "eltezamat el sereyya btestamar 3 sneen ba3d enha2 3a2d el shoghl le mo3zam anwa3 el ma3lomat. amma ely biyekhoss el asrar el tegareyya w bayanat el 3umala, faltezamato da2ema w ma betenhish.",
+    "timestamp": "2026-05-15T20:12:56.691518+00:00"
+  },
+  "C15_FR": {
+    "query_id": "C15_FR",
+    "concept_id": "C15",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "ar_recruitment.pdf",
+    "topic": "probation_review_timing",
+    "question": "taqyemat el ada2 btet3amel emta fe fatret el ekhtebar?",
+    "contexts": [
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: .1 فترات اإلشعار عند الستقالة الدرجة الوظيفية فترة اإلشعار G1 – G2 (مستوى جديد / )متخصص 30 ًيوما G3 – G4 (مشرف / )مدير 60 ًيوما G5 فأعلى (مدير تنفيذي / مدير )إدارة 90 ًيوما 10",
+      "passage: ﺃﺷﻬﺮ6 ﺣﺘﻰ ﻣﺪﻳﺮ ﺍﻟﻘﺴﻢ 5 ﻣﺪﻳﺮ ﺃﻭﻝ ﺍﻟﺪﺭﺟﺔ ﺃﺷﻬﺮ3 ﺃﺷﻬﺮ6 ﺣﺘﻰ ﻣﺪﻳﺮ ﺍﻟﻘﺴﻢ ﺣﻘﻮﻕ ﺍﻟﻤﻮﻇﻒ ﺃﺛﻨﺎﺀ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ3",
+      "passage: .ﻣﻼﺣﻈﺔ: ﻳﻌﺪ ﺍﻛﺘﺸﺎﻑ ﺃﻱ ﺗﺰﻭﻳﺮ ﻓﻲ ﺍﻟﻮﺛﺎﺋﻖ ﺍﻟﻤﻘﺪﻣﺔ ﺳﺒﺒﺎ ﻓﻮﺭﻳﺎ ﻹﻟﻐﺎﺀ ﻋﺮﺽ ﺍﻟﻌﻤﻞ ﺃﻭ ﺇﻧﻬﺎﺀ ﺍﻟﺨﺪﻣﺔ ﺇﺫﺍ ﺍﻛﺘﺸﻒ ﺑﻌﺪ ﺍﻟﺘﻌﻴﻴﻦ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ3. ﻣﺪﺓ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ ﻭﺇﺟﺮﺍﺀﺍﺗﻬﺎ3",
+      "passage: .0 ﺍﻹﺻﺪﺍﺭ ﺍﻟﺘﺼﻨﻴﻒ: ﺳﺮﻱ ﻟﻼﺳﺘﺨﺪﺍﻡ ﺍﻟﺪﺍﺧﻠﻲ ﻓﻘﻂ ﺍﻟﻘﺴﻢ ﺍﻟﻤﺴﺆﻭﻝ: ﺍﻟﻤﻮﺍﺭﺩ ﺍﻟﺒﺸﺮﻳﺔ ﺳﻴﺎﺳﺔ ﺍﻻﺳﺘﻘﻄﺎﺏ ﻣﺮﺍﺣﻞ ﺍﻟﻤﻘﺎﺑﻼﺕ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ ﺑﺮﻧﺎﻣﺞ ﺍﻟﺘﺄﻫﻴﻞ ﻭﺛﺎﺋﻖ ﺍﻟﺘﻮﻇﻴﻒ ﺗﻐﻄﻲ ﻫﺬﻩ ﺍﻟﻮﺛﻴﻘﺔ: ﺳﻴﺎﺳﺔ ﺍﻻﺳﺘﻘﻄﺎﺏ، ﻣﺮﺍﺣﻞ ﺍﻟﻤﻘﺎﺑﻼﺕ،",
+      "passage: .2 فترات الحتفاظ بالبيانات نوع البيانات مدة الحتفاظ ملفات الموظفين النشطين طوال فترة الخدمة + 7 سنوات بيانات الرواتب والمالية 10 سنوات سجالت األداء والتأديب 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين",
+      "passage: .1 اإلجراء التأديبي التدريجي تتبع الشركة ًنهجا ًتأديبيا ًتدريجيا يهدف إلى تصحيح السلوك قبل اللجوء إلى :الفصل المرحلة اإلجراء من يُصدره مدة الصالحية 1 تحذير شفهي المدير المباشر 3 أشهر 2 إنذار كتابي أول"
+    ],
+    "context_sources": [
+      "AR"
+    ],
+    "n_en_chunks": 0,
+    "n_ar_chunks": 7,
+    "answer": "Taqyemat el ada2 btet3amel emta fe fatret el ekhtebar, lazem teshar el 3aqd fe 30 yom, w el gym subsidy le7ad 300 gneih/shahr lel G1-G2, w le7ad 500 gneih/shahr lel G3-G4.",
+    "reference": "taqyeem el ada2 byet3amel fe nehayyet el shahr el awel we nehayyet el shahr el talat fe fatret el ekhtebar.",
+    "timestamp": "2026-05-15T20:14:32.667857+00:00"
+  },
+  "C16_FR": {
+    "query_id": "C16_FR",
+    "concept_id": "C16",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "expense_claim_deadline",
+    "question": "akher maw3id le taqdem talab tasweyyet el masroufat ba3d el sarf ad eih?",
+    "contexts": [
+      "passage: . ﻳﻮﻣﺎ ﻋﻠﻰ ﺗﺎﺭﻳﺦ ﺍﻟﻨﻔﻘﺔ30 ﻣﻼﺣﻈﺔ: ﻻ ﺗﻘﺒﻞ ﺍﻟﻤﻄﺎﻟﺒﺎﺕ ﺍﻟﻤﻘﺪﻣﺔ ﺑﻌﺪ ﻣﺮﻭﺭ",
+      "passage: .الرسمية ●يُقدَّم تقرير تسوية النفقات والفواتير األصلية خالل 7 أيام عمل من .العودة ●النفقات غير الموثقة ال تُسدَّد بأي حال من .األحوال سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .2 :ﻳﻘﺪﻡ ﻃﻠﺐ ﺗﺴﻮﻳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﻋﺒﺮ ﺍﻟﺒﻮﺍﺑﺔ ﺍﻹﻟﻜﺘﺮﻭﻧﻴﺔ ﻭﻓﻖ ﺍﻟﺨﻄﻮﺍﺕ ﺍﻟﺘﺎﻟﻴﺔ ﺍﻟﺨﻄﻮﺓ ﺍﻹﺟﺮﺍﺀ ﺍﻹﻃﺎﺭ ﺍﻟﺰﻣﻨﻲ 1ﺍﺳﺘﻴﻔﺎﺀ ﻧﻤﻮﺫﺝ ﻃﻠﺐ ﺍﻟﺘﺴﻮﻳﺔ ﺇﻟﻜﺘﺮﻭﻧﻴﺎ ﻣﻊ ﺇﺭﻓﺎﻕ ﺍﻟﻔﻮﺍﺗﻴﺮ ﺍﻷﺻﻠﻴﺔ 2ﺍﻋﺘﻤﺎﺩ ﺍﻟﻤﺪﻳﺮ ﺍﻟﻤﺒﺎﺷﺮ ﻟﻠﻄﻠﺐ ﺃﻳﺎﻡ ﻋﻤﻞ3",
+      "passage: 2026 ﻳﻨﺎﻳﺮ1 2.0 ﺳﺮﻱ ﻟﻼﺳﺘﺨﺪﺍﻡ ﺍﻟﺪﺍﺧﻠﻲ ﻓﻘﻂ ﺍﻹﺻﺪﺍﺭ ﺳﻴﺎﺳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﻭﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ5. ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻘﺎﺑﻠﺔ ﻟﻠﺘﺴﻮﻳﺔ5",
+      "passage: .المباشر ●المشاركة في مقابلة الخروج مع HR . ●استالم التسوية المالية النهائية خالل 10 أيام عمل من آخر .يوم سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .). Reimbursement requests must be submitted via the HR Portal with original receipts within 60 days of the qualifying expenditure. Unused balances do not carry over to the following year. 5",
+      "passage: ﺑﻌﺪ ﺟﻨﻴﻪ ﺷﻬﺮ800ﻓﺎﺗﻮﺭﺓ ﺍﻟﺨﺪﻣﺔ ﻣﺴﺘﻠﺰﻣﺎﺕ ﻣﻜﺘﺒﻴﺔ ﺟﻨﻴﻪ ﺷﻬﺮ300ﻓﺎﺗﻮﺭﺓ ﺃﺻﻠﻴﺔ ﺇﺟﺮﺍﺀﺍﺕ ﺗﻘﺪﻳﻢ ﻃﻠﺒﺎﺕ ﺍﻟﺘﺴﻮﻳﺔ5"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 6,
+    "answer": "Akher maw3id le taqdem talab tasweyyet el masroufat ba3d el sarf ad eih huwa khilal 30 yom men tarikh el sarf.",
+    "reference": "talab tasweyyet el masroufat lazem yetqedem khilal 30 yom men tarikh el sarf.",
+    "timestamp": "2026-05-15T20:16:36.750664+00:00"
+  },
+  "C17_FR": {
+    "query_id": "C17_FR",
+    "concept_id": "C17",
+    "language": "franco",
+    "complexity": "L3",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "savings_plan_eligibility",
+    "question": "eih kol el shorut el matluba lel indemam le khtet el eddekhar el taw3i?",
+    "contexts": [
+      "passage: . 5.2 Voluntary Savings Plan Employees at grade G3 and above may participate in Horizon Tech's voluntary deferred savings plan",
+      "passage: . ﺍﻟﺘﺄﺧﺮ ﻓﻲ ﺗﻘﺪﻳﻤﻬﺎ ﻗﺪ ﻳﺆﺩﻱ ﺇﻟﻰ ﺗﺄﺟﻴﻞ ﻣﻮﻋﺪ ﺍﻻﻧﻀﻤﺎﻡ ﺍﻟﻤﺴﺘﻨﺪ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﻤﻼﺣﻈﺎﺕ ﺑﻄﺎﻗﺔ ﺍﻟﺮﻗﻢ ﺍﻟﻘﻮﻣﻲ ﺃﻭ ﺟﻮﺍﺯ ﺍﻟﺴﻔﺮ ﻧﺴﺨﺔ ﺳﺎﺭﻳﺔ ﺍﻟﻤﻔﻌﻮﻝ ﺍﻟﺸﻬﺎﺩﺍﺕ ﺍﻟﺪﺭﺍﺳﻴﺔ ﻭﺍﻟﻤﻬﻨﻴﺔ ﻣﻮﺛﻘﺔ ﺭﺳﻤﻴﺎ ﺷﻬﺎﺩﺓ ﺍﻟﺨﺒﺮﺓ ﻣﻦ ﺁﺧﺮ ﺟﻬﺔ ﻋﻤﻞ ﺇﻥ",
+      "passage: . • Employees must have completed at least 6 months of service in the calendar year to be eligible",
+      "passage: . Vesting of the company match is as follows: • After 1 year of plan participation: 25% of matched contributions vest. • After 2 years: 50% of matched contributions vest",
+      "passage: .2 اشتراطات العمل عن بُعد ●توفير اتصال إنترنت مستقر ال يقل عن 20 Mbps . ●الحضور في الجتماعات الفتراضية بالكاميرا مفتوحة إال ألسباب .مبررة ●الستجابة لرسائل العمل خالل 30 دقيقة في أوقات الدوام",
+      "passage: . • After 3 years: 75% of matched contributions vest. • After 4 years: 100% of matched contributions vest. 6. Financial Wellbeing Initiatives",
+      "passage: .5 ﻳﺘﺠﺎﻭﺯ ﺍﻟﺘﻮﻗﻌﺎﺕ4ﻳﺘﺠﺎﻭﺯ ﺍﻷﻫﺪﺍﻑ ﺑﺎﺳﺘﻤﺮﺍﺭ 15 ﺣﺘﻰ1.25 ﻳﺤﻘﻖ ﺍﻟﺘﻮﻗﻌﺎﺕ3ﻳﺤﻘﻖ ﺟﻤﻴﻊ ﺍﻷﻫﺪﺍﻑ 8 ﺣﺘﻰ1 ﻳﺤﺘﺎﺝ ﺗﺤﺴﻴﻨﺎ2ﻳﺤﻘﻖ ﺍﻷﻫﺪﺍﻑ ﺟﺰﺋﻴﺎ0 ﻏﻴﺮ ﻣﺮﺽ1ﻻ ﻳﺤﻘﻖ ﺍﻟﻤﺘﻄﻠﺒﺎﺕ ﺍﻷﺳﺎﺳﻴﺔ0 ﺍﻻﺳﺘﻘﻄﺎﻋﺎﺕ ﺍﻹﻟﺰﺍﻣﻴﺔ3. ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻻﺟﺘﻤﺎﻋﻴﺔ3"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 4,
+    "n_ar_chunks": 3,
+    "answer": "3ashan tentamem le khtet el eddekhar el taw3i lazem el muwazaf: (1) yekun men grade G3 aw a3la; (2) 5alas fatret el ekhtebar. el muwazaf ye2dar yesahem be nisbah men 2% le7ad 10% men ratebo el asasy kol shahr 2abel el darayeb. el sharka btet2abel el mosa7ma le7ad 4% men el rateb el asasy. mosa7met el sharka btetesta7e2 25% ba3d sana, 50% ba3d santeen, 75% ba3d 3 sneen, w 100% ba3d 4 sneen.",
+    "reference": "3ashan tentamem le khtet el eddekhar el taw3i lazem el muwazaf: (1) yekun men grade G3 aw a3la; (2) 5alas fatret el ekhtebar. el muwazaf ye2dar yesahem be nisbah men 2% le7ad 10% men ratebo el asasy kol shahr 2abel el darayeb. el sharka btet2abel el mosa7ma le7ad 4% men el rateb el asasy. mosa7met el sharka btetesta7e2 25% ba3d sana, 50% ba3d santeen, 75% ba3d 3 sneen, w 100% ba3d 4 sneen.",
+    "timestamp": "2026-05-15T20:18:23.654079+00:00"
+  },
+  "C20_FR": {
+    "query_id": "C20_FR",
+    "concept_id": "C20",
+    "language": "franco",
+    "complexity": "L3",
+    "source_doc": "ar_policy.pdf",
+    "topic": "data_retention",
+    "question": "fatrat el ehtefaz bel bayanat le anwa3 el sagalat el mokhtalefa eih?",
+    "contexts": [
+      "passage: .2 فترات الحتفاظ بالبيانات نوع البيانات مدة الحتفاظ ملفات الموظفين النشطين طوال فترة الخدمة + 7 سنوات بيانات الرواتب والمالية 10 سنوات سجالت األداء والتأديب 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين",
+      "passage: .معتمدة ●اإلبالغ الفوري عن أي اختراق للبيانات أو شك في الوصول غير المصرح .به ●حذف أو إعادة بيانات العمالء عند إتمام الغرض منها أو عند انتهاء فترة الحتفاظ .المقررة 11",
+      "passage: .2 أنواع اإلجازات األخرى نوع اإلجازة المدة مدفوعة؟ المستندات المطلوبة إجازة الزواج 5 أيام عمل نعم عقد الزواج (خالل 30 )ًيوما إجازة األمومة 90 ًيوما كاملة نعم )(كاملة شهادة طبية إجازة األبوة 10 أيام",
+      "passage: lists, employee personal data, source code and proprietary algorithms, pricing information, merger and acquisition plans, regulatory filings not yet public, and any information received from clients",
+      "passage: 5 سنوات من تاريخ اإلنهاء بيانات المتقدمين غير المقبولين 6 أشهر فقط المراسالت اإللكترونية الداخلية 3 سنوات سري — لالستخدام الداخلي فقط | اإلصدار 2",
+      "passage: .الرسمية ●يُقدَّم تقرير تسوية النفقات والفواتير األصلية خالل 7 أيام عمل من .العودة ●النفقات غير الموثقة ال تُسدَّد بأي حال من .األحوال سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .العمل ●إفشاء معلومات سرية ألطراف غير مصرح .لها ●الحضور للعمل تحت تأثير الكحول أو المواد .المخدرة ●النتهاكات الجسيمة ألنظمة حماية البيانات أو أمن .المعلومات سري — لالستخدام الداخلي فقط | اإلصدار 2"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 1,
+    "n_ar_chunks": 6,
+    "answer": "maladdat el muwazafin el nash2een: tool fatret el khidma + 7 sneen. bayanat el mwaahed wel maliyya: 10 sneen. sagalat el ada2 wel ta2deeb: 5 sneen men tarikh el inha2. bayanat el motaqaddimen ely etrafadu: 6 shohour bas. el morasalat el elektroneya el dakheleya: 3 sneen.",
+    "reference": "maladdat el muwazafin el nash2een: tool fatret el khidma + 7 sneen. bayanat el mwaahed wel maliyya: 10 sneen. sagalat el ada2 wel ta2deeb: 5 sneen men tarikh el inha2. bayanat el motaqaddimen ely etrafadu: 6 shohour bas. el morasalat el elektroneya el dakheleya: 3 sneen.",
+    "timestamp": "2026-05-15T20:19:48.041327+00:00"
+  },
+  "C21_FR": {
+    "query_id": "C21_FR",
+    "concept_id": "C21",
+    "language": "franco",
+    "complexity": "L3",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "reimbursable_expenses",
+    "question": "eih anwa3 el masroufat ely btetrod w eih 7ododha?",
+    "contexts": [
+      "passage: .1 :ﺗﺴﺪﺩ ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ ﺍﻟﻤﻮﺛﻘﺔ ﺍﻟﺘﻲ ﻳﺘﺤﻤﻠﻬﺎ ﺍﻟﻤﻮﻇﻒ ﺑﺴﺒﺐ ﻣﻬﺎﻡ ﺍﻟﻌﻤﻞ ﻭﻓﻖ ﺍﻟﺤﺪﻭﺩ ﺍﻟﺘﺎﻟﻴﺔ ﻧﻮﻉ ﺍﻟﻨﻔﻘﺔ ﺍﻟﺤﺪ ﺍﻷﻗﺼﻰ ﺍﻟﻤﺴﺘﻨﺪﺍﺕ ﺍﻟﻤﻄﻠﻮﺑﺔ ﻭﺟﺒﺎﺕ ﺍﻟﻌﻤﻞ ﺍﻟﻔﺮﺩﻳﺔ ﺟﻨﻴﻪ ﻭﺟﺒﺔ150ﻓﺎﺗﻮﺭﺓ ﺿﺮﻳﺒﻴﺔ ﺍﺟﺘﻤﺎﻉ ﻋﻤﻞ ﻣﻊ ﻋﻤﻴﻞ ﺟﻨﻴﻪ",
+      "passage: ﺳﻴﺎﺳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﺗﻐﻄﻲ ﻫﺬﻩ ﺍﻟﻮﺛﻴﻘﺔ: ﻫﻴﻜﻞ ﺍﻟﺮﻭﺍﺗﺐ، ﺍﻟﺒﺪﻻﺕ، ﺍﻟﻤﻜﺎﻓﺂﺕ ﺍﻟﺴﻨﻮﻳﺔ، ﺍﻻﺳﺘﻘﻄﺎﻋﺎﺕ ﺍﻹﻟﺰﺍﻣﻴﺔ، ﺇﺟﺮﺍﺀﺍﺕ ﺍﻟﺼﺮﻑ، ﺳﻴﺎﺳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ",
+      "passage: 2026 ﻳﻨﺎﻳﺮ1 2.0 ﺳﺮﻱ ﻟﻼﺳﺘﺨﺪﺍﻡ ﺍﻟﺪﺍﺧﻠﻲ ﻓﻘﻂ ﺍﻹﺻﺪﺍﺭ ﺳﻴﺎﺳﺔ ﺍﻟﻤﺼﺮﻭﻓﺎﺕ ﻭﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻤﻬﻨﻴﺔ5. ﺍﻟﻨﻔﻘﺎﺕ ﺍﻟﻘﺎﺑﻠﺔ ﻟﻠﺘﺴﻮﻳﺔ5",
+      "passage: .الرسمية ●يُقدَّم تقرير تسوية النفقات والفواتير األصلية خالل 7 أيام عمل من .العودة ●النفقات غير الموثقة ال تُسدَّد بأي حال من .األحوال سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .2 Approved Expenditure Categories The following categories are eligible for reimbursement from the learning budget: • Online course fees (Coursera, Udemy Business, LinkedIn Learning, Pluralsight)",
+      "passage: Business calls, email, approved appsPersonal streaming services, rooting/jailbreaking Company Credit Card Pre-approved business expenses only Personal purchases, cash advances Office Equipment Print,",
+      "passage: .معتمدة ●اإلبالغ الفوري عن أي اختراق للبيانات أو شك في الوصول غير المصرح .به ●حذف أو إعادة بيانات العمالء عند إتمام الغرض منها أو عند انتهاء فترة الحتفاظ .المقررة 11"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 2,
+    "n_ar_chunks": 5,
+    "answer": "el masroufat el qabelah lel tasweya w 7ododha: wagabat el shoghl el fardeyya le7ad 150 gneih lel wagba (fatoura dareybeya); egtema3at el 3amal ma3 3umala le7ad 500 gneih lel egtema3 (fatoura + esm el 3ameel); muwasalat gowwa el medina le7ad 200 gneih fes yom (isal aw soura uber); internet lel shoghl 3an bo3d le7ad 800 gneih fes shahr (fatoura el khidma); mostlzamat maktabeyya le7ad 300 gneih fes shahr (fatoura asleyya). kol el motalabat khilal 30 yom.",
+    "reference": "el masroufat el qabelah lel tasweya w 7ododha: wagabat el shoghl el fardeyya le7ad 150 gneih lel wagba (fatoura dareybeya); egtema3at el 3amal ma3 3umala le7ad 500 gneih lel egtema3 (fatoura + esm el 3ameel); muwasalat gowwa el medina le7ad 200 gneih fes yom (isal aw soura uber); internet lel shoghl 3an bo3d le7ad 800 gneih fes shahr (fatoura el khidma); mostlzamat maktabeyya le7ad 300 gneih fes shahr (fatoura asleyya). kol el motalabat khilal 30 yom.",
+    "timestamp": "2026-05-15T20:21:15.416692+00:00"
+  },
+  "C22_FR": {
+    "query_id": "C22_FR",
+    "concept_id": "C22",
+    "language": "franco",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "journalist_contact",
+    "question": "sa7afi ta3asal ma3aya 3ala tool 3ashan yetlob ta3li2 3an el sharka. a3mel eih?",
+    "contexts": [
+      "passage: . Employees who are contacted directly by journalists or media organisations must not respond and should forward the enquiry to communications@horizontech.com immediately.",
+      "passage: . 3.3 Media & Press Enquiries All media enquiries — including requests for interviews, comments, or statements — must be directed to the Communications team",
+      "passage: .1 السياسة العامة يُسمح للموظفين باستخدام أدوات الذكاء الصطناعي التوليدي لتسريع المهام ،اليومية وفق الضوابط :التالية مسموح به ممنوع ًمنعا ًباتا صياغة المسودات والتقارير إدخال بيانات العمالء أو",
+      "passage: . Personal opinions shared publicly must be clearly identified as personal and must not be presented as representing the views of Horizon Tech. Confidential — Internal Use Only | Version 2",
+      "passage: صياغة المسودات والتقارير إدخال بيانات العمالء أو بياناتهم الشخصية توليد أفكار وعروض تقديمية مشاركة األكواد البرمجية المملوكة للشركة تلخيص الوثائق العامة استخدام األدوات غير المعتمدة ًرسميا دعم مهام",
+      "passage: .الرسمي ●يُمنح بدل العمل عن بُعد بقيمة 800 جنيه مصري/شهر لتغطية تكاليف اإلنترنت .والمرافق ● سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026",
+      "passage: .اكتشافه تُحدَّث كلمات المرور كل 90 ًيوما وتلتزم بمعايير التعقيد .المعتمدة سري — لالستخدام الداخلي فقط | اإلصدار 2.0 | يناير 2026"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 3,
+    "n_ar_chunks": 4,
+    "answer": "matredsh 3al sa7afi khales. lazem te7awwel el estifsar fel 7al le faree2 el ettesalat 3ala communications@horizontech.com. kol el estifsar el e3lami — bema feeha talab el moqabalat wel ta3li2at — lazem tetwagah le faree2 el ettesalat bas.",
+    "reference": "matredsh 3al sa7afi khales. lazem te7awwel el estifsar fel 7al le faree2 el ettesalat 3ala communications@horizontech.com. kol el estifsar el e3lami — bema feeha talab el moqabalat wel ta3li2at — lazem tetwagah le faree2 el ettesalat bas.",
+    "timestamp": "2026-05-15T20:26:11.332114+00:00"
+  },
+  "C24_FR": {
+    "query_id": "C24_FR",
+    "concept_id": "C24",
+    "language": "franco",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "side_project_ip",
+    "question": "3andy mashro3 ganeby teknoloji 2adeem momken yetadakhel ma3 a3mal Horizon Tech. a3mel eih?",
+    "contexts": [
+      "passage: .2 Pre-Existing IP & Side Projects Employees who have pre-existing IP or who wish to engage in personal projects that may overlap with Horizon Tech's business areas must disclose this in writing to",
+      "passage: .1 نماذج العمل المعتمدة تعتمد شركة أفق التقنية نماذج عمل مرنة لتحقيق التوازن بين متطلبات العمل واحتياجات :الموظفين النموذج أيام الحضور أيام العمل عن بُعد الموافقة المطلوبة حضور كامل 5 أيام/أسبوع — —",
+      "passage: .2 Obligations Summary The following obligations apply to all individuals engaged by Horizon Tech regardless of employment type, seniority, or location: • Act honestly and in good faith in all",
+      "passage: .1 Work Hours & Schedule The standard working week at Horizon Tech consists of 5 working days (Sunday through Thursday), with Friday and Saturday as the official weekend",
+      "passage: . 5.2 Voluntary Savings Plan Employees at grade G3 and above may participate in Horizon Tech's voluntary deferred savings plan",
+      "passage: . • Holding an ownership stake in a competing business. • Any financial relationship with a third party that conducts business with Horizon Tech. 4",
+      "passage: .com No Legal & Compliance compliance@horizontech.com No Ethics Hotline Horizon Portal > 'Speak Up' Yes — fully anonymous External Regulator Relevant regulatory authority Varies 5"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 6,
+    "n_ar_chunks": 1,
+    "answer": "lazem tefse7 3an el melkeyya el fekri aw el mashro3 el ganeby ketabeyyan le qism el qanun wel imtithal 2abel ma tekmel fih aw tebda2. el muwafaqah btet2ayam 3ala asas kol 7ala 3ala 7idda 3ashan yet7aded ay ta3arod mo7tamal we yetm tafadyoh. 3adam el efsa7 yo3tabar entehaak le eltezamat 3a2d el shoghl.",
+    "reference": "lazem tefse7 3an el melkeyya el fekri aw el mashro3 el ganeby ketabeyyan le qism el qanun wel imtithal 2abel ma tekmel fih aw tebda2. el muwafaqah btet2ayam 3ala asas kol 7ala 3ala 7idda 3ashan yet7aded ay ta3arod mo7tamal we yetm tafadyoh. 3adam el efsa7 yo3tabar entehaak le eltezamat 3a2d el shoghl.",
+    "timestamp": "2026-05-15T20:39:46.086778+00:00"
+  },
+  "C25_FR": {
+    "query_id": "C25_FR",
+    "concept_id": "C25",
+    "language": "franco",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "3andy mawlood gedeed. emta a2dar ashtarak fe mol7a2 ta2min se77i idafi w eih akher maw3id?",
+    "contexts": [
+      "passage: .2 Extended Coverage — Optional Add-Ons Employees may enrol in optional supplemental coverage during the annual open enrolment window (October 1–15) or within 30 days of a qualifying life event",
+      "passage: . • After 3 years: 75% of matched contributions vest. • After 4 years: 100% of matched contributions vest. 6. Financial Wellbeing Initiatives",
+      "passage: to 8,000 EGP/year Orthodontics Rider 200 EGP Up to 15,000 EGP lifetime Enhanced Optical 80 EGP Up to 2,000 EGP/year Critical Illness Rider 120 EGP Lump sum 100,000 EGP Worldwide Emergency 180 EGP Up",
+      "passage: . The following add-ons are available at subsidised group rates: Add-On Plan Monthly Premium (Employee Share) Coverage Limit Enhanced Dental 150 EGP Up to 8,000 EGP/year Orthodontics Rider 200 EGP Up",
+      "passage: . Coverage Item Employee Spouse Children Outpatient Visits 100% 80% 80% Hospitalization 100% 90% 90% Dental 70% 50% 50% Optical 500 EGP/year 300 EGP/year 300 EGP/year Pharmacy 80% 70% 70% Confidential",
+      "passage: .2 :ﺧﻼﻝ ﻓﺘﺮﺓ ﺍﻻﺧﺘﺒﺎﺭ، ﺗﻨﻄﺒﻖ ﺍﻟﺤﻘﻮﻕ ﺍﻟﺘﺎﻟﻴﺔ ﻋﻠﻰ ﺍﻟﻤﻮﻇﻒ ﺍﻟﺠﺪﻳﺪ ﺍﻟﺤﻖ ﺍﻹﺟﺮﺍﺀ ﺍﻟﺘﻔﺎﺻﻴﻞ ﺍﻟﺘﻐﻄﻴﺔ ﺍﻟﺘﺄﻣﻴﻨﻴﺔ ﺍﻟﺼﺤﻴﺔ ﺗﺴﺮﻱ ﺍﻋﺘﺒﺎﺭﺍ ﻣﻦ ﺍﻟﻴﻮﻡ ﺍﻷﻭﻝ ﺍﺳﺘﺤﻘﺎﻕ ﺍﻹﺟﺎﺯﺓ ﺍﻟﺴﻨﻮﻳﺔ ﻳﺒﺪﺃ ﻣﻦ ﺍﻟﺸﻬﺮ ﺍﻷﻭﻝ؛ ﻻ ﻳﺼﺮﻑ ﺍﻟﺮﺻﻴﺪ ﺇﻻ ﺑﻌﺪ",
+      "passage: . ﺗﺤﺘﺴﺐ ﺍﻻﺷﺘﺮﺍﻛﺎﺕ ﻋﻠﻰ ﻣﻜﻮﻧﻲ ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ ﻭﺍﻟﻤﺘﻐﻴﺮ2019 ﻟﺴﻨﺔ148 ﺍﻻﺟﺘﻤﺎﻋﻴﺔ ﻭﻓﻖ ﻗﺎﻧﻮﻥ ﺍﻟﺘﺄﻣﻴﻦ ﺍﻻﺟﺘﻤﺎﻋﻲ ﻭﺍﻟﻤﻌﺎﺷﺎﺕ ﺭﻗﻢ ﺗﻄﺒﻖ ﺍﺷﺘﺮﺍﻛﺎﺕ ﺍﻟﺘﺄﻣﻴﻨﺎﺕ ﺍﻟﻄﺮﻑ ﻧﺴﺒﺔ ﺍﻻﺳﺘﻘﻄﺎﻉ ﺍﻷﺳﺎﺱ ﺍﻟﺤﺴﺎﺑﻲ ﺣﺼﺔ ﺍﻟﻤﻮﻇﻒ11 ﺍﻷﺟﺮ ﺍﻟﺜﺎﺑﺖ"
+    ],
+    "context_sources": [
+      "AR",
+      "EN"
+    ],
+    "n_en_chunks": 5,
+    "n_ar_chunks": 2,
+    "answer": "Enta 3arif akher maw3id lel isti3raf fe mol7a2 ta2min se77i idafi, w emta a2dar ashtarak feha?\n\nEl jawab: \nAkher maw3id lel isti3raf fe mol7a2 ta2min se77i idafi huwa khilal el fenetre el senawiya lel isti3raf (October 1–15) aw khilal 30 yom min tari2e hadeth hayatiye mu2akkadeh. Enta a2dar tashtrak fe mol7a2 ta2min se77i idafi khilal hadhihi el fenetre.",
+    "reference": "te2dar teshterak fe mol7a2at el ta2min el se77i el ekhtiyareyya khilal 30 yom men 7adath mo2ahhal zay meelad tfl. barra el mohlah diy, el ishtrak biyeb2a mota7 bas fe fatret el tasgeel el maftu7 el sanawi (1-15 Uktober). law fatit el 30 yom, hate stanna le7ad el tasgeel el maftu7 el gay.",
+    "timestamp": "2026-05-15T20:41:32.696644+00:00"
+  }
+}

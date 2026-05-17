@@ -1,0 +1,1685 @@
+{
+  "C01_EN": {
+    "query_id": "C01_EN",
+    "concept_id": "C01",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "overtime",
+    "question": "What is the overtime compensation rate on weekdays?",
+    "answer": "The overtime compensation rate on weekdays is 1.5× the hourly rate.",
+    "reference": "Overtime on weekdays is compensated at 1.5× the hourly rate.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "answer_correctness": 0.998
+    },
+    "timestamp": "2026-05-16T15:00:22.609233+00:00"
+  },
+  "C01_AR": {
+    "query_id": "C01_AR",
+    "concept_id": "C01",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "overtime",
+    "question": "ما هو معدل تعويض العمل الإضافي في أيام الأسبوع؟",
+    "answer": "معدل تعويض العمل الإضافي في أيام الأسبوع هو 1.5 ضعف معدّل الساعة .",
+    "reference": "يُعوَّض العمل الإضافي في أيام العمل بمعدل 1.5 ضعف الأجر الساعي.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "answer_correctness": 0.9865
+    },
+    "timestamp": "2026-05-16T15:00:26.058836+00:00"
+  },
+  "C01_EG": {
+    "query_id": "C01_EG",
+    "concept_id": "C01",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "overtime",
+    "question": "إيه نسبة تعويض الأوفر تايم في أيام الشغل العادية؟",
+    "answer": "تعويض الأوفر تايم في أيام الشغل العادية هو 1.5 ضعف الساعة الأساسية .",
+    "reference": "الأوفر تايم في أيام الشغل العادية بيتحسب بـ 1.5 ضعف الأجر الساعي.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9673,
+      "answer_correctness": 0.7344
+    },
+    "timestamp": "2026-05-16T15:00:41.984439+00:00"
+  },
+  "C02_EN": {
+    "query_id": "C02_EN",
+    "concept_id": "C02",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "health_insurance_start",
+    "question": "When does health insurance coverage begin for new employees?",
+    "answer": "Health insurance coverage begins from the first day of employment.",
+    "reference": "Health insurance coverage begins from the first day of employment for all full-time employees.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9792,
+      "answer_correctness": 0.7427
+    },
+    "timestamp": "2026-05-16T15:01:06.693173+00:00"
+  },
+  "C02_AR": {
+    "query_id": "C02_AR",
+    "concept_id": "C02",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "health_insurance_start",
+    "question": "متى تبدأ التغطية التأمينية الصحية للموظفين الجدد؟",
+    "answer": "تبدأ التغطية التأمينية الصحية للموظفين الجدد من اليوم الأول لتوظيفهم.",
+    "reference": "تبدأ التغطية التأمينية الصحية من اليوم الأول للعمل لجميع الموظفين بدوام كامل.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9988,
+      "answer_correctness": 0.8437
+    },
+    "timestamp": "2026-05-16T15:01:36.180189+00:00"
+  },
+  "C02_EG": {
+    "query_id": "C02_EG",
+    "concept_id": "C02",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "health_insurance_start",
+    "question": "التأمين الصحي بيبدأ إمتى للموظف الجديد؟",
+    "answer": "التأمين الصحي بيبدأ من أول يوم عمل للموظف الجديد.",
+    "reference": "التأمين الصحي بيبدأ من أول يوم شغل لكل الموظفين بدوام كامل.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9798,
+      "answer_correctness": 0.7438
+    },
+    "timestamp": "2026-05-16T15:02:03.530723+00:00"
+  },
+  "C03_EN": {
+    "query_id": "C03_EN",
+    "concept_id": "C03",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "housing_allowance",
+    "question": "What is the housing allowance and who is eligible?",
+    "answer": "The housing allowance is 20% of base salary and it is eligible for G4 and above employees.",
+    "reference": "The housing allowance is 20% of the base salary. It is available to G4-grade employees and above.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8779,
+      "answer_correctness": 0.9948
+    },
+    "timestamp": "2026-05-16T15:02:30.292860+00:00"
+  },
+  "C03_AR": {
+    "query_id": "C03_AR",
+    "concept_id": "C03",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "housing_allowance",
+    "question": "ما قيمة بدل السكن ومن يستحقه؟",
+    "answer": "بدل السكن  20% من الراتب الأساسي، ويستحقه الموظفون من الدرجة 4 فأعلى.",
+    "reference": "بدل السكن يعادل 20% من الراتب الأساسي، ويُمنح للموظفين من الدرجة G4 فأعلى، .",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9155,
+      "answer_correctness": 0.621
+    },
+    "timestamp": "2026-05-16T15:02:59.189952+00:00"
+  },
+  "C03_EG": {
+    "query_id": "C03_EG",
+    "concept_id": "C03",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "housing_allowance",
+    "question": "بدل السكن قد إيه ومين اللي بياخده؟",
+    "answer": "بدل السكن محسوب من الراتب الأساسي، وبيخده الموظفين اللي درجةهم 4 فما فوق.",
+    "reference": "بدل السكن بيكون 20% من الراتب الأساسي، وبياخده الموظفين من الدرجة G4 فأعلى، .",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9154,
+      "answer_correctness": 0.5385
+    },
+    "timestamp": "2026-05-16T15:03:28.416962+00:00"
+  },
+  "C04_EN": {
+    "query_id": "C04_EN",
+    "concept_id": "C04",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "probation_termination_notice",
+    "question": "What is the notice period required to terminate during probation?",
+    "answer": "The notice period required to terminate, either the employee or the company, during probation is 7 days written.",
+    "reference": "During the probation period, either the employee or the company may terminate the contract with 7 days written notice.",
+    "scores": {
+      "faithfulness": 0.75,
+      "answer_relevancy": 1.0,
+      "answer_correctness": 0.9921
+    },
+    "timestamp": "2026-05-16T15:03:57.399618+00:00"
+  },
+  "C05_EN": {
+    "query_id": "C05_EN",
+    "concept_id": "C05",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "gym_subsidy",
+    "question": "What is the gym subsidy for G1 and G2 employees?",
+    "answer": "The gym subsidy for G1 and G2 employees is up to 300 EGP/month, eligible at standard network gyms.",
+    "reference": "G1 and G2 employees receive a gym subsidy of up to 300 EGP per month at standard network gyms.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "answer_correctness": 0.9975
+    },
+    "timestamp": "2026-05-16T15:05:30.472672+00:00"
+  },
+  "C06_EN": {
+    "query_id": "C06_EN",
+    "concept_id": "C06",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "life_insurance",
+    "question": "How much is the group life insurance benefit?",
+    "answer": "The group life insurance benefit is equal to two times (2×) the employee's annual gross salary, paid as a lump sum to the designated beneficiary in the event of death from any cause.",
+    "reference": "The group life insurance benefit equals 2× the employee's annual gross salary, paid as a lump sum to the designated beneficiary in the event of death from any cause.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9515,
+      "answer_correctness": 0.9992
+    },
+    "timestamp": "2026-05-16T18:12:39.482601+00:00"
+  },
+  "C05_EG": {
+    "query_id": "C05_EG",
+    "concept_id": "C05",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "gym_subsidy",
+    "question": "إيه قيمة دعم الجيم لموظفي G1 وG2؟",
+    "answer": "دعم الجيم لموظفي G1 وG2 هو 300 جنيه شهريًا.",
+    "reference": "موظفو G1 وG2 بياخدوا دعم للجيم بحد أقصى 300 جنيه في الشهر في الأندية العادية في الشبكة.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9791,
+      "answer_correctness": 0.7404
+    },
+    "timestamp": "2026-05-16T20:53:37.315046+00:00"
+  },
+  "C06_AR": {
+    "query_id": "C06_AR",
+    "concept_id": "C06",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "life_insurance",
+    "question": "ما قيمة مزايا التأمين على الحياة الجماعي؟",
+    "answer": "تبلغ مزايا التأمين على الحياة الجماعي ضعفَي (2×) الراتب الإجمالي السنوي للموظف، وتُصرف مبلغًا إجماليًا للمستفيد المُعيَّن في حالة الوفاة لأي سبب. يُقدَّم هذا التأمين مجانًا للموظف.",
+    "reference": "تبلغ مزايا التأمين على الحياة الجماعي ضعفَي (2×) الراتب الإجمالي السنوي للموظف، وتُصرف مبلغًا إجماليًا للمستفيد المُعيَّن في حالة الوفاة لأي سبب. يُقدَّم هذا التأمين مجانًا للموظف.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-16T20:55:51.607962+00:00"
+  },
+  "C06_EG": {
+    "query_id": "C06_EG",
+    "concept_id": "C06",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "life_insurance",
+    "question": "التأمين على الحياة الجماعي بيدي قد إيه؟",
+    "answer": "التأمين على الحياة الجماعي بيدي مبلغ يساوي 2 ضعف الراتب الإجمالي السنوي للموظف، وبيتدفع دفعة واحدة للمستفيد المسمى في حالة الوفاة من أي سبب. الشركة بتدفعه من غير أي تكلفة على الموظف.",
+    "reference": "التأمين على الحياة الجماعي بيدي مبلغ يساوي 2 ضعف الراتب الإجمالي السنوي للموظف، وبيتدفع دفعة واحدة للمستفيد المسمى في حالة الوفاة من أي سبب. الشركة بتدفعه من غير أي تكلفة على الموظف.",
+    "scores": {
+      "faithfulness": 0.997,
+      "answer_relevancy": 1.0,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-16T20:58:51.629826+00:00"
+  },
+  "C07_EN": {
+    "query_id": "C07_EN",
+    "concept_id": "C07",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "g2_training_budget",
+    "question": "What is the annual learning budget for a G2 Specialist?",
+    "answer": "The annual learning budget for a G2 Specialist is $5,000.",
+    "reference": "A G2 Specialist receives an annual learning budget of $5,000 USD.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "answer_correctness": 0.9464
+    },
+    "timestamp": "2026-05-16T20:59:24.694997+00:00"
+  },
+  "C04_AR": {
+    "query_id": "C04_AR",
+    "concept_id": "C04",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "probation_termination_notice",
+    "question": "ما هي مدة الإشعار المطلوبة لإنهاء العقد خلال فترة الاختبار؟",
+    "answer": "مدة الإشعار لأي من الطرفين المطلوبة لإنهاء العقد خلال فترة الاختبار هي 7 أيام فقط بإشعار كتابي.",
+    "reference": "يحق لأي من الطرفين إنهاء عقد العمل خلال فترة الاختبار بإشعار كتابي مدته 7 أيام فقط.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "answer_correctness": 0.6727
+    },
+    "timestamp": "2026-05-17T11:12:44.004117+00:00"
+  },
+  "C04_EG": {
+    "query_id": "C04_EG",
+    "concept_id": "C04",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "probation_termination_notice",
+    "question": "مدة الإشعار عشان ينهي العقد في فترة الاختبار قد إيه؟",
+    "answer": "مدة الإشعار عشان سواء الموظف أو الشركة ينهي العقد في فترة التجربة 7 أيام إشعار كتابي.",
+    "reference": "أي طرف، سواء الموظف أو الشركة، يقدر يُنهي العقد في فترة الاختبار بإشعار كتابي 7 أيام بس.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9597,
+      "answer_correctness": 0.538
+    },
+    "timestamp": "2026-05-17T11:12:49.131322+00:00"
+  },
+  "C05_AR": {
+    "query_id": "C05_AR",
+    "concept_id": "C05",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "gym_subsidy",
+    "question": "ما قيمة دعم عضوية النادي الرياضي لموظفي الدرجة G1 وG2؟",
+    "answer": "دعم عضوية النادي الرياضي لموظفي الدرجة G1 وG2 هو حتى 300 جنيه مصري شهريًا، ويُسمح لهم بالاشتراك في الصالات الرياضية ذات الشبكة القياسية.",
+    "reference": "يحصل موظفو الدرجتين G1 وG2 على دعم لعضوية النادي الرياضي بحد أقصى 300 جنيه شهريًا في الأندية المعيارية. يُطبَّق الدعم كفوترة مباشرة على الشركة ولا يُصرف نقدًا.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.986,
+      "answer_correctness": 0.6139
+    },
+    "timestamp": "2026-05-17T11:13:14.023650+00:00"
+  },
+  "C05_FR": {
+    "query_id": "C05_FR",
+    "concept_id": "C05",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "gym_subsidy",
+    "question": "eih 2emet da3m el gym le muwazafin G1 w G2?",
+    "answer": "El gym subsidy le muwazafin G1 w G2: 300 gneih/shahr.",
+    "reference": "muwazafin G1 w G2 bya5du da3m lel gym le7ad 300 gneih fel shahr fe el andeyya el 3adiya.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8661,
+      "answer_correctness": 0.7339
+    },
+    "timestamp": "2026-05-17T11:13:42.888429+00:00"
+  },
+  "C07_AR": {
+    "query_id": "C07_AR",
+    "concept_id": "C07",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "g2_training_budget",
+    "question": "ما هي ميزانية التعلم السنوية لموظف من الدرجة G2؟",
+    "answer": "الموظف من الدرجة G2 يحصل على ميزانية تعلم سنوية قدرها 5000 دولار أمريكي.",
+    "reference": "يحصل موظف الدرجة G2 على ميزانية تعلم سنوية قدرها 5,000 دولار.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9908,
+      "answer_correctness": 0.9989
+    },
+    "timestamp": "2026-05-17T11:14:10.080720+00:00"
+  },
+  "C07_EG": {
+    "query_id": "C07_EG",
+    "concept_id": "C07",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "g2_training_budget",
+    "question": "ميزانية التعلم السنوية لموظف G2 قد إيه؟",
+    "answer": "ميزانية التعلم السنوية للموظف G2 هي $5,000.",
+    "reference": "موظف G2 بياخد ميزانية تعلم سنوية قدرها 5,000 دولار.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9937,
+      "answer_correctness": 0.9949
+    },
+    "timestamp": "2026-05-17T11:14:35.662675+00:00"
+  },
+  "C07_FR": {
+    "query_id": "C07_FR",
+    "concept_id": "C07",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "g2_training_budget",
+    "question": "eih mizaneyyet el ta3allom el sanaweyya le muwazaf G2?",
+    "answer": "el mizaneyya sanaweyya le G2: $5,000.",
+    "reference": "muwazaf G2 bya5od mizaneyya ta3allom sanaweyya 5,000 dolar.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8172,
+      "answer_correctness": 0.6129
+    },
+    "timestamp": "2026-05-17T11:15:01.874884+00:00"
+  },
+  "C08_EN": {
+    "query_id": "C08_EN",
+    "concept_id": "C08",
+    "language": "english",
+    "complexity": "L1",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "salary_payment_day",
+    "question": "On which day of the month are salaries paid?",
+    "answer": "Salaries are paid on the 25th of each month.",
+    "reference": "Salaries are paid on the 25th of each month. If that date falls on an official holiday or weekend, salaries are paid on the preceding working day.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9492,
+      "answer_correctness": 0.6005
+    },
+    "timestamp": "2026-05-17T11:15:29.541801+00:00"
+  },
+  "C08_AR": {
+    "query_id": "C08_AR",
+    "concept_id": "C08",
+    "language": "arabic",
+    "complexity": "L1",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "salary_payment_day",
+    "question": "في أي يوم من الشهر تُصرف الرواتب؟",
+    "answer": "تُصرف الرواتب في اليوم الخامس والعشرين من كل شهر ميلادي.",
+    "reference": "تُصرف الرواتب في اليوم الخامس والعشرين من كل شهر ميلادي. إذا صادف ذلك اليوم إجازة رسمية أو عطلة نهاية الأسبوع، يُصرف الراتب في يوم العمل السابق مباشرة.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9465,
+      "answer_correctness": 0.6113
+    },
+    "timestamp": "2026-05-17T11:16:04.595610+00:00"
+  },
+  "C08_EG": {
+    "query_id": "C08_EG",
+    "concept_id": "C08",
+    "language": "egyptian",
+    "complexity": "L1",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "salary_payment_day",
+    "question": "الرواتب بتتصرف في أنهي يوم من الشهر؟",
+    "answer": "الرواتب بتصرف في اليوم ﺍﻟﺨﺎﻣﺲ والعشرين من كل شهر ميلادي.",
+    "reference": "الرواتب بتتصرف في يوم 25 من كل شهر.",
+    "scores": {
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.9023,
+      "answer_correctness": 0.7392
+    },
+    "timestamp": "2026-05-17T11:16:35.024511+00:00"
+  },
+  "C09_EN": {
+    "query_id": "C09_EN",
+    "concept_id": "C09",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "tier1_cert_reimbursement",
+    "question": "What is the reimbursement rate for a Tier 1 certification first attempt, and is a retake covered?",
+    "answer": "The reimbursement rate for a Tier 1 certification first attempt is 100%, and a retake is covered up to 50%.",
+    "reference": "The first attempt at a Tier 1 strategic certification is reimbursed at 100%, plus up to 3 days of paid study leave. One retake is covered at 50% reimbursement.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9502,
+      "answer_correctness": 0.9203
+    },
+    "timestamp": "2026-05-17T11:19:49.929224+00:00"
+  },
+  "C09_AR": {
+    "query_id": "C09_AR",
+    "concept_id": "C09",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "tier1_cert_reimbursement",
+    "question": "ما نسبة استرداد المصاريف عند التقدم لأول مرة لشهادة من المستوى الأول، وهل تُغطَّى إعادة الاختبار؟",
+    "answer": "نسبة استرداد المصاريف عند التقدم لأول مرة لشهادة من المستوى الأول هي 100%، وتُغطَّى إعادة الاختبار بنسبة 50% (حد أقصى مرة واحدة).",
+    "reference": "نسبة استرداد المصاريف عند التقدم لأول مرة لشهادة من المستوى الأول هي 100%، وتُغطَّى إعادة الاختبار بنسبة 50% (حد أقصى مرة واحدة).",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9412,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T14:20:52.540777+00:00"
+  },
+  "C09_EG": {
+    "query_id": "C09_EG",
+    "concept_id": "C09",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "tier1_cert_reimbursement",
+    "question": "نسبة استرداد رسوم شهادة Tier 1 في أول محاولة قد إيه، وإعادة الاختبار بتتغطى؟",
+    "answer": "نسبة استرداد رسوم شهادة Tier 1 في أول محاولة هي 100%، وإعادة الاختبار بتتغطي 50% (بس ممكن تيجي مرة واحدة بس).",
+    "reference": "أول محاولة لشهادات Tier 1 الاستراتيجية زي  بتترد 100%، مع لحد 3 أيام إجازة دراسة مدفوعة. إعادة الاختبار مرة واحدة بس بتترد 50%، ومفيش تغطية لأي محاولات تانية.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9101,
+      "answer_correctness": 0.7923
+    },
+    "timestamp": "2026-05-17T14:22:34.232898+00:00"
+  },
+  "C09_FR": {
+    "query_id": "C09_FR",
+    "concept_id": "C09",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "tier1_cert_reimbursement",
+    "question": "eih nisblet estered rasoom shahadet Tier 1 fel awel mara, w e3adet el ekhtebar bettetghatta?",
+    "answer": "awel mara le  Tier 1 btetrod 100%, ma3 le7ad 3 ayyam agaza deraseyya madf3a. e3adet el ekhtebar mara wa7da bas btetrod 50%",
+    "reference": "awel mara le shahadat Tier 1 btetrod 100%, ma3 le7ad 3 ayyam agaza deraseyya madf3a. e3adet el ekhtebar mara wa7da bas btetrod 50%",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8342,
+      "answer_correctness": 0.721
+    },
+    "timestamp": "2026-05-17T14:24:24.476999+00:00"
+  },
+  "C10_EN": {
+    "query_id": "C10_EN",
+    "concept_id": "C10",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "ltd_benefit",
+    "question": "What does the long-term disability benefit pay, and for how long?",
+    "answer": "The Long-Term Disability (LTD) benefit pays a monthly benefit equal to 60% of the employee's last salary. The LTD benefit continues for a maximum of 24 months or until the employee is medically certified as fit to return to work, whichever occurs first.",
+    "reference": "The long-term disability (LTD) benefit pays 60% of the employee's last drawn base salary per month. It continues for a maximum of 24 months, or until the employee is medically certified as fit to return to work, whichever comes first.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9213,
+      "answer_correctness": 0.9962
+    },
+    "timestamp": "2026-05-17T14:26:19.377286+00:00"
+  },
+  "C10_AR": {
+    "query_id": "C10_AR",
+    "concept_id": "C10",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "ltd_benefit",
+    "question": "ما قيمة مزايا العجز طويل الأمد ومدتها؟",
+    "answer": "مزايا العجز طويل الأمد (LTD) تُقدَّر بـ 60% من آخر راتب شهري للموظف الذي يعجز عن العمل لأكثر من 90 يومًا متواصلة بسبب إعاقة معتمدة طبيًا، وتستمر هذه المزايا لمدة أقصاها 24 شهرًا أو حتى يُثبت الطبيب قدرة الموظف على العودة إلى العمل، أيهما يحدث أولاً [Page 3 | EN].",
+    "reference": "يُقدِّم مزايا العجز طويل الأمد 60% من آخر راتب أساسي مسحوب شهريًا، ويستمر لمدة أقصاها 24 شهرًا أو حتى يُصادق الطبيب على قدرة الموظف على العودة للعمل، أيهما أقرب. يُطبَّق بعد 90 يومًا متواصلة من العجز المُثبَت طبيًا.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8232,
+      "answer_correctness": 0.837
+    },
+    "timestamp": "2026-05-17T14:28:02.092860+00:00"
+  },
+  "C11_EN": {
+    "query_id": "C11_EN",
+    "concept_id": "C11",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "emergency_loan",
+    "question": "How much can an employee borrow as an emergency interest-free loan, and what are the repayment terms?",
+    "answer": "An employee can borrow up to two months' net salary as an emergency interest-free loan, repayable over a maximum of 12 equal monthly instalments via payroll deduction.",
+    "reference": "Employees who have completed their probation period may borrow up to two months' net salary as an emergency interest-free loan. It is repayable over a maximum of 12 equal monthly instalments via payroll deduction. Only one active loan is permitted at a time, and approval requires sign-off from both HR and Finance.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9648,
+      "answer_correctness": 0.892
+    },
+    "timestamp": "2026-05-17T15:02:16.838654+00:00"
+  },
+  "C11_EG": {
+    "query_id": "C11_EG",
+    "concept_id": "C11",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "emergency_loan",
+    "question": "الموظف يقدر يقترض قد إيه كقرض طارئ بدون فوايد وإيه شروط السداد؟",
+    "answer": "الموظف اللي اتم تجربته ممكن يقرضه قرض طارئ بس ما يزيد على شهرين راتب صافي، وسداده كده على 12 قسط متساوي كحد أقصى . الشروط دياله:  \n1. موظف مفيش عندو قرض نشط تاني في نفس الوقت.  \n2. موافقة HR والمالية.  \n3. مفيش فوائد على القرض.  \n\nأيهو، لو عايز تقرضه كده، خليه يتأكد من إنه اتم تجربته أولًا [Page 5 | EN].",
+    "reference": "الموظف اللي خلّص فترة الاختبار يقدر يقترض لحد شهرين صافي مرتب كقرض طارئ بدون فوايد. بيتسدد على 12 قسط شهري متساوي كحد أقصى من الراتب. مسموح بس بقرض واحد نشط في نفس الوقت، ولازم يعتمده الموارد البشرية والمالية.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8798,
+      "answer_correctness": 0.9863
+    },
+    "timestamp": "2026-05-17T15:07:04.195266+00:00"
+  },
+  "C12_AR": {
+    "query_id": "C12_AR",
+    "concept_id": "C12",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "social_insurance_rate",
+    "question": "ما نسبة اشتراك الموظف في التأمينات الاجتماعية وما نسبة صاحب العمل؟",
+    "answer": "يسدد الموظف 11% من الأجر الثابت والمتغير كاشتراك في التأمينات الاجتماعية، بينما يسدد صاحب العمل 18.75%، ليبلغ إجمالي الاشتراك 29.75%.",
+    "reference": "يسدد الموظف 11% من الأجر الثابت والمتغير كاشتراك في التأمينات الاجتماعية، بينما يسدد صاحب العمل 18.75%، ليبلغ إجمالي الاشتراك 29.75%.",
+    "scores": {
+      "faithfulness": 0.8,
+      "answer_relevancy": 0.8819,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T15:08:55.804392+00:00"
+  },
+  "C12_EG": {
+    "query_id": "C12_EG",
+    "concept_id": "C12",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "social_insurance_rate",
+    "question": "نسبة اشتراك الموظف في التأمينات الاجتماعية قد إيه ونسبة الشركة؟",
+    "answer": "الموظف بيدفع 11% من الأجر الثابت والمتغير كاشتراك في التأمينات الاجتماعية، والشركة بتدفع 18.75%، والإجمالي 29.75%.",
+    "reference": "الموظف بيدفع 11% من الأجر الثابت والمتغير كاشتراك في التأمينات الاجتماعية، والشركة بتدفع 18.75%، والإجمالي 29.75%.",
+    "scores": {
+      "faithfulness": 0.8,
+      "answer_relevancy": 0.8859,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T15:10:40.813677+00:00"
+  },
+  "C13_EN": {
+    "query_id": "C13_EN",
+    "concept_id": "C13",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "confidentiality_post_employment",
+    "question": "How long do confidentiality obligations continue after an employee leaves the company?",
+    "answer": "Confidentiality obligations continue for a period of three (3) years after the termination of employment.",
+    "reference": "Confidentiality obligations continue for 3 years after the termination of employment for most information categories.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9607,
+      "answer_correctness": 0.9421
+    },
+    "timestamp": "2026-05-17T15:11:46.601609+00:00"
+  },
+  "C10_EG": {
+    "query_id": "C10_EG",
+    "concept_id": "C10",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "ltd_benefit",
+    "question": "بدل العجز طويل الأمد بيدفع قد إيه وبيستمر قد إيه؟",
+    "answer": "بدل العجز طويل الأمد ده بيقدر يدفع 60% من آخر راتب شهري ، وبيستمر لحد 24 شهر أو لحد ما يثبت طبيًا إنك قادر ترجع للعمل، أي الوضع اللي بيكون أقرب [Page 3 | EN].",
+    "reference": "بدل العجز طويل الأمد بيدفع 60% من آخر راتب أساسي كل شهر. بيستمر بحد أقصى 24 شهر أو لحد ما الطبيب يقول إن الموظف قادر يرجع يشتغل، أيهما أقرب. وده بيبدأ بعد 90 يوم متواصل من العجز المُثبَت طبيًا.",
+    "scores": {
+      "faithfulness": 0.8333,
+      "answer_relevancy": 0.825,
+      "answer_correctness": 0.6326
+    },
+    "timestamp": "2026-05-17T16:09:33.131100+00:00"
+  },
+  "C11_AR": {
+    "query_id": "C11_AR",
+    "concept_id": "C11",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "emergency_loan",
+    "question": "كم يمكن للموظف اقتراضه كقرض طارئ بدون فوائد وما شروط السداد؟",
+    "answer": "الموظف الذي أنهى فترة التجربة يمكنه اقتراض قرض طارئ بدون فوائد حتى شهرين من راتبه الصافي، ويشترط سداده خلال 12 دفعة متساوية كحد أقصى [Page 5 | EN]. كما أن الموافقة تخضع لتوقيع الموارد البشرية والمالية، ولا يُسمح بقرض نشط واحد في أي وقت [Page 5 | EN].",
+    "reference": "يحق للموظف الذي أتمَّ فترة الاختبار الاقتراض بما يصل إلى شهرين من صافي الراتب كقرض طارئ بدون فوائد. يُسدَّد على 12 قسطًا شهريًا متساويًا كحد أقصى عبر خصم الراتب. لا يُسمح بأكثر من قرض نشط واحد في آنٍ واحد، ويشترط الحصول على موافقة الموارد البشرية والمالية.",
+    "scores": {
+      "faithfulness": 0.75,
+      "answer_relevancy": 0.787,
+      "answer_correctness": 0.6141
+    },
+    "timestamp": "2026-05-17T16:10:46.713883+00:00"
+  },
+  "C13_AR": {
+    "query_id": "C13_AR",
+    "concept_id": "C13",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "confidentiality_post_employment",
+    "question": "كم تستمر التزامات السرية بعد مغادرة الموظف للشركة؟",
+    "answer": "التزامات السرية تستمر لمدة 3 سنوات بعد إنهاء العمل بالنسبة لمعظم البيانات، بينما تكون التزامات حماية المعرفة التجارية وبيانات العملاء دائمة (غير محدودة). [Page 2 | EN]",
+    "reference": "تستمر التزامات السرية لمدة 3 سنوات بعد إنهاء عقد العمل لمعظم فئات المعلومات. أما الالتزامات المتعلقة بالأسرار التجارية وبيانات العملاء فهي دائمة ولا تنقضي.",
+    "scores": {
+      "faithfulness": 0.75,
+      "answer_relevancy": 0.8565,
+      "answer_correctness": 0.7844
+    },
+    "timestamp": "2026-05-17T16:11:39.166934+00:00"
+  },
+  "C13_EG": {
+    "query_id": "C13_EG",
+    "concept_id": "C13",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "confidentiality_post_employment",
+    "question": "التزامات السرية بتستمر قد إيه بعد ما الموظف يسيب الشركة؟",
+    "answer": "السرية بتستمر 3 سنين بعد ما تخلص عقد العمل، وسرى التفاصيل دي كتلاقيها في . أما عن أسرار الشركة والبيانات الخاصة بالعملاء، فده يبقا سري لحد ما يخلص العمر، أيوه! [Page 2 | EN].",
+    "reference": "التزامات السرية بتستمر 3 سنين بعد إنهاء عقد الشغل لمعظم أنواع المعلومات. أما اللي بيخص الأسرار التجارية وبيانات العملاء فالتزاماته دايمة ومبتنتهيش.",
+    "scores": {
+      "faithfulness": 0.6667,
+      "answer_relevancy": 0.8433,
+      "answer_correctness": 0.4195
+    },
+    "timestamp": "2026-05-17T16:12:58.965465+00:00"
+  },
+  "C14_EN": {
+    "query_id": "C14_EN",
+    "concept_id": "C14",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "ar_policy.pdf",
+    "topic": "mental_health_leave",
+    "question": "How many mental health leave days are employees entitled to, and are they paid?",
+    "answer": "Employees are entitled to 2 mental health leave days per year, and they are paid.",
+    "reference": "All employees are entitled to 2 paid mental health leave days per year.",
+    "scores": {
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.9583,
+      "answer_correctness": 0.6698
+    },
+    "timestamp": "2026-05-17T16:13:55.932103+00:00"
+  },
+  "C14_AR": {
+    "query_id": "C14_AR",
+    "concept_id": "C14",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "ar_policy.pdf",
+    "topic": "mental_health_leave",
+    "question": "كم عدد أيام إجازة الصحة النفسية وهل هي مدفوعة الأجر؟",
+    "answer": "إجازة الصحة النفسية مدفوعة الأجر وتُمنح يومان سنوياً.",
+    "reference": "يستحق جميع الموظفين يومَين مدفوعَي الأجر سنويًا كإجازة صحة نفسية.",
+    "scores": {
+      "faithfulness": null,
+      "answer_relevancy": 0.9388,
+      "answer_correctness": 0.836
+    },
+    "timestamp": "2026-05-17T16:15:11.650252+00:00"
+  },
+  "C14_EG": {
+    "query_id": "C14_EG",
+    "concept_id": "C14",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "ar_policy.pdf",
+    "topic": "mental_health_leave",
+    "question": "كام يوم إجازة صحة نفسية الموظف بياخد وهل هي مدفوعة؟",
+    "answer": "الموظف بياخد يومين إجازة صحة نفسية مدفوعين سنوياً.",
+    "reference": "كل الموظفين بياخدوا يومين إجازة صحة نفسية في السنة ومدفوعين.",
+    "scores": {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.9521,
+      "answer_correctness": 0.9088
+    },
+    "timestamp": "2026-05-17T16:16:03.903101+00:00"
+  },
+  "C15_EN": {
+    "query_id": "C15_EN",
+    "concept_id": "C15",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "ar_recruitment.pdf",
+    "topic": "probation_review_timing",
+    "question": "When are performance evaluations conducted during probation?",
+    "answer": "Performance evaluations are conducted at the 1-month and 3-month marks during the probation period.",
+    "reference": "Performance is evaluated at the end of the 1st month and again at the end of the 3rd month during the probation period.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9868,
+      "answer_correctness": 0.8404
+    },
+    "timestamp": "2026-05-17T16:17:06.374302+00:00"
+  },
+  "C15_AR": {
+    "query_id": "C15_AR",
+    "concept_id": "C15",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "ar_recruitment.pdf",
+    "topic": "probation_review_timing",
+    "question": "متى تُجرى تقييمات الأداء خلال فترة الاختبار؟",
+    "answer": "تُجرى تقييمات الأداء خلال فترة الاختبار في نهاية الشهرين الأول والثالث.",
+    "reference": "يُجرى تقييم الأداء في نهاية الشهر الأول ونهاية الشهر الثالث خلال فترة الاختبار.",
+    "scores": {
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.8942,
+      "answer_correctness": null
+    },
+    "timestamp": "2026-05-17T16:18:15.867547+00:00"
+  },
+  "C15_EG": {
+    "query_id": "C15_EG",
+    "concept_id": "C15",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "ar_recruitment.pdf",
+    "topic": "probation_review_timing",
+    "question": "تقييمات الأداء بتتعمل إمتى في فترة الاختبار؟",
+    "answer": "تقييم الأداء بيتم في نهية الشهور الأولى والثالث ، وده كتاعه مذكور في الشروط ديال التقييم دورياً.",
+    "reference": "تقييم الأداء بيتعمل في نهاية الشهر الأول ونهاية الشهر التالت في فترة الاختبار.",
+    "scores": {
+      "faithfulness": 0.3333,
+      "answer_relevancy": 0.8512,
+      "answer_correctness": 0.5011
+    },
+    "timestamp": "2026-05-17T16:19:37.669104+00:00"
+  },
+  "C16_AR": {
+    "query_id": "C16_AR",
+    "concept_id": "C16",
+    "language": "arabic",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "expense_claim_deadline",
+    "question": "ما هو الموعد النهائي لتقديم طلب تسوية المصروفات بعد تكبُّد النفقة؟",
+    "answer": "الموعد النهائي 30 يوم من تاريخ النفقة دي.",
+    "reference": "يجب تقديم طلب تسوية المصروفات خلال 30 يومًا من تاريخ تكبُّد النفقة.",
+    "scores": {
+      "faithfulness": 0.25,
+      "answer_relevancy": 0.8146,
+      "answer_correctness": 0.7295
+    },
+    "timestamp": "2026-05-17T16:20:37.423923+00:00"
+  },
+  "C16_EG": {
+    "query_id": "C16_EG",
+    "concept_id": "C16",
+    "language": "egyptian",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "expense_claim_deadline",
+    "question": "آخر موعد لتقديم طلب تسوية المصروفات بعد الصرف قد إيه؟",
+    "answer": "آخر موعد 30 يوم من تاريخ الصرف، وإلا ما يُقبلش.",
+    "reference": "طلب تسوية المصروفات لازم يتقدم خلال 30 يوم من تاريخ الصرف. المطالبات اللي بتتقدم بعد 30 يوم مش بتتقبلش في أي حال.",
+    "scores": {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.7973,
+      "answer_correctness": 0.653
+    },
+    "timestamp": "2026-05-17T16:21:36.368039+00:00"
+  },
+  "C17_EN": {
+    "query_id": "C17_EN",
+    "concept_id": "C17",
+    "language": "english",
+    "complexity": "L3",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "savings_plan_eligibility",
+    "question": "What are all the conditions required to join the voluntary savings plan?",
+    "answer": "To join the voluntary savings plan, employees must be at grade G3 or above and have completed at least 6 months of service in the calendar year .",
+    "reference": "To join the voluntary savings plan, the employee must: (1) be at grade G3 or above; (2) have completed the probation period.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9867,
+      "answer_correctness": 0.6159
+    },
+    "timestamp": "2026-05-17T16:22:37.563271+00:00"
+  },
+  "C17_AR": {
+    "query_id": "C17_AR",
+    "concept_id": "C17",
+    "language": "arabic",
+    "complexity": "L3",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "savings_plan_eligibility",
+    "question": "ما جميع الشروط المطلوبة للانضمام إلى خطة الادخار الطوعي؟",
+    "answer": "الشروط المطلوبة للانضمام إلى خطة الادخار الطوعي هي:  \n1. أن يكون الموظف من المرتبة G3 فما فوق [Page 4 | EN].  \n2. أن يكمل الموظف على الأقل 6 أشهر من الخدمة في السنة الميلادية [Page 4 | EN].  \n\nملاحظة: الشروط الأخرى مثل \"المرتبة G3 أو أعلى مع 2 سنوات من الخدمة وخلو السجل التأديبي\" [Page 4 | EN] تُشير إلى متطلبات تخص ترشيحات أو سياسات أخرى غير خطة الادخار الطوعي.",
+    "reference": "للانضمام لخطة الادخار الطوعي يجب أن يكون الموظف: (1) من الدرجة G3 أو أعلى؛ (2) قد أتمَّ فترة الاختبار. يُساهم الموظف بنسبة تتراوح بين 2% و10% من راتبه الأساسي شهريًا قبل خصم الضريبة. تقابل الشركة هذه المساهمة بنسبة تصل إلى 4% من الراتب الأساسي. تُستحَق مساهمة الشركة بنسبة 25% بعد سنة من المشاركة، و50% بعد سنتين، و75% بعد ثلاث سنوات، و100% بعد أربع سنوات.",
+    "scores": {
+      "faithfulness": 0.6667,
+      "answer_relevancy": 0.8612,
+      "answer_correctness": null
+    },
+    "timestamp": "2026-05-17T16:23:50.559720+00:00"
+  },
+  "C17_EG": {
+    "query_id": "C17_EG",
+    "concept_id": "C17",
+    "language": "egyptian",
+    "complexity": "L3",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "savings_plan_eligibility",
+    "question": "إيه كل الشروط المطلوبة للانضمام لخطة الادخار الطوعي؟",
+    "answer": "عشان تنضم لخطة الادخار الطوعي لازم يكون الموظف: (1) من درجة G3 أو أعلى؛ (2) خلّص فترة الاختبار. الموظف يقدر يساهم بنسبة من 2% لحد 10% من راتبه الأساسي كل شهر قبل الضريبة. الشركة بتطابق المساهمة لحد 4% من الراتب الأساسي. مساهمة الشركة بتستحق 25% بعد سنة، 50% بعد سنتين، 75% بعد 3 سنين، و100% بعد 4 سنين.",
+    "reference": "عشان تنضم لخطة الادخار الطوعي لازم يكون الموظف: (1) من درجة G3 أو أعلى؛ (2) خلّص فترة الاختبار. الموظف يقدر يساهم بنسبة من 2% لحد 10% من راتبه الأساسي كل شهر قبل الضريبة. الشركة بتطابق المساهمة لحد 4% من الراتب الأساسي. مساهمة الشركة بتستحق 25% بعد سنة، 50% بعد سنتين، 75% بعد 3 سنين، و100% بعد 4 سنين.",
+    "scores": {
+      "faithfulness": 0.3,
+      "answer_relevancy": 0.8496,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T16:25:07.308736+00:00"
+  },
+  "C18_EN": {
+    "query_id": "C18_EN",
+    "concept_id": "C18",
+    "language": "english",
+    "complexity": "L3",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "mandatory_training_modules",
+    "question": "What are all the mandatory annual compliance training modules and their deadlines?",
+    "answer": "The mandatory annual compliance training modules are: \n1. Information Security Awareness, which is online (1 hr) with a deadline of 31 March [Page 2|EN], \n2. Data Protection & GDPR Principles, which is online (1 hr) with a deadline of 31 March [Page 2|EN]. \nNote that the deadline for Data Protection & GDPR Principles is not explicitly stated on the provided page, but based on the format, it can be inferred that it might be similar to Information Security Awareness [Page 2|EN].",
+    "reference": "All employees must complete: Information Security Awareness (1 hr online, deadline 31 March); Data Protection & GDPR Principles (1.5 hrs online, deadline 31 March); Anti-Bribery & Corruption (1 hr online, deadline 30 June); Workplace Harassment Prevention (1 hr online, deadline 30 June); Fire Safety & Emergency Procedures (2 hrs in-person, deadline 30 September); AI Ethics & Acceptable Use (45 min online, deadline 31 March). Additionally, G3 and above must complete Manager Essentials (3 hrs online, deadline 31 March).",
+    "scores": {
+      "faithfulness": 0.8182,
+      "answer_relevancy": 0.9734,
+      "answer_correctness": 0.5637
+    },
+    "timestamp": "2026-05-17T16:26:33.159676+00:00"
+  },
+  "C18_AR": {
+    "query_id": "C18_AR",
+    "concept_id": "C18",
+    "language": "arabic",
+    "complexity": "L3",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "mandatory_training_modules",
+    "question": "ما جميع وحدات الامتثال التدريبية السنوية الإلزامية ومواعيد إتمامها؟",
+    "answer": "يجب على جميع الموظفين إتمام: الوعي بأمن المعلومات (ساعة أونلاين، 31 مارس)؛ حماية البيانات ومبادئ GDPR (ساعة ونصف أونلاين، 31 مارس)؛ مكافحة الرشوة والفساد (ساعة أونلاين، 30 يونيو)؛ منع التحرش في مكان العمل (ساعة أونلاين، 30 يونيو)؛ السلامة من الحرائق وإجراءات الطوارئ (ساعتان حضوري، 30 سبتمبر)؛ أخلاقيات الذكاء الاصطناعي والاستخدام المقبول (45 دقيقة أونلاين، 31 مارس). ويجب على الدرجة G3 فأعلى إكمال أساسيات الإدارة (3 ساعات أونلاين، 31 مارس).",
+    "reference": "يجب على جميع الموظفين إتمام: الوعي بأمن المعلومات (ساعة أونلاين، 31 مارس)؛ حماية البيانات ومبادئ GDPR (ساعة ونصف أونلاين، 31 مارس)؛ مكافحة الرشوة والفساد (ساعة أونلاين، 30 يونيو)؛ منع التحرش في مكان العمل (ساعة أونلاين، 30 يونيو)؛ السلامة من الحرائق وإجراءات الطوارئ (ساعتان حضوري، 30 سبتمبر)؛ أخلاقيات الذكاء الاصطناعي والاستخدام المقبول (45 دقيقة أونلاين، 31 مارس). ويجب على الدرجة G3 فأعلى إكمال أساسيات الإدارة (3 ساعات أونلاين، 31 مارس).",
+    "scores": {
+      "faithfulness": 0.1429,
+      "answer_relevancy": 0.8263,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T16:27:55.892936+00:00"
+  },
+  "C18_EG": {
+    "query_id": "C18_EG",
+    "concept_id": "C18",
+    "language": "egyptian",
+    "complexity": "L3",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "mandatory_training_modules",
+    "question": "إيه كل وحدات الامتثال التدريبية الإلزامية السنوية ومواعيدها؟",
+    "answer": "كل الموظفين لازم يخلصوا: الوعي بأمن المعلومات (ساعة أونلاين، 31 مارس)؛ حماية البيانات ومبادئ GDPR (ساعة ونص أونلاين، 31 مارس)؛ مكافحة الرشوة والفساد (ساعة أونلاين، 30 يونيو)؛ منع التحرش (ساعة أونلاين، 30 يونيو)؛ السلامة من الحرائق وإجراءات الطوارئ (ساعتين حضوري، 30 سبتمبر)؛ أخلاقيات الذكاء الاصطناعي (45 دقيقة أونلاين، 31 مارس). والدرجة G3 فأعلى لازم يخلصوا كمان أساسيات الإدارة (3 ساعات أونلاين، 31 مارس).",
+    "reference": "كل الموظفين لازم يخلصوا: الوعي بأمن المعلومات (ساعة أونلاين، 31 مارس)؛ حماية البيانات ومبادئ GDPR (ساعة ونص أونلاين، 31 مارس)؛ مكافحة الرشوة والفساد (ساعة أونلاين، 30 يونيو)؛ منع التحرش (ساعة أونلاين، 30 يونيو)؛ السلامة من الحرائق وإجراءات الطوارئ (ساعتين حضوري، 30 سبتمبر)؛ أخلاقيات الذكاء الاصطناعي (45 دقيقة أونلاين، 31 مارس). والدرجة G3 فأعلى لازم يخلصوا كمان أساسيات الإدارة (3 ساعات أونلاين، 31 مارس).",
+    "scores": {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.8328,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T16:28:58.376165+00:00"
+  },
+  "C19_EN": {
+    "query_id": "C19_EN",
+    "concept_id": "C19",
+    "language": "english",
+    "complexity": "L3",
+    "source_doc": "eng_policy.pdf",
+    "topic": "gross_misconduct",
+    "question": "What offences constitute gross misconduct and lead to immediate termination?",
+    "answer": "Theft, fraud, or deliberate falsification of company records [Page 9|EN], and physical assault or serious threats within the work environment [Page 10|AR].",
+    "reference": "The following offences result in immediate termination without prior notice or severance: (1) theft, fraud, or deliberate falsification of company records; (2) physical assault or serious threats of violence in the workplace; (3) disclosure of confidential or sensitive information to unauthorised parties; (4) reporting to work under the influence of alcohol or controlled substances; (5) serious breaches of health, safety, or data protection regulations.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.856,
+      "answer_correctness": 0.6983
+    },
+    "timestamp": "2026-05-17T16:30:15.964281+00:00"
+  },
+  "C19_AR": {
+    "query_id": "C19_AR",
+    "concept_id": "C19",
+    "language": "arabic",
+    "complexity": "L3",
+    "source_doc": "eng_policy.pdf",
+    "topic": "gross_misconduct",
+    "question": "ما المخالفات الجسيمة التي تستوجب الفصل الفوري؟",
+    "answer": "المخالفات الجسيمة التي تستوجب الفصل الفوري تشمل:  \n● السرقة أو الاحتيال أو تزوير مستندات الشركة [Page 10 | AR].  \n● العتداء الجسدي أو التهديد الجسيم داخل بيئة العمل [Page 10 | AR].  \n● الإفصاح عن معلومات سرية لطرف غير مصرح له [Page 10 | AR].  \n● الحضور للعمل تحت تأثير الكحول أو المواد المخدرة [Page 10 | AR].  \n● الإنتهاكات الجسيمة لأنظمة حماية البيانات أو أمن المعلومات [Page 10 | AR].  \n● أي تغيير سلبي في ظروف العمل، مما يُعتبر انتهاكًا جسيمًا للسياسة [Page 4 | EN].  \n● التلاعب المتعمد في سجلات الشركة (مثل تزوير السجلات) [Page 9 | EN].",
+    "reference": "تستوجب الحالات التالية إنهاء الخدمة فورًا دون إشعار مسبق أو مكافأة: (1) السرقة أو الاحتيال أو تزوير مستندات الشركة؛ (2) الاعتداء الجسدي أو التهديد الجسيم داخل بيئة العمل؛ (3) إفشاء معلومات سرية لأطراف غير مصرح لها؛ (4) الحضور للعمل تحت تأثير الكحول أو المواد المخدرة؛ (5) الانتهاكات الجسيمة لأنظمة الصحة والسلامة أو حماية البيانات.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8753,
+      "answer_correctness": 0.7284
+    },
+    "timestamp": "2026-05-17T16:31:37.229744+00:00"
+  },
+  "C19_EG": {
+    "query_id": "C19_EG",
+    "concept_id": "C19",
+    "language": "egyptian",
+    "complexity": "L3",
+    "source_doc": "eng_policy.pdf",
+    "topic": "gross_misconduct",
+    "question": "إيه المخالفات الجسيمة اللي بتوصل للفصل الفوري؟",
+    "answer": "المخالفات الجسيمة اللي بتوصل للفصل الفوري ديه:  \n● السرقة أو الاحتيال أو تزوير مستندات الشركة [Page 9 | EN].  \n● الاعتداء الجسدي أو التهديد الجسيم داخل بيئة العمل [Page 10 | AR].  \n● إفشاء معلومات سرية للطرف غير المصرح له [Page 10 | AR].  \n● الحضور للعمل تحت تأثير الكحول أو المواد المخدرة [Page 10 | AR].  \n● الانتهاكات الجسيمة لأنظمة حماية البيانات أو أمن المعلومات [Page 10 | AR].  \n● أي تغيير سلبي في ظروف العمل، ده كله مخالفة جسيمة وبيعرضك للفصل [Page 4 | EN].",
+    "reference": "الحالات دي بتوصل للفصل الفوري من غير إشعار أو مكافأة: (1) السرقة أو الاحتيال أو تزوير مستندات الشركة؛ (2) الاعتداء الجسدي أو التهديد داخل بيئة الشغل؛ (3) إفشاء معلومات سرية لأطراف مش مصرحلهم؛ (4) الحضور للشغل تحت تأثير كحول أو مخدرات؛ (5) انتهاكات جسيمة لأنظمة الصحة والسلامة أو حماية البيانات.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8932,
+      "answer_correctness": 0.7306
+    },
+    "timestamp": "2026-05-17T16:32:55.421509+00:00"
+  },
+  "C19_FR": {
+    "query_id": "C19_FR",
+    "concept_id": "C19",
+    "language": "franco",
+    "complexity": "L3",
+    "source_doc": "eng_policy.pdf",
+    "topic": "gross_misconduct",
+    "question": "eih el mokhalafat el gasima ely btwassal lel fasl el fawri?",
+    "answer": "el 7alat diy btwassal lel fasl el fawri men gher esh3ar aw moka2fa: (1) el sar2a aw el e7tiyyal aw tazweer mostanadaat el sharka; (2) el e3teda2 el gasedi aw el tahdeed gowwa el shoghl; (3) efsha2 ma3lumat serreyya le atraf mesh masre7lohom; (4) el 7udur lel shoghl ta7t ta2theer kohol aw mokhadarat; (5) entehaakat gasema le enzmet el se77a wel salama aw 7imayyet el bayanat.",
+    "reference": "el 7alat diy btwassal lel fasl el fawri men gher esh3ar aw moka2fa: (1) el sar2a aw el e7tiyyal aw tazweer mostanadaat el sharka; (2) el e3teda2 el gasedi aw el tahdeed gowwa el shoghl; (3) efsha2 ma3lumat serreyya le atraf mesh masre7lohom; (4) el 7udur lel shoghl ta7t ta2theer kohol aw mokhadarat; (5) entehaakat gasema le enzmet el se77a wel salama aw 7imayyet el bayanat.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8037,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T16:34:13.862011+00:00"
+  },
+  "C20_EN": {
+    "query_id": "C20_EN",
+    "concept_id": "C20",
+    "language": "english",
+    "complexity": "L3",
+    "source_doc": "ar_policy.pdf",
+    "topic": "data_retention",
+    "question": "What are the data retention periods for different types of employee records?",
+    "answer": "The data retention periods for different types of employee records are: \n- Active employee files are retained for the duration of their service + 7 years [Page 12|AR], \n- Payroll and financial data are retained for 10 years [Page 12|AR], \n- Performance and disciplinary records are retained for 5 years from the date of termination [Page 12|AR]. \nAdditionally, all proceedings are documented and retained in the employee's file for the applicable validity period [Page 9|EN].",
+    "reference": "Active employee files are retained for the duration of service plus 7 years. Payroll and financial data are retained for 10 years. Performance and disciplinary records are kept for 5 years from the termination date. Unsuccessful applicant data is kept for 6 months only. Internal email correspondence is retained for 3 years.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "answer_correctness": 0.7383
+    },
+    "timestamp": "2026-05-17T16:35:03.827960+00:00"
+  },
+  "C20_AR": {
+    "query_id": "C20_AR",
+    "concept_id": "C20",
+    "language": "arabic",
+    "complexity": "L3",
+    "source_doc": "ar_policy.pdf",
+    "topic": "data_retention",
+    "question": "ما هي فترات الاحتفاظ بالبيانات لأنواع مختلفة من سجلات الموظفين؟",
+    "answer": "فترات الحفاظ على البيانات تختلف حسب نوع السجلات كما يلي:  \n- **ملفات الموظفين النشطين**: طوال فترة الخدمة + 7 سنوات [Page 12 | AR].  \n- **بيانات الرواتب والمالية**: 10 سنوات [Page 12 | AR].  \n- **سجلات الأداء والتأديب**: 5 سنوات من تاريخ الإنهاء [Page 12 | AR].  \n- **بيانات المتقدمين غير المقبولين**: 6 أشهر فقط [Page 12 | AR].  \n- **المراسلات الإلكترونية الداخلية**: 3 سنوات [Page 12 | AR].  \n\nكما تُحتفظ بجميع الإجراءات المُستندية في ملف الموظف لفترة الصلاحية المُعينة [Page 9 | EN].",
+    "reference": "ملفات الموظفين النشطين: طوال فترة الخدمة + 7 سنوات. بيانات الرواتب والمالية: 10 سنوات. سجلات الأداء والتأديب: 5 سنوات من تاريخ الإنهاء. بيانات المتقدمين غير المقبولين: 6 أشهر فقط. المراسلات الإلكترونية الداخلية: 3 سنوات.",
+    "scores": {
+      "faithfulness": 0.875,
+      "answer_relevancy": 0.8913,
+      "answer_correctness": 0.714
+    },
+    "timestamp": "2026-05-17T16:36:27.733400+00:00"
+  },
+  "C20_EG": {
+    "query_id": "C20_EG",
+    "concept_id": "C20",
+    "language": "egyptian",
+    "complexity": "L3",
+    "source_doc": "ar_policy.pdf",
+    "topic": "data_retention",
+    "question": "فترات الاحتفاظ بالبيانات لأنواع السجلات المختلفة إيه؟",
+    "answer": "فترة الاحتفاظ بالبيانات كده:  \n- ملفات الموظفين النشطين: طول فترة الخدمة + 7 سنين.  \n- بيانات الرواتب والمالية: 10 سنين.  \n- سجلات الأداء والتأديب: 5 سنين من تاريخ إنهاء الخدمة.  \n- بيانات المتقدمين غير المقبولين: 6 أشهر.  \n- المراسلات الإلكترونية الداخلية: 3 سنين.  \n\n[Page 12 | AR]",
+    "reference": "ملفات الموظفين النشطين: طول فترة الخدمة + 7 سنين. بيانات الرواتب والمالية: 10 سنين. سجلات الأداء والتأديب: 5 سنين من تاريخ الإنهاء. بيانات المتقدمين اللي اترفضوا: 6 شهور بس. المراسلات الإلكترونية الداخلية: 3 سنين.",
+    "scores": {
+      "faithfulness": 0.7143,
+      "answer_relevancy": 0.8174,
+      "answer_correctness": 0.8011
+    },
+    "timestamp": "2026-05-17T16:37:56.379741+00:00"
+  },
+  "C21_EN": {
+    "query_id": "C21_EN",
+    "concept_id": "C21",
+    "language": "english",
+    "complexity": "L3",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "reimbursable_expenses",
+    "question": "What expense types are reimbursable and what are their limits?",
+    "answer": "The following categories are eligible for reimbursement from the learning budget: Online course fees (Coursera, Udemy Business, LinkedIn Learning, Pluralsight) and Workshop or bootcamp registration fees [Page 2|EN]. The maximum limit for reimbursement is not specified, but expenditures require pre-approval via the L&D request form on the Horizon Portal [Page 2|EN]. Reimbursement requests must be submitted via the HR Portal with original receipts within 60 days of the qualifying expenditure [Page 4|EN]. Unused balances do not carry over to the following year [Page 4|EN]. Additionally, professional expenses that are reimbursable include: ﺟﻨﻴﻪ ﻭﺟﺒﺔ150ﻓﺎﺗﻮﺭﺓ ﺿﺮﻳﺒﻴﺔ ﺍﺟﺘﻤﺎﻝ ﻋﻤﻞ ﻣﻊ ﻋﻤﻴﻞ ﺟﻨﻴﻪ [Page 4|AR].",
+    "reference": "The following professional expenses are reimbursable: individual work meals up to 150 EGP per meal (tax invoice required); client business meetings up to 500 EGP per meeting (invoice + client name required); internal city transport up to 200 EGP per day (receipt or Uber screenshot); remote work internet up to 800 EGP per month (service bill); office supplies up to 300 EGP per month (original invoice). All claims must be submitted within 30 days.",
+    "scores": {
+      "faithfulness": 0.7059,
+      "answer_relevancy": 0.8703,
+      "answer_correctness": 0.7291
+    },
+    "timestamp": "2026-05-17T16:39:09.455113+00:00"
+  },
+  "C21_AR": {
+    "query_id": "C21_AR",
+    "concept_id": "C21",
+    "language": "arabic",
+    "complexity": "L3",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "reimbursable_expenses",
+    "question": "ما أنواع النفقات القابلة للتسوية وما حدودها القصوى؟",
+    "answer": "النفقات المهنية القابلة للتسوية وحدودها: وجبات العمل الفردية حتى 150 جنيهًا للوجبة (فاتورة ضريبية مطلوبة)؛ اجتماعات العمل مع عملاء حتى 500 جنيه للاجتماع (فاتورة + اسم العميل)؛ مواصلات داخل المدينة حتى 200 جنيه يوميًا (إيصال أو صورة أوبر)؛ خدمة إنترنت للعمل عن بعد حتى 800 جنيه شهريًا (فاتورة الخدمة)؛ مستلزمات مكتبية حتى 300 جنيه شهريًا (فاتورة أصلية). جميع المطالبات خلال 30 يومًا.",
+    "reference": "النفقات المهنية القابلة للتسوية وحدودها: وجبات العمل الفردية حتى 150 جنيهًا للوجبة (فاتورة ضريبية مطلوبة)؛ اجتماعات العمل مع عملاء حتى 500 جنيه للاجتماع (فاتورة + اسم العميل)؛ مواصلات داخل المدينة حتى 200 جنيه يوميًا (إيصال أو صورة أوبر)؛ خدمة إنترنت للعمل عن بعد حتى 800 جنيه شهريًا (فاتورة الخدمة)؛ مستلزمات مكتبية حتى 300 جنيه شهريًا (فاتورة أصلية). جميع المطالبات خلال 30 يومًا.",
+    "scores": {
+      "faithfulness": 0.25,
+      "answer_relevancy": 0.9366,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T16:40:50.173783+00:00"
+  },
+  "C21_EG": {
+    "query_id": "C21_EG",
+    "concept_id": "C21",
+    "language": "egyptian",
+    "complexity": "L3",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "reimbursable_expenses",
+    "question": "إيه أنواع المصروفات اللي بتترد وما هي حدودها؟",
+    "answer": "ده نوعين:  \n1. وجبات العمل الفردية: بحد أقصى 150 جنيه لكل وجبة، وبيجي فاتورة ضريبية.  \n2. اجتماع عمل مع عميل: بحد أقصى 2026 جنيه.  \n\n[Page 4 | AR]",
+    "reference": "المصروفات القابلة للتسوية وحدودها: وجبات الشغل الفردية لحد 150 جنيه للوجبة (فاتورة ضريبية)؛ اجتماعات العمل مع عملاء لحد 500 جنيه للاجتماع (فاتورة + اسم العميل)؛ مواصلات جوّه المدينة لحد 200 جنيه في اليوم (إيصال أو صورة أوبر)؛ إنترنت للشغل عن بعد لحد 800 جنيه في الشهر (فاتورة الخدمة)؛ مستلزمات مكتبية لحد 300 جنيه في الشهر (فاتورة أصلية). كل المطالبات خلال 30 يوم.",
+    "scores": {
+      "faithfulness": 0.25,
+      "answer_relevancy": 0.7698,
+      "answer_correctness": 0.3532
+    },
+    "timestamp": "2026-05-17T16:42:25.288892+00:00"
+  },
+  "C22_EN": {
+    "query_id": "C22_EN",
+    "concept_id": "C22",
+    "language": "english",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "journalist_contact",
+    "question": "A journalist contacted me directly for a comment about the company. What should I do?",
+    "answer": "You should not respond and forward the enquiry to communications@horizontech.com immediately [Page 3|EN]. All media enquiries must be directed to the Communications team [Page 3|EN].",
+    "reference": "You must not respond to the journalist. You should immediately forward the enquiry to the Communications team at communications@horizontech.com. All media enquiries — including interview requests, comments, or statements — must be directed to the Communications team only.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8447,
+      "answer_correctness": 0.4108
+    },
+    "timestamp": "2026-05-17T16:43:16.709191+00:00"
+  },
+  "C22_AR": {
+    "query_id": "C22_AR",
+    "concept_id": "C22",
+    "language": "arabic",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "journalist_contact",
+    "question": "تواصل معي صحفي مباشرة يطلب تعليقًا عن الشركة. ماذا يجب أن أفعل؟",
+    "answer": "يجب ألا ترد على الصحفي مباشرة، ويُشترط توجيه الطلب فورًا إلى فريق التواصل عبر إرسال الاستفسار إلى البريد الإلكتروني communications@horizontech.com [Page 3 | EN].",
+    "reference": "يجب ألا تردَّ على الصحفي. يجب إحالة الاستفسار فورًا إلى فريق الاتصالات على العنوان communications@horizontech.com. جميع الاستفسارات الإعلامية — بما فيها طلبات المقابلات والتعليقات والبيانات — يجب توجيهها إلى فريق الاتصالات حصرًا.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8364,
+      "answer_correctness": 0.4889
+    },
+    "timestamp": "2026-05-17T16:44:29.659980+00:00"
+  },
+  "C23_EN": {
+    "query_id": "C23_EN",
+    "concept_id": "C23",
+    "language": "english",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "phased_return_parental",
+    "question": "I am returning from paternity leave. Can I work reduced hours at full pay?",
+    "answer": "During the return from parental leave, you may request a phased return-to-work arrangement for up to eight weeks, and you may work reduced hours (minimum 60% of standard hours) at full pay [Page 5|EN].",
+    "reference": "Yes. Employees returning from maternity or paternity leave may request a phased return-to-work arrangement for up to 8 weeks. During this period, you may work reduced hours (minimum 60% of standard hours) at full pay. The phased return plan must be agreed with your line manager and HR at least 2 weeks before your scheduled return date.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8756,
+      "answer_correctness": 0.5619
+    },
+    "timestamp": "2026-05-17T16:45:24.689922+00:00"
+  },
+  "C23_AR": {
+    "query_id": "C23_AR",
+    "concept_id": "C23",
+    "language": "arabic",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "phased_return_parental",
+    "question": "أعود من إجازة أبوة. هل يمكنني العمل بساعات مخفَّضة براتب كامل؟",
+    "answer": "نعم. يحق للموظفين العائدين من إجازة الأمومة أو الأبوة طلب نظام عودة تدريجية لمدة تصل إلى 8 أسابيع. خلال هذه الفترة يمكنك العمل بساعات مخفضة (بحد أدنى 60% من ساعات العمل المعيارية) براتب كامل. يجب الاتفاق على خطة العودة التدريجية مع مديرك المباشر وإدارة الموارد البشرية قبل أسبوعين على الأقل من موعد العودة المقرر.",
+    "reference": "نعم. يحق للموظفين العائدين من إجازة الأمومة أو الأبوة طلب نظام عودة تدريجية لمدة تصل إلى 8 أسابيع. خلال هذه الفترة يمكنك العمل بساعات مخفضة (بحد أدنى 60% من ساعات العمل المعيارية) براتب كامل. يجب الاتفاق على خطة العودة التدريجية مع مديرك المباشر وإدارة الموارد البشرية قبل أسبوعين على الأقل من موعد العودة المقرر.",
+    "scores": {
+      "faithfulness": 0.75,
+      "answer_relevancy": 0.8143,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T16:46:40.217655+00:00"
+  },
+  "C23_EG": {
+    "query_id": "C23_EG",
+    "concept_id": "C23",
+    "language": "egyptian",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "phased_return_parental",
+    "question": "أنا راجع من إجازة أبوة. أقدر أشتغل بساعات أقل براتب كامل؟",
+    "answer": "أيوه. الموظفين الراجعين من إجازة أمومة أو أبوة يقدروا يطلبوا نظام عودة تدريجية لمدة لحد 8 أسابيع. في الفترة دي تقدر تشتغل بساعات أقل (بحد أدنى 60% من الساعات العادية) براتب كامل. لازم تتفق على خطة العودة مع مديرك المباشر والموارد البشرية على الأقل أسبوعين قبل موعد الرجوع.",
+    "reference": "أيوه. الموظفين الراجعين من إجازة أمومة أو أبوة يقدروا يطلبوا نظام عودة تدريجية لمدة لحد 8 أسابيع. في الفترة دي تقدر تشتغل بساعات أقل (بحد أدنى 60% من الساعات العادية) براتب كامل. لازم تتفق على خطة العودة مع مديرك المباشر والموارد البشرية على الأقل أسبوعين قبل موعد الرجوع.",
+    "scores": {
+      "faithfulness": 0.6667,
+      "answer_relevancy": 0.8675,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T16:47:40.794104+00:00"
+  },
+  "C24_EN": {
+    "query_id": "C24_EN",
+    "concept_id": "C24",
+    "language": "english",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "side_project_ip",
+    "question": "I have a pre-existing tech side project that may overlap with Horizon Tech's business. What must I do?",
+    "answer": "You must disclose this in writing to Horizon Tech [Page 5|EN].",
+    "reference": "You must disclose the pre-existing intellectual property or side project in writing to Horizon Techk",
+    "scores": {
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.8628,
+      "answer_correctness": null
+    },
+    "timestamp": "2026-05-17T16:49:22.684573+00:00"
+  },
+  "C24_AR": {
+    "query_id": "C24_AR",
+    "concept_id": "C24",
+    "language": "arabic",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "side_project_ip",
+    "question": "لديّ مشروع جانبي تقني سابق قد يتداخل مع أعمال أفق التقنية. ماذا يجب أن أفعل؟",
+    "answer": "يجب الإفصاح عن المشروع الجانبي بشكل كتابي إلى قسم الموارد البشرية في شركة أفق التقنية وفقًا للسياسة المذكورة في [Page 5 | EN]. كما يمكن التواصل مع قسم الموارد البشرية عبر البريد الإلكتروني hr@horizontech للحصول على توضيحات إضافية [Page 13 | AR].",
+    "reference": "يجب الإفصاح عن الملكية الفكرية الموجودة مسبقًا أو المشروع الجانبي كتابيًا لقسم القانون والامتثال قبل الاستمرار في هذه الأنشطة أو البدء بها. تُقيَّم الموافقة على أساس كل حالة على حدة لتحديد أي تعارض محتمل في المصالح وتفاديه. عدم الإفصاح يُعدُّ انتهاكًا لالتزامات عقد العمل.",
+    "scores": {
+      "faithfulness": 0.6667,
+      "answer_relevancy": 0.8016,
+      "answer_correctness": 0.3478
+    },
+    "timestamp": "2026-05-17T16:50:23.466198+00:00"
+  },
+  "C24_EG": {
+    "query_id": "C24_EG",
+    "concept_id": "C24",
+    "language": "egyptian",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "side_project_ip",
+    "question": "عندي مشروع جانبي تقني قديم ممكن يتداخل مع أعمال أفق التقنية. أعمل إيه؟",
+    "answer": "يجب عليك تكتب رسمي لشركة أفق التقنية وتُفصح عن المشروع ده عشان مفيش تداخل مع أنشطتهم. [Page 5 | EN]",
+    "reference": "لازم تفصح عن الملكية الفكرية أو المشروع الجانبي كتابيًا لقسم القانون والامتثال قبل ما تكمل فيه أو تبدأه. الموافقة بتتقيم على أساس كل حالة على حدة عشان يتحدد أي تعارض محتمل ويتم تفاديه. عدم الإفصاح يُعتبر انتهاك لالتزامات عقد الشغل.",
+    "scores": {
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.8064,
+      "answer_correctness": 0.4601
+    },
+    "timestamp": "2026-05-17T16:51:38.403242+00:00"
+  },
+  "C25_EN": {
+    "query_id": "C25_EN",
+    "concept_id": "C25",
+    "language": "english",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "I just had a baby. When can I enrol in an additional health insurance add-on, and what is the deadline?",
+    "answer": "You can enrol in an optional supplemental coverage during the annual open enrolment window (October 1–15) or within 30 days of a qualifying life event [Page 2|EN].",
+    "reference": "You may enrol in optional supplemental health insurance add-ons within 30 days of a qualifying life event, such as the birth of a child. Outside this window, enrolment is only possible during the annual open enrolment period (October 1–15). Missing the 30-day window means waiting until the next open enrolment.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8682,
+      "answer_correctness": 0.6511
+    },
+    "timestamp": "2026-05-17T16:52:26.662415+00:00"
+  },
+  "C25_AR": {
+    "query_id": "C25_AR",
+    "concept_id": "C25",
+    "language": "arabic",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "رُزقت بطفل مؤخرًا. متى يمكنني الاشتراك في ملحق تأمين صحي إضافي وما هو الموعد النهائي؟",
+    "answer": "أنت ممكن تاشتري ملحق التأمين الصحي الإضافي إما خلال فترة التسجيل السنوية (أكتوبر 1–15) أو في 30 يوم من حدث مهم زي ولادة الطفل. عشانك رزقت مؤخرًا، الموعد النهائي ده 30 يوم من تاريخ الولادة. [Page 2 | EN]",
+    "reference": "يمكنك الاشتراك في ملحقات التأمين الصحي الاختيارية خلال 30 يومًا من وقوع حدث مؤهِّل في حياتك كميلاد طفل. خارج هذه النافذة، لا يُتاح الاشتراك إلا خلال فترة التسجيل المفتوحة السنوية (1-15 أكتوبر). فوات الـ 30 يومًا يعني الانتظار حتى التسجيل المفتوح التالي.",
+    "scores": {
+      "faithfulness": 0.6667,
+      "answer_relevancy": 0.8255,
+      "answer_correctness": 0.794
+    },
+    "timestamp": "2026-05-17T16:53:31.303326+00:00"
+  },
+  "C25_EG": {
+    "query_id": "C25_EG",
+    "concept_id": "C25",
+    "language": "egyptian",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "عندي مولود جديد. إمتى أقدر أشترك في ملحق تأمين صحي إضافي وإيه آخر موعد؟",
+    "answer": "أنت تقدر تشترك في ملحق التأمين الصحي الإضافي إما خلال فترة التسجيل السنوي (أكتوبر 1–15) أو في أول 30 يوم من حدث مهم زي ولادة مولود جديد. آخر موعد بعد الحدث 30 يوم، وإلا خلاص مفيش فرصة [Page 2 | EN].",
+    "reference": "تقدر تشترك في ملحقات التأمين الصحي الاختيارية خلال 30 يوم من حدث مؤهِّل زي ميلاد طفل. برّا المدة دي، الاشتراك بيبقى متاح بس في فترة التسجيل المفتوح السنوي (1-15 أكتوبر). لو فاتت الـ 30 يوم، هتستنى لحد التسجيل المفتوح الجاي.",
+    "scores": {
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.8399,
+      "answer_correctness": 0.6671
+    },
+    "timestamp": "2026-05-17T16:54:35.269692+00:00"
+  },
+  "C04_FR": {
+    "query_id": "C04_FR",
+    "concept_id": "C04",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "probation_termination_notice",
+    "question": "modet el esh3ar 3ashan yenhi el 3a2d fe fatret el ekhtebar ad eih?",
+    "answer": "ay taraf, el muwazaf aw el sharka, ye2dar yenhi el 3a2d fe fatret el ekhtebar be esh3ar ketaby 7 ayyam bas.",
+    "reference": "ay taraf, el muwazaf aw el sharka, ye2dar yenhi el 3a2d fe fatret el ekhtebar be esh3ar ketaby 7 ayyam bas.",
+    "scores": {
+      "faithfulness": 0.9,
+      "answer_relevancy": 0.8874,
+      "answer_correctness": 0.7115
+    },
+    "timestamp": "2026-05-17T16:56:03.271574+00:00"
+  },
+  "C14_FR": {
+    "query_id": "C14_FR",
+    "concept_id": "C14",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "ar_policy.pdf",
+    "topic": "mental_health_leave",
+    "question": "kam yom agaza se77a nafseyya el muwazaf bya5od w hey madf3a?",
+    "answer": "yomein fel sana w madf3in.",
+    "reference": "yomein fel sana w madf3in.",
+    "scores": {
+      "faithfulness": 0.8,
+      "answer_relevancy": 0.8713,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T17:10:29.957791+00:00"
+  },
+  "C16_EN": {
+    "query_id": "C16_EN",
+    "concept_id": "C16",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "expense_claim_deadline",
+    "question": "What is the deadline to submit an expense claim after the expense is incurred?",
+    "answer": "The deadline to submit an expense claim after the expense is incurred is within 30 days of the qualifying expenditure [Page 4|EN].",
+    "reference": "Expense claims must be submitted within 30 days of the date the expense was incurred. Claims submitted after 30 days are not accepted under any circumstances.",
+    "scores": {
+      "faithfulness": 0.0,
+      "answer_relevancy": 1.0,
+      "answer_correctness": 0.6121
+    },
+    "timestamp": "2026-05-17T17:11:01.660897+00:00"
+  },
+  "C22_EG": {
+    "query_id": "C22_EG",
+    "concept_id": "C22",
+    "language": "egyptian",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "journalist_contact",
+    "question": "صحفي تواصل معايا مباشرة يطلب تعليق عن الشركة. أعمل إيه؟",
+    "answer": "ده مش مسموح، أنت لازم ترد على الصحفي أو وسيلة الإعلام دي؟ لأ! هياخد الإيميل ده كله وتبعته لـ communications@horizontech.com فورًا [Page 3 | EN]. أي تحقيقات أو طلبات تعليق ممكن تيجي من وسائل إعلام، ممكن ترد بس تبعتها لفريق العلاقات العامة [Page 3 | EN].",
+    "reference": "متردش على الصحفي خالص. لازم تحول الاستفسار فورًا لفريق الاتصالات على communications@horizontech.com. كل الاستفسارات الإعلامية — بما فيها طلبات المقابلات والتعليقات — لازم توجه لفريق الاتصالات بس.",
+    "scores": {
+      "faithfulness": 0.1667,
+      "answer_relevancy": 0.8231,
+      "answer_correctness": 0.4432
+    },
+    "timestamp": "2026-05-17T17:12:04.015023+00:00"
+  },
+  "C10_FR": {
+    "query_id": "C10_FR",
+    "concept_id": "C10",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "ltd_benefit",
+    "question": "badl el 3agz el taweel el amad biyedfa3 ad eih w biyestamr ad eih?",
+    "answer": "El LTD biyedfa3 60% el salary [Page 3 | EN], w biyestamr 24 shahr.",
+    "reference": "badl el 3agz el taweel el amad biyedfa3 60% men a5er rateb asasy kol shahr. biyestamr le7ad 24 shahr aw le7ad ma el doktor ye2ul en el muwazaf 2adar yerga3 yeshtaghal, ayahoma a2rab. w da biyebda2 ba3d 90 yom motawasel men el 3agz el mothabbet tebbyan.",
+    "scores": {
+      "faithfulness": 0.7,
+      "answer_relevancy": 0.7944,
+      "answer_correctness": 0.4746
+    },
+    "timestamp": "2026-05-17T17:13:24.427712+00:00"
+  },
+  "C18_FR": {
+    "query_id": "C18_FR",
+    "concept_id": "C18",
+    "language": "franco",
+    "complexity": "L3",
+    "source_doc": "eng_training_development.pdf",
+    "topic": "mandatory_training_modules",
+    "question": "eih kol wa7dat el imtithal el tadribeyya el elzameyya el sanaweyya w mawa3eedha?",
+    "answer": "El wa7dat el imtithal el tadribeyya el elzameyya el sanaweyya: kol el 3amal men 7asab el modules el elzameyya fel tadrib el 3ala el 3adala 3ala 7asab el 3am",
+    "reference": "kol el muwazafin lazem yekhalasu: wa3y amn el ma3lomat (sa3a online, 31 Mares); 7imayyet el bayanat w GDPR (sa3a w nos online, 31 Mares); mokafahet el reshwa wel fasad (sa3a online, 30 Yunyu); men3 el taharrush (sa3a online, 30 Yunyu); salamet el 7ara2e2 (sa3ateen 7aduri, 30 Sebtamber); akhlaqiyyat el AI (45 de2i2a online, 31 Mares). wel grade G3 fa2 lazem yekhalasu kaman asasiyyat el edara (3 sa3at online, 31 Mares).",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.784,
+      "answer_correctness": 0.5975
+    },
+    "timestamp": "2026-05-17T17:14:30.925188+00:00"
+  },
+  "C23_FR": {
+    "query_id": "C23_FR",
+    "concept_id": "C23",
+    "language": "franco",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "phased_return_parental",
+    "question": "ana rager3 men agaza abawa. a2dar ashtaghal besa3at a2al be rateb kamil?",
+    "answer": "aywa. el muwazafin el rag3een men agaza omuma aw abawa ye2daru yetlabu nezam 3awda tadrageya le modet le7ad 8 asabi3. fe el fatrah di te2dar teshtaghal besa3at a2al (bel 7ad el adna 60% men el sa3at el 3adeya) be rateb kamil. lazem tettafe2 3ala khettet el 3awda ma3 muderak el mubashir wel HR 2ala el a2al osboo3ain 2abel maw3id el rogo3.",
+    "reference": "aywa. el muwazafin el rag3een men agaza omuma aw abawa ye2daru yetlabu nezam 3awda tadrageya le modet le7ad 8 asabi3. fe el fatrah di te2dar teshtaghal besa3at a2al (bel 7ad el adna 60% men el sa3at el 3adeya) be rateb kamil. lazem tettafe2 3ala khettet el 3awda ma3 muderak el mubashir wel HR 2ala el a2al osboo3ain 2abel maw3id el rogo3.",
+    "scores": {
+      "faithfulness": 0.6,
+      "answer_relevancy": 0.7782,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T17:15:44.804586+00:00"
+  },
+  "C01_FR": {
+    "query_id": "C01_FR",
+    "concept_id": "C01",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "overtime",
+    "question": "eih nisbit taweed el overtime fi ayyam el shoghl el 3adeya?",
+    "answer": "byet7aseb be 1.5 de3f el ogr el sa3i.",
+    "reference": "byet7aseb be 1.5 de3f el ogr el sa3i.",
+    "scores": {
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.8551,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T17:16:42.088852+00:00"
+  },
+  "C02_FR": {
+    "query_id": "C02_FR",
+    "concept_id": "C02",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "health_insurance_start",
+    "question": "el ta2min el se77i biyebda2 emta lel muwazaf el gedid?",
+    "answer": "El ta2min el se77i biyebda2 men el yawm el awal lel muwazaf el gedid.",
+    "reference": "el ta2min el se77i biyebda2 men awel yom shoghl le kol el muwazafin bel dawam el kamil.",
+    "scores": {
+      "faithfulness": 0.6,
+      "answer_relevancy": null,
+      "answer_correctness": 0.6502
+    },
+    "timestamp": "2026-05-17T17:19:16.932909+00:00"
+  },
+  "C12_FR": {
+    "query_id": "C12_FR",
+    "concept_id": "C12",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "social_insurance_rate",
+    "question": "eih nisblet ishtrak el muwazaf fe el ta2minat el egtema3eyya w eih nisblet el sharka?",
+    "answer": "El ishtrak el muwazaf fe el ta2minat el egtema3eyya huwa 11% (men el passage fe Page 3|AR), w el sharka  bitedf3 18.75%, wel ijmali 29.75%.",
+    "reference": "el muwazaf biyedfa3 11% men el agr el thabet wel motghayyer ke ishtrak fe el ta2minat el egtema3eyya, wel sharka bitedf3 18.75%, wel ijmali 29.75%.",
+    "scores": {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.7699,
+      "answer_correctness": 0.4902
+    },
+    "timestamp": "2026-05-17T17:20:23.612314+00:00"
+  },
+  "C03_FR": {
+    "query_id": "C03_FR",
+    "concept_id": "C03",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_policy.pdf",
+    "topic": "housing_allowance",
+    "question": "bedl el sakan ad eih w meen ely bya5odo?",
+    "answer": "Bedl el sakan ad eih w meen ely bya5odo? \nMesh mawgoda fel policy.",
+    "reference": "bedl el sakan byekun 20% men el rateb el asasy, w bya5odo el muwazafin men grade G4 fe2 wala a3la, w mesh betit2a5od menno darayeb.",
+    "scores": {
+      "faithfulness": 0.3333,
+      "answer_relevancy": 0.8999,
+      "answer_correctness": 0.3852
+    },
+    "timestamp": "2026-05-17T17:21:35.367110+00:00"
+  },
+  "C06_FR": {
+    "query_id": "C06_FR",
+    "concept_id": "C06",
+    "language": "franco",
+    "complexity": "L1",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "life_insurance",
+    "question": "el ta2min 3ala el 7ayah el gama3y biyedi ad eih?",
+    "answer": "El ta2min 3ala el 7ayah el gama3y biyedi ad 100% li el mozwag, 90% li el zawg, w 90% li el atfal.",
+    "reference": "el ta2min 3ala el 7ayah el gama3y biyedi mablag yesawi 2 dif3 el rateb el ejmali el sanawi lel muwazaf, w biyetdfa3 daf3a wa7da lel mostafid el mosamma fe 7alet el wafah men ay sabab. el sharka betdfa3o bi don ay taklufa 3al muwazaf.",
+    "scores": {
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.7819,
+      "answer_correctness": 0.41
+    },
+    "timestamp": "2026-05-17T17:22:49.598066+00:00"
+  },
+  "C11_FR": {
+    "query_id": "C11_FR",
+    "concept_id": "C11",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "emergency_loan",
+    "question": "el muwazaf ye2dar yesta2red ad eih ke2ard tare2 bi don fawa2ed w eih shorut el sedad?",
+    "answer": "El muwazaf ye2dar yesta2red ad eih ke2ard tare2 bi don fawa2ed, w el shorut el sedad howa el takayyef el fardi w nata2ij el sharika, w lazem ye2dar yesta2red 6 shohoor khidma, w el fawa2ed el muwazaf ye2dar yesta2redha howa el mukafa2a el sanawiya, w el mukafa2a el sanawiya tamnah lel muwazafin el mu2ahilin, w el shorut el sedad howa el takayyef el fardi w nata2ij el sharika.",
+    "reference": "el muwazaf ely 5alas fatret el ekhtebar ye2dar yesta2red le7ad shahrain net mrateb ke2ard tare2 bi don fawa2ed. byetraded 3ala 12 2est shahri motasawi ke7ad a2sa men el rateb. masmo7 bas be2ard wa7ed nasha2 fe nafs el wa2t, w lazem yetamedo HR wel maliyya.",
+    "scores": {
+      "faithfulness": null,
+      "answer_relevancy": 0.7695,
+      "answer_correctness": null
+    },
+    "timestamp": "2026-05-17T17:23:59.238021+00:00"
+  },
+  "C12_EN": {
+    "query_id": "C12_EN",
+    "concept_id": "C12",
+    "language": "english",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "social_insurance_rate",
+    "question": "What is the employee's social insurance contribution rate, and what is the employer's share?",
+    "answer": "This information is not available in the policy documents.",
+    "reference": "The employee contributes 11% of the fixed and variable wage components for social insurance. The employer contributes 18.75%, bringing the total combined rate to 29.75%.",
+    "scores": {
+      "faithfulness": 0.5,
+      "answer_relevancy": 0.8204,
+      "answer_correctness": 0.4077
+    },
+    "timestamp": "2026-05-17T17:24:55.443823+00:00"
+  },
+  "C13_FR": {
+    "query_id": "C13_FR",
+    "concept_id": "C13",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "confidentiality_post_employment",
+    "question": "eltezamat el sereyya btestamar ad eih ba3d ma el muwazaf yesib el sharka?",
+    "answer": "Eltezamat el sereyya btestamar ad eih ba3d ma el muwazaf yesib el sharka? \nMesh mawgoda fel policy.",
+    "reference": "eltezamat el sereyya btestamar 3 sneen ba3d enha2 3a2d el shoghl le mo3zam anwa3 el ma3lomat. amma ely biyekhoss el asrar el tegareyya w bayanat el 3umala, faltezamato da2ema w ma betenhish.",
+    "scores": {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.7942,
+      "answer_correctness": 0.4817
+    },
+    "timestamp": "2026-05-17T17:26:16.370871+00:00"
+  },
+  "C15_FR": {
+    "query_id": "C15_FR",
+    "concept_id": "C15",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "ar_recruitment.pdf",
+    "topic": "probation_review_timing",
+    "question": "taqyemat el ada2 btet3amel emta fe fatret el ekhtebar?",
+    "answer": "Taqyemat el ada2 btet3amel emta fe fatret el ekhtebar, lazem teshar el 3aqd fe 30 yom, w el gym subsidy le7ad 300 gneih/shahr lel G1-G2, w le7ad 500 gneih/shahr lel G3-G4.",
+    "reference": "taqyeem el ada2 byet3amel fe nehayyet el shahr el awel we nehayyet el shahr el talat fe fatret el ekhtebar.",
+    "scores": {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.8643,
+      "answer_correctness": 0.3386
+    },
+    "timestamp": "2026-05-17T17:27:31.820488+00:00"
+  },
+  "C16_FR": {
+    "query_id": "C16_FR",
+    "concept_id": "C16",
+    "language": "franco",
+    "complexity": "L2",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "expense_claim_deadline",
+    "question": "akher maw3id le taqdem talab tasweyyet el masroufat ba3d el sarf ad eih?",
+    "answer": "Akher maw3id le taqdem talab tasweyyet el masroufat ba3d el sarf ad eih huwa khilal 30 yom men tarikh el sarf.",
+    "reference": "talab tasweyyet el masroufat lazem yetqedem khilal 30 yom men tarikh el sarf.",
+    "scores": {
+      "faithfulness": 0.3333,
+      "answer_relevancy": 0.8063,
+      "answer_correctness": 0.6728
+    },
+    "timestamp": "2026-05-17T17:28:34.577638+00:00"
+  },
+  "C17_FR": {
+    "query_id": "C17_FR",
+    "concept_id": "C17",
+    "language": "franco",
+    "complexity": "L3",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "savings_plan_eligibility",
+    "question": "eih kol el shorut el matluba lel indemam le khtet el eddekhar el taw3i?",
+    "answer": "3ashan tentamem le khtet el eddekhar el taw3i lazem el muwazaf: (1) yekun men grade G3 aw a3la; (2) 5alas fatret el ekhtebar. el muwazaf ye2dar yesahem be nisbah men 2% le7ad 10% men ratebo el asasy kol shahr 2abel el darayeb. el sharka btet2abel el mosa7ma le7ad 4% men el rateb el asasy. mosa7met el sharka btetesta7e2 25% ba3d sana, 50% ba3d santeen, 75% ba3d 3 sneen, w 100% ba3d 4 sneen.",
+    "reference": "3ashan tentamem le khtet el eddekhar el taw3i lazem el muwazaf: (1) yekun men grade G3 aw a3la; (2) 5alas fatret el ekhtebar. el muwazaf ye2dar yesahem be nisbah men 2% le7ad 10% men ratebo el asasy kol shahr 2abel el darayeb. el sharka btet2abel el mosa7ma le7ad 4% men el rateb el asasy. mosa7met el sharka btetesta7e2 25% ba3d sana, 50% ba3d santeen, 75% ba3d 3 sneen, w 100% ba3d 4 sneen.",
+    "scores": {
+      "faithfulness": 0.7273,
+      "answer_relevancy": 0.7877,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T17:30:00.712853+00:00"
+  },
+  "C20_FR": {
+    "query_id": "C20_FR",
+    "concept_id": "C20",
+    "language": "franco",
+    "complexity": "L3",
+    "source_doc": "ar_policy.pdf",
+    "topic": "data_retention",
+    "question": "fatrat el ehtefaz bel bayanat le anwa3 el sagalat el mokhtalefa eih?",
+    "answer": "maladdat el muwazafin el nash2een: tool fatret el khidma + 7 sneen. bayanat el mwaahed wel maliyya: 10 sneen. sagalat el ada2 wel ta2deeb: 5 sneen men tarikh el inha2. bayanat el motaqaddimen ely etrafadu: 6 shohour bas. el morasalat el elektroneya el dakheleya: 3 sneen.",
+    "reference": "maladdat el muwazafin el nash2een: tool fatret el khidma + 7 sneen. bayanat el mwaahed wel maliyya: 10 sneen. sagalat el ada2 wel ta2deeb: 5 sneen men tarikh el inha2. bayanat el motaqaddimen ely etrafadu: 6 shohour bas. el morasalat el elektroneya el dakheleya: 3 sneen.",
+    "scores": {
+      "faithfulness": 0.2,
+      "answer_relevancy": 0.7832,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T17:31:09.730305+00:00"
+  },
+  "C21_FR": {
+    "query_id": "C21_FR",
+    "concept_id": "C21",
+    "language": "franco",
+    "complexity": "L3",
+    "source_doc": "ar_payroll_finance.pdf",
+    "topic": "reimbursable_expenses",
+    "question": "eih anwa3 el masroufat ely btetrod w eih 7ododha?",
+    "answer": "el masroufat el qabelah lel tasweya w 7ododha: wagabat el shoghl el fardeyya le7ad 150 gneih lel wagba (fatoura dareybeya); egtema3at el 3amal ma3 3umala le7ad 500 gneih lel egtema3 (fatoura + esm el 3ameel); muwasalat gowwa el medina le7ad 200 gneih fes yom (isal aw soura uber); internet lel shoghl 3an bo3d le7ad 800 gneih fes shahr (fatoura el khidma); mostlzamat maktabeyya le7ad 300 gneih fes shahr (fatoura asleyya). kol el motalabat khilal 30 yom.",
+    "reference": "el masroufat el qabelah lel tasweya w 7ododha: wagabat el shoghl el fardeyya le7ad 150 gneih lel wagba (fatoura dareybeya); egtema3at el 3amal ma3 3umala le7ad 500 gneih lel egtema3 (fatoura + esm el 3ameel); muwasalat gowwa el medina le7ad 200 gneih fes yom (isal aw soura uber); internet lel shoghl 3an bo3d le7ad 800 gneih fes shahr (fatoura el khidma); mostlzamat maktabeyya le7ad 300 gneih fes shahr (fatoura asleyya). kol el motalabat khilal 30 yom.",
+    "scores": {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.7709,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T17:32:19.941586+00:00"
+  },
+  "C22_FR": {
+    "query_id": "C22_FR",
+    "concept_id": "C22",
+    "language": "franco",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "journalist_contact",
+    "question": "sa7afi ta3asal ma3aya 3ala tool 3ashan yetlob ta3li2 3an el sharka. a3mel eih?",
+    "answer": "matredsh 3al sa7afi khales. lazem te7awwel el estifsar fel 7al le faree2 el ettesalat 3ala communications@horizontech.com. kol el estifsar el e3lami — bema feeha talab el moqabalat wel ta3li2at — lazem tetwagah le faree2 el ettesalat bas.",
+    "reference": "matredsh 3al sa7afi khales. lazem te7awwel el estifsar fel 7al le faree2 el ettesalat 3ala communications@horizontech.com. kol el estifsar el e3lami — bema feeha talab el moqabalat wel ta3li2at — lazem tetwagah le faree2 el ettesalat bas.",
+    "scores": {
+      "faithfulness": 0.3333,
+      "answer_relevancy": 0.7808,
+      "answer_correctness": 0.625
+    },
+    "timestamp": "2026-05-17T17:33:17.933284+00:00"
+  },
+  "C24_FR": {
+    "query_id": "C24_FR",
+    "concept_id": "C24",
+    "language": "franco",
+    "complexity": "L4",
+    "source_doc": "eng_workplace_conduct.pdf",
+    "topic": "side_project_ip",
+    "question": "3andy mashro3 ganeby teknoloji 2adeem momken yetadakhel ma3 a3mal Horizon Tech. a3mel eih?",
+    "answer": "lazem tefse7 3an el melkeyya el fekri aw el mashro3 el ganeby ketabeyyan le qism el qanun wel imtithal 2abel ma tekmel fih aw tebda2. el muwafaqah btet2ayam 3ala asas kol 7ala 3ala 7idda 3ashan yet7aded ay ta3arod mo7tamal we yetm tafadyoh. 3adam el efsa7 yo3tabar entehaak le eltezamat 3a2d el shoghl.",
+    "reference": "lazem tefse7 3an el melkeyya el fekri aw el mashro3 el ganeby ketabeyyan le qism el qanun wel imtithal 2abel ma tekmel fih aw tebda2. el muwafaqah btet2ayam 3ala asas kol 7ala 3ala 7idda 3ashan yet7aded ay ta3arod mo7tamal we yetm tafadyoh. 3adam el efsa7 yo3tabar entehaak le eltezamat 3a2d el shoghl.",
+    "scores": {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.7856,
+      "answer_correctness": 1.0
+    },
+    "timestamp": "2026-05-17T17:34:34.188728+00:00"
+  },
+  "C25_FR": {
+    "query_id": "C25_FR",
+    "concept_id": "C25",
+    "language": "franco",
+    "complexity": "L4",
+    "source_doc": "eng_wellness_benefits.pdf",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "3andy mawlood gedeed. emta a2dar ashtarak fe mol7a2 ta2min se77i idafi w eih akher maw3id?",
+    "answer": "Enta 3arif akher maw3id lel isti3raf fe mol7a2 ta2min se77i idafi, w emta a2dar ashtarak feha?\n\nEl jawab: \nAkher maw3id lel isti3raf fe mol7a2 ta2min se77i idafi huwa khilal el fenetre el senawiya lel isti3raf (October 1–15) aw khilal 30 yom min tari2e hadeth hayatiye mu2akkadeh. Enta a2dar tashtrak fe mol7a2 ta2min se77i idafi khilal hadhihi el fenetre.",
+    "reference": "te2dar teshterak fe mol7a2at el ta2min el se77i el ekhtiyareyya khilal 30 yom men 7adath mo2ahhal zay meelad tfl. barra el mohlah diy, el ishtrak biyeb2a mota7 bas fe fatret el tasgeel el maftu7 el sanawi (1-15 Uktober). law fatit el 30 yom, hate stanna le7ad el tasgeel el maftu7 el gay.",
+    "scores": {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.8233,
+      "answer_correctness": 0.6398
+    },
+    "timestamp": "2026-05-17T17:35:41.543270+00:00"
+  }
+}
