@@ -26,8 +26,10 @@ def _lang_tag(source: str) -> str:
 
 def retrieve(raw_query: str, vs, bm25, docs: list, normalize_fn, k: int = 40) -> list:
     """
-    Hybrid retrieval: FAISS semantic + BM25 lexical.
+    Hybrid retrieval: FAISS semantic + BM25 lexical with weighted RRF.
 
+    BM25 weight = 0.2 (hybrid_w02) — empirically optimal; reduces BM25 noise
+    while preserving lexical recall signal.
     Both retrievers operate on the normalized query to avoid vocabulary
     mismatch in RRF fusion.
     """
@@ -39,7 +41,7 @@ def retrieve(raw_query: str, vs, bm25, docs: list, normalize_fn, k: int = 40) ->
     top_idx = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:k]
     bm25_docs = [docs[i] for i in top_idx]
 
-    return rrf(faiss_docs, bm25_docs)
+    return rrf_weighted(faiss_docs, bm25_docs, w1=1.0, w2=0.2)
 
 
 def rerank(query: str, docs: list, reranker, top_n: int = 12) -> tuple:
@@ -88,6 +90,35 @@ def rerank(query: str, docs: list, reranker, top_n: int = 12) -> tuple:
     top_pairs   = sorted(top_pairs, key=lambda x: x[1], reverse=True)[:top_n]
     scores_dict = {id(d): float(s) for d, s in top_pairs}
     return [d for d, _ in top_pairs], scores_dict
+
+
+def rrf_weighted(docs1: list, docs2: list, rrf_k: int = 60,
+                 w1: float = 1.0, w2: float = 1.0) -> list:
+    """
+    Reciprocal Rank Fusion with per-list weights.
+
+    docs1 = dense results (w1 — default 1.0).
+    docs2 = BM25 results  (w2 — set to 0.2 for hybrid_w02).
+    Identical dedup key to rrf() so the two are interchangeable.
+    """
+    scores  = {}
+    doc_map = {}
+
+    def add(docs, weight):
+        for rank, d in enumerate(docs):
+            source = d.metadata.get("source", "")
+            page   = d.metadata.get("page", 0)
+            key    = f"{source}:page_{page}:{d.page_content[:100]}"
+            if key not in scores:
+                scores[key]  = 0
+                doc_map[key] = d
+            scores[key] += weight / (rrf_k + rank + 1)
+
+    add(docs1, w1)
+    add(docs2, w2)
+
+    ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    return [doc_map[key] for key, _ in ranked]
 
 
 def rrf(docs1: list, docs2: list, k: int = 60) -> list:

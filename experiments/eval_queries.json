@@ -1,114 +1,2246 @@
 [
-  {"id":"n01","question":"What is the overtime compensation rate on weekdays?","language":"english","complexity":"L1","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"1.5× the hourly rate on weekdays, and 2× on weekends or public holidays."},
-  {"id":"n02","question":"What is the housing allowance amount and who is eligible?","language":"english","complexity":"L1","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"20% of base salary for G4 and above, non-taxable."},
-  {"id":"n03","question":"When does health insurance coverage begin?","language":"english","complexity":"L1","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"From the first day of employment."},
-  {"id":"n04","question":"What is the on-call allowance amount?","language":"english","complexity":"L1","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"200 EGP per day for IT and Engineering employees when on-call duty is assigned."},
-  {"id":"n05","question":"What is the salary range for a G3 Lead/Supervisor?","language":"english","complexity":"L1","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"28,000 to 45,000 EGP per month."},
-  {"id":"n06","question":"What is the notice period for a part-time employee?","language":"english","complexity":"L1","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"14 days."},
-  {"id":"n07","question":"How many paid training days does a G4 Manager receive annually?","language":"english","complexity":"L1","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"12 paid training days per year."},
-  {"id":"n08","question":"What is the annual learning budget for a G2 Specialist?","language":"english","complexity":"L1","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"$5,000 per year."},
-  {"id":"n09","question":"When do Leadership Academy nominations open?","language":"english","complexity":"L1","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"Annually in October."},
-  {"id":"n10","question":"What is the gym subsidy for a G1 or G2 employee?","language":"english","complexity":"L1","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"Up to 300 EGP per month at standard network gyms."},
-  {"id":"n11","question":"How much is the group life insurance benefit?","language":"english","complexity":"L1","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"2× the employee's annual gross salary, paid as a lump sum to the designated beneficiary."},
-  {"id":"n12","question":"How many EAP counselling sessions are available per year?","language":"english","complexity":"L1","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"Up to 8 short-term counselling sessions per year."},
-  {"id":"n13","question":"How long does the onboarding programme last?","language":"english","complexity":"L1","ground_truth_doc":"ar_recruitment.pdf","ground_truth_pages":[3],"ground_truth_lang":"AR","reference_answer":"90 days, split into three phases."},
-  {"id":"n14","question":"When are salaries paid each month?","language":"english","complexity":"L1","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[3],"ground_truth_lang":"AR","reference_answer":"On the 25th of each calendar month. If that falls on a holiday or weekend, payment is made the prior business day."},
-  {"id":"n15","question":"What is the maximum meal allowance per individual work meal?","language":"english","complexity":"L1","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[4],"ground_truth_lang":"AR","reference_answer":"150 EGP per meal, with a tax invoice required."},
-
-  {"id":"n16","question":"What is the minimum performance rating required to be eligible for the Leadership Academy?","language":"english","complexity":"L2","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"A rating of 4 or 5 in the most recent review, at grade G3 or above, with at least two years of tenure and no active disciplinary warnings."},
-  {"id":"n17","question":"What happens to the annual learning budget if it is unused at year end?","language":"english","complexity":"L2","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"Budgets reset on January 1 and do not carry over. Unused amounts cannot be claimed as cash."},
-  {"id":"n18","question":"Is a retake covered for a Tier 3 foundational certification?","language":"english","complexity":"L2","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"No. Retakes are not covered for Tier 3 certifications, and no study leave is granted."},
-  {"id":"n19","question":"What is the reimbursement rate for a first attempt at a Tier 1 strategic certification?","language":"english","complexity":"L2","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"100% reimbursement for the first attempt, plus up to 3 days of study leave."},
-  {"id":"n20","question":"When must a new employee notify MedCare after an emergency hospital admission?","language":"english","complexity":"L2","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"Within 48 hours of admission. Failure to notify may result in reduced reimbursement."},
-  {"id":"n21","question":"How long does the long-term disability benefit last?","language":"english","complexity":"L2","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"Up to 24 months, or until the employee is certified fit to return to work, whichever comes first. The monthly benefit is 60% of last drawn base salary."},
-  {"id":"n22","question":"How much can an employee borrow as an emergency interest-free loan?","language":"english","complexity":"L2","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[5],"ground_truth_lang":"EN","reference_answer":"Up to two months' net salary, repayable over a maximum of 12 monthly instalments. Only one active loan is permitted at a time."},
-  {"id":"n23","question":"What is the childcare subsidy amount and who qualifies?","language":"english","complexity":"L2","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[5],"ground_truth_lang":"EN","reference_answer":"500 EGP per child per month (maximum two children) for parents with children under age six."},
-  {"id":"n24","question":"What documents must an employee submit when reporting a payroll error?","language":"english","complexity":"L2","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[3],"ground_truth_lang":"AR","reference_answer":"A formal report via the HR portal within 5 business days of payroll date, with the payslip showing the error attached. The payroll team responds within 3 business days."},
-  {"id":"n25","question":"What is the social insurance employee contribution rate?","language":"english","complexity":"L2","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[3],"ground_truth_lang":"AR","reference_answer":"11% of the fixed and variable wage components."},
-  {"id":"n26","question":"Who is authorised to post on Horizon Tech's official social media accounts?","language":"english","complexity":"L2","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"Only authorised members of the Marketing and Communications team."},
-  {"id":"n27","question":"How long do confidentiality obligations continue after employment ends?","language":"english","complexity":"L2","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"Three years for most categories. Trade secrets and client data obligations are perpetual."},
-  {"id":"n28","question":"How many interview stages are there before an offer is made?","language":"english","complexity":"L2","ground_truth_doc":"ar_recruitment.pdf","ground_truth_pages":[2],"ground_truth_lang":"AR","reference_answer":"Five stages: CV screening, phone/video screen, technical/psychometric test, competency interview, leadership interview — followed by a written offer."},
-  {"id":"n29","question":"What is the minimum period an employee must wait before applying for an internal vacancy?","language":"english","complexity":"L2","ground_truth_doc":"ar_recruitment.pdf","ground_truth_pages":[2],"ground_truth_lang":"AR","reference_answer":"At least 6 months from the date of their last appointment, and they must have their line manager's approval first."},
-  {"id":"n30","question":"What are the two paid mental health days called and how many are provided?","language":"english","complexity":"L2","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[2],"ground_truth_lang":"AR","reference_answer":"Mental health leave — two paid days per year."},
-
-  {"id":"n31","question":"Describe all conditions required to join Horizon Tech's voluntary savings plan.","language":"english","complexity":"L3","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"Available to G3 and above only. Employee contributes 2–10% of base salary pre-tax. The company matches up to 4% of base salary. Vesting is 25% after 1 year, 50% after 2, 75% after 3, and 100% after 4 years of plan participation."},
-  {"id":"n32","question":"What are all the mandatory compliance training modules and their deadlines?","language":"english","complexity":"L3","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"Information Security Awareness (31 March), Data Protection & GDPR (31 March), Anti-Bribery & Corruption (30 June), Workplace Harassment Prevention (30 June), Fire Safety (30 September), Manager Essentials for G3+ (31 March), AI Ethics & Acceptable Use (31 March)."},
-  {"id":"n33","question":"What are all the gross misconduct offences that lead to immediate termination?","language":"english","complexity":"L3","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[9],"ground_truth_lang":"EN","reference_answer":"Theft, fraud, or document falsification; physical assault or serious threats; disclosure of confidential information to unauthorised parties; reporting to work under the influence of alcohol or controlled substances; serious breaches of health, safety, or data protection regulations."},
-  {"id":"n34","question":"What is the full whistleblowing reporting framework including all channels and anonymity options?","language":"english","complexity":"L3","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"Direct manager (not anonymous), HR Business Partner at hr@horizontech.com (not anonymous), Legal & Compliance at compliance@horizontech.com (not anonymous), Ethics Hotline via Horizon Portal 'Speak Up' (fully anonymous), or External Regulator (varies)."},
-  {"id":"n35","question":"What are all the documents required before an employee's first working day?","language":"english","complexity":"L3","ground_truth_doc":"ar_recruitment.pdf","ground_truth_pages":[4],"ground_truth_lang":"AR","reference_answer":"National ID or valid passport copy, officially certified academic and professional qualifications, experience certificate from last employer (if applicable), four recent white-background personal photos, bank account details, and emergency contact/data form."},
-  {"id":"n36","question":"Explain the full voluntary savings plan vesting schedule.","language":"english","complexity":"L3","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"25% vests after 1 year of plan participation, 50% after 2 years, 75% after 3 years, and 100% after 4 years."},
-  {"id":"n37","question":"What are all the optional health insurance add-ons available and their monthly costs?","language":"english","complexity":"L3","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"Enhanced Dental (150 EGP, up to 8,000 EGP/yr), Orthodontics Rider (200 EGP, up to 15,000 EGP lifetime), Enhanced Optical (80 EGP, up to 2,000 EGP/yr), Critical Illness Rider (120 EGP, lump sum 100,000 EGP), Worldwide Emergency (180 EGP, up to $15,000 per event)."},
-  {"id":"n38","question":"What are the intellectual property ownership rules for work created during employment?","language":"english","complexity":"L3","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[5],"ground_truth_lang":"EN","reference_answer":"Any IP created in the course of employment — including software, designs, methodologies, reports, and inventions — is the sole property of Horizon Tech. Employees assign all rights to the company as a condition of their employment contract."},
-  {"id":"n39","question":"What are all the data retention periods for different record types?","language":"english","complexity":"L3","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[12],"ground_truth_lang":"AR","reference_answer":"Active employee files: duration of service + 7 years. Payroll/financial data: 10 years. Performance and discipline records: 5 years from termination. Rejected applicant data: 6 months. Internal email correspondence: 3 years."},
-  {"id":"n40","question":"What are the expense types that can be reimbursed and their limits?","language":"english","complexity":"L3","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[4],"ground_truth_lang":"AR","reference_answer":"Individual work meals: 150 EGP/meal; client meeting: 500 EGP/meeting; city transport: 200 EGP/day; remote internet: 800 EGP/month; office supplies: 300 EGP/month. All require original invoices, and claims must be submitted within 30 days."},
-
-  {"id":"n41","question":"I have a pre-existing side project in the tech space. What must I do before continuing it while employed at Horizon Tech?","language":"english","complexity":"L4","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[5],"ground_truth_lang":"EN","reference_answer":"Disclose the pre-existing IP or side project in writing to Legal & Compliance before continuing. Approval is assessed case by case to avoid conflicts of interest."},
-  {"id":"n42","question":"I was contacted by a journalist asking for a comment about the company. What should I do?","language":"english","complexity":"L4","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"Do not respond. Forward the enquiry immediately to communications@horizontech.com."},
-  {"id":"n43","question":"I am a G3 employee returning from paternity leave. Can I work part-time at full pay, and for how long?","language":"english","complexity":"L4","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[5],"ground_truth_lang":"EN","reference_answer":"Yes. Employees returning from parental leave may request a phased return for up to 8 weeks, working a minimum of 60% of standard hours at full pay. The plan must be agreed with line manager and HR at least 2 weeks before the return date."},
-  {"id":"n44","question":"If I fail a Tier 1 certification on the first attempt, how much does the company cover for a retake?","language":"english","complexity":"L4","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"50% reimbursement for one retake attempt, with no additional study leave beyond the initial 3 days."},
-  {"id":"n45","question":"I've been rated 5 for two consecutive cycles and have 3 years of tenure at G3. Am I eligible for the Leadership Academy?","language":"english","complexity":"L4","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"You meet the rating (4 or 5), grade (G3+), and tenure (2+ years) criteria. You also must have no active disciplinary warnings. Nominations open in October and the cohort is capped at 20 per year."},
-  {"id":"n46","question":"My colleague is being harassed but is afraid to report it openly. What anonymous option exists?","language":"english","complexity":"L4","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"They can report anonymously through the Ethics Hotline on the Horizon Portal under 'Speak Up'. All reports are treated with strict confidentiality."},
-  {"id":"n47","question":"I want to enrol in a new health insurance add-on after the birth of my child. When can I do so?","language":"english","complexity":"L4","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"Within 30 days of a qualifying life event such as birth. Outside that window, enrolment is only possible during the annual open enrolment window (October 1–15)."},
-  {"id":"n48","question":"Can I submit an expense claim for a work meal I paid for 35 days ago?","language":"english","complexity":"L4","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[4],"ground_truth_lang":"AR","reference_answer":"No. Claims submitted more than 30 days after the date of the expense are not accepted."},
-  {"id":"n49","question":"As a contractor, what benefits and notice period apply to me?","language":"english","complexity":"L4","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"Contractors receive no standard benefits. The notice period is defined in their individual project contract."},
-  {"id":"n50","question":"I discovered a document forgery in a candidate's file after they were hired. What happens next?","language":"english","complexity":"L4","ground_truth_doc":"ar_recruitment.pdf","ground_truth_pages":[3],"ground_truth_lang":"AR","reference_answer":"Discovery of document forgery after hiring is grounds for immediate termination of service."},
-
-  {"id":"n51","question":"ما هو بدل السكن وشروط الاستحقاق؟","language":"arabic","complexity":"L1","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[2],"ground_truth_lang":"AR","reference_answer":"20% من الراتب الأساسي للدرجة G4 فأعلى، وهو غير خاضع للضريبة."},
-  {"id":"n52","question":"ما قيمة بدل الاستعداد في العمل؟","language":"arabic","complexity":"L1","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[2],"ground_truth_lang":"AR","reference_answer":"200 جنيه مصري يومياً لموظفي IT والهندسة عند تفعيل الاستعداد."},
-  {"id":"n53","question":"متى يُصرف الراتب الشهري؟","language":"arabic","complexity":"L1","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[3],"ground_truth_lang":"AR","reference_answer":"في اليوم الخامس والعشرين من كل شهر. إذا صادف عطلة يُصرف في يوم العمل السابق مباشرة."},
-  {"id":"n54","question":"ما هي مدة برنامج الإرشاد الوظيفي (Mentorship) لكل دورة؟","language":"arabic","complexity":"L1","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"ستة أشهر لكل دورة، وتنطلق دورتان في السنة (فبراير وأغسطس)."},
-  {"id":"n55","question":"ما قيمة تعويض الإعاقة طويلة الأمد؟","language":"arabic","complexity":"L1","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"60% من آخر راتب أساسي شهرياً لمدة أقصاها 24 شهراً."},
-  {"id":"n56","question":"ما الوثائق الإلزامية قبل أول يوم عمل؟","language":"arabic","complexity":"L1","ground_truth_doc":"ar_recruitment.pdf","ground_truth_pages":[4],"ground_truth_lang":"AR","reference_answer":"بطاقة هوية أو جواز سفر ساري، الشهادات الأكاديمية والمهنية موثقة، شهادة خبرة من آخر جهة عمل، 4 صور شخصية خلفية بيضاء، بيانات حساب بنكي، نموذج بيانات الطوارئ."},
-  {"id":"n57","question":"ما هو سقف منحة الإنجاب؟","language":"arabic","complexity":"L1","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[5],"ground_truth_lang":"EN","reference_answer":"حتى 20,000 جنيه مصري كمنحة لمرة واحدة للموظفين الذين أتموا سنتين أو أكثر من الخدمة."},
-
-  {"id":"n58","question":"ما شروط الحصول على قرض الطوارئ بدون فوائد؟","language":"arabic","complexity":"L2","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[5],"ground_truth_lang":"EN","reference_answer":"يجب إتمام فترة الاختبار. الحد الأقصى شهران صافي. يُسدَّد على أقساط شهرية مساوية بحد أقصى 12 قسطاً. يُشترط موافقة HR والمالية، ولا يُسمح بأكثر من قرض نشط في آن واحد."},
-  {"id":"n59","question":"ما إجراءات الحجز في السفر المهني؟","language":"arabic","complexity":"L2","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[4],"ground_truth_lang":"AR","reference_answer":"تقديم الطلب قبل 5 أيام عمل على الأقل، الحجز عبر Horizon Travel Portal، تقديم تقرير التسوية والفواتير خلال 7 أيام عمل من العودة، والنفقات غير الموثقة لا تُسدَّد."},
-  {"id":"n60","question":"ما هي المخالفات التي تستوجب اتخاذ إجراء تأديبي وفق السياسة الإنجليزية؟","language":"arabic","complexity":"L2","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[9],"ground_truth_lang":"EN","reference_answer":"السرقة، الاحتيال، تزوير السجلات، الاعتداء الجسدي أو التهديد الجسيم، إفشاء المعلومات السرية، الحضور تحت تأثير الكحول أو المواد المخدرة، والانتهاكات الجسيمة لبيانات الموظفين أو الصحة والسلامة."},
-  {"id":"n61","question":"ما الفرق في تغطية التأمين الصحي بين الموظف والأطفال التابعين؟","language":"arabic","complexity":"L2","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"الموظف: عيادات 100%، تنويم 100%، أسنان 70%، بصريات 500 جنيه/سنة، صيدلية 80%. الأطفال: عيادات 80%، تنويم 90%، أسنان 50%، بصريات 300 جنيه/سنة، صيدلية 70%."},
-  {"id":"n62","question":"ما متطلبات اعتماد مسار التعلم الداخلي لمهندسي البرمجيات؟","language":"arabic","complexity":"L2","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"مسار 'Engineering Excellence' مدته 6 أشهر، يشمل تصميم الأنظمة وجودة الكود وDevOps. يُناقَش مع المدير خلال دورة OKR السنوية."},
-  {"id":"n63","question":"هل يُعدّ تثبيت برامج غير مرخصة على جهاز الشركة مخالفة؟","language":"arabic","complexity":"L2","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"نعم، يُحظر صراحةً تثبيت برامج غير مرخصة على أجهزة الشركة."},
-
-  {"id":"n64","question":"ما جميع شروط الحصول على مكافأة نهاية الخدمة بعد 5 سنوات؟","language":"arabic","complexity":"L3","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[11],"ground_truth_lang":"AR","reference_answer":"بعد 5 سنوات فأكثر، يستحق الموظف 1.5 راتب شهري عن كل سنة خدمة، شريطة ألا تكون نهاية الخدمة بسبب مخالفة جسيمة."},
-  {"id":"n65","question":"ما هي جميع التزامات الموظف المتعلقة بالخصوصية وحماية البيانات بعد انتهاء الخدمة؟","language":"arabic","complexity":"L3","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"استمرار الالتزام بالسرية لمدة 3 سنوات بعد الانتهاء (وإلى الأبد فيما يتعلق بأسرار التجارة وبيانات العملاء)، وإعادة أو تدمير جميع المواد السرية عند الانتهاء."},
-  {"id":"n66","question":"ما هي جميع نماذج العمل المرن المعتمدة وموافقاتها المطلوبة؟","language":"arabic","complexity":"L3","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[5],"ground_truth_lang":"AR","reference_answer":"حضور كامل: لا حاجة لموافقة. هجين: موافقة مدير القسم فقط (3 أيام حضور، يومان عن بُعد). عن بُعد بالكامل: موافقة CEO وHR (5 أيام عن بُعد). مرن موسمي: موافقة مدير القسم وHR."},
-  {"id":"n67","question":"ما هي جميع الإجراءات التي يجب أن يتخذها الموظف بعد العودة من مؤتمر خارجي؟","language":"arabic","complexity":"L3","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"تقديم ملخص مكتوب لأهم النقاط خلال 10 أيام عمل من العودة. للمؤتمرات الدولية مطلوب موافقة VP القسم أو ما يعادله مسبقاً."},
-  {"id":"n68","question":"ما هي جميع حقوق الموظف الجديد خلال فترة الاختبار؟","language":"arabic","complexity":"L3","ground_truth_doc":"ar_recruitment.pdf","ground_truth_pages":[3],"ground_truth_lang":"AR","reference_answer":"التأمين الصحي من اليوم الأول، احتساب الإجازة السنوية من الشهر الأول (لكن لا تُصرف إلا بعد اجتياز الاختبار)، إنهاء العقد بإشعار 7 أيام من أي طرف، وتقييم أداء في الشهرين الأول والثالث."},
-
-  {"id":"n69","question":"أنا G5 وسأسافر إلى باريس لمدة 4 أيام لمؤتمر، ما إجمالي بدل المعيشة اليومي المتوقع وما درجة السفر؟","language":"arabic","complexity":"L4","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[4],"ground_truth_lang":"AR","reference_answer":"باريس تُعدّ دولياً لكن ليست ضمن المدن مرتفعة التكلفة (لندن، نيويورك)، لذا البدل $250/يوم × 4 = $1,000. درجة السفر لـ G5 في رحلة تجاوزت 6 ساعات هي درجة رجال الأعمال (G4 فأعلى)."},
-  {"id":"n70","question":"وجدت خطأ في راتبي هذا الشهر، ما الخطوات الكاملة لتصحيحه؟","language":"arabic","complexity":"L4","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[3],"ground_truth_lang":"AR","reference_answer":"تقديم بلاغ عبر بوابة HR خلال 5 أيام عمل مع إرفاق كشف الراتب الموضح به الخطأ. تتحقق إدارة الرواتب وترد خلال 3 أيام عمل. تُسوَّى الفروق في الراتب التالي أو بتحويل عاجل."},
-  {"id":"n71","question":"أنا موظف G3 وأريد الاشتراك في خطة الادخار الطوعي بنسبة 10%. كم ستساهم الشركة وما جدول الاستحقاق؟","language":"arabic","complexity":"L4","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"تشارك الشركة حتى 4% من راتبك الأساسي. جدول الاستحقاق: 25% بعد سنة، 50% بعد سنتين، 75% بعد 3 سنوات، 100% بعد 4 سنوات."},
-  {"id":"n72","question":"تلقيت هدية من مورد بقيمة 150 دولاراً، ماذا يجب أن أفعل؟","language":"arabic","complexity":"L4","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[8],"ground_truth_lang":"AR","reference_answer":"يجب الإبلاغ الإلزامي عنها وتسجيلها في سجل الهدايا، ورفع الأمر إلى مدير HR لاتخاذ قرار قبولها أو رفضها أو التبرع بها للجمعيات الخيرية."},
-  {"id":"n73","question":"إذا لم أُكمل التدريب الإلزامي على أمن المعلومات في الموعد المحدد، ما العواقب؟","language":"arabic","complexity":"L4","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"قد يُسجَّل ملاحظة تأديبية في ملف الموظف."},
-
-  {"id":"n74","question":"إيه بدل الاستعداد بتاع IT؟","language":"egyptian","complexity":"L1","ground_truth_doc":"ar_payroll_finance.pdf","ground_truth_pages":[2],"ground_truth_lang":"AR","reference_answer":"200 جنيه في اليوم لموظفي IT والهندسة لما بيتفعّل الاستعداد."},
-  {"id":"n75","question":"بدل السكن بكام ولمين؟","language":"egyptian","complexity":"L1","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"20% من الراتب الأساسي للدرجة G4 فأعلى، وهو غير خاضع للضريبة."},
-  {"id":"n76","question":"التأمين على الحياة بيغطي قد إيه؟","language":"egyptian","complexity":"L1","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"2 ضعف الراتب السنوي الإجمالي كمبلغ مقطوع لورثة المستفيد."},
-  {"id":"n77","question":"إمتى بفتح التسجيل في برنامج المنح الدراسية؟","language":"egyptian","complexity":"L1","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[3],"ground_truth_lang":"AR","reference_answer":"بيتقدم الطلب في الفترة من أكتوبر لنوفمبر من كل سنة."},
-  {"id":"n78","question":"جلسات EAP السنوية كام جلسة؟","language":"egyptian","complexity":"L1","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"لحد 8 جلسات إرشاد نفسي قصير المدى في السنة."},
-
-  {"id":"n79","question":"لو أنا G2 وعملت overtime يوم جمعة، هاخد أجر الساعة بكام؟","language":"egyptian","complexity":"L2","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"2 ضعف أجر الساعة العادي لأن الجمعة من عطلة نهاية الأسبوع."},
-  {"id":"n80","question":"لو عايز أحضر مؤتمر برا مصر، محتاج موافقة مين؟","language":"egyptian","complexity":"L2","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"موافقة المدير المباشر ومدير القسم، وكمان موافقة VP القسم أو ما يعادله للمؤتمرات الدولية. الطلب يتقدم 30 يوم على الأقل قبل الموعد."},
-  {"id":"n81","question":"إيه حقوق الموظف لو اتعمل معاه إجراء تأديبي؟","language":"egyptian","complexity":"L2","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[9],"ground_truth_lang":"EN","reference_answer":"حق الاستماع وتقديم زميل كشاهد في أي اجتماع رسمي. الطعن كتابياً خلال 5 أيام عمل، وبيتراجع من مدير HR ومدير كبير مش كان جزء من الإجراء."},
-  {"id":"n82","question":"إيه الاشتراطات اللي لازم أوفرها عشان أشتغل hybrid؟","language":"egyptian","complexity":"L2","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[5],"ground_truth_lang":"AR","reference_answer":"موافقة مدير القسم بس. 3 أيام حضور في الأسبوع ويومان عن بُعد. كل اشتراطات العمل عن بُعد سارية."},
-  {"id":"n83","question":"لو جاتلي إصابة في الشغل، لازم أبلغ في إمتى؟","language":"egyptian","complexity":"L2","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[2],"ground_truth_lang":"AR","reference_answer":"خلال 24 ساعة من وقوع الإصابة أو الحادث."},
-
-  {"id":"n84","question":"إيه كل شروط المشاركة في برنامج Leadership Academy؟","language":"egyptian","complexity":"L3","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"تقييم 4 أو 5 في آخر مراجعة، درجة G3 فأعلى، سنتان خدمة على الأقل، ومفيش تحذيرات تأديبية نشطة. الترشيح بيفتح في أكتوبر والعدد مقصور على 20 مشارك في السنة."},
-  {"id":"n85","question":"إيه إجراءات الإبلاغ عن خرق أمني على الجهاز؟","language":"egyptian","complexity":"L3","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[6],"ground_truth_lang":"AR","reference_answer":"الإبلاغ خلال ساعة من اكتشاف أي اختراق أمني أو فيروس."},
-  {"id":"n86","question":"إيه كل مزايا التأمين الصحي الإضافية اللي ممكن أشترك فيها وبكام؟","language":"egyptian","complexity":"L3","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"أسنان معزز (150 جنيه/شهر، حد 8,000 جنيه/سنة)، تقويم أسنان (200 جنيه/شهر، حد 15,000 جنيه/عمر)، بصريات معزز (80 جنيه/شهر، 2,000 جنيه/سنة)، أمراض خطيرة (120 جنيه/شهر، مبلغ مقطوع 100,000 جنيه)، طوارئ عالمية (180 جنيه/شهر، حد $15,000/حادث)."},
-
-  {"id":"n87","question":"أنا G2 وبقالي سنة ونص في الشركة وعايز أتقدم لـ AWS certification. هيتغطى قد إيه؟","language":"egyptian","complexity":"L4","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[2,3],"ground_truth_lang":"EN","reference_answer":"AWS Solutions Architect تيار 1 (استراتيجي): 100% للمحاولة الأولى و50% لمحاولة واحدة إضافية. ميزانيتك التعليمية $5,000 (G2، 1-5 سنوات) وكلها تتغطى من ميزانية التعلم مع اشتراط الموافقة المسبقة."},
-  {"id":"n88","question":"لو مديري هو اللي بيتحرش بي، أبلغ مين؟","language":"egyptian","complexity":"L4","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"تقدر تبلغ أي HR Business Partner، قسم Legal & Compliance، أو من خلال Ethics Hotline بشكل مجهول عبر بوابة Horizon Portal. كل التحقيقات سرية."},
-  {"id":"n89","question":"عندي ولد عمره 4 سنين وابنة عمرها 7 سنين، هاخد دعم الحضانة لمين منهم؟","language":"egyptian","complexity":"L4","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[5],"ground_truth_lang":"EN","reference_answer":"بس الولد (أقل من 6 سنين) بـ 500 جنيه/شهر. البنت تجاوزت سن الأهلية."},
-  {"id":"n90","question":"لو أنا مستشار خارجي بعقد مشروع وعايز أبلغ عن مخالفة أخلاقية، هل ينطبق عليا نفس السياسة؟","language":"egyptian","complexity":"L4","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"نعم، سياسة أخلاقيات العمل بتنطبق على كل الأفراد اللي بيمثلوا الشركة بصرف النظر عن نوع العقد أو المستوى أو الموقع الجغرافي."},
-
-  {"id":"n91","question":"eih el housing allowance we meen yestahelo?","language":"franco","complexity":"L1","ground_truth_doc":"eng_policy.pdf","ground_truth_pages":[3],"ground_truth_lang":"EN","reference_answer":"20% من الراتب الأساسي للدرجة G4 فأعلى، غير خاضع للضريبة."},
-  {"id":"n92","question":"el life insurance bta3 el sharka ad eih?","language":"franco","complexity":"L1","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"مبلغ مقطوع يعادل ضعف الراتب السنوي الإجمالي للمستفيد المُعيَّن."},
-  {"id":"n93","question":"el onboarding program biyestamr kam yom?","language":"franco","complexity":"L1","ground_truth_doc":"ar_recruitment.pdf","ground_truth_pages":[3],"ground_truth_lang":"AR","reference_answer":"90 يوم مقسمين على 3 مراحل."},
-  {"id":"n94","question":"eih el learning budget bta3 el G3?","language":"franco","complexity":"L1","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"$8,000 سنوياً مع 10 أيام تدريب مدفوعة."},
-  {"id":"n95","question":"lw ana G2 3ayez ashterak fel voluntary savings plan, 3andy el right?","language":"franco","complexity":"L2","ground_truth_doc":"eng_wellness_benefits.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"لا، الخطة متاحة للدرجة G3 فأعلى بس."},
-  {"id":"n96","question":"eih el conditions el lazem atammelhom 3ashan atqadam lel Leadership Academy?","language":"franco","complexity":"L2","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[4],"ground_truth_lang":"EN","reference_answer":"تقييم 4 أو 5 في آخر مراجعة، G3 فأعلى، سنتان خدمة على الأقل، ومفيش تحذيرات تأديبية نشطة."},
-  {"id":"n97","question":"eih el mawa3id el lazem akhalas feha el compliance training?","language":"franco","complexity":"L2","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[2],"ground_truth_lang":"EN","reference_answer":"Information Security و Data Protection و Manager Essentials و AI Ethics: 31 مارس. Anti-Bribery و Harassment Prevention: 30 يونيو. Fire Safety: 30 سبتمبر."},
-  {"id":"n98","question":"lw ana G4 3ayez ashtaghal full remote, eih el khotawat el lazem a3mlaha?","language":"franco","complexity":"L3","ground_truth_doc":"ar_policy.pdf","ground_truth_pages":[5],"ground_truth_lang":"AR","reference_answer":"محتاج موافقة CEO وHR معاً. لازم توفر اتصال إنترنت 20 Mbps على الأقل، تحضر الاجتماعات بالكاميرا مفتوحة، وترد على الرسائل خلال 30 دقيقة في أوقات الدوام."},
-  {"id":"n99","question":"lw 3andy mashroo3 shakhsy fy el tech 3ayez akamelo, eih el matlob menni?","language":"franco","complexity":"L4","ground_truth_doc":"eng_workplace_conduct.pdf","ground_truth_pages":[5],"ground_truth_lang":"EN","reference_answer":"لازم تُفصح عن المشروع كتابةً لـ Legal & Compliance قبل الاستمرار فيه. بيتم تقييم الطلب بشكل فردي لتجنب تعارض المصالح."},
-  {"id":"n100","question":"lw ana G2 3andy 1.5 sana khidma we 3ayez certification zay PMP, eih el coverage w khatwat el request?","language":"franco","complexity":"L4","ground_truth_doc":"eng_training_development.pdf","ground_truth_pages":[2,3],"ground_truth_lang":"EN","reference_answer":"PMP تيار 1 (استراتيجي): 100% للمحاولة الأولى و50% لمرة واحدة. ميزانيتك $5,000 (G2). لازم تطلب موافقة مسبقة عبر نموذج L&D على Horizon Portal. لو اشتريت بدون موافقة مسبقة ممكن يُرفض التعويض."}
+  {
+    "id": "C01_EN",
+    "concept_id": "C01",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "overtime",
+    "question": "What is the overtime compensation rate on weekdays?",
+    "reference_answer": "Overtime on weekdays is compensated at 1.5× the hourly rate. On weekends or public holidays it is 2× the hourly rate.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C01_AR",
+    "concept_id": "C01",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "overtime",
+    "question": "ما هو معدل تعويض العمل الإضافي في أيام الأسبوع؟",
+    "reference_answer": "يُعوَّض العمل الإضافي في أيام العمل بمعدل 1.5 ضعف الأجر الساعي، وبمعدل 2 ضعف في عطلات نهاية الأسبوع والإجازات الرسمية.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C01_EG",
+    "concept_id": "C01",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "overtime",
+    "question": "إيه نسبة تعويض الأوفر تايم في أيام الشغل العادية؟",
+    "reference_answer": "الأوفر تايم في أيام الشغل العادية بيتحسب بـ 1.5 ضعف الأجر الساعي، وفي أيام الإجازة أو الويك إند بـ 2 ضعف.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C01_FR",
+    "concept_id": "C01",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "overtime",
+    "question": "eih nisblet taweed el overtime fi ayyam el shoghl el 3adeya?",
+    "reference_answer": "El overtime fi ayyam el shoghl el 3adiya byet7aseb be 1.5 dif3 el ogr el sa3i, w fe ayyam el agaza aw el weekend be 2 dif3.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C02_EN",
+    "concept_id": "C02",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2,
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "health_insurance_start",
+    "question": "When does health insurance coverage begin for new employees?",
+    "reference_answer": "Health insurance coverage begins from the first day of employment for all full-time employees.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C02_AR",
+    "concept_id": "C02",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2,
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "health_insurance_start",
+    "question": "متى تبدأ التغطية التأمينية الصحية للموظفين الجدد؟",
+    "reference_answer": "تبدأ التغطية التأمينية الصحية من اليوم الأول للعمل لجميع الموظفين بدوام كامل.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C02_EG",
+    "concept_id": "C02",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2,
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "health_insurance_start",
+    "question": "التأمين الصحي بيبدأ إمتى للموظف الجديد؟",
+    "reference_answer": "التأمين الصحي بيبدأ من أول يوم شغل لكل الموظفين بدوام كامل.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C02_FR",
+    "concept_id": "C02",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2,
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "health_insurance_start",
+    "question": "el ta2min el se77i biyebda2 emta lel muwazaf el gedid?",
+    "reference_answer": "El ta2min el se77i biyebda2 men awel yom shoghl le kol el muwazafin bel dawam el kamil.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C03_EN",
+    "concept_id": "C03",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "housing_allowance",
+    "question": "What is the housing allowance and who is eligible?",
+    "reference_answer": "The housing allowance is 20% of the base salary. It is available to G4-grade employees and above, and it is non-taxable.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C03_AR",
+    "concept_id": "C03",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "housing_allowance",
+    "question": "ما قيمة بدل السكن ومن يستحقه؟",
+    "reference_answer": "بدل السكن يعادل 20% من الراتب الأساسي، ويُمنح للموظفين من الدرجة G4 فأعلى، وهو غير خاضع للضريبة.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C03_EG",
+    "concept_id": "C03",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "housing_allowance",
+    "question": "بدل السكن قد إيه ومين اللي بياخده؟",
+    "reference_answer": "بدل السكن بيكون 20% من الراتب الأساسي، وبياخده الموظفين من الدرجة G4 فأعلى، وهو مش بيتاخد منه ضريبة.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C03_FR",
+    "concept_id": "C03",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "housing_allowance",
+    "question": "bedl el sakan ad eih w meen ely bya5odo?",
+    "reference_answer": "Bedl el sakan byekun 20% men el rateb el asasy, w bya5odo el muwazafin men grade G4 fa2 wala a3la, w mesh betit2a5od menno darayeb.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C04_EN",
+    "concept_id": "C04",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "probation_termination_notice",
+    "question": "What is the notice period required to terminate during probation?",
+    "reference_answer": "During the probation period, either the employee or the company may terminate the contract with 7 days written notice.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C04_AR",
+    "concept_id": "C04",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "probation_termination_notice",
+    "question": "ما هي مدة الإشعار المطلوبة لإنهاء العقد خلال فترة الاختبار؟",
+    "reference_answer": "يحق لأي من الطرفين إنهاء عقد العمل خلال فترة الاختبار بإشعار كتابي مدته 7 أيام فقط.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C04_EG",
+    "concept_id": "C04",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "probation_termination_notice",
+    "question": "مدة الإشعار عشان ينهي العقد في فترة الاختبار قد إيه؟",
+    "reference_answer": "أي طرف، سواء الموظف أو الشركة، يقدر يُنهي العقد في فترة الاختبار بإشعار كتابي 7 أيام بس.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C04_FR",
+    "concept_id": "C04",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "probation_termination_notice",
+    "question": "modet el esh3ar 3ashan yenhi el 3a2d fe fatret el ekhtebar ad eih?",
+    "reference_answer": "Ay taraf, el muwazaf aw el sharka, ye2dar yenhi el 3a2d fe fatret el ekhtebar be esh3ar ketaby 7 ayyam bas.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C05_EN",
+    "concept_id": "C05",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "gym_subsidy",
+    "question": "What is the gym subsidy for G1 and G2 employees?",
+    "reference_answer": "G1 and G2 employees receive a gym subsidy of up to 300 EGP per month at standard network gyms. The subsidy is applied as direct corporate billing — no cash is given.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C05_AR",
+    "concept_id": "C05",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "gym_subsidy",
+    "question": "ما قيمة دعم عضوية النادي الرياضي لموظفي الدرجة G1 وG2؟",
+    "reference_answer": "يحصل موظفو الدرجتين G1 وG2 على دعم لعضوية النادي الرياضي بحد أقصى 300 جنيه شهرياً في الأندية المعيارية. يُطبَّق الدعم كفوترة مباشرة على الشركة ولا يُصرف نقداً.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C05_EG",
+    "concept_id": "C05",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "gym_subsidy",
+    "question": "إيه قيمة دعم الجيم لموظفي G1 وG2؟",
+    "reference_answer": "موظفو G1 وG2 بياخدوا دعم للجيم بحد أقصى 300 جنيه في الشهر في الأندية العادية في الشبكة. الدعم ده بيتحسبلهم مباشرةً على الشركة، مش بياخدوا فلوس.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C05_FR",
+    "concept_id": "C05",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "gym_subsidy",
+    "question": "eih 2emet da3m el gym le muwazafin G1 w G2?",
+    "reference_answer": "Muwazafin G1 w G2 bya5du da3m lel gym le7ad 300 gneih fel shahr fe el andeyya el 3adiya. El da3m da byet7asbelom 3ala el sharka, msh bya5du flus.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C06_EN",
+    "concept_id": "C06",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "life_insurance",
+    "question": "How much is the group life insurance benefit?",
+    "reference_answer": "The group life insurance benefit equals 2× the employee's annual gross salary, paid as a lump sum to the designated beneficiary in the event of death from any cause. This is provided at no cost to the employee.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C06_AR",
+    "concept_id": "C06",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "life_insurance",
+    "question": "ما قيمة مزايا التأمين على الحياة الجماعي؟",
+    "reference_answer": "تبلغ مزايا التأمين على الحياة الجماعي ضعفَي الراتب الإجمالي السنوي للموظف، وتُصرف مبلغاً إجمالياً للمستفيد المُعيَّن في حالة الوفاة لأي سبب. يُقدَّم هذا التأمين مجاناً للموظف.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C06_EG",
+    "concept_id": "C06",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "life_insurance",
+    "question": "التأمين على الحياة الجماعي بيدي قد إيه؟",
+    "reference_answer": "التأمين على الحياة الجماعي بيدي مبلغ يساوي 2 ضعف الراتب الإجمالي السنوي للموظف، وبيتدفع دفعة واحدة للمستفيد المسمى في حالة الوفاة من أي سبب. الشركة بتدفعه من غير أي تكلفة على الموظف.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C06_FR",
+    "concept_id": "C06",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "life_insurance",
+    "question": "el ta2min 3ala el 7ayah el gama3y biyedi ad eih?",
+    "reference_answer": "El ta2min 3ala el 7ayah el gama3y biyedi mablag yesawi 2 dif3 el rateb el ejmali el sanawi lel muwazaf, w biyetdfa3 daf3a wa7da lel mostafid el mosamma fe 7alet el wafah men ay sabab. El sharka betdfa3o bi don ay taklufa 3al muwazaf.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C07_EN",
+    "concept_id": "C07",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "g2_training_budget",
+    "question": "What is the annual learning budget for a G2 Specialist?",
+    "reference_answer": "A G2 Specialist receives an annual learning budget of $5,000 USD, along with 8 paid training days per year and a platform subscription.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C07_AR",
+    "concept_id": "C07",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "g2_training_budget",
+    "question": "ما هي ميزانية التعلم السنوية لموظف من الدرجة G2؟",
+    "reference_answer": "يحصل موظف الدرجة G2 على ميزانية تعلم سنوية قدرها 5,000 دولار، مع 8 أيام تدريب مدفوعة سنوياً واشتراك في منصة التعلم.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C07_EG",
+    "concept_id": "C07",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "g2_training_budget",
+    "question": "ميزانية التعلم السنوية لموظف G2 قد إيه؟",
+    "reference_answer": "موظف G2 بياخد ميزانية تعلم سنوية قدرها 5,000 دولار، مع 8 أيام تدريب مدفوعة في السنة واشتراك في منصة التعلم.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C07_FR",
+    "concept_id": "C07",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "g2_training_budget",
+    "question": "eih mizaneyyet el ta3allom el sanaweyya le muwazaf G2?",
+    "reference_answer": "Muwazaf G2 bya5od mizaneyya ta3allom sanaweyya 5,000 dolar, ma3 8 ayyam tadreeb madf3a fes sana w ishtrak fe manasset el ta3allom.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C08_EN",
+    "concept_id": "C08",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "salary_payment_day",
+    "question": "On which day of the month are salaries paid?",
+    "reference_answer": "Salaries are paid on the 25th of each calendar month. If that date falls on an official holiday or weekend, salaries are paid on the preceding working day.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C08_AR",
+    "concept_id": "C08",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "salary_payment_day",
+    "question": "في أي يوم من الشهر تُصرف الرواتب؟",
+    "reference_answer": "تُصرف الرواتب في اليوم الخامس والعشرين من كل شهر ميلادي. إذا صادف ذلك اليوم إجازة رسمية أو عطلة نهاية الأسبوع، يُصرف الراتب في يوم العمل السابق مباشرة.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C08_EG",
+    "concept_id": "C08",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "salary_payment_day",
+    "question": "الرواتب بتتصرف في أنهي يوم من الشهر؟",
+    "reference_answer": "الرواتب بتتصرف في يوم 25 من كل شهر. لو اليوم ده وافق عطلة رسمية أو نهاية أسبوع، بيتصرف الراتب في يوم الشغل اللي قبله مباشرة.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C08_FR",
+    "concept_id": "C08",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "salary_payment_day",
+    "question": "el mwaahed btetatref fe anhi yom men el shahr?",
+    "reference_answer": "El mwaahed btet3raf fe yom 25 men kol shahr. Lw el yom da wa2af 3otla rasmeyya aw weekend, byet3raf el rateb fe yom el shoghl ely 2abalo 3al tool.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C09_EN",
+    "concept_id": "C09",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "tier1_cert_reimbursement",
+    "question": "What is the reimbursement rate for a Tier 1 certification first attempt, and is a retake covered?",
+    "reference_answer": "The first attempt at a Tier 1 strategic certification (e.g. AWS Solutions Architect, PMP, CFA) is reimbursed at 100%, plus up to 3 days of paid study leave. One retake is covered at 50% reimbursement. No further retakes are covered.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C09_AR",
+    "concept_id": "C09",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "tier1_cert_reimbursement",
+    "question": "ما نسبة استرداد المصاريف عند التقدم لأول مرة لشهادة من المستوى الأول، وهل تُغطَّى إعادة الاختبار؟",
+    "reference_answer": "يُسدَّد 100% من رسوم أول محاولة لشهادات المستوى الأول الاستراتيجية (مثل AWS Solutions Architect وPMP وCFA)، مع ما يصل إلى 3 أيام إجازة دراسة مدفوعة. تُغطَّى إعادة الاختبار مرة واحدة فقط بنسبة 50%، ولا تُغطَّى أي محاولات إضافية.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C09_EG",
+    "concept_id": "C09",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "tier1_cert_reimbursement",
+    "question": "نسبة استرداد رسوم شهادة Tier 1 في أول محاولة قد إيه، وإعادة الاختبار بتتغطى؟",
+    "reference_answer": "أول محاولة لشهادات Tier 1 الاستراتيجية زي AWS وPMP وCFA بتترد 100%، مع لحد 3 أيام إجازة دراسة مدفوعة. إعادة الاختبار مرة واحدة بس بتترد 50%، ومفيش تغطية لأي محاولات تانية.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C09_FR",
+    "concept_id": "C09",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "tier1_cert_reimbursement",
+    "question": "eih nisblet estered rasoom shahadet Tier 1 fel awel mara, w re3adet el ekhtebar bettetghatta?",
+    "reference_answer": "Awel mara le shahadat Tier 1 el estrategeyya zay AWS w PMP w CFA btetrod 100%, ma3 le7ad 3 ayyam agaza deraseyya madf3a. Re3adet el ekhtebar mara wa7da bas btetrod 50%, w mafesh tagheteyya le ay mohawalat tanya.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C10_EN",
+    "concept_id": "C10",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "ltd_benefit",
+    "question": "What does the long-term disability benefit pay, and for how long?",
+    "reference_answer": "The long-term disability (LTD) benefit pays 60% of the employee's last drawn base salary per month. It continues for a maximum of 24 months, or until the employee is medically certified as fit to return to work, whichever comes first. It applies after 90 consecutive days of medically certified inability to work.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C10_AR",
+    "concept_id": "C10",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "ltd_benefit",
+    "question": "ما قيمة مزايا العجز طويل الأمد ومدتها؟",
+    "reference_answer": "يُقدِّم مزايا العجز طويل الأمد 60% من آخر راتب أساسي مسحوب شهريًا، ويستمر لمدة أقصاها 24 شهرًا أو حتى يُصادق الطبيب على قدرة الموظف على العودة للعمل، أيهما أقرب. يُطبَّق بعد 90 يومًا متواصلة من العجز المُثبَت طبيًا.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C10_EG",
+    "concept_id": "C10",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "ltd_benefit",
+    "question": "بدل العجز طويل الأمد بيدفع قد إيه وبيستمر قد إيه؟",
+    "reference_answer": "بدل العجز طويل الأمد بيدفع 60% من آخر راتب أساسي كل شهر. بيستمر بحد أقصى 24 شهر أو لحد ما الطبيب يقول إن الموظف قادر يرجع يشتغل، أيهما أقرب. وده بيبدأ بعد 90 يوم متواصل من العجز المُثبَت طبياً.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C10_FR",
+    "concept_id": "C10",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "ltd_benefit",
+    "question": "badl el 3agz el taweel el amad biyedfa3 ad eih w biyestamr ad eih?",
+    "reference_answer": "Badl el 3agz el taweel el amad biyedfa3 60% men a5er rateb asasy kol shahr. Biyestamr le7ad 24 shahr aw le7ad ma el doktor ye2ul en el muwazaf 2adar yerga3 yeshtaghal, ayahoma a2rab. W da biyebda2 ba3d 90 yom motawasel men el 3agz el mothabbet tebbyan.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C11_EN",
+    "concept_id": "C11",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "emergency_loan",
+    "question": "How much can an employee borrow as an emergency interest-free loan, and what are the repayment terms?",
+    "reference_answer": "Employees who have completed their probation period may borrow up to two months' net salary as an emergency interest-free loan. It is repayable over a maximum of 12 equal monthly instalments via payroll deduction. Only one active loan is permitted at a time, and approval requires sign-off from both HR and Finance.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C11_AR",
+    "concept_id": "C11",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "emergency_loan",
+    "question": "كم يمكن للموظف اقتراضه كقرض طارئ بدون فوائد وما شروط السداد؟",
+    "reference_answer": "يحق للموظف الذي أتمَّ فترة الاختبار الاقتراض بما يصل إلى شهرين من صافي الراتب كقرض طارئ بدون فوائد. يُسدَّد على 12 قسطًا شهريًا متساويًا كحد أقصى عبر خصم الراتب. لا يُسمح بأكثر من قرض نشط واحد في آنٍ واحد، ويشترط الحصول على موافقة الموارد البشرية والمالية.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C11_EG",
+    "concept_id": "C11",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "emergency_loan",
+    "question": "الموظف يقدر يقترض قد إيه كقرض طارئ بدون فوايد وإيه شروط السداد؟",
+    "reference_answer": "الموظف اللي خلّص فترة الاختبار يقدر يقترض لحد شهرين صافي مرتب كقرض طارئ بدون فوايد. بيتسدد على 12 قسط شهري متساوي كحد أقصى من الراتب. مسموح بس بقرض واحد نشط في نفس الوقت، ولازم يعتمده الموارد البشرية والمالية.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C11_FR",
+    "concept_id": "C11",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "emergency_loan",
+    "question": "el muwazaf ye2dar yesta2red ad eih ke2ard tare2 bi don fawa2ed w eih shorut el sedad?",
+    "reference_answer": "El muwazaf ely 5alas fatret el ekhtebar ye2dar yesta2red le7ad shahrain net mrateb ke2ard tare2 bi don fawa2ed. Byetraded 3ala 12 2est shahri motasawi ke7ad a2sa men el rateb. Masmo7 bas be2ard wa7ed nasha2 fe nafs el wa2t, w lazem yetamedo HR wel maliyya.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C12_EN",
+    "concept_id": "C12",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "social_insurance_rate",
+    "question": "What is the employee's social insurance contribution rate, and what is the employer's share?",
+    "reference_answer": "The employee contributes 11% of the fixed and variable wage components for social insurance. The employer contributes 18.75%, bringing the total combined rate to 29.75%.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C12_AR",
+    "concept_id": "C12",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "social_insurance_rate",
+    "question": "ما نسبة اشتراك الموظف في التأمينات الاجتماعية وما نسبة صاحب العمل؟",
+    "reference_answer": "يسدد الموظف 11% من الأجر الثابت والمتغير كاشتراك في التأمينات الاجتماعية، بينما يسدد صاحب العمل 18.75%، ليبلغ إجمالي الاشتراك 29.75%.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C12_EG",
+    "concept_id": "C12",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "social_insurance_rate",
+    "question": "نسبة اشتراك الموظف في التأمينات الاجتماعية قد إيه ونسبة الشركة؟",
+    "reference_answer": "الموظف بيدفع 11% من الأجر الثابت والمتغير كاشتراك في التأمينات الاجتماعية، والشركة بتدفع 18.75%، والإجمالي 29.75%.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C12_FR",
+    "concept_id": "C12",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "social_insurance_rate",
+    "question": "eih nisblet ishtrak el muwazaf fe el ta2minat el egtema3eyya w eih nisblet el sharka?",
+    "reference_answer": "El muwazaf biyedfa3 11% men el agr el thabet wel motghayyer ke ishtrak fe el ta2minat el egtema3eyya, wel sharka bitedf3 18.75%, wel ijmali 29.75%.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C13_EN",
+    "concept_id": "C13",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "confidentiality_post_employment",
+    "question": "How long do confidentiality obligations continue after an employee leaves the company?",
+    "reference_answer": "Confidentiality obligations continue for 3 years after the termination of employment for most information categories. Obligations related to trade secrets and client data are perpetual and never expire.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C13_AR",
+    "concept_id": "C13",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "confidentiality_post_employment",
+    "question": "كم تستمر التزامات السرية بعد مغادرة الموظف للشركة؟",
+    "reference_answer": "تستمر التزامات السرية لمدة 3 سنوات بعد إنهاء عقد العمل لمعظم فئات المعلومات. أما الالتزامات المتعلقة بالأسرار التجارية وبيانات العملاء فهي دائمة ولا تنقضي.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C13_EG",
+    "concept_id": "C13",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "confidentiality_post_employment",
+    "question": "التزامات السرية بتستمر قد إيه بعد ما الموظف يسيب الشركة؟",
+    "reference_answer": "التزامات السرية بتستمر 3 سنين بعد إنهاء عقد الشغل لمعظم أنواع المعلومات. أما اللي بيخص الأسرار التجارية وبيانات العملاء فالتزاماته دايمة ومبتنتهيش.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C13_FR",
+    "concept_id": "C13",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "confidentiality_post_employment",
+    "question": "eltezamat el sereyya btestamar ad eih ba3d ma el muwazaf yesib el sharka?",
+    "reference_answer": "Eltezamat el sereyya btestamar 3 sneen ba3d enha2 3a2d el shoghl le mo3zam anwa3 el ma3lomat. Amma ely biyekhoss el asrar el tegareyya w bayanat el 3umala, faltezamato da2ema w ma betenhish.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C14_EN",
+    "concept_id": "C14",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "mental_health_leave",
+    "question": "How many mental health leave days are employees entitled to, and are they paid?",
+    "reference_answer": "All employees are entitled to 2 paid mental health leave days per year.",
+    "ground_truth_doc": "ar_policy.pdf"
+  },
+  {
+    "id": "C14_AR",
+    "concept_id": "C14",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "mental_health_leave",
+    "question": "كم عدد أيام إجازة الصحة النفسية وهل هي مدفوعة الأجر؟",
+    "reference_answer": "يستحق جميع الموظفين يومَين مدفوعَي الأجر سنوياً كإجازة صحة نفسية.",
+    "ground_truth_doc": "ar_policy.pdf"
+  },
+  {
+    "id": "C14_EG",
+    "concept_id": "C14",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "mental_health_leave",
+    "question": "كام يوم إجازة صحة نفسية الموظف بياخد وهل هي مدفوعة؟",
+    "reference_answer": "كل الموظفين بياخدوا يومين إجازة صحة نفسية في السنة ومدفوعين.",
+    "ground_truth_doc": "ar_policy.pdf"
+  },
+  {
+    "id": "C14_FR",
+    "concept_id": "C14",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "mental_health_leave",
+    "question": "kam yom agaza se77a nafseyya el muwazaf bya5od w hey madf3a?",
+    "reference_answer": "Kol el muwazafin bya5du yomein agaza se77a nafseyya fes sana w madf3in.",
+    "ground_truth_doc": "ar_policy.pdf"
+  },
+  {
+    "id": "C15_EN",
+    "concept_id": "C15",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "probation_review_timing",
+    "question": "When are performance evaluations conducted during probation?",
+    "reference_answer": "Performance is evaluated at the end of the 1st month and again at the end of the 3rd month during the probation period.",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C15_AR",
+    "concept_id": "C15",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "probation_review_timing",
+    "question": "متى تُجرى تقييمات الأداء خلال فترة الاختبار؟",
+    "reference_answer": "يُجرى تقييم الأداء في نهاية الشهر الأول ونهاية الشهر الثالث خلال فترة الاختبار.",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C15_EG",
+    "concept_id": "C15",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "probation_review_timing",
+    "question": "تقييمات الأداء بتتعمل إمتى في فترة الاختبار؟",
+    "reference_answer": "تقييم الأداء بيتعمل في نهاية الشهر الأول ونهاية الشهر التالت في فترة الاختبار.",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C15_FR",
+    "concept_id": "C15",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "probation_review_timing",
+    "question": "taqyemat el ada2 btet3amel emta fe fatret el ekhtebar?",
+    "reference_answer": "Taqyeem el ada2 byet3amel fe nehayyet el shahr el awel we nehayyet el shahr el talat fe fatret el ekhtebar.",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C16_EN",
+    "concept_id": "C16",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "expense_claim_deadline",
+    "question": "What is the deadline to submit an expense claim after the expense is incurred?",
+    "reference_answer": "Expense claims must be submitted within 30 days of the date the expense was incurred. Claims submitted after 30 days are not accepted under any circumstances.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C16_AR",
+    "concept_id": "C16",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "expense_claim_deadline",
+    "question": "ما هو الموعد النهائي لتقديم طلب تسوية المصروفات بعد تكبُّد النفقة؟",
+    "reference_answer": "يجب تقديم طلب تسوية المصروفات خلال 30 يومًا من تاريخ تكبُّد النفقة. لا تُقبل المطالبات المقدَّمة بعد 30 يومًا بأي حال من الأحوال.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C16_EG",
+    "concept_id": "C16",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "expense_claim_deadline",
+    "question": "آخر موعد لتقديم طلب تسوية المصروفات بعد الصرف قد إيه؟",
+    "reference_answer": "طلب تسوية المصروفات لازم يتقدم خلال 30 يوم من تاريخ الصرف. المطالبات اللي بتتقدم بعد 30 يوم مش بتتقبلش في أي حال.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C16_FR",
+    "concept_id": "C16",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "expense_claim_deadline",
+    "question": "akher maw3id le taqdem talab tasweyyet el masroufat ba3d el sarf ad eih?",
+    "reference_answer": "Talab tasweyyet el masroufat lazem yetqedem khilal 30 yom men tarikh el sarf. El motalabat ely betit2addem ba3d 30 yom msh betit2abel fe ay hal.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C17_EN",
+    "concept_id": "C17",
+    "language": "english",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "savings_plan_eligibility",
+    "question": "What are all the conditions required to join the voluntary savings plan?",
+    "reference_answer": "To join the voluntary savings plan, the employee must be at grade G3 or above and have completed the probation period. The employee may contribute between 2% and 10% of their base salary monthly on a pre-tax basis. Horizon Tech matches contributions up to 4% of base salary. Company match vests at 25% after 1 year, 50% after 2 years, 75% after 3 years, and 100% after 4 years of plan participation.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C17_AR",
+    "concept_id": "C17",
+    "language": "arabic",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "savings_plan_eligibility",
+    "question": "ما جميع الشروط المطلوبة للانضمام إلى خطة الادخار الطوعي؟",
+    "reference_answer": "للانضمام لخطة الادخار الطوعي يجب أن يكون الموظف من الدرجة G3 أو أعلى وقد أتمَّ فترة الاختبار. يُساهم الموظف بنسبة تتراوح بين 2% و10% من راتبه الأساسي شهريًا قبل خصم الضريبة. تقابل الشركة هذه المساهمة بنسبة تصل إلى 4% من الراتب الأساسي. تُستحَق مساهمة الشركة بنسبة 25% بعد سنة، 50% بعد سنتين، 75% بعد ثلاث سنوات، و100% بعد أربع سنوات.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C17_EG",
+    "concept_id": "C17",
+    "language": "egyptian",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "savings_plan_eligibility",
+    "question": "إيه كل الشروط المطلوبة للانضمام لخطة الادخار الطوعي؟",
+    "reference_answer": "عشان تنضم لخطة الادخار الطوعي لازم يكون الموظف من درجة G3 أو أعلى وخلّص فترة الاختبار. الموظف يقدر يساهم بنسبة من 2% لحد 10% من راتبه الأساسي كل شهر قبل الضريبة. الشركة بتطابق المساهمة لحد 4% من الراتب الأساسي. مساهمة الشركة بتستحق 25% بعد سنة، 50% بعد سنتين، 75% بعد 3 سنين، و100% بعد 4 سنين.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C17_FR",
+    "concept_id": "C17",
+    "language": "franco",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "savings_plan_eligibility",
+    "question": "eih kol el shorut el matluba lel indemam le khtet el eddekhar el taw3i?",
+    "reference_answer": "3ashan tentamem le khtet el eddekhar el taw3i lazem el muwazaf yekun men grade G3 aw a3la w 5alas fatret el ekhtebar. El muwazaf ye2dar yesahem be nisbah men 2% le7ad 10% men ratebo el asasy kol shahr 2abel el darayeb. El sharka btet2abel el mosa7ma le7ad 4% men el rateb el asasy. Mosa7met el sharka btetesta7e2 25% ba3d sana, 50% ba3d santeen, 75% ba3d 3 sneen, w 100% ba3d 4 sneen.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C18_EN",
+    "concept_id": "C18",
+    "language": "english",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "mandatory_training_modules",
+    "question": "What are all the mandatory annual compliance training modules and their deadlines?",
+    "reference_answer": "All employees must complete: Information Security Awareness (1 hr online, deadline 31 March); Data Protection & GDPR Principles (1.5 hrs online, deadline 31 March); Anti-Bribery & Corruption (1 hr online, deadline 30 June); Workplace Harassment Prevention (1 hr online, deadline 30 June); Fire Safety & Emergency Procedures (2 hrs in-person, deadline 30 September); AI Ethics & Acceptable Use (45 min online, deadline 31 March). Additionally, G3 and above must complete Manager Essentials (3 hrs online, deadline 31 March).",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C18_AR",
+    "concept_id": "C18",
+    "language": "arabic",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "mandatory_training_modules",
+    "question": "ما جميع وحدات الامتثال التدريبية السنوية الإلزامية ومواعيد إتمامها؟",
+    "reference_answer": "يجب على جميع الموظفين إتمام: الوعي بأمن المعلومات (ساعة أونلاين، 31 مارس)؛ حماية البيانات ومبادئ GDPR (ساعة ونصف أونلاين، 31 مارس)؛ مكافحة الرشوة والفساد (ساعة أونلاين، 30 يونيو)؛ منع التحرش في مكان العمل (ساعة أونلاين، 30 يونيو)؛ السلامة من الحرائق وإجراءات الطوارئ (ساعتان حضوري، 30 سبتمبر)؛ أخلاقيات الذكاء الاصطناعي والاستخدام المقبول (45 دقيقة أونلاين، 31 مارس). ويجب على الدرجة G3 فأعلى إكمال أساسيات الإدارة (3 ساعات أونلاين، 31 مارس).",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C18_EG",
+    "concept_id": "C18",
+    "language": "egyptian",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "mandatory_training_modules",
+    "question": "إيه كل وحدات الامتثال التدريبية الإلزامية السنوية ومواعيدها؟",
+    "reference_answer": "كل الموظفين لازم يخلصوا: الوعي بأمن المعلومات (ساعة أونلاين، 31 مارس)؛ حماية البيانات ومبادئ GDPR (ساعة ونص أونلاين، 31 مارس)؛ مكافحة الرشوة والفساد (ساعة أونلاين، 30 يونيو)؛ منع التحرش (ساعة أونلاين، 30 يونيو)؛ السلامة من الحرائق وإجراءات الطوارئ (ساعتين حضوري، 30 سبتمبر)؛ أخلاقيات الذكاء الاصطناعي (45 دقيقة أونلاين، 31 مارس). والدرجة G3 فأعلى لازم يخلصوا كمان أساسيات الإدارة (3 ساعات أونلاين، 31 مارس).",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C18_FR",
+    "concept_id": "C18",
+    "language": "franco",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "mandatory_training_modules",
+    "question": "eih kol wa7dat el imtithal el tadribeyya el elzameyya el sanaweyya w mawa3eedha?",
+    "reference_answer": "Kol el muwazafin lazem yekhalasu: wa3y amn el ma3lomat (sa3a online, 31 Mares); 7imayyet el bayanat w GDPR (sa3a w nos online, 31 Mares); mokafahet el reshwa wel fasad (sa3a online, 30 Yunyu); men3 el taharrush (sa3a online, 30 Yunyu); salamet el 7ara2e2 (sa3ateen 7aduri, 30 Sebtamber); akhlaqiyyat el AI (45 de2i2a online, 31 Mares). Wel grade G3 fa2 lazem yekhalasu kaman asasiyyat el edara (3 sa3at online, 31 Mares).",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C19_EN",
+    "concept_id": "C19",
+    "language": "english",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      9
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "gross_misconduct",
+    "question": "What offences constitute gross misconduct and lead to immediate termination?",
+    "reference_answer": "The following offences result in immediate termination without prior notice or severance: (1) theft, fraud, or deliberate falsification of company records; (2) physical assault or serious threats of violence in the workplace; (3) disclosure of confidential or sensitive information to unauthorised parties; (4) reporting to work under the influence of alcohol or controlled substances; (5) serious breaches of health, safety, or data protection regulations.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C19_AR",
+    "concept_id": "C19",
+    "language": "arabic",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      9
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "gross_misconduct",
+    "question": "ما المخالفات الجسيمة التي تستوجب الفصل الفوري؟",
+    "reference_answer": "تستوجب الحالات التالية إنهاء الخدمة فوراً دون إشعار مسبق أو مكافأة: (1) السرقة أو الاحتيال أو تزوير مستندات الشركة؛ (2) الاعتداء الجسدي أو التهديد الجسيم داخل بيئة العمل؛ (3) إفشاء معلومات سرية لأطراف غير مصرح لها؛ (4) الحضور للعمل تحت تأثير الكحول أو المواد المخدرة؛ (5) الانتهاكات الجسيمة لأنظمة الصحة والسلامة أو حماية البيانات.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C19_EG",
+    "concept_id": "C19",
+    "language": "egyptian",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      9
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "gross_misconduct",
+    "question": "إيه المخالفات الجسيمة اللي بتوصل للفصل الفوري؟",
+    "reference_answer": "الحالات دي بتوصل للفصل الفوري من غير إشعار أو مكافأة: (1) السرقة أو الاحتيال أو تزوير مستندات الشركة؛ (2) الاعتداء الجسدي أو التهديد داخل بيئة الشغل؛ (3) إفشاء معلومات سرية لأطراف مش مصرحلهم؛ (4) الحضور للشغل تحت تأثير كحول أو مخدرات؛ (5) انتهاكات جسيمة لأنظمة الصحة والسلامة أو حماية البيانات.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C19_FR",
+    "concept_id": "C19",
+    "language": "franco",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      9
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "gross_misconduct",
+    "question": "eih el mokhalafat el gasima ely btwassal lel fasl el fawri?",
+    "reference_answer": "El 7alat diy btwassal lel fasl el fawri men gher esh3ar aw moka2fa: (1) el sar2a aw el e7tiyyal aw tazweer mostanadaat el sharka; (2) el e3teda2 el gasedi aw el tahdeed gowwa el shoghl; (3) efsha2 ma3lumat serreyya le atraf mesh masre7lohom; (4) el 7udur lel shoghl ta7t ta2theer kohol aw mokhadarat; (5) entehaakat gasema le enzmet el se77a wel salama aw 7imayyet el bayanat.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C20_EN",
+    "concept_id": "C20",
+    "language": "english",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      12
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "data_retention",
+    "question": "What are the data retention periods for different types of employee records?",
+    "reference_answer": "Active employee files are retained for the duration of service plus 7 years. Payroll and financial data are retained for 10 years. Performance and disciplinary records are kept for 5 years from the termination date. Unsuccessful applicant data is kept for 6 months only. Internal email correspondence is retained for 3 years.",
+    "ground_truth_doc": "ar_policy.pdf"
+  },
+  {
+    "id": "C20_AR",
+    "concept_id": "C20",
+    "language": "arabic",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      12
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "data_retention",
+    "question": "ما هي فترات الاحتفاظ بالبيانات لأنواع مختلفة من سجلات الموظفين؟",
+    "reference_answer": "ملفات الموظفين النشطين: طوال فترة الخدمة + 7 سنوات. بيانات الرواتب والمالية: 10 سنوات. سجلات الأداء والتأديب: 5 سنوات من تاريخ الإنهاء. بيانات المتقدمين غير المقبولين: 6 أشهر فقط. المراسلات الإلكترونية الداخلية: 3 سنوات.",
+    "ground_truth_doc": "ar_policy.pdf"
+  },
+  {
+    "id": "C20_EG",
+    "concept_id": "C20",
+    "language": "egyptian",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      12
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "data_retention",
+    "question": "فترات الاحتفاظ بالبيانات لأنواع السجلات المختلفة إيه؟",
+    "reference_answer": "ملفات الموظفين النشطين: طول فترة الخدمة + 7 سنين. بيانات الرواتب والمالية: 10 سنين. سجلات الأداء والتأديب: 5 سنين من تاريخ الإنهاء. بيانات المتقدمين اللي اترفضوا: 6 شهور بس. المراسلات الإلكترونية الداخلية: 3 سنين.",
+    "ground_truth_doc": "ar_policy.pdf"
+  },
+  {
+    "id": "C20_FR",
+    "concept_id": "C20",
+    "language": "franco",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      12
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "data_retention",
+    "question": "fatrat el ehtefaz bel bayanat le anwa3 el sagalat el mokhtalefa eih?",
+    "reference_answer": "Maladdat el muwazafin el nash2een: tool fatret el khidma + 7 sneen. Bayanat el mwaahed wel maliyya: 10 sneen. Sagalat el ada2 wel ta2deeb: 5 sneen men tarikh el inha2. Bayanat el motaqaddimen ely etrafadu: 6 shohour bas. El morasalat el elektroneya el dakheleya: 3 sneen.",
+    "ground_truth_doc": "ar_policy.pdf"
+  },
+  {
+    "id": "C21_EN",
+    "concept_id": "C21",
+    "language": "english",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "reimbursable_expenses",
+    "question": "What expense types are reimbursable and what are their limits?",
+    "reference_answer": "The following professional expenses are reimbursable: individual work meals up to 150 EGP per meal (tax invoice required); client business meetings up to 500 EGP per meeting (invoice + client name required); internal city transport up to 200 EGP per day (receipt or Uber screenshot); remote work internet up to 800 EGP per month (service bill); office supplies up to 300 EGP per month (original invoice). All claims must be submitted within 30 days.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C21_AR",
+    "concept_id": "C21",
+    "language": "arabic",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "reimbursable_expenses",
+    "question": "ما أنواع النفقات القابلة للتسوية وما حدودها القصوى؟",
+    "reference_answer": "النفقات المهنية القابلة للتسوية وحدودها: وجبات العمل الفردية حتى 150 جنيهاً للوجبة (فاتورة ضريبية مطلوبة)؛ اجتماعات العمل مع عملاء حتى 500 جنيه للاجتماع (فاتورة + اسم العميل)؛ مواصلات داخل المدينة حتى 200 جنيه يومياً (إيصال أو صورة أوبر)؛ خدمة إنترنت للعمل عن بعد حتى 800 جنيه شهرياً (فاتورة الخدمة)؛ مستلزمات مكتبية حتى 300 جنيه شهرياً (فاتورة أصلية). جميع المطالبات خلال 30 يوماً.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C21_EG",
+    "concept_id": "C21",
+    "language": "egyptian",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "reimbursable_expenses",
+    "question": "إيه أنواع المصروفات اللي بتترد وما هي حدودها؟",
+    "reference_answer": "المصروفات القابلة للتسوية وحدودها: وجبات الشغل الفردية لحد 150 جنيه للوجبة (فاتورة ضريبية)؛ اجتماعات العمل مع عملاء لحد 500 جنيه للاجتماع (فاتورة + اسم العميل)؛ مواصلات جوّه المدينة لحد 200 جنيه في اليوم (إيصال أو صورة أوبر)؛ إنترنت للشغل عن بعد لحد 800 جنيه في الشهر (فاتورة الخدمة)؛ مستلزمات مكتبية لحد 300 جنيه في الشهر (فاتورة أصلية). كل المطالبات خلال 30 يوم.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C21_FR",
+    "concept_id": "C21",
+    "language": "franco",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "reimbursable_expenses",
+    "question": "eih anwa3 el masroufat ely btetrod w eih 7ododha?",
+    "reference_answer": "El masroufat el qabelah lel tasweya w 7ododha: wagabat el shoghl el fardeyya le7ad 150 gneih lel wagba (fatoura dareybeya); egtema3at el 3amal ma3 3umala le7ad 500 gneih lel egtema3 (fatoura + esm el 3ameel); muwasalat gowwa el medina le7ad 200 gneih fes yom (isal aw soura uber); internet lel shoghl 3an bo3d le7ad 800 gneih fes shahr (fatoura el khidma); mostlzamat maktabeyya le7ad 300 gneih fes shahr (fatoura asleyya). Kol el motalabat khilal 30 yom.",
+    "ground_truth_doc": "ar_payroll_finance.pdf"
+  },
+  {
+    "id": "C22_EN",
+    "concept_id": "C22",
+    "language": "english",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "journalist_contact",
+    "question": "A journalist contacted me directly for a comment about the company. What should I do?",
+    "reference_answer": "You must not respond to the journalist. You should immediately forward the enquiry to the Communications team at communications@horizontech.com. All media enquiries — including interview requests, comments, or statements — must be directed to the Communications team only.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C22_AR",
+    "concept_id": "C22",
+    "language": "arabic",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "journalist_contact",
+    "question": "تواصل معي صحفي مباشرة يطلب تعليقاً عن الشركة. ماذا يجب أن أفعل؟",
+    "reference_answer": "يجب ألا تردَّ على الصحفي. يجب إحالة الاستفسار فورًا إلى فريق الاتصالات على communications@horizontech.com. جميع الاستفسارات الإعلامية — بما فيها طلبات المقابلات والتعليقات والبيانات — يجب توجيهها إلى فريق الاتصالات حصراً.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C22_EG",
+    "concept_id": "C22",
+    "language": "egyptian",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "journalist_contact",
+    "question": "صحفي تواصل معايا مباشرة يطلب تعليق عن الشركة. أعمل إيه؟",
+    "reference_answer": "متردش على الصحفي خالص. لازم تحول الاستفسار فورًا لفريق الاتصالات على communications@horizontech.com. كل الاستفسارات الإعلامية لازم توجه لفريق الاتصالات بس.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C22_FR",
+    "concept_id": "C22",
+    "language": "franco",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "journalist_contact",
+    "question": "sa7afi ta3asal ma3aya 3ala tool 3ashan yetlob ta3li2 3an el sharka. a3mel eih?",
+    "reference_answer": "Matredsh 3al sa7afi khales. Lazem te7awwel el estifsar fel 7al le faree2 el ettesalat 3ala communications@horizontech.com. Kol el estifsar el e3lami lazem tetwagah le faree2 el ettesalat bas.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C23_EN",
+    "concept_id": "C23",
+    "language": "english",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "phased_return_parental",
+    "question": "I am returning from paternity leave. Can I work reduced hours at full pay?",
+    "reference_answer": "Yes. Employees returning from maternity or paternity leave may request a phased return-to-work arrangement for up to 8 weeks. During this period, you may work reduced hours (minimum 60% of standard hours) at full pay. The phased return plan must be agreed with your line manager and HR at least 2 weeks before your scheduled return date.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C23_AR",
+    "concept_id": "C23",
+    "language": "arabic",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "phased_return_parental",
+    "question": "أعود من إجازة أبوة. هل يمكنني العمل بساعات مخفَّضة براتب كامل؟",
+    "reference_answer": "نعم. يحق للموظفين العائدين من إجازة الأمومة أو الأبوة طلب نظام عودة تدريجية لمدة تصل إلى 8 أسابيع. خلال هذه الفترة يمكنك العمل بساعات مخفضة (بحد أدنى 60% من ساعات العمل المعيارية) براتب كامل. يجب الاتفاق على خطة العودة التدريجية مع مديرك المباشر وإدارة الموارد البشرية قبل أسبوعين على الأقل من موعد العودة المقرر.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C23_EG",
+    "concept_id": "C23",
+    "language": "egyptian",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "phased_return_parental",
+    "question": "أنا راجع من إجازة أبوة. أقدر أشتغل بساعات أقل براتب كامل؟",
+    "reference_answer": "أيوه. الموظفين الراجعين من إجازة أمومة أو أبوة يقدروا يطلبوا نظام عودة تدريجية لمدة لحد 8 أسابيع. في الفترة دي تقدر تشتغل بساعات أقل (بحد أدنى 60% من الساعات العادية) براتب كامل. لازم تتفق على خطة العودة مع مديرك المباشر والموارد البشرية على الأقل أسبوعين قبل موعد الرجوع.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C23_FR",
+    "concept_id": "C23",
+    "language": "franco",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "phased_return_parental",
+    "question": "ana rager3 men agaza abawa. a2dar ashtaghal besa3at a2al be rateb kamil?",
+    "reference_answer": "Aywa. El muwazafin el rag3een men agaza omuma aw abawa ye2daru yetlabu nezam 3awda tadrageya le modet le7ad 8 asabi3. Fe el fatrah di te2dar teshtaghal besa3at a2al (bel 7ad el adna 60% men el sa3at el 3adeya) be rateb kamil. Lazem tettafe2 3ala khettet el 3awda ma3 muderak el mubashir wel HR 2ala el a2al osboo3ain 2abel maw3id el rogo3.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C24_EN",
+    "concept_id": "C24",
+    "language": "english",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "side_project_ip",
+    "question": "I have a pre-existing tech side project that may overlap with Horizon Tech's business. What must I do?",
+    "reference_answer": "You must disclose the pre-existing intellectual property or side project in writing to the Legal & Compliance team before continuing or commencing such activities. Approval is assessed on a case-by-case basis to identify and avoid any conflicts of interest. Failure to disclose is a breach of your employment obligations.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C24_AR",
+    "concept_id": "C24",
+    "language": "arabic",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "side_project_ip",
+    "question": "لديّ مشروع جانبي تقني سابق قد يتداخل مع أعمال أفق التقنية. ماذا يجب أن أفعل؟",
+    "reference_answer": "يجب الإفصاح عن الملكية الفكرية الموجودة مسبقاً أو المشروع الجانبي كتابياً لقسم القانون والامتثال قبل الاستمرار في هذه الأنشطة أو البدء بها. تُقيَّم الموافقة على أساس كل حالة على حدة لتحديد أي تعارض محتمل في المصالح وتفاديه. عدم الإفصاح يُعدُّ انتهاكاً لالتزامات عقد العمل.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C24_EG",
+    "concept_id": "C24",
+    "language": "egyptian",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "side_project_ip",
+    "question": "عندي مشروع جانبي تقني قديم ممكن يتداخل مع أعمال أفق التقنية. أعمل إيه؟",
+    "reference_answer": "لازم تفصح عن الملكية الفكرية أو المشروع الجانبي كتابياً لقسم القانون والامتثال قبل ما تكمل فيه أو تبدأه. الموافقة بتتقيم على أساس كل حالة على حدة عشان يتحدد أي تعارض محتمل ويتم تفاديه. عدم الإفصاح يُعتبر انتهاك لالتزامات عقد الشغل.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C24_FR",
+    "concept_id": "C24",
+    "language": "franco",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "side_project_ip",
+    "question": "3andy mashro3 ganeby teknoloji 2adeem momken yetadakhel ma3 a3mal Horizon Tech. a3mel eih?",
+    "reference_answer": "Lazem tefse7 3an el melkeyya el fekri aw el mashro3 el ganeby ketabeyyan le qism el qanun wel imtithal 2abel ma tekmel fih aw tebda2. El muwafaqah btet2ayam 3ala asas kol 7ala 3ala 7idda 3ashan yet7aded ay ta3arod mo7tamal we yetm tafadyoh. 3adam el efsa7 yo3tabar entehaak le eltezamat 3a2d el shoghl.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C25_EN",
+    "concept_id": "C25",
+    "language": "english",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "I just had a baby. When can I enrol in an additional health insurance add-on, and what is the deadline?",
+    "reference_answer": "You may enrol in optional supplemental health insurance add-ons within 30 days of a qualifying life event, such as the birth of a child. Outside this window, enrolment is only possible during the annual open enrolment period (October 1–15). Missing the 30-day window means waiting until the next open enrolment.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C25_AR",
+    "concept_id": "C25",
+    "language": "arabic",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "رُزقت بطفل مؤخراً. متى يمكنني الاشتراك في ملحق تأمين صحي إضافي وما هو الموعد النهائي؟",
+    "reference_answer": "يمكنك الاشتراك في ملحقات التأمين الصحي الاختيارية خلال 30 يوماً من وقوع حدث مؤهِّل في حياتك كميلاد طفل. خارج هذه النافذة، لا يُتاح الاشتراك إلا خلال فترة التسجيل المفتوحة السنوية (1-15 أكتوبر). فوات الـ 30 يوماً يعني الانتظار حتى التسجيل المفتوح التالي.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C25_EG",
+    "concept_id": "C25",
+    "language": "egyptian",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "عندي مولود جديد. إمتى أقدر أشترك في ملحق تأمين صحي إضافي وإيه آخر موعد؟",
+    "reference_answer": "تقدر تشترك في ملحقات التأمين الصحي الاختيارية خلال 30 يوم من حدث مؤهِّل زي ميلاد طفل. برّا المدة دي، الاشتراك بيبقى متاح بس في فترة التسجيل المفتوح السنوي (1-15 أكتوبر). لو فاتت الـ 30 يوم، هتستنى لحد التسجيل المفتوح الجاي.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C25_FR",
+    "concept_id": "C25",
+    "language": "franco",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "insurance_addon_qualifying_event",
+    "question": "3andy mawlood gedeed. emta a2dar ashtarak fe mol7a2 ta2min se77i idafi w eih akher maw3id?",
+    "reference_answer": "Te2dar teshterak fe mol7a2at el ta2min el se77i el ekhtiyareyya khilal 30 yom men 7adath mo2ahhal zay meelad tfl. Barra el mohlah diy, el ishtrak biyeb2a mota7 bas fe fatret el tasgeel el maftu7 el sanawi (1-15 Uktober). Law fatit el 30 yom, hate stanna le7ad el tasgeel el maftu7 el gay.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C26_EN",
+    "concept_id": "C26",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "on_call_allowance",
+    "question": "What is the on-call allowance and who receives it?",
+    "reference_answer": "The on-call allowance is 200 EGP per day. It applies to IT and Engineering employees only, and only when on-call duty is formally assigned.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C26_AR",
+    "concept_id": "C26",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "on_call_allowance",
+    "question": "ما قيمة بدل الاستعداد ومن يستحقه؟",
+    "reference_answer": "بدل الاستعداد 200 جنيه في اليوم، ويُمنح لموظفي IT والهندسة فقط عند تفعيل دوام الاستعداد رسمياً.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C26_EG",
+    "concept_id": "C26",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "on_call_allowance",
+    "question": "بدل الاستعداد بكام ولمين؟",
+    "reference_answer": "بدل الاستعداد 200 جنيه في اليوم، وبياخده موظفو IT والهندسة بس لما بيتفعّل دوام الاستعداد رسمياً.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C26_FR",
+    "concept_id": "C26",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "on_call_allowance",
+    "question": "badl el este3dad ad eih w meen bya5odo?",
+    "reference_answer": "Badl el este3dad 200 gneih fes yom, w bya5odo muwazafin IT wel handasa bas lamma byetfa3el dawam el este3dad rasmeyyan.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C27_EN",
+    "concept_id": "C27",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "part_time_notice",
+    "question": "What is the notice period for a part-time employee?",
+    "reference_answer": "The notice period for a part-time employee is 14 days.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C27_AR",
+    "concept_id": "C27",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "part_time_notice",
+    "question": "ما هي مدة إشعار إنهاء العقد لموظف بدوام جزئي؟",
+    "reference_answer": "مدة الإشعار لموظف الدوام الجزئي هي 14 يوماً.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C27_EG",
+    "concept_id": "C27",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "part_time_notice",
+    "question": "إشعار إنهاء العقد للموظف بارت تايم قد إيه؟",
+    "reference_answer": "إشعار إنهاء العقد للموظف بدوام جزئي 14 يوم.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C27_FR",
+    "concept_id": "C27",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "part_time_notice",
+    "question": "esh3ar enha2 el 3a2d lel muwazaf part-time ad eih?",
+    "reference_answer": "Esh3ar enha2 el 3a2d lel muwazaf bel dawam el goz2i 14 yom.",
+    "ground_truth_doc": "eng_policy.pdf"
+  },
+  {
+    "id": "C28_EN",
+    "concept_id": "C28",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "g4_training_budget",
+    "question": "What is the annual learning budget and paid training days for a G4 Manager?",
+    "reference_answer": "A G4 Manager receives an annual learning budget of $10,000 USD and 12 paid training days per year, plus a platform subscription.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C28_AR",
+    "concept_id": "C28",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "g4_training_budget",
+    "question": "ما هي ميزانية التعلم السنوية وأيام التدريب المدفوعة لموظف الدرجة G4؟",
+    "reference_answer": "يحصل موظف الدرجة G4 على ميزانية تعلم سنوية قدرها 10,000 دولار و12 يوم تدريب مدفوع سنوياً واشتراك في المنصة.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C28_EG",
+    "concept_id": "C28",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "g4_training_budget",
+    "question": "ميزانية التعلم وأيام التدريب المدفوعة لموظف G4 قد إيه؟",
+    "reference_answer": "موظف G4 بياخد ميزانية تعلم 10,000 دولار سنوياً و12 يوم تدريب مدفوع في السنة واشتراك في المنصة.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C28_FR",
+    "concept_id": "C28",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "g4_training_budget",
+    "question": "eih mizaneyyet el ta3allom w ayyam el tadreeb el madf3a le muwazaf G4?",
+    "reference_answer": "Muwazaf G4 bya5od mizaneyya ta3allom 10,000 dolar sanaweyyan w 12 yom tadreeb madf3a fes sana w ishtrak fel manassa.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C29_EN",
+    "concept_id": "C29",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "leadership_academy_nominations",
+    "question": "When do Leadership Academy nominations open and how large is the cohort?",
+    "reference_answer": "Leadership Academy nominations open annually in October. The cohort is capped at 20 participants per year.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C29_AR",
+    "concept_id": "C29",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "leadership_academy_nominations",
+    "question": "متى يفتح باب الترشيح لبرنامج أكاديمية القيادة وما حجم الدفعة؟",
+    "reference_answer": "يفتح باب الترشيح سنوياً في أكتوبر، والعدد مقصور على 20 مشاركاً في السنة.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C29_EG",
+    "concept_id": "C29",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "leadership_academy_nominations",
+    "question": "الترشيح لبرنامج Leadership Academy بيفتح إمتى وكام شخص في الدفعة؟",
+    "reference_answer": "الترشيح بيفتح في أكتوبر كل سنة، والعدد محدود بـ 20 مشارك في السنة.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C29_FR",
+    "concept_id": "C29",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "leadership_academy_nominations",
+    "question": "el tarshee7 le Leadership Academy biyefta7 emta w el dof3a feeha kam?",
+    "reference_answer": "El tarshee7 biyefta7 fi Uktober kol sana, wel 3adad ma7dood be 20 mosharak fes sana.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C30_EN",
+    "concept_id": "C30",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "eap_sessions",
+    "question": "How many EAP counselling sessions are available per year?",
+    "reference_answer": "The EAP provides up to 8 short-term counselling sessions per year, free of charge and completely confidential.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C30_AR",
+    "concept_id": "C30",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "eap_sessions",
+    "question": "كم عدد جلسات الإرشاد النفسي المتاحة سنوياً عبر برنامج دعم الموظفين؟",
+    "reference_answer": "يوفر برنامج دعم الموظفين ما يصل إلى 8 جلسات إرشاد نفسي قصير المدى سنوياً، مجاناً وبسرية تامة.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C30_EG",
+    "concept_id": "C30",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "eap_sessions",
+    "question": "جلسات الإرشاد النفسي في برنامج EAP كام جلسة في السنة؟",
+    "reference_answer": "برنامج EAP بيوفر لحد 8 جلسات إرشاد نفسي قصير المدى في السنة، مجاناً وبسرية تامة.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C30_FR",
+    "concept_id": "C30",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "eap_sessions",
+    "question": "gelsat el ershad el nafsi fe barnameg EAP kam gelsa fes sana?",
+    "reference_answer": "Barnameg EAP biyuwaffar le7ad 8 gelsat ershad nafsi 2aseer el amad fes sana, magan w be serreyya tamma.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C31_EN",
+    "concept_id": "C31",
+    "language": "english",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "onboarding_duration",
+    "question": "How long does the onboarding programme last, and how is it structured?",
+    "reference_answer": "The onboarding programme lasts 90 days and is split into three phases: institutional orientation (weeks 1–2), functional integration (weeks 3–8), and independent application (weeks 9–13).",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C31_AR",
+    "concept_id": "C31",
+    "language": "arabic",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "onboarding_duration",
+    "question": "ما مدة برنامج التأهيل وكيف هو منظم؟",
+    "reference_answer": "يستمر برنامج التأهيل 90 يوماً ويُقسَّم إلى ثلاث مراحل: التهيئة المؤسسية (الأسبوعان 1-2)، الاندماج الوظيفي (الأسابيع 3-8)، والتطبيق المستقل (الأسابيع 9-13).",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C31_EG",
+    "concept_id": "C31",
+    "language": "egyptian",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "onboarding_duration",
+    "question": "برنامج التأهيل بيستمر قد إيه وإيه هيكله؟",
+    "reference_answer": "برنامج التأهيل بيستمر 90 يوم ومقسم على 3 مراحل: التهيئة المؤسسية (الأسبوع 1-2)، الاندماج الوظيفي (الأسابيع 3-8)، والتطبيق المستقل (الأسابيع 9-13).",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C31_FR",
+    "concept_id": "C31",
+    "language": "franco",
+    "complexity": "L1",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "onboarding_duration",
+    "question": "barnameg el ta2heel biyestamr ad eih w eih hekalo?",
+    "reference_answer": "Barnameg el ta2heel biyestamr 90 yom w massom 3ala 3 marahl: el tahye2a el mo2assaseyya (el osboo3 1-2), el endmag el wazeefi (el asabi3 3-8), wel tatbee2 el mostaqel (el asabi3 9-13).",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C32_EN",
+    "concept_id": "C32",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "leadership_academy_eligibility",
+    "question": "What are the eligibility criteria for the Leadership Academy?",
+    "reference_answer": "Nominees must: be at grade G3 or above; have received a performance rating of 4 or 5 in their most recent review; have at least 2 years of tenure; and have no active disciplinary warnings.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C32_AR",
+    "concept_id": "C32",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "leadership_academy_eligibility",
+    "question": "ما شروط الأهلية للانضمام إلى أكاديمية القيادة؟",
+    "reference_answer": "يجب أن يكون المرشح من الدرجة G3 أو أعلى، وحصل على تقييم أداء 4 أو 5 في آخر دورة تقييم، وأمضى سنتين على الأقل في الخدمة، وليس لديه أي تحذيرات تأديبية نشطة.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C32_EG",
+    "concept_id": "C32",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "leadership_academy_eligibility",
+    "question": "إيه شروط الأهلية للانضمام لـ Leadership Academy؟",
+    "reference_answer": "المرشح لازم يكون من درجة G3 فأعلى، وأخد تقييم 4 أو 5 في آخر مراجعة، وعنده سنتين خدمة على الأقل، ومفيش تحذيرات تأديبية نشطة.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C32_FR",
+    "concept_id": "C32",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "leadership_academy_eligibility",
+    "question": "eih shorut el ahliyya lel indemam le Leadership Academy?",
+    "reference_answer": "El morasha7 lazem yekun men grade G3 fa2, wa5ad taqyeem 4 aw 5 fe akhar moraga3a, 3ando santeen khidma 3ala el a2al, w mafesh ta7zirat ta2deebeyya nasha2a.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C33_EN",
+    "concept_id": "C33",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "learning_budget_rollover",
+    "question": "What happens to unused learning budget at year end?",
+    "reference_answer": "Learning budgets reset on January 1 each year and do not carry over to the next year. Unused amounts cannot be claimed as cash.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C33_AR",
+    "concept_id": "C33",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "learning_budget_rollover",
+    "question": "ماذا يحدث لميزانية التعلم غير المستخدمة في نهاية العام؟",
+    "reference_answer": "تُعاد ميزانيات التعلم في الأول من يناير من كل عام ولا تُرحَّل للعام التالي. لا يمكن صرف المبالغ غير المستخدمة نقداً.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C33_EG",
+    "concept_id": "C33",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "learning_budget_rollover",
+    "question": "ميزانية التعلم اللي مبتتصرفش في آخر السنة بتحصلها إيه؟",
+    "reference_answer": "ميزانية التعلم بتتجدد في أول يناير كل سنة ومش بتترحل للسنة الجاية. المبالغ اللي مبتتصرفش مش ممكن تتاخد نقداً.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C33_FR",
+    "concept_id": "C33",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "learning_budget_rollover",
+    "question": "mizaneyyet el ta3allom ely mesh betetsref fe akher el sana byt7aselha eih?",
+    "reference_answer": "Mizaneyyet el ta3allom btetgadded fe awel yanayer kol sana w msh betrta7al les sana el gaiya. El mabalegh ely mesh betetsref msh momken teta5ed nakdan.",
+    "ground_truth_doc": "eng_training_development.pdf"
+  },
+  {
+    "id": "C34_EN",
+    "concept_id": "C34",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "medcare_emergency_notification",
+    "question": "What must an employee do if they are admitted to hospital in an emergency?",
+    "reference_answer": "Emergency admissions do not require pre-approval, but the employee must notify MedCare Egypt within 48 hours of admission. Failure to notify may result in reduced reimbursement.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C34_AR",
+    "concept_id": "C34",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "medcare_emergency_notification",
+    "question": "ما الذي يجب على الموظف فعله في حال دخوله المستشفى بشكل طارئ؟",
+    "reference_answer": "لا يُشترط الحصول على موافقة مسبقة للحالات الطارئة، لكن يجب إبلاغ MedCare Egypt خلال 48 ساعة من الدخول. التأخر في الإبلاغ قد يؤدي إلى تخفيض قيمة التعويض.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C34_EG",
+    "concept_id": "C34",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "medcare_emergency_notification",
+    "question": "لو الموظف دخل المستشفى على طول في حالة طارئة، لازم يعمل إيه؟",
+    "reference_answer": "حالات الطوارئ مش محتاجة موافقة مسبقة، بس لازم يبلغ MedCare Egypt خلال 48 ساعة من الدخول. التأخر في الإبلاغ ممكن يقلل قيمة التعويض.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C34_FR",
+    "concept_id": "C34",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "medcare_emergency_notification",
+    "question": "lw el muwazaf dakhal el mostashfa 3ala tool fe 7alet tare2a, lazem ya3mel eih?",
+    "reference_answer": "7alat el taware2 msh me7taga muwafaqa mosbaqqa, bas lazem yeballa3 MedCare Egypt khilal 48 sa3a men el dokho l. El ta5eer fel iblagho momken ye2alel 2emet el ta3weed.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C35_EN",
+    "concept_id": "C35",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "childcare_subsidy",
+    "question": "What is the childcare subsidy and who qualifies?",
+    "reference_answer": "Working parents with children under the age of six are eligible for a monthly childcare subsidy of 500 EGP per child, for a maximum of two children. The subsidy is paid through payroll.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C35_AR",
+    "concept_id": "C35",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "childcare_subsidy",
+    "question": "ما قيمة دعم الحضانة ومن يستحقه؟",
+    "reference_answer": "يستحق الموظفون من الآباء العاملين الذين لديهم أطفال دون سن السادسة دعماً شهرياً بقيمة 500 جنيه لكل طفل، بحد أقصى طفلين. يُدفع الدعم عبر كشف الراتب.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C35_EG",
+    "concept_id": "C35",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "childcare_subsidy",
+    "question": "دعم الحضانة بكام ولمين؟",
+    "reference_answer": "الموظفين اللي عندهم أطفال أقل من 6 سنين بياخدوا دعم حضانة 500 جنيه في الشهر لكل طفل، بحد أقصى طفلين. بيتدفع من الراتب مباشرة.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C35_FR",
+    "concept_id": "C35",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      5
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "childcare_subsidy",
+    "question": "da3m el 7adana ad eih w meen yesta7elo?",
+    "reference_answer": "El muwazafin ely 3andohom atfal a2al men 6 sneen bya5du da3m 7adana 500 gneih fes shahr le kol tefl, be7ad a2sa tiflen. Betitdfa3 men el rateb mubasharan.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C36_EN",
+    "concept_id": "C36",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "social_media_posting",
+    "question": "Who is authorised to post on Horizon Tech's official social media accounts?",
+    "reference_answer": "Only authorised members of the Marketing and Communications team may post on Horizon Tech's official social media accounts.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C36_AR",
+    "concept_id": "C36",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "social_media_posting",
+    "question": "من المخوَّل بالنشر على حسابات أفق التقنية الرسمية في وسائل التواصل الاجتماعي؟",
+    "reference_answer": "الأعضاء المعتمدون من فريق التسويق والاتصالات فقط هم من يحق لهم النشر على الحسابات الرسمية للشركة.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C36_EG",
+    "concept_id": "C36",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "social_media_posting",
+    "question": "مين اللي مسموحله ينشر على الحسابات الرسمية لأفق التقنية على السوشيال ميديا؟",
+    "reference_answer": "الأعضاء المعتمدين من فريق التسويق والاتصالات بس هم اللي ليهم حق النشر على الحسابات الرسمية للشركة.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C36_FR",
+    "concept_id": "C36",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      3
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "social_media_posting",
+    "question": "meen el masmo7lo yenshor 3ala el 7esabat el rasmeyya le Horizon Tech 3ala el social media?",
+    "reference_answer": "El a3da2 el mo3tamadeen men faree2 el tasweek wel ettesalat bas hom ely leyhom 7a2 el nashr 3ala el 7esabat el rasmeyya lel sharka.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C37_EN",
+    "concept_id": "C37",
+    "language": "english",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "interview_stages",
+    "question": "How many interview stages are there in the hiring process?",
+    "reference_answer": "There are five stages: (1) CV screening, (2) phone/video screen, (3) technical/psychometric test, (4) competency interview, (5) leadership interview — followed by a written offer.",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C37_AR",
+    "concept_id": "C37",
+    "language": "arabic",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "interview_stages",
+    "question": "كم عدد مراحل المقابلات في عملية التوظيف؟",
+    "reference_answer": "خمس مراحل: (1) فرز السيرة الذاتية، (2) مقابلة هاتفية أو مرئية، (3) اختبار فني أو نفسي، (4) مقابلة الكفاءات، (5) مقابلة القيادة — ثم يُصدَر عرض العمل الكتابي.",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C37_EG",
+    "concept_id": "C37",
+    "language": "egyptian",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "interview_stages",
+    "question": "عملية التوظيف فيها كام مرحلة مقابلة؟",
+    "reference_answer": "فيه 5 مراحل: (1) فرز السيرة الذاتية، (2) مقابلة تليفون أو فيديو، (3) اختبار فني أو نفسي، (4) مقابلة الكفاءات، (5) مقابلة القيادة — وبعدين بيتبعت عرض العمل الكتابي.",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C37_FR",
+    "concept_id": "C37",
+    "language": "franco",
+    "complexity": "L2",
+    "ground_truth_pages": [
+      2
+    ],
+    "ground_truth_lang": "AR",
+    "topic": "interview_stages",
+    "question": "3amalyet el tawzeef feeha kam mar7ala moqabela?",
+    "reference_answer": "Fe 5 marahl: (1) farz el CV, (2) moqabela telephone aw video, (3) ekhtebar fanni aw nafsi, (4) moqabelet el kafaaat, (5) moqabelet el qiyada — w ba3deen byet3atal 3ard el 3amal el ketabi.",
+    "ground_truth_doc": "ar_recruitment.pdf"
+  },
+  {
+    "id": "C38_EN",
+    "concept_id": "C38",
+    "language": "english",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "whistleblowing_channels",
+    "question": "What are all the channels for reporting misconduct, and which one is anonymous?",
+    "reference_answer": "Reports may be made through: (1) Direct Manager (in person or email, not anonymous); (2) HR Business Partner at hr@horizontech.com (not anonymous); (3) Legal & Compliance at compliance@horizontech.com (not anonymous); (4) Ethics Hotline via Horizon Portal 'Speak Up' (fully anonymous); (5) External Regulator (anonymity varies).",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C38_AR",
+    "concept_id": "C38",
+    "language": "arabic",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "whistleblowing_channels",
+    "question": "ما هي جميع قنوات الإبلاغ عن المخالفات وأيها مجهول الهوية؟",
+    "reference_answer": "يمكن الإبلاغ عبر: (1) المدير المباشر (حضورياً أو بالبريد، غير مجهول)؛ (2) HR Business Partner على hr@horizontech.com (غير مجهول)؛ (3) القانون والامتثال على compliance@horizontech.com (غير مجهول)؛ (4) خط أخلاقيات العمل عبر بوابة Horizon Portal في 'Speak Up' (مجهول تماماً)؛ (5) الجهة التنظيمية الخارجية (يتفاوت).",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C38_EG",
+    "concept_id": "C38",
+    "language": "egyptian",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "whistleblowing_channels",
+    "question": "إيه كل قنوات الإبلاغ عن المخالفات وأيها بيكون مجهول؟",
+    "reference_answer": "ممكن تبلغ عن طريق: (1) المدير المباشر (حضوري أو إيميل، مش مجهول)؛ (2) HR Business Partner على hr@horizontech.com (مش مجهول)؛ (3) القانون والامتثال على compliance@horizontech.com (مش مجهول)؛ (4) خط أخلاقيات العمل على Horizon Portal في 'Speak Up' (مجهول تماماً)؛ (5) الجهة التنظيمية الخارجية (بيتفاوت).",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C38_FR",
+    "concept_id": "C38",
+    "language": "franco",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "whistleblowing_channels",
+    "question": "eih kol 2anawat el iblagho 3an el mokhalafat w ayha biyekun magnool?",
+    "reference_answer": "Momken teblagho 3an tari2: (1) el modeer el mobashir (7odori aw email, msh magnool); (2) HR Business Partner 3ala hr@horizontech.com (msh magnool); (3) el qanun wel imtithal 3ala compliance@horizontech.com (msh magnool); (4) khat akhlaqiyyat el 3amal 3ala Horizon Portal fe 'Speak Up' (magnool tamaman); (5) el geha el tanzeemeyya el khargeya (biyetfawet).",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C39_EN",
+    "concept_id": "C39",
+    "language": "english",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "vesting_schedule",
+    "question": "What is the full company match vesting schedule for the voluntary savings plan?",
+    "reference_answer": "The company match vests as follows: 25% after 1 year of plan participation, 50% after 2 years, 75% after 3 years, and 100% after 4 years.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C39_AR",
+    "concept_id": "C39",
+    "language": "arabic",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "vesting_schedule",
+    "question": "ما هو جدول الاستحقاق الكامل لمساهمة الشركة في خطة الادخار الطوعي؟",
+    "reference_answer": "تُستحَق مساهمة الشركة على النحو التالي: 25% بعد سنة من المشاركة، 50% بعد سنتين، 75% بعد ثلاث سنوات، و100% بعد أربع سنوات.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C39_EG",
+    "concept_id": "C39",
+    "language": "egyptian",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "vesting_schedule",
+    "question": "جدول استحقاق مساهمة الشركة في خطة الادخار الطوعي إيه؟",
+    "reference_answer": "مساهمة الشركة بتستحق على الشكل ده: 25% بعد سنة من المشاركة، 50% بعد سنتين، 75% بعد 3 سنين، و100% بعد 4 سنين.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C39_FR",
+    "concept_id": "C39",
+    "language": "franco",
+    "complexity": "L3",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "vesting_schedule",
+    "question": "gad2wal este7qa2 mosa7met el sharka fe khtet el eddekhar el taw3i eih?",
+    "reference_answer": "Mosa7met el sharka btetesta7e2 3ala el shakl da: 25% ba3d sana men el mosharka, 50% ba3d santeen, 75% ba3d 3 sneen, w 100% ba3d 4 sneen.",
+    "ground_truth_doc": "eng_wellness_benefits.pdf"
+  },
+  {
+    "id": "C40_EN",
+    "concept_id": "C40",
+    "language": "english",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "anonymous_harassment_report",
+    "question": "My manager is the one harassing me. How can I report this anonymously?",
+    "reference_answer": "You can report anonymously through the Ethics Hotline, accessible via the Horizon Portal under 'Speak Up'. This channel is fully anonymous and all reports are treated with strict confidentiality. You may also contact any HR Business Partner or Legal & Compliance directly, though those channels are not anonymous.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C40_AR",
+    "concept_id": "C40",
+    "language": "arabic",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "anonymous_harassment_report",
+    "question": "مديري هو من يتحرش بي. كيف يمكنني الإبلاغ بشكل مجهول؟",
+    "reference_answer": "يمكنك الإبلاغ بشكل مجهول عبر خط أخلاقيات العمل المتاح على بوابة Horizon Portal تحت خانة 'Speak Up'. هذه القناة مجهولة الهوية تماماً وجميع البلاغات تُعامَل بسرية مطلقة. يمكنك أيضاً التواصل مع أي HR Business Partner أو قسم القانون والامتثال مباشرةً، لكن تلك القنوات غير مجهولة.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C40_EG",
+    "concept_id": "C40",
+    "language": "egyptian",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "anonymous_harassment_report",
+    "question": "مديري هو اللي بيتحرش بي. أقدر أبلغ إزاي بشكل مجهول؟",
+    "reference_answer": "تقدر تبلغ بشكل مجهول عن طريق خط أخلاقيات العمل على Horizon Portal تحت 'Speak Up'. الخط ده مجهول تماماً وكل البلاغات بتتعامل بسرية مطلقة. ممكن كمان تتواصل مع HR Business Partner أو قسم القانون والامتثال مباشرةً، بس دي مش مجهولة.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  },
+  {
+    "id": "C40_FR",
+    "concept_id": "C40",
+    "language": "franco",
+    "complexity": "L4",
+    "ground_truth_pages": [
+      4
+    ],
+    "ground_truth_lang": "EN",
+    "topic": "anonymous_harassment_report",
+    "question": "mudeeri howa ely biyetharrash biya. a2dar ablagho izzay be shakl magnool?",
+    "reference_answer": "Te2dar teblagho be shakl magnool 3an tari2 khat akhlaqiyyat el 3amal 3ala Horizon Portal ta7t 'Speak Up'. El khat da magnool tamaman w kol el balaghat betit3amel be serreyya motlaqa. Momken kaman tettawasal ma3 ay HR Business Partner aw 2esm el qanun wel imtithal mubasharan, bas dol msh magnooleen.",
+    "ground_truth_doc": "eng_workplace_conduct.pdf"
+  }
 ]

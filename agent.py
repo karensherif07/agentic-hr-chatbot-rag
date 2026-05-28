@@ -33,11 +33,11 @@ from personal_data import (
     get_performance_trend, get_okrs, get_latest_salary,
     get_payroll_history, get_training_record, get_active_disciplinary,
 )
-from retrieval import retrieve, rerank, rrf
+from retrieval import retrieve, rerank, rrf, rrf_weighted
 from nlp_utils import (
     egyptian_to_msa, get_semantic_dialect,
     normalize_arabic, normalize_english,
-    detect_language_type, franco_to_arabic,
+    detect_language_type, franco_to_arabic, tokenize,
 )
 from utils import (
     build_context, is_no_info_answer, validate,
@@ -80,10 +80,30 @@ Reply with JSON only: {"intent": "<policy|personal|hybrid|out_of_scope>"}"""
 
 
 # =============================================================================
-# STAGE 2 — DB Tool Planner prompt  (trimmed ~30% vs v1)
+# STAGE 2 — DB Tool Planner prompt
 # =============================================================================
-_PLANNER_SYSTEM = """HR chatbot data-fetching planner.
-Policy context is shown below (if any). Select only the personal data tools strictly needed to answer the question. Do not call retrieve_policy. Call each tool at most once. Do not speculate."""
+_PLANNER_SYSTEM = """You are the data-fetching planner for a hybrid HR chatbot.
+The user asked a question that requires BOTH a policy rule AND this employee's personal data.
+You have already retrieved the policy context. Now you MUST call the correct personal data tool(s).
+
+TOOL SELECTION — call every tool that applies:
+  get_profile           → grade, job title, department, hire date, work model, probation status, employment type
+  get_leave_data        → remaining leave days, leave balance, leave requests
+  get_salary_data       → base salary, net salary, gross salary, allowances
+  get_performance_data  → performance rating, bonus eligibility, promotion eligibility, OKR status
+  get_training_data     → training budget remaining, courses taken, scholarship status
+  get_disciplinary_data → active warnings, PIP status
+
+RULES:
+- You MUST call at least one tool. Never return without a tool call.
+- Do NOT call retrieve_policy (already done).
+- Call each tool at most once.
+- When the question involves eligibility, grade-based entitlements, or calculations → call get_profile.
+- When the question involves bonus, promotion, rating → call get_performance_data AND get_profile.
+- When the question involves salary calculations (gratuity, overtime amount) → call get_salary_data AND get_profile.
+- When the question involves leave carry-over or leave balance → call get_leave_data.
+- When the question involves training budget → call get_training_data.
+- When the question involves probation or loan eligibility → call get_profile."""
 
 
 # =============================================================================
@@ -178,21 +198,56 @@ def _strip_think_blocks(text: str) -> str:
 _strip_qwen_thinking = _strip_think_blocks
 
 
-def _invoke_with_retry(llm, prompt, max_retries=3):
-    """Exponential backoff on 429 rate-limit errors."""
+def _invoke_with_retry(llm, prompt, max_retries=12):
+    """
+    Retry on ANY rate-limit signal with exponential backoff.
+    max_retries=12 with caps means we'll wait up to ~30 min total before giving up.
+    Catches all provider rate-limit formats:
+      - HTTP 429 / Too Many Requests
+      - 'rate_limit', 'rate limit', 'RateLimitError'
+      - 'quota', 'quota_exceeded', 'resource_exhausted'
+      - 'overloaded', 'capacity', 'try again'
+    """
+    _RATE_SIGNALS = (
+        "429", "rate_limit", "rate limit", "ratelimit",
+        "too many requests", "quota", "resource_exhausted",
+        "overloaded", "capacity", "try again", "please wait",
+        "tokens per", "requests per",
+        "timeout", "timed out", "connection", "read timeout",
+        "502", "503", "504",
+    )
+
+    def _is_rate_limit(msg: str) -> bool:
+        low = msg.lower()
+        return any(s in low for s in _RATE_SIGNALS)
+
+    def _parse_wait(msg: str, attempt: int) -> int:
+        # "try again in 2m30s" or "try again in 150s" or "retry after 90"
+        m = re.search(r"(\d+)m\s*(\d+)s", msg)
+        if m:
+            return int(m.group(1)) * 60 + int(m.group(2)) + 5
+        m = re.search(r"retry[_ ]after[: ]+(\d+)", msg, re.IGNORECASE)
+        if m:
+            return int(m.group(1)) + 5
+        m = re.search(r"try again in (\d+)s", msg, re.IGNORECASE)
+        if m:
+            return int(m.group(1)) + 5
+        # Exponential backoff: 30s, 60s, 120s, 180s … capped at 300s
+        return min(30 * (2 ** attempt), 300)
+
     for attempt in range(max_retries):
         try:
             return llm.invoke(prompt)
         except Exception as e:
             msg = str(e)
-            if "429" in msg or "rate_limit" in msg.lower():
-                m    = re.search(r"try again in (\d+)m(\d+)s", msg)
-                wait = (int(m.group(1)) * 60 + int(m.group(2)) + 5) if m else 60 * (attempt + 1)
-                print(f"[agent] Rate limit, waiting {wait}s (attempt {attempt+1})")
+            if _is_rate_limit(msg):
+                wait = _parse_wait(msg, attempt)
+                print(f"[agent] Rate limit (attempt {attempt+1}/{max_retries}), "
+                      f"waiting {wait}s — {msg[:80]}")
                 time.sleep(wait)
             else:
-                raise
-    raise RuntimeError("LLM call failed after retries")
+                raise   # non-rate-limit error: propagate immediately
+    raise RuntimeError(f"LLM call failed after {max_retries} retries (rate limit)")
 
 
 # =============================================================================
@@ -378,7 +433,8 @@ def _is_franco(text: str) -> bool:
 def _retrieve_policy(query, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe=None):
     """
     Language-aware hybrid retrieval + reranking.
-    Mirrors generate_answers.py _retrieve_policy() exactly.
+    Uses weighted RRF (hybrid_w02: BM25 w=0.2) at every retrieval leg —
+    empirically optimal setting from run_retrieval_experiment_v2.py.
     Returns (top_docs, scores_dict, context_str).
     Returns ([], {}, "") when nothing useful is found.
     """
@@ -390,32 +446,41 @@ def _retrieve_policy(query, ar_index, en_index, reranker, ara_tokenizer, dialect
     norm_ar = lambda t: normalize_arabic(t, ara_tokenizer)
     q_lang  = detect_language_type(query)
 
-    # ── language-aware candidate retrieval ───────────────────────────────────
+    def _retrieve_w02(text, vs, bm25, docs, normalize_fn, k=_CANDIDATE_K):
+        """Single-leg weighted hybrid retrieval (BM25 weight = 0.2)."""
+        normalized = normalize_fn(text)
+        dense_docs = vs.similarity_search("query: " + normalized, k=k)
+        scores     = bm25.get_scores(tokenize(normalized))
+        top_idx    = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)[:k]
+        bm25_docs  = [docs[i] for i in top_idx]
+        return rrf_weighted(dense_docs, bm25_docs, w1=1.0, w2=0.2)
+
+    # ── language-aware candidate retrieval (weighted hybrid throughout) ────────
     if q_lang == "franco":
         franco_ar    = franco_to_arabic(query)
         franco_norm  = egyptian_to_msa(franco_ar)
         msa_query    = franco_norm
         docs_ar = rrf(
-            retrieve(franco_ar,  ar_vs, ar_bm25, ar_docs, norm_ar),
-            retrieve(msa_query,  ar_vs, ar_bm25, ar_docs, norm_ar),
+            _retrieve_w02(franco_ar, ar_vs, ar_bm25, ar_docs, norm_ar),
+            _retrieve_w02(msa_query, ar_vs, ar_bm25, ar_docs, norm_ar),
         )
         try:
             en_query2 = GoogleTranslator(source='ar', target='en').translate(franco_ar)
         except Exception:
             en_query2 = query
         docs_en = rrf(
-            retrieve(en_query2,  en_vs, en_bm25, en_docs, normalize_english),
-            retrieve(msa_query,  en_vs, en_bm25, en_docs, normalize_english),
+            _retrieve_w02(en_query2,  en_vs, en_bm25, en_docs, normalize_english),
+            _retrieve_w02(msa_query,  en_vs, en_bm25, en_docs, normalize_english),
         )
         combined = rrf(docs_ar, docs_en)
 
     elif q_lang == "egyptian":
         ar_msa   = egyptian_to_msa(query)
         docs_ar  = rrf(
-            retrieve(query,  ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
-            retrieve(ar_msa, ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
+            _retrieve_w02(query,  ar_vs, ar_bm25, ar_docs, norm_ar),
+            _retrieve_w02(ar_msa, ar_vs, ar_bm25, ar_docs, norm_ar),
         )
-        docs_en  = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
+        docs_en  = _retrieve_w02(query, en_vs, en_bm25, en_docs, normalize_english)
         combined = rrf(docs_ar, docs_en)
 
     elif q_lang == "arabic":
@@ -423,22 +488,22 @@ def _retrieve_policy(query, ar_index, en_index, reranker, ara_tokenizer, dialect
         if get_semantic_dialect(query, dialect_pipe) == "egyptian":
             ar_msa  = egyptian_to_msa(query)
             docs_ar = rrf(
-                retrieve(query,  ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
-                retrieve(ar_msa, ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K),
+                _retrieve_w02(query,  ar_vs, ar_bm25, ar_docs, norm_ar),
+                _retrieve_w02(ar_msa, ar_vs, ar_bm25, ar_docs, norm_ar),
             )
         else:
-            docs_ar = retrieve(query, ar_vs, ar_bm25, ar_docs, norm_ar, k=_CANDIDATE_K)
-        docs_en  = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
+            docs_ar = _retrieve_w02(query, ar_vs, ar_bm25, ar_docs, norm_ar)
+        docs_en  = _retrieve_w02(query, en_vs, en_bm25, en_docs, normalize_english)
         combined = rrf(docs_ar, docs_en)
 
     elif q_lang == "english":
-        docs_en  = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
-        docs_ar  = retrieve(query, ar_vs, ar_bm25, ar_docs, norm_ar,           k=_CANDIDATE_K)
+        docs_en  = _retrieve_w02(query, en_vs, en_bm25, en_docs, normalize_english)
+        docs_ar  = _retrieve_w02(query, ar_vs, ar_bm25, ar_docs, norm_ar)
         combined = rrf(docs_en, docs_ar)
 
     else:
         # Fallback: English only
-        combined = retrieve(query, en_vs, en_bm25, en_docs, normalize_english, k=_CANDIDATE_K)
+        combined = _retrieve_w02(query, en_vs, en_bm25, en_docs, normalize_english)
 
     # ── rerank — franco uses max(franco_ar, msa) scores ──────────────────────
     if q_lang == "franco":
@@ -471,9 +536,18 @@ def _make_db_tools(employee_id):
     @tool
     def get_profile() -> str:
         """Employee profile: name, grade, department, hire date, employment type,
-        work model, probation status."""
+        work model, probation status. Also includes latest performance rating
+        so eligibility (bonus, promotion, scholarship) can be computed correctly."""
         data = get_employee_profile(employee_id)
-        return json.dumps(data, default=str, ensure_ascii=False) if data else "Profile not found."
+        if not data:
+            return "Profile not found."
+        # Include latest review so format_personal_data can compute eligibility flags
+        # without a separate get_performance_data call.
+        latest = get_latest_review(employee_id)
+        result = {"profile": data}
+        if latest:
+            result["latest_review"] = latest
+        return json.dumps(result, default=str, ensure_ascii=False)
 
     @tool
     def get_leave_data() -> str:
@@ -481,9 +555,9 @@ def _make_db_tools(employee_id):
         and recent requests."""
         today = date.today()
         return json.dumps({
-            "leave_balances":   get_leave_balance(employee_id, today.year),
-            "pending_requests": get_pending_leave(employee_id),
-            "recent_requests":  get_leave_requests(employee_id, limit=3),
+            "leave_balances":  get_leave_balance(employee_id, today.year),
+            "pending_leaves":  get_pending_leave(employee_id),    # key matches format_personal_data
+            "recent_requests": get_leave_requests(employee_id, limit=3),
         }, default=str, ensure_ascii=False)
 
     @tool
@@ -502,23 +576,29 @@ def _make_db_tools(employee_id):
         return json.dumps({
             "latest_review":     get_latest_review(employee_id),
             "performance_trend": get_performance_trend(employee_id),
-            "okrs":              get_okrs(employee_id),
-            "history":           get_performance_history(employee_id, limit=2),
+            "current_okrs":      get_okrs(employee_id),           # key matches format_personal_data
+            "performance_history": get_performance_history(employee_id, limit=2),
         }, default=str, ensure_ascii=False)
 
     @tool
     def get_training_data() -> str:
         """Training budget (total/used/remaining in USD), training days, and
         courses completed this year."""
-        data = get_training_record(employee_id, date.today().year)
-        return json.dumps(data or {}, default=str, ensure_ascii=False)
+        record = get_training_record(employee_id, date.today().year)
+        return json.dumps(
+            {"training": record} if record else {},               # nested under "training" key
+            default=str, ensure_ascii=False
+        )
 
     @tool
     def get_disciplinary_data() -> str:
         """Active disciplinary actions: verbal/written warnings or PIP not yet
         expired. Use for personal disciplinary status questions only."""
         data = get_active_disciplinary(employee_id)
-        return json.dumps(data, default=str, ensure_ascii=False)
+        return json.dumps(
+            {"active_disciplinary": data},                        # key matches format_personal_data
+            default=str, ensure_ascii=False
+        )
 
     return [
         get_profile, get_leave_data, get_salary_data,
@@ -576,8 +656,12 @@ def _run_planner(question: str, policy_context: str,
     # Keep planner user message concise — policy_context already trimmed upstream
     planner_user = f"Question: {question}"
     if policy_context:
-        planner_user += f"\n\nPolicy context:\n{policy_context}"
-    planner_user += "\n\nCall only the strictly needed personal data tools."
+        planner_user += f"\n\nPolicy context (already retrieved):\n{policy_context}"
+    planner_user += (
+        "\n\nYou MUST now call the personal data tool(s) needed to personalise this answer. "
+        "Check the question: what employee-specific data (grade, salary, rating, leave, training, "
+        "probation status) is needed to give a complete, personalised answer? Call those tools now."
+    )
 
     messages = [
         SystemMessage(content=_PLANNER_SYSTEM),
@@ -587,12 +671,27 @@ def _run_planner(question: str, policy_context: str,
     tools_called: list = []
     tool_results: dict = {}
     called_set:   set  = set()
+    nudge_sent:   bool = False
 
-    for _ in range(3):
+    for iteration in range(5):
         response = _invoke_with_retry(llm_with_tools, messages)
         messages.append(response)
 
         if not response.tool_calls:
+            # If the model returned text instead of tool calls and hasn't been nudged yet,
+            # inject a strong reminder to force at least one tool call.
+            if not nudge_sent and not tools_called:
+                nudge_sent = True
+                messages.append(HumanMessage(
+                    content=(
+                        "You have NOT called any tool yet. This is a hybrid question — "
+                        "you MUST call at least one personal data tool (get_profile, "
+                        "get_performance_data, get_salary_data, get_leave_data, "
+                        "get_training_data, or get_disciplinary_data). "
+                        "Call the appropriate tool(s) now."
+                    )
+                ))
+                continue
             break
 
         for tc in response.tool_calls:

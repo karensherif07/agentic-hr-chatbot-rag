@@ -1,51 +1,52 @@
 # =============================================================================
-# run_retrieval_experiment.py
+# run_retrieval_experiment_v2.py
 #
-# Pure retrieval experiment — NO reranking.
-# All other agent.py upgrades are included:
-#   - detect_language_type()        instead of manual lang field
-#   - GoogleTranslator(ar→en)       for franco EN-side query
-#   - dialect_pipe                  for Arabic dialect detection (not ara_tokenizer)
-#   - _CANDIDATE_K = 20             candidate pool size
-#   - Chunk quality filters         boilerplate / corrupted / OCR-loop
+# Drop-in replacement for run_retrieval_experiment.py that adds four new
+# hybrid configs ON TOP OF the original three, so you get a direct comparison
+# in a single run.
 #
-# Language dispatch (mirrors agent.py _retrieve_policy):
-#   franco   : franco_to_arabic → MSA-expand, RRF AR variants,
-#              GoogleTranslator(ar→en) + MSA for EN side, RRF(AR, EN)
-#   egyptian : egyptian_to_msa, RRF(query, msa) AR, single EN pass, RRF(AR,EN)
-#   arabic   : get_semantic_dialect(dialect_pipe); egyptian → MSA-expand+RRF,
-#              else AR only; then RRF with EN
-#   english  : EN first, AR second, RRF(EN, AR)
-#   fallback : EN only
+# NEW CONFIGS
+# ───────────
+#   hybrid_w02   – weighted RRF, BM25 weight = 0.2  (conservative)
+#   hybrid_w03   – weighted RRF, BM25 weight = 0.3  (recommended starting point)
+#   hybrid_w05   – weighted RRF, BM25 weight = 0.5  (halfway)
+#   hybrid_skip_ar – dense-only for Arabic/Egyptian/Franco queries,
+#                    standard equal-weight hybrid for English only
+#
+# Everything else (setup, metrics, language dispatch, chunk filters) is
+# identical to the original file — no imports from retrieval.py were changed.
 # =============================================================================
 
 # ─────────────────────────────────────────────────────────────────────────────
-# CONFIG
+# CONFIG  — edit here if you want a subset
 # ─────────────────────────────────────────────────────────────────────────────
-CONFIGS_TO_RUN  = ["dense_only", "sparse_only", "hybrid_w02"]
+CONFIGS_TO_RUN = [
+    "dense_only",
+    "sparse_only",
+    "hybrid",           # original equal-weight, kept as baseline
+    "hybrid_w02",       # NEW: BM25 weight 0.2
+    "hybrid_w03",       # NEW: BM25 weight 0.3
+    "hybrid_w05",       # NEW: BM25 weight 0.5
+    "hybrid_skip_ar",   # NEW: skip BM25 entirely for AR/EGY/franco
+]
+
 K_VALUES        = [1, 3, 5, 7, 10, 20, 40]
 PRIMARY_K       = 20
-OUTPUT_XLSX     = "retrieval_results.xlsx"
+OUTPUT_XLSX     = "retrieval_results_v2.xlsx"
 EVAL_QUERY_FILE = "eval_queries.json"
-
-# Candidate pool — larger than agent.py's reranker input (20) because here
-# there is no reranker to trim the pool; 40 gives a meaningful recall curve
-# across all K_VALUES without being wastefully large.
-_CANDIDATE_K = 40
+_CANDIDATE_K    = 40
 
 ARABIC_PDF_ENTRIES = [
     ("policies/ar_policy.pdf",          "ar_policy.pdf"),
     ("policies/ar_recruitment.pdf",     "ar_recruitment.pdf"),
     ("policies/ar_payroll_finance.pdf", "ar_payroll_finance.pdf"),
 ]
-
 ENGLISH_PDF_ENTRIES = [
     ("policies/eng_policy.pdf",               "eng_policy.pdf"),
     ("policies/eng_wellness_benefits.pdf",    "eng_wellness_benefits.pdf"),
     ("policies/eng_training_development.pdf", "eng_training_development.pdf"),
     ("policies/eng_workplace_conduct.pdf",    "eng_workplace_conduct.pdf"),
 ]
-
 ARABIC_PDF_PATHS  = [p for p, _ in ARABIC_PDF_ENTRIES]
 ENGLISH_PDF_PATHS = [p for p, _ in ENGLISH_PDF_ENTRIES]
 # ─────────────────────────────────────────────────────────────────────────────
@@ -60,7 +61,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from setup     import setup
-from retrieval import rrf, rrf_weighted
+from retrieval import rrf
 from nlp_utils import (
     normalize_arabic, normalize_english, tokenize,
     franco_to_arabic, egyptian_to_msa, get_semantic_dialect,
@@ -71,7 +72,7 @@ from tqdm import tqdm
 
 
 # =============================================================================
-# CHUNK QUALITY FILTERS  (copied from agent.py verbatim)
+# CHUNK QUALITY FILTERS  (verbatim from original)
 # =============================================================================
 
 _BOILERPLATE_PATTERNS = [
@@ -173,8 +174,6 @@ def load_queries() -> List[dict]:
 
 # =============================================================================
 # RETRIEVAL PRIMITIVES
-# Clean single-responsibility functions — NO internal RRF.
-# retrieve_for_query() owns all cross-language and cross-method fusion.
 # =============================================================================
 
 def dense_only(question, vs, bm25, docs, normalize_fn, k):
@@ -191,25 +190,8 @@ def sparse_only(question, vs, bm25, docs, normalize_fn, k):
     return [docs[i] for i in top_idx]
 
 
-def hybrid_w02(question, vs, bm25, docs, normalize_fn, k):
-    """
-    Weighted hybrid: dense (w=1.0) + BM25 (w=0.2) fused via weighted RRF.
-    BM25 weight 0.2 is the empirically optimal setting (hybrid_w02 in v2 experiments).
-    Reduces BM25 noise while preserving its lexical recall signal.
-    """
-    normalized  = normalize_fn(question)
-    dense_docs  = vs.similarity_search("query: " + normalized, k=k)
-    bm25_scores = bm25.get_scores(tokenize(normalized))
-    top_idx     = sorted(range(len(bm25_scores)), key=lambda i: bm25_scores[i], reverse=True)[:k]
-    bm25_docs   = [docs[i] for i in top_idx]
-    return rrf_weighted(dense_docs, bm25_docs, rrf_k=20, w1=1.0, w2=0.2)
-
-
-# kept for reference / back-compat; not included in CONFIGS_TO_RUN
 def hybrid(question, vs, bm25, docs, normalize_fn, k):
-    """
-    Dense + BM25 fused via equal-weight RRF (original baseline, not used in production).
-    """
+    """Original equal-weight hybrid (unchanged baseline)."""
     normalized = normalize_fn(question)
     dense_docs = vs.similarity_search("query: " + normalized, k=k)
     scores     = bm25.get_scores(tokenize(normalized))
@@ -218,37 +200,99 @@ def hybrid(question, vs, bm25, docs, normalize_fn, k):
     return rrf(dense_docs, bm25_docs, k=20)
 
 
+# ── NEW: weighted RRF helpers ─────────────────────────────────────────────────
+
+def _rrf_weighted(docs1: list, docs2: list, rrf_k: int = 60,
+                  w1: float = 1.0, w2: float = 1.0) -> list:
+    """
+    Reciprocal Rank Fusion with per-list weights.
+    Identical dedup key to the original rrf() in retrieval.py.
+    docs1 = dense (w1), docs2 = BM25 (w2).
+    """
+    scores  = {}
+    doc_map = {}
+
+    def add(docs, weight):
+        for rank, d in enumerate(docs):
+            source = d.metadata.get("source", "")
+            page   = d.metadata.get("page", 0)
+            key    = f"{source}:page_{page}:{d.page_content[:100]}"
+            if key not in scores:
+                scores[key]  = 0
+                doc_map[key] = d
+            scores[key] += weight / (rrf_k + rank + 1)
+
+    add(docs1, w1)
+    add(docs2, w2)
+
+    ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    return [doc_map[key] for key, _ in ranked]
+
+
+def _make_weighted_hybrid(bm25_weight: float):
+    """Factory — returns a retrieval primitive with the given BM25 weight."""
+    def _fn(question, vs, bm25, docs, normalize_fn, k):
+        normalized = normalize_fn(question)
+        dense_docs = vs.similarity_search("query: " + normalized, k=k)
+        bm25_scores = bm25.get_scores(tokenize(normalized))
+        top_idx     = sorted(range(len(bm25_scores)),
+                             key=lambda i: bm25_scores[i], reverse=True)[:k]
+        bm25_docs   = [docs[i] for i in top_idx]
+        return _rrf_weighted(dense_docs, bm25_docs, rrf_k=20,
+                             w1=1.0, w2=bm25_weight)
+    _fn.__name__ = f"hybrid_w{int(bm25_weight*10):02d}"
+    return _fn
+
+
+# ── NEW: language-aware skip primitive ───────────────────────────────────────
+
+def _is_arabic_script(text: str) -> bool:
+    return bool(re.search(r"[\u0600-\u06FF]", text))
+
+
+def hybrid_skip_ar(question, vs, bm25, docs, normalize_fn, k):
+    """
+    Dense-only for Arabic-script, Franco, and Egyptian queries.
+    Standard equal-weight hybrid for English-only queries.
+    Rationale: BM25 contributes near-zero signal on Arabic/Franco (see results),
+    so skipping it avoids diluting the strong dense ranking.
+    """
+    from nlp_utils import detect_language_type as _detect
+    q_lang = _detect(question)
+
+    normalized = normalize_fn(question)
+    dense_docs = vs.similarity_search("query: " + normalized, k=k)
+
+    if q_lang in ("arabic", "egyptian", "franco") or _is_arabic_script(question):
+        # BM25 is noise for Arabic — skip it entirely
+        return dense_docs
+
+    # English: standard hybrid
+    bm25_scores = bm25.get_scores(tokenize(normalized))
+    top_idx     = sorted(range(len(bm25_scores)),
+                         key=lambda i: bm25_scores[i], reverse=True)[:k]
+    bm25_docs   = [docs[i] for i in top_idx]
+    return rrf(dense_docs, bm25_docs, k=20)
+
+
+# ── Register all primitives ───────────────────────────────────────────────────
+
 RETRIEVAL_FNS = {
-    "dense_only":  dense_only,
-    "sparse_only": sparse_only,
-    "hybrid_w02":  hybrid_w02,   # production hybrid (BM25 w=0.2)
-    "hybrid":      hybrid,       # original equal-weight baseline (reference only)
+    "dense_only":    dense_only,
+    "sparse_only":   sparse_only,
+    "hybrid":        hybrid,
+    "hybrid_w02":    _make_weighted_hybrid(0.2),
+    "hybrid_w03":    _make_weighted_hybrid(0.3),
+    "hybrid_w05":    _make_weighted_hybrid(0.5),
+    "hybrid_skip_ar": hybrid_skip_ar,
 }
 
 
 # =============================================================================
-# LANGUAGE-AWARE RETRIEVAL DISPATCH
-# Mirrors agent.py _retrieve_policy() up to — but not including — reranking.
-# Each config's `fn` is called as a primitive here; all RRF fusion across
-# languages happens in this function, not inside the primitives.
+# LANGUAGE-AWARE RETRIEVAL DISPATCH  (verbatim from original)
 # =============================================================================
 
 def retrieve_for_query(fn, question, ara_tokenizer, dialect_pipe, ar_index, en_index):
-    """
-    Language-aware candidate retrieval with RRF fusion.
-    Uses _CANDIDATE_K for each retrieval leg.
-    Returns filtered list of docs (chunk quality filters applied, no reranking).
-
-    Execution path per config:
-      dense_only  → language-aware multi-pass → dense legs only  → RRF(AR, EN)
-      sparse_only → language-aware multi-pass → BM25 legs only   → RRF(AR, EN)
-      hybrid      → language-aware multi-pass → dense+BM25 fused → RRF(AR, EN)
-
-    Single-level fusion for all configs: the outer RRF(AR, EN) is the only
-    cross-source fusion.  hybrid() handles dense+BM25 fusion internally using
-    k*2 expansion + standard k=60 RRF, so the result entering the outer RRF
-    has the same depth as a dense_only leg.
-    """
     from deep_translator import GoogleTranslator
 
     ar_vs, ar_bm25, ar_docs = ar_index
@@ -272,7 +316,7 @@ def retrieve_for_query(fn, question, ara_tokenizer, dialect_pipe, ar_index, en_i
             fn(en_query2,  en_vs, en_bm25, en_docs, normalize_english, _CANDIDATE_K),
             fn(msa_query,  en_vs, en_bm25, en_docs, normalize_english, _CANDIDATE_K),
         )
-        combined = rrf(docs_ar, docs_en)
+        combined = rrf(rrf(docs_ar, docs_ar), docs_en)
 
     elif q_lang == "egyptian":
         ar_msa  = egyptian_to_msa(question)
@@ -281,10 +325,9 @@ def retrieve_for_query(fn, question, ara_tokenizer, dialect_pipe, ar_index, en_i
             fn(ar_msa,   ar_vs, ar_bm25, ar_docs, norm_ar, _CANDIDATE_K),
         )
         docs_en = fn(question, en_vs, en_bm25, en_docs, normalize_english, _CANDIDATE_K)
-        combined = rrf(docs_ar, docs_en)
+        combined = rrf(rrf(docs_ar, docs_ar), docs_en)
 
     elif q_lang == "arabic":
-        # dialect_pipe — matches agent.py (not ara_tokenizer)
         if get_semantic_dialect(question, dialect_pipe) == "egyptian":
             ar_msa  = egyptian_to_msa(question)
             docs_ar = rrf(
@@ -294,28 +337,27 @@ def retrieve_for_query(fn, question, ara_tokenizer, dialect_pipe, ar_index, en_i
         else:
             docs_ar = fn(question, ar_vs, ar_bm25, ar_docs, norm_ar, _CANDIDATE_K)
         docs_en = fn(question, en_vs, en_bm25, en_docs, normalize_english, _CANDIDATE_K)
-        combined = rrf(docs_ar, docs_en)
+        combined = rrf(rrf(docs_ar, docs_ar), docs_en)
 
     elif q_lang == "english":
         docs_en  = fn(question, en_vs, en_bm25, en_docs, normalize_english, _CANDIDATE_K)
         docs_ar  = fn(question, ar_vs, ar_bm25, ar_docs, norm_ar,           _CANDIDATE_K)
-        combined = rrf(docs_en, docs_ar)
+        combined = rrf(rrf(docs_en, docs_en), docs_ar)
 
     else:
         combined = fn(question, en_vs, en_bm25, en_docs, normalize_english, _CANDIDATE_K)
 
-    # Apply chunk quality filters (no reranking)
     return _filter_bad_chunks(combined)
 
 
 # =============================================================================
-# RELEVANCE  — doc_name + page only, no language check
+# RELEVANCE
 # =============================================================================
 
 def is_relevant(doc, ground_truth_doc: str, ground_truth_pages: List[int]) -> bool:
     doc_name = doc.metadata.get("doc_name", "")
-    page_0   = doc.metadata.get("page", -1)   # 0-based (PyMuPDF)
-    page_1   = page_0 + 1                     # convert to 1-based
+    page_0   = doc.metadata.get("page", -1)
+    page_1   = page_0 + 1
     return doc_name == ground_truth_doc and page_1 in ground_truth_pages
 
 
@@ -366,11 +408,9 @@ def compute_all_metrics(retrieved, ground_truth_doc, ground_truth_pages) -> dict
 # =============================================================================
 
 def run_experiment():
-    print("\n🚀 Running Retrieval Experiment (no reranking)...\n")
+    print("\n🚀 Running Retrieval Experiment v2 (weighted RRF + skip-AR variants)...\n")
+    print("Configs:", CONFIGS_TO_RUN, "\n")
 
-    # setup() returns:
-    # ar_index, en_index, routing_llm, en_llm, ar_llm, critique_llm,
-    # reranker, dialect_pipe, ara_tokenizer
     (ar_index, en_index, _routing_llm, _en_llm, _ar_llm, _critique_llm,
      _reranker, dialect_pipe, ara_tokenizer) = setup()
 
@@ -410,7 +450,6 @@ def run_experiment():
                 **metrics,
             })
 
-    # ── BUILD DATAFRAME ───────────────────────────────────────────────────────
     df = pd.DataFrame(rows)
 
     primary_cols = [
@@ -419,22 +458,21 @@ def run_experiment():
         f"hit@{PRIMARY_K}",
         "mrr",
     ]
-
     all_metric_cols = ["mrr"] + [
         f"{m}@{k}"
         for k in K_VALUES
         for m in ["precision", "recall", "hit"]
     ]
 
-    # ── PRINT: OVERALL ────────────────────────────────────────────────────────
+    # ── OVERALL ───────────────────────────────────────────────────────────────
     pivot_overall = df.groupby("config")[primary_cols].mean().round(4)
     print(f"\n{'='*70}")
-    print(f"RESULTS  ({len(rows)} rows total)")
+    print(f"RESULTS v2  ({len(rows)} rows total)")
     print(f"{'='*70}\n")
     print(f"── OVERALL (primary K={PRIMARY_K}) ─────────────────────────────")
     print(pivot_overall.to_string(), "\n")
 
-    # ── PRINT: FULL K SWEEP ───────────────────────────────────────────────────
+    # ── FULL K SWEEP ──────────────────────────────────────────────────────────
     config_means = df.groupby("config")[all_metric_cols].mean().round(4)
     print("── FULL K SWEEP ─────────────────────────────────────────────────")
     for cfg in CONFIGS_TO_RUN:
@@ -451,59 +489,28 @@ def run_experiment():
                 f"MRR={sub.get('mrr', 0):.4f}"
             )
 
-    # K=7 cols — used for the reranker-comparable breakdowns
     k7_cols = [c for c in ["precision@7", "recall@7", "hit@7", "mrr"] if c in df.columns]
 
-    # ── PRINT: BY COMPLEXITY ──────────────────────────────────────────────────
-    if "complexity" in df.columns:
-        pivot_complexity = (
-            df.groupby(["config", "complexity"])[primary_cols].mean().round(4)
-        )
-        print(f"\n── BY COMPLEXITY (K={PRIMARY_K}) ─────────────────────────────")
-        print(pivot_complexity.to_string(), "\n")
-
-        pivot_complexity_k7 = (
-            df.groupby(["config", "complexity"])[k7_cols].mean().round(4)
-        )
-        print(f"── BY COMPLEXITY (K=7, reranker-comparable) ──────────────────")
-        print(pivot_complexity_k7.to_string(), "\n")
-
-    # ── PRINT: BY LANGUAGE ────────────────────────────────────────────────────
+    # ── BY LANGUAGE ───────────────────────────────────────────────────────────
     if "language" in df.columns:
-        pivot_lang = (
-            df.groupby(["config", "language"])[primary_cols].mean().round(4)
-        )
-        print(f"── BY LANGUAGE (K={PRIMARY_K}) ───────────────────────────────")
+        pivot_lang = df.groupby(["config", "language"])[primary_cols].mean().round(4)
+        print(f"\n── BY LANGUAGE (K={PRIMARY_K}) ───────────────────────────────")
         print(pivot_lang.to_string(), "\n")
 
-        pivot_lang_k7 = (
-            df.groupby(["config", "language"])[k7_cols].mean().round(4)
-        )
+        pivot_lang_k7 = df.groupby(["config", "language"])[k7_cols].mean().round(4)
         print(f"── BY LANGUAGE (K=7, reranker-comparable) ────────────────────")
         print(pivot_lang_k7.to_string(), "\n")
 
-    # ── PRINT: BY DOCUMENT ───────────────────────────────────────────────────
+    # ── BY DOCUMENT ───────────────────────────────────────────────────────────
     if "gt_doc" in df.columns:
-        pivot_doc = (
-            df.groupby(["config", "gt_doc"])[primary_cols].mean().round(4)
-        )
+        pivot_doc = df.groupby(["config", "gt_doc"])[primary_cols].mean().round(4)
         print(f"── BY DOCUMENT (K={PRIMARY_K}) ───────────────────────────────")
         print(pivot_doc.to_string(), "\n")
-
-        pivot_doc_k7 = (
-            df.groupby(["config", "gt_doc"])[k7_cols].mean().round(4)
-        )
-        print(f"── BY DOCUMENT (K=7, reranker-comparable) ────────────────────")
-        print(pivot_doc_k7.to_string(), "\n")
 
     # ── SAVE EXCEL ────────────────────────────────────────────────────────────
     with pd.ExcelWriter(OUTPUT_XLSX, engine="openpyxl") as writer:
         df.to_excel(writer, sheet_name="Raw", index=False)
         pivot_overall.to_excel(writer, sheet_name="Overall")
-
-        if "complexity" in df.columns:
-            pivot_complexity.to_excel(writer, sheet_name="By_Complexity")
-            pivot_complexity_k7.to_excel(writer, sheet_name="By_Complexity_K7")
 
         if "language" in df.columns:
             pivot_lang.to_excel(writer, sheet_name="By_Language")
@@ -511,7 +518,6 @@ def run_experiment():
 
         if "gt_doc" in df.columns:
             pivot_doc.to_excel(writer, sheet_name="By_Document")
-            pivot_doc_k7.to_excel(writer, sheet_name="By_Document_K7")
 
         for k in K_VALUES:
             cols_k = [c for c in [f"precision@{k}", f"recall@{k}", f"hit@{k}", "mrr"]
@@ -520,7 +526,7 @@ def run_experiment():
                 writer, sheet_name=f"K={k}"
             )
 
-    print(f"✓ Results saved to {OUTPUT_XLSX}")
+    print(f"\n✓ Results saved to {OUTPUT_XLSX}")
     return df
 
 

@@ -1,0 +1,876 @@
+{
+  "meta": {
+    "purpose": "Out-of-scope refusal evaluation — Horizon Tech HR Chatbot",
+    "experiment": "OOS Refusal Quality",
+    "total_queries": 160,
+    "languages": ["english", "arabic_msa", "egyptian_arabic", "franco_arabic"],
+    "queries_per_language": 40,
+    "split_per_language": "20 truly OOS (should_refuse=true) + 20 valid HR (should_refuse=false)",
+    "batches": {
+      "1": "Original 20 queries per language — easy/clear cases",
+      "2": "Additional 20 queries per language — harder boundary cases"
+    },
+    "version": "2.0",
+    "metrics": [
+      "M1 — Refusal Accuracy      : correctly refused on truly OOS queries (TP / all OOS)",
+      "M2 — False Refusal Rate    : refused on valid HR queries (FP / all valid HR) — lower is better",
+      "M3 — Hallucination Rate    : answered substantively when should have refused (FN / all OOS) — lower is better"
+    ],
+    "refusal_definition": [
+      "tools_called == ['out_of_scope']",
+      "OR answer matches is_no_info_answer() patterns from utils.py",
+      "OR answer matches OOS deflection phrases (see evaluator)"
+    ],
+    "oos_design_notes": [
+      "Batch 1 OOS: clearly unrelated topics — weather, coding, sports, personal emails",
+      "Batch 2 OOS: use HR-sounding words but are NOT company questions — personal career advice,",
+      "  external market data, generic business concepts. These test router precision.",
+      "  IMPORTANT: queries like 'Egyptian labor laws' or 'recommend HR software' are borderline —",
+      "  they have been REPLACED with safer alternatives that are unambiguous OOS.",
+      "  Safer pattern: personal situation + HR word (e.g. 'help me write my resignation letter',",
+      "  'what salary should I ask for at a new company') — clearly not about Horizon Tech policy."
+    ]
+  },
+
+  "queries": {
+
+    "english": [
+
+      {
+        "id": "EN-OOS-01", "batch": 1,
+        "query": "What is the capital of France?",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+      {
+        "id": "EN-OOS-02", "batch": 1,
+        "query": "Write me a Python function to sort a list.",
+        "should_refuse": true, "category": "coding"
+      },
+      {
+        "id": "EN-OOS-03", "batch": 1,
+        "query": "What is the current price of Apple stock?",
+        "should_refuse": true, "category": "finance_market"
+      },
+      {
+        "id": "EN-OOS-04", "batch": 1,
+        "query": "Can you write a birthday message for my friend?",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "EN-OOS-05", "batch": 1,
+        "query": "What is the weather like in Cairo today?",
+        "should_refuse": true, "category": "weather"
+      },
+      {
+        "id": "EN-OOS-06", "batch": 1,
+        "query": "Translate this text from English to French: 'Good morning'.",
+        "should_refuse": true, "category": "translation_task"
+      },
+      {
+        "id": "EN-OOS-07", "batch": 1,
+        "query": "Who won the World Cup in 2022?",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+      {
+        "id": "EN-OOS-08", "batch": 1,
+        "query": "Help me write a cover letter for a job at Google.",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "EN-OOS-09", "batch": 1,
+        "query": "What is the best diet to lose weight quickly?",
+        "should_refuse": true, "category": "personal_life"
+      },
+      {
+        "id": "EN-OOS-10", "batch": 1,
+        "query": "Explain how blockchain technology works.",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+
+      {
+        "id": "EN-HR-01", "batch": 1,
+        "query": "What is the annual leave entitlement for an employee with 3 years of service?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-02", "batch": 1,
+        "query": "What health insurance coverage does the company provide for dependents?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-03", "batch": 1,
+        "query": "What is the notice period for a G3 employee who wants to resign?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-04", "batch": 1,
+        "query": "What are the criteria for a promotion to the next grade?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-05", "batch": 1,
+        "query": "What happens during the probation period if performance is not satisfactory?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-06", "batch": 1,
+        "query": "What is the company's policy on remote work?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-07", "batch": 1,
+        "query": "What disciplinary steps does the company follow before termination?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-08", "batch": 1,
+        "query": "How does the annual bonus calculation work?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-09", "batch": 1,
+        "query": "What is the training budget available for a G2 employee?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-10", "batch": 1,
+        "query": "What are the conditions for applying for a scholarship?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+
+
+      {
+        "id": "EN-OOS-11", "batch": 2,
+        "query": "Help me write my resignation letter to send to my current employer.",
+        "should_refuse": true, "category": "personal_task",
+        "note": "Writing a personal letter — not asking about company policy"
+      },
+      {
+        "id": "EN-OOS-12", "batch": 2,
+        "query": "What salary should I ask for when interviewing at a new company?",
+        "should_refuse": true, "category": "personal_career_advice",
+        "note": "Asking about a different company's salary negotiation"
+      },
+      {
+        "id": "EN-OOS-13", "batch": 2,
+        "query": "I have a job offer from another company. Should I accept it?",
+        "should_refuse": true, "category": "personal_career_advice",
+        "note": "Personal career decision — not Horizon Tech policy"
+      },
+      {
+        "id": "EN-OOS-14", "batch": 2,
+        "query": "My manager at my previous job was unfair. How do I deal with that emotionally?",
+        "should_refuse": true, "category": "personal_life",
+        "note": "Emotional advice about a previous employer"
+      },
+      {
+        "id": "EN-OOS-15", "batch": 2,
+        "query": "Can you review my CV and tell me how to improve it?",
+        "should_refuse": true, "category": "personal_task",
+        "note": "CV review — personal career task"
+      },
+      {
+        "id": "EN-OOS-16", "batch": 2,
+        "query": "I want to start my own business. What are the steps to register a company in Egypt?",
+        "should_refuse": true, "category": "external_legal",
+        "note": "External business registration — not company HR policy"
+      },
+      {
+        "id": "EN-OOS-17", "batch": 2,
+        "query": "What are some good tips for managing work-life balance in general?",
+        "should_refuse": true, "category": "general_advice",
+        "note": "Generic life advice — not Horizon Tech policy"
+      },
+      {
+        "id": "EN-OOS-18", "batch": 2,
+        "query": "How do I prepare for a performance review interview at any company?",
+        "should_refuse": true, "category": "personal_career_advice",
+        "note": "Generic career prep advice — not company policy"
+      },
+      {
+        "id": "EN-OOS-19", "batch": 2,
+        "query": "Write me a professional LinkedIn post about my recent promotion.",
+        "should_refuse": true, "category": "personal_task",
+        "note": "Social media writing task — not HR policy"
+      },
+      {
+        "id": "EN-OOS-20", "batch": 2,
+        "query": "What is the difference between gross salary and net salary in general?",
+        "should_refuse": true, "category": "general_knowledge",
+        "note": "Generic finance concept — not Horizon Tech payroll policy"
+      },
+
+      {
+        "id": "EN-HR-11", "batch": 2,
+        "query": "If I get a rating of 4 in my review, what salary increment percentage do I receive?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-12", "batch": 2,
+        "query": "Can I carry over unused annual leave days to next year?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-13", "batch": 2,
+        "query": "How is the end of service gratuity calculated?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-14", "batch": 2,
+        "query": "Does the company subsidise gym memberships?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-15", "batch": 2,
+        "query": "What happens to my bonus if I resign before the payout date?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-16", "batch": 2,
+        "query": "How do I report a workplace harassment incident at Horizon Tech?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-17", "batch": 2,
+        "query": "Is paternity leave paid at Horizon Tech?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-18", "batch": 2,
+        "query": "What is the company policy on personal social media use during working hours?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-19", "batch": 2,
+        "query": "Are contractor employees eligible for the annual performance bonus?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EN-HR-20", "batch": 2,
+        "query": "What is the maximum gift value I can accept from a client without reporting it?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      }
+    ],
+
+    "arabic_msa": [
+
+      {
+        "id": "AR-OOS-01", "batch": 1,
+        "query": "ما هي عاصمة فرنسا؟",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+      {
+        "id": "AR-OOS-02", "batch": 1,
+        "query": "اكتب لي دالة بلغة Python لترتيب قائمة.",
+        "should_refuse": true, "category": "coding"
+      },
+      {
+        "id": "AR-OOS-03", "batch": 1,
+        "query": "ما هو السعر الحالي لسهم أبل في البورصة؟",
+        "should_refuse": true, "category": "finance_market"
+      },
+      {
+        "id": "AR-OOS-04", "batch": 1,
+        "query": "هل يمكنك كتابة رسالة تهنئة بعيد ميلاد صديقي؟",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "AR-OOS-05", "batch": 1,
+        "query": "كيف حال الطقس في القاهرة اليوم؟",
+        "should_refuse": true, "category": "weather"
+      },
+      {
+        "id": "AR-OOS-06", "batch": 1,
+        "query": "ترجم هذه الجملة إلى الفرنسية: 'صباح الخير'.",
+        "should_refuse": true, "category": "translation_task"
+      },
+      {
+        "id": "AR-OOS-07", "batch": 1,
+        "query": "من فاز بكأس العالم عام 2022؟",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+      {
+        "id": "AR-OOS-08", "batch": 1,
+        "query": "ساعدني في كتابة خطاب تقديم لوظيفة في شركة جوجل.",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "AR-OOS-09", "batch": 1,
+        "query": "ما أفضل نظام غذائي لإنقاص الوزن بسرعة؟",
+        "should_refuse": true, "category": "personal_life"
+      },
+      {
+        "id": "AR-OOS-10", "batch": 1,
+        "query": "اشرح لي كيف تعمل تقنية البلوك تشين.",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+
+      {
+        "id": "AR-HR-01", "batch": 1,
+        "query": "ما هو استحقاق الإجازة السنوية للموظف الذي أمضى ثلاث سنوات في الخدمة؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-02", "batch": 1,
+        "query": "ما التغطية التأمينية الصحية التي توفرها الشركة لأفراد الأسرة؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-03", "batch": 1,
+        "query": "ما فترة الإشعار المطلوبة للموظف من الدرجة الثالثة عند الاستقالة؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-04", "batch": 1,
+        "query": "ما هي شروط الترقية إلى الدرجة الوظيفية الأعلى؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-05", "batch": 1,
+        "query": "ماذا يحدث خلال فترة الاختبار إذا لم يكن الأداء مُرضياً؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-06", "batch": 1,
+        "query": "ما هي سياسة الشركة بشأن العمل عن بُعد؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-07", "batch": 1,
+        "query": "ما الخطوات التأديبية التي تتبعها الشركة قبل إنهاء الخدمة؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-08", "batch": 1,
+        "query": "كيف تُحسب المكافأة السنوية؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-09", "batch": 1,
+        "query": "ما قيمة ميزانية التدريب المتاحة لموظف الدرجة الثانية؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-10", "batch": 1,
+        "query": "ما شروط التقدم للحصول على منحة دراسية من الشركة؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+
+      {
+        "id": "AR-OOS-11", "batch": 2,
+        "query": "ساعدني في كتابة خطاب الاستقالة الذي سأرسله لصاحب عملي الحالي.",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "AR-OOS-12", "batch": 2,
+        "query": "ما الراتب الذي يجب أن أطلبه عند التقدم للعمل في شركة أخرى؟",
+        "should_refuse": true, "category": "personal_career_advice"
+      },
+      {
+        "id": "AR-OOS-13", "batch": 2,
+        "query": "تلقيت عرض عمل من شركة أخرى، هل تنصحني بقبوله؟",
+        "should_refuse": true, "category": "personal_career_advice"
+      },
+      {
+        "id": "AR-OOS-14", "batch": 2,
+        "query": "مديري في وظيفتي السابقة كان يعاملني بشكل سيئ، كيف أتعامل مع هذا نفسياً؟",
+        "should_refuse": true, "category": "personal_life"
+      },
+      {
+        "id": "AR-OOS-15", "batch": 2,
+        "query": "هل يمكنك مراجعة سيرتي الذاتية وإخباري كيف أحسّنها؟",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "AR-OOS-16", "batch": 2,
+        "query": "أريد تأسيس شركتي الخاصة، ما خطوات التسجيل التجاري في مصر؟",
+        "should_refuse": true, "category": "external_legal"
+      },
+      {
+        "id": "AR-OOS-17", "batch": 2,
+        "query": "ما هي نصائحك العامة لتحقيق التوازن بين العمل والحياة الشخصية؟",
+        "should_refuse": true, "category": "general_advice"
+      },
+      {
+        "id": "AR-OOS-18", "batch": 2,
+        "query": "كيف أستعد لمقابلة تقييم الأداء في أي شركة؟",
+        "should_refuse": true, "category": "personal_career_advice"
+      },
+      {
+        "id": "AR-OOS-19", "batch": 2,
+        "query": "اكتب لي منشوراً احترافياً على لينكدإن عن ترقيتي الأخيرة.",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "AR-OOS-20", "batch": 2,
+        "query": "ما الفرق بين الراتب الإجمالي والصافي بشكل عام؟",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+
+      {
+        "id": "AR-HR-11", "batch": 2,
+        "query": "إذا حصلت على تقييم 4 في مراجعة الأداء، ما نسبة الزيادة في الراتب التي أستحقها؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-12", "batch": 2,
+        "query": "هل يمكنني ترحيل أيام الإجازة السنوية غير المستخدمة إلى العام المقبل؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-13", "batch": 2,
+        "query": "كيف تُحسب مكافأة نهاية الخدمة؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-14", "batch": 2,
+        "query": "هل تدعم الشركة تكاليف اشتراك الصالة الرياضية؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-15", "batch": 2,
+        "query": "ماذا يحدث للمكافأة السنوية إذا استقلت قبل موعد صرفها؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-16", "batch": 2,
+        "query": "كيف أبلغ عن حادثة تحرش في بيئة العمل بشركة أفق التقنية؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-17", "batch": 2,
+        "query": "هل إجازة الأبوة مدفوعة الأجر في شركة أفق التقنية؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-18", "batch": 2,
+        "query": "ما سياسة الشركة بشأن استخدام وسائل التواصل الاجتماعي الشخصية أثناء ساعات العمل؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-19", "batch": 2,
+        "query": "هل يحق للموظف المتعاقد الحصول على المكافأة السنوية؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "AR-HR-20", "batch": 2,
+        "query": "ما الحد الأقصى لقيمة الهدية التي يمكنني قبولها من عميل دون الإبلاغ عنها؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      }
+    ],
+
+    "egyptian_arabic": [
+
+      {
+        "id": "EGY-OOS-01", "batch": 1,
+        "query": "إيه عاصمة فرنسا؟",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+      {
+        "id": "EGY-OOS-02", "batch": 1,
+        "query": "اكتبلي function بـ Python تعمل sort لـ list.",
+        "should_refuse": true, "category": "coding"
+      },
+      {
+        "id": "EGY-OOS-03", "batch": 1,
+        "query": "إيه سعر سهم Apple في البورصة دلوقتي؟",
+        "should_refuse": true, "category": "finance_market"
+      },
+      {
+        "id": "EGY-OOS-04", "batch": 1,
+        "query": "ممكن تكتبلي رسالة تهنئة لصاحبي بعيد ميلاده؟",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "EGY-OOS-05", "batch": 1,
+        "query": "إيه أحوال الجو في القاهرة النهارده؟",
+        "should_refuse": true, "category": "weather"
+      },
+      {
+        "id": "EGY-OOS-06", "batch": 1,
+        "query": "ترجملي الجملة دي للفرنساوي: 'صباح الخير'.",
+        "should_refuse": true, "category": "translation_task"
+      },
+      {
+        "id": "EGY-OOS-07", "batch": 1,
+        "query": "مين اللي فاز بكأس العالم 2022؟",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+      {
+        "id": "EGY-OOS-08", "batch": 1,
+        "query": "ساعدني اكتب cover letter لوظيفة في Google.",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "EGY-OOS-09", "batch": 1,
+        "query": "إيه أحسن رجيم عشان أنزل وزن بسرعة؟",
+        "should_refuse": true, "category": "personal_life"
+      },
+      {
+        "id": "EGY-OOS-10", "batch": 1,
+        "query": "فسرلي إزاي تقنية الـ blockchain بتشتغل.",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+
+      {
+        "id": "EGY-HR-01", "batch": 1,
+        "query": "الموظف اللي اشتغل 3 سنين بيستحق كام يوم أجازة سنوية؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-02", "batch": 1,
+        "query": "التأمين الطبي بيغطي إيه لأفراد عيلة الموظف؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-03", "batch": 1,
+        "query": "الموظف اللي درجته G3 لازم يدي إشعار كام يوم لو عايز يستقيل؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-04", "batch": 1,
+        "query": "إيه الشروط عشان الموظف يتترقى لدرجة أعلى؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-05", "batch": 1,
+        "query": "إيه اللي بيحصل في فترة الاختبار لو الأداء مش كويس؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-06", "batch": 1,
+        "query": "إيه سياسة الشركة في موضوع الشغل من البيت؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-07", "batch": 1,
+        "query": "الشركة بتاخد إيه من خطوات تأديبية قبل ما تفصل الموظف؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-08", "batch": 1,
+        "query": "المكافأة السنوية بتتحسب ازاي؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-09", "batch": 1,
+        "query": "الموظف درجة G2 عنده كام ميزانية تدريب؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-10", "batch": 1,
+        "query": "إيه الشروط عشان أقدم على منحة دراسية من الشركة؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+
+      {
+        "id": "EGY-OOS-11", "batch": 2,
+        "query": "ساعدني اكتب خطاب الاستقالة اللي هابعته لصاحب شغلي الحالي.",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "EGY-OOS-12", "batch": 2,
+        "query": "إيه المرتب المناسب اللي أطلبه لما بتقدم على شغل في شركة تانية؟",
+        "should_refuse": true, "category": "personal_career_advice"
+      },
+      {
+        "id": "EGY-OOS-13", "batch": 2,
+        "query": "جالي عرض شغل من شركة تانية، تنصحني آخده؟",
+        "should_refuse": true, "category": "personal_career_advice"
+      },
+      {
+        "id": "EGY-OOS-14", "batch": 2,
+        "query": "المدير بتاعي في شغلي القديم كان بيعاملني بشكل وحش، إزاي أتعامل مع ده نفسياً؟",
+        "should_refuse": true, "category": "personal_life"
+      },
+      {
+        "id": "EGY-OOS-15", "batch": 2,
+        "query": "ممكن تراجعلي الـ CV بتاعي وتقولي أحسّنه إزاي؟",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "EGY-OOS-16", "batch": 2,
+        "query": "عايز أفتح شركتي الخاصة، إيه خطوات التسجيل التجاري في مصر؟",
+        "should_refuse": true, "category": "external_legal"
+      },
+      {
+        "id": "EGY-OOS-17", "batch": 2,
+        "query": "إيه نصايحك العامة عشان أعمل توازن بين الشغل والحياة الشخصية؟",
+        "should_refuse": true, "category": "general_advice"
+      },
+      {
+        "id": "EGY-OOS-18", "batch": 2,
+        "query": "إزاي أستعد لمقابلة تقييم الأداء في أي شركة؟",
+        "should_refuse": true, "category": "personal_career_advice"
+      },
+      {
+        "id": "EGY-OOS-19", "batch": 2,
+        "query": "اكتبلي بوست احترافي على لينكدإن عن الترقية اللي اتعينتها.",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "EGY-OOS-20", "batch": 2,
+        "query": "إيه الفرق بين المرتب الإجمالي والصافي بشكل عام؟",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+
+      {
+        "id": "EGY-HR-11", "batch": 2,
+        "query": "لو اتقيمت بـ 4 في المراجعة، هاخد كام زيادة في مرتبي؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-12", "batch": 2,
+        "query": "ممكن أرحل أيام الإجازة اللي ما أخدتهاش للسنة الجاية؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-13", "batch": 2,
+        "query": "مكافأة نهاية الخدمة بتتحسب ازاي؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-14", "batch": 2,
+        "query": "الشركة بتدفع اشتراك الجيم؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-15", "batch": 2,
+        "query": "لو استقلت قبل ما المكافأة تتصرف هاخدها ولا لأ؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-16", "batch": 2,
+        "query": "عايز أبلغ عن تحرش في الشغل في أفق التقنية، أعمل إيه؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-17", "batch": 2,
+        "query": "إجازة الأبوة مدفوعة في أفق التقنية؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-18", "batch": 2,
+        "query": "في سياسة للشركة على استخدام سوشيال ميديا الشخصية وأنا في الشغل؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-19", "batch": 2,
+        "query": "الموظف المتعاقد عنده حق في المكافأة السنوية؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "EGY-HR-20", "batch": 2,
+        "query": "لو عميل أداني هدية، أقدر آخدها من غير ما أبلغ؟ وقيمتها أد إيه؟",
+        "should_refuse": false, "category": "valid_hr_policy"
+      }
+    ],
+
+    "franco_arabic": [
+
+      {
+        "id": "FR-OOS-01", "batch": 1,
+        "query": "eih 3asmet fransa?",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+      {
+        "id": "FR-OOS-02", "batch": 1,
+        "query": "ektebly function bel Python te3mel sort le list.",
+        "should_refuse": true, "category": "coding"
+      },
+      {
+        "id": "FR-OOS-03", "batch": 1,
+        "query": "eih se3r se7m Apple fel borsa delwa2ty?",
+        "should_refuse": true, "category": "finance_market"
+      },
+      {
+        "id": "FR-OOS-04", "batch": 1,
+        "query": "momken tektebly resalet ta2ni2 le sa7by fel 3eed bta3o?",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "FR-OOS-05", "batch": 1,
+        "query": "eih ahwal el gaw fel 2ahera el naharda?",
+        "should_refuse": true, "category": "weather"
+      },
+      {
+        "id": "FR-OOS-06", "batch": 1,
+        "query": "targamly el gomla di lel faransawi: 'saba7 el kheir'.",
+        "should_refuse": true, "category": "translation_task"
+      },
+      {
+        "id": "FR-OOS-07", "batch": 1,
+        "query": "meen elly faz be kas el 3alam 2022?",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+      {
+        "id": "FR-OOS-08", "batch": 1,
+        "query": "sa3edny akteb cover letter le shoghl fi Google.",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "FR-OOS-09", "batch": 1,
+        "query": "eih a7san regim 3ashan anzl wazn bsor3a?",
+        "should_refuse": true, "category": "personal_life"
+      },
+      {
+        "id": "FR-OOS-10", "batch": 1,
+        "query": "feserely ezay teknologya el blockchain beteshtaghal.",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+
+      {
+        "id": "FR-HR-01", "batch": 1,
+        "query": "el muwazaf elly eshtaghal 3 sneen byes7a2 kam yom agaza sanaweyya?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-02", "batch": 1,
+        "query": "el ta2min el se77i byet3ata eih le 3eylet el muwazaf?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-03", "batch": 1,
+        "query": "el muwazaf elly daragto G3 lazem yed2 esh3ar kam yom law 3ayez yesta2el?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-04", "batch": 1,
+        "query": "eih el shorut 3ashan el muwazaf yetrat2a le daraga a3la?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-05", "batch": 1,
+        "query": "eih elly byehsal f fatret el ekhtebar law el ada2 mesh kwayes?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-06", "batch": 1,
+        "query": "eih seyaset el shirka fi mawdoo3 el shoghl men el beit?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-07", "batch": 1,
+        "query": "el shirka bta5od eih men 5atawat ta2dibeyya 2abl ma tefsil el muwazaf?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-08", "batch": 1,
+        "query": "el bonus el sanawi byet7eseb ezay?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-09", "batch": 1,
+        "query": "el muwazaf daraga G2 3ando kam budget lel training?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-10", "batch": 1,
+        "query": "eih el shorut 3ashan a2dar a2addem 3ala men7a deraseyya men el shirka?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+
+      {
+        "id": "FR-OOS-11", "batch": 2,
+        "query": "sa3edny akteb khitab el este2ala elly haba3to le sa7eb shoghlي el 7ali.",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "FR-OOS-12", "batch": 2,
+        "query": "eih el rateb el monaseb elly atlobo lama batqaddem 3ala shoghl fi shirka tanya?",
+        "should_refuse": true, "category": "personal_career_advice"
+      },
+      {
+        "id": "FR-OOS-13", "batch": 2,
+        "query": "galy 3ard shoghl men shirka tanya, tensa7ny akhdo?",
+        "should_refuse": true, "category": "personal_career_advice"
+      },
+      {
+        "id": "FR-OOS-14", "batch": 2,
+        "query": "el manager bta3y fi shoghlي el 2adeem kan biye3amelny beshakl we7esh, ezay at3amel ma3 da nafseyyan?",
+        "should_refuse": true, "category": "personal_life"
+      },
+      {
+        "id": "FR-OOS-15", "batch": 2,
+        "query": "momken trage3ly el CV bta3y we te2olly a7asseno ezay?",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "FR-OOS-16", "batch": 2,
+        "query": "3ayez aftah shirket nafsy, eih khatawaт el tasgeel el tegary fi masr?",
+        "should_refuse": true, "category": "external_legal"
+      },
+      {
+        "id": "FR-OOS-17", "batch": 2,
+        "query": "eih nasaye7ak el 3amma 3ashan a3mel tawazun bein el shoghl wel 7ayah el shakhseya?",
+        "should_refuse": true, "category": "general_advice"
+      },
+      {
+        "id": "FR-OOS-18", "batch": 2,
+        "query": "ezay aste3ed le mo2ablet ta2yeem el ada2 fi ay shirka?",
+        "should_refuse": true, "category": "personal_career_advice"
+      },
+      {
+        "id": "FR-OOS-19", "batch": 2,
+        "query": "ektebly post e7terafi 3ala LinkedIn 3an el tar2eya elly etayyent fيha.",
+        "should_refuse": true, "category": "personal_task"
+      },
+      {
+        "id": "FR-OOS-20", "batch": 2,
+        "query": "eih el far2 bein el rateb el ijmali wel safi beshakl 3am?",
+        "should_refuse": true, "category": "general_knowledge"
+      },
+
+      {
+        "id": "FR-HR-11", "batch": 2,
+        "query": "law ata2emt be 4 fel review hakhod ad eih zeyadah fel rateb?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-12", "batch": 2,
+        "query": "momken a2el ayam el agaza elly ma5adtesh lel sana el gaya?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-13", "batch": 2,
+        "query": "muka2afet nehayet el 5edma btet7eseb ezay?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-14", "batch": 2,
+        "query": "el shirka betedfa3 eshterak el gym?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-15", "batch": 2,
+        "query": "law esta2elt 2abl ma el bonus yetdfa3 hakhodo walla la2?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-16", "batch": 2,
+        "query": "3ayez abalagh 3an tara4o fi afaq el ta2nia, a3mel eih?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-17", "batch": 2,
+        "query": "agaza el obowa mad4o3a fi afaq el ta2nia?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-18", "batch": 2,
+        "query": "fi seyasa lel shirka 3ala este5dam social media el shakhsi wana fi el shoghl?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-19", "batch": 2,
+        "query": "el muwazaf el muta3a2ed 3ando 7a2 fi el bonus el sanawi?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      },
+      {
+        "id": "FR-HR-20", "batch": 2,
+        "query": "law 3amil adaly hedeyya, a2dar akhudha men gher ma abalagh? we 2imteha ad eih?",
+        "should_refuse": false, "category": "valid_hr_policy"
+      }
+    ]
+  }
+}

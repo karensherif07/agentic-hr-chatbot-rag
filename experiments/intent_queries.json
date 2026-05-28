@@ -1,279 +1,1901 @@
 [
-
-  {"id":"i01","question":"What is the standard notice period for G3 employees who resign?","language":"english","complexity":"L1","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"offboarding","notes":"pure policy — identical answer for all G3 employees"},
-  {"id":"i02","question":"What are the rules around probation extension?","language":"english","complexity":"L1","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"employment_terms","notes":"pure policy"},
-  {"id":"i03","question":"How many steps are in the progressive disciplinary process?","language":"english","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"discipline","notes":"pure policy"},
-  {"id":"i04","question":"What documents are required before an employee's first day?","language":"english","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"recruitment","notes":"pure policy — same for all"},
-  {"id":"i05","question":"What are the criteria for an internal promotion?","language":"english","complexity":"L3","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"promotion","notes":"pure policy — rules not personal eligibility"},
-  {"id":"i06","question":"What is the company's policy on accepting gifts from suppliers?","language":"english","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"ethics","notes":"pure policy"},
-  {"id":"i07","question":"What does health insurance cover for dependent children?","language":"english","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"benefits","notes":"coverage rules are policy, not personal data"},
-  {"id":"i08","question":"What travel class does a G4 manager get on a flight over 6 hours?","language":"english","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"travel","notes":"pure policy"},
-
-  {"id":"i09","question":"ما هي إجراءات الإجراء التأديبي التدريجي في الشركة؟","language":"arabic","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"discipline","notes":"pure policy in Arabic"},
-  {"id":"i10","question":"ما شروط الحصول على منحة دراسية؟","language":"arabic","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"training","notes":"scholarship conditions — same for all"},
-  {"id":"i11","question":"ما هي نماذج العمل المرن المعتمدة وما الموافقات المطلوبة؟","language":"arabic","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"remote_work","notes":"pure policy"},
-  {"id":"i12","question":"كم يوم إجازة أبوة يحق لأي موظف؟","language":"arabic","complexity":"L1","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"leave_policy","notes":"paternity leave entitlement is policy not personal"},
-
-  {"id":"i13","question":"إيه خطوات الإجراء التأديبي من أول تحذير للفصل؟","language":"egyptian","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"discipline","notes":"pure policy in Egyptian Arabic"},
-  {"id":"i14","question":"eih el notice period lel G3 lw ista2al?","language":"franco","complexity":"L1","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"offboarding","notes":"pure policy in franco"},
-  {"id":"i15","question":"eih el conditions el lazem atammelhom 3ashan atragga?","language":"franco","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"promotion","notes":"promotion criteria — policy"},
-  {"id":"i16","question":"بدل الريموت بكام وإيه شروطه؟","language":"egyptian","complexity":"L1","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"allowances","notes":"remote allowance is a policy rule, same for all eligible"},
-  {"id":"i17","question":"إيه نسبة الزيادة في الراتب لو تقييمي 4؟","language":"egyptian","complexity":"L1","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"compensation","notes":"increment percentage is a policy table"},
-
-  {"id":"i18","question":"el health insurance biyeghati eih lel atfal?","language":"franco","complexity":"L2","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"benefits","notes":"coverage rules are policy"},
-
-
-  {"id":"i19","question":"How many annual leave days do I have remaining this year?","language":"english","complexity":"L1","expected_intent":"personal","expected_tools":["get_leave_data"],"topic":"leave","notes":"requires THIS employee's leave balance"},
-  {"id":"i20","question":"What is my current net salary?","language":"english","complexity":"L1","expected_intent":"personal","expected_tools":["get_salary_data"],"topic":"salary","notes":"personal salary data"},
-  {"id":"i21","question":"What was my rating in the last performance review?","language":"english","complexity":"L1","expected_intent":"personal","expected_tools":["get_performance_data"],"topic":"performance","notes":"personal rating"},
-  {"id":"i22","question":"What is my current job grade and department?","language":"english","complexity":"L1","expected_intent":"personal","expected_tools":["get_profile"],"topic":"profile","notes":"personal profile"},
-  {"id":"i23","question":"Do I have any pending leave requests?","language":"english","complexity":"L1","expected_intent":"personal","expected_tools":["get_leave_data"],"topic":"leave","notes":"personal leave data"},
-  {"id":"i24","question":"Show me my OKRs for this cycle.","language":"english","complexity":"L1","expected_intent":"personal","expected_tools":["get_performance_data"],"topic":"performance","notes":"personal OKRs"},
-  {"id":"i25","question":"Have I completed the mandatory compliance training this year?","language":"english","complexity":"L2","expected_intent":"personal","expected_tools":["get_training_data"],"topic":"training","notes":"personal training record"},
-  {"id":"i26","question":"Do I have any active disciplinary warnings on my record?","language":"english","complexity":"L2","expected_intent":"personal","expected_tools":["get_disciplinary_data"],"topic":"disciplinary","notes":"personal disciplinary record"},
-
-  {"id":"i27","question":"كم يوم إجازة سنوية تبقى لي هذا العام؟","language":"arabic","complexity":"L1","expected_intent":"personal","expected_tools":["get_leave_data"],"topic":"leave","notes":"personal leave balance"},
-  {"id":"i28","question":"ما هو راتبي الصافي هذا الشهر؟","language":"arabic","complexity":"L1","expected_intent":"personal","expected_tools":["get_salary_data"],"topic":"salary","notes":"personal salary"},
-  {"id":"i29","question":"ما كان تقييمي في آخر دورة أداء؟","language":"arabic","complexity":"L1","expected_intent":"personal","expected_tools":["get_performance_data"],"topic":"performance","notes":"personal rating"},
-  {"id":"i30","question":"هل لديّ أي إنذارات تأديبية نشطة؟","language":"arabic","complexity":"L2","expected_intent":"personal","expected_tools":["get_disciplinary_data"],"topic":"disciplinary","notes":"personal disciplinary record"},
-
-  {"id":"i31","question":"كام يوم إجازة فاضلي السنة دي؟","language":"egyptian","complexity":"L1","expected_intent":"personal","expected_tools":["get_leave_data"],"topic":"leave","notes":"personal leave balance in Egyptian"},
-  {"id":"i32","question":"إيه مرتبي الصافي الشهر ده؟","language":"egyptian","complexity":"L1","expected_intent":"personal","expected_tools":["get_salary_data"],"topic":"salary","notes":"personal salary"},
-  {"id":"i33","question":"إيه تقييمي في آخر مراجعة أداء؟","language":"egyptian","complexity":"L1","expected_intent":"personal","expected_tools":["get_performance_data"],"topic":"performance","notes":"personal rating"},
-
-  {"id":"i34","question":"kam yom agaza fadel 3andy el sana dy?","language":"franco","complexity":"L1","expected_intent":"personal","expected_tools":["get_leave_data"],"topic":"leave","notes":"personal leave in franco"},
-  {"id":"i35","question":"eih maratby el net el shahr da?","language":"franco","complexity":"L1","expected_intent":"personal","expected_tools":["get_salary_data"],"topic":"salary","notes":"personal salary"},
-  {"id":"i36","question":"eih el rating bta3y fy akher review?","language":"franco","complexity":"L1","expected_intent":"personal","expected_tools":["get_performance_data"],"topic":"performance","notes":"personal rating"},
-
-  {"id":"i37","question":"Am I eligible for the annual bonus this year?","language":"english","complexity":"L3","expected_intent":"hybrid","expected_tools":["get_performance_data","retrieve_policy"],"topic":"bonus_eligibility","notes":"needs personal rating + bonus policy rules"},
-  {"id":"i38","question":"Can I apply for a promotion right now?","language":"english","complexity":"L3","expected_intent":"hybrid","expected_tools":["get_performance_data","get_profile","retrieve_policy"],"topic":"promotion_eligibility","notes":"needs grade+tenure+rating+policy criteria"},
-  {"id":"i39","question":"What end-of-service gratuity would I receive if I resign today?","language":"english","complexity":"L4","expected_intent":"hybrid","expected_tools":["get_profile","get_salary_data","retrieve_policy"],"topic":"gratuity_calculation","notes":"needs tenure+salary+gratuity policy table"},
-  {"id":"i40","question":"Based on my rating, what salary increment will I get?","language":"english","complexity":"L3","expected_intent":"hybrid","expected_tools":["get_performance_data","retrieve_policy"],"topic":"salary_increment","notes":"needs personal rating + increment policy table"},
-  {"id":"i41","question":"Am I eligible for the Leadership Academy this year?","language":"english","complexity":"L3","expected_intent":"hybrid","expected_tools":["get_performance_data","get_profile","retrieve_policy","get_disciplinary_data"],"topic":"training_eligibility","notes":"needs grade+tenure+rating+Academy policy"},
-  {"id":"i42","question":"How much notice do I need to give if I resign?","language":"english","complexity":"L2","expected_intent":"hybrid","expected_tools":["get_profile","retrieve_policy"],"topic":"notice_period","notes":"notice period depends on personal grade + policy table"},
-  {"id":"i43","question":"Can I switch to full remote work?","language":"english","complexity":"L3","expected_intent":"hybrid","expected_tools":["get_profile","retrieve_policy"],"topic":"remote_eligibility","notes":"depends on current work model + remote policy"},
-
-  {"id":"i44","question":"هل أنا مؤهل للمكافأة السنوية بناءً على وضعي الحالي؟","language":"arabic","complexity":"L3","expected_intent":"hybrid","expected_tools":["get_performance_data","retrieve_policy"],"topic":"bonus_eligibility","notes":"hybrid in Arabic — needs rating + policy"},
-  {"id":"i45","question":"ما مكافأة نهاية الخدمة التي سأحصل عليها لو استقلت اليوم؟","language":"arabic","complexity":"L4","expected_intent":"hybrid","expected_tools":["get_profile","get_salary_data","retrieve_policy"],"topic":"gratuity_calculation","notes":"calculation hybrid in Arabic"},
-  {"id":"i46","question":"هل يمكنني التقدم للترقية الآن؟","language":"arabic","complexity":"L3","expected_intent":"hybrid","expected_tools":["get_performance_data","get_profile","retrieve_policy"],"topic":"promotion_eligibility","notes":"hybrid in Arabic"},
-  {"id":"i47","question":"كم يوم إشعار محتاج أقدمه لو قررت الاستقالة؟","language":"arabic","complexity":"L2","expected_intent":"hybrid","expected_tools":["get_profile","retrieve_policy"],"topic":"notice_period","notes":"depends on personal grade + policy"},
-
-  {"id":"i48","question":"أنا مستحق بونص السنه دي ولا لأ؟","language":"egyptian","complexity":"L3","expected_intent":"hybrid","expected_tools":["get_performance_data","retrieve_policy"],"topic":"bonus_eligibility","notes":"hybrid in Egyptian"},
-  {"id":"i49","question":"لو استقلت النهارده هاخد مكافأة نهاية خدمة قد إيه؟","language":"egyptian","complexity":"L4","expected_intent":"hybrid","expected_tools":["get_profile","get_salary_data","retrieve_policy"],"topic":"gratuity_calculation","notes":"calculation hybrid in Egyptian"},
-
-  {"id":"i50","question":"ana mosta7e2 el bonus el sana di wala la2?","language":"franco","complexity":"L3","expected_intent":"hybrid","expected_tools":["get_performance_data","retrieve_policy"],"topic":"bonus_eligibility","notes":"hybrid in franco"},
-  {"id":"i51","question":"lw esta2elt en naharda, hakhod end of service ad eih?","language":"franco","complexity":"L4","expected_intent":"hybrid","expected_tools":["get_profile","get_salary_data","retrieve_policy"],"topic":"gratuity_calculation","notes":"hybrid calculation in franco"},
-
-  {"id":"i52","question":"What is the weather in Cairo today?","language":"english","complexity":"L1","expected_intent":"out_of_scope","expected_tools":[],"topic":"out_of_scope","notes":"OOS — agent should call policy, get no info, respond accordingly"},
-  {"id":"i53","question":"Can you write me a Python script to sort a list?","language":"english","complexity":"L1","expected_intent":"out_of_scope","expected_tools":[],"topic":"out_of_scope","notes":"OOS — completely unrelated to HR"},
-  {"id":"i54","question":"What is the stock price of Horizon Tech?","language":"english","complexity":"L1","expected_intent":"out_of_scope","expected_tools":[],"topic":"out_of_scope","notes":"OOS — not an HR question"},
-  {"id":"i55","question":"ما هو سعر الدولار اليوم؟","language":"arabic","complexity":"L1","expected_intent":"out_of_scope","expected_tools":[],"topic":"out_of_scope","notes":"OOS in Arabic — exchange rate not HR"},
-  {"id":"i56","question":"eih se3r el dollar en naharda?","language":"franco","complexity":"L1","expected_intent":"out_of_scope","expected_tools":[],"topic":"out_of_scope","notes":"OOS in franco"},
-
-  {"id":"i57","question":"How much leave do I have?","language":"english","complexity":"L1","expected_intent":"personal","expected_tools":["get_leave_data"],"topic":"leave","notes":"ambiguous 'how much' — should trigger personal not policy"},
-  {"id":"i58","question":"What is the notice period?","language":"english","complexity":"L1","expected_intent":"policy","expected_tools":["retrieve_policy"],"topic":"offboarding","notes":"generic — no 'my' — should route to policy"},
-  {"id":"i59","question":"Tell me about my performance and what increments the company gives for my rating.","language":"english","complexity":"L4","expected_intent":"hybrid","expected_tools":["get_performance_data","retrieve_policy"],"topic":"performance+policy","notes":"explicitly asks for both personal and policy in one question"},
-  {"id":"i60","question":"Am I on a PIP?","language":"english","complexity":"L2","expected_intent":"personal","expected_tools":["get_disciplinary_data"],"topic":"disciplinary","notes":"edge case — must check personal disciplinary record, not call policy"}
-,
-{
-    "id": "i61",
-    "question": "My manager told me I might be put on a PIP. What does that mean for my bonus and salary increment?",
+  {
+    "id": "p01",
+    "question": "What is the standard notice period for G3 employees who resign?",
     "language": "english",
-    "complexity": "L4",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_disciplinary_data", "get_performance_data", "retrieve_policy"],
-    "topic": "pip_impact",
-    "notes": "hybrid — checks personal disciplinary/performance status + PIP policy outcomes"
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "offboarding",
+    "notes": "pure policy"
   },
   {
-    "id": "i62",
-    "question": "How much of my training budget have I used so far, and what's the maximum the company allows for my grade?",
+    "id": "p02",
+    "question": "What are the rules around probation extension?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "employment_terms",
+    "notes": "pure policy"
+  },
+  {
+    "id": "p03",
+    "question": "How many steps are in the progressive disciplinary process?",
+    "language": "english",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "discipline",
+    "notes": "pure policy"
+  },
+  {
+    "id": "p04",
+    "question": "What documents are required before an employee's first day?",
+    "language": "english",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "recruitment",
+    "notes": "pure policy"
+  },
+  {
+    "id": "p05",
+    "question": "What are the criteria for an internal promotion?",
     "language": "english",
     "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_training_data", "get_profile", "retrieve_policy"],
-    "topic": "training_budget",
-    "notes": "hybrid — personal training usage + policy budget table by grade"
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "promotion",
+    "notes": "pure policy — rules not personal eligibility"
   },
   {
-    "id": "i63",
-    "question": "Given my current grade and how long I've been here, am I eligible for the voluntary savings plan?",
+    "id": "p06",
+    "question": "What is the company's policy on accepting gifts from suppliers?",
     "language": "english",
-    "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_profile", "retrieve_policy"],
-    "topic": "savings_eligibility",
-    "notes": "hybrid — G3+ eligibility check requires profile + wellness policy"
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "ethics",
+    "notes": "pure policy"
   },
   {
-    "id": "i64",
-    "question": "I've been on a hybrid model. What would I need to do to switch to full remote, and does my role qualify?",
+    "id": "p07",
+    "question": "What does health insurance cover for dependent children?",
     "language": "english",
-    "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_profile", "retrieve_policy"],
-    "topic": "remote_eligibility",
-    "notes": "hybrid — current work model from profile + remote policy approval chain"
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "benefits",
+    "notes": "coverage rules are policy"
   },
   {
-    "id": "i65",
-    "question": "If I take unpaid leave for a month, how does that affect my end-of-service gratuity calculation?",
+    "id": "p08",
+    "question": "What travel class does a G4 manager get on a flight over 6 hours?",
     "language": "english",
-    "complexity": "L4",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_profile", "get_salary_data", "retrieve_policy"],
-    "topic": "gratuity_calculation",
-    "notes": "hybrid L4 — complex interaction between personal tenure/salary and gratuity + unpaid leave policy"
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "travel",
+    "notes": "pure policy"
   },
   {
-    "id": "i66",
-    "question": "ما هو رصيد ميزانية التدريب المتبقية لديّ هذا العام مقارنةً بما تسمح به سياسة الشركة لدرجتي الوظيفية؟",
-    "language": "arabic",
-    "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_training_data", "get_profile", "retrieve_policy"],
-    "topic": "training_budget",
-    "notes": "hybrid in MSA Arabic — training balance vs policy allowance for grade"
-  },
-  {
-    "id": "i67",
-    "question": "هل يحق لي الاستفادة من خطة الادخار الطوعي بناءً على درجتي ومدة خدمتي؟",
-    "language": "arabic",
-    "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_profile", "retrieve_policy"],
-    "topic": "savings_eligibility",
-    "notes": "hybrid in MSA Arabic — grade + tenure check against savings plan policy"
-  },
-  {
-    "id": "i68",
-    "question": "لو اتحطيت على PIP، هيأثر ده على البونص بتاعي ولا على زيادة مرتبي؟",
-    "language": "egyptian",
-    "complexity": "L4",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_disciplinary_data", "get_performance_data", "retrieve_policy"],
-    "topic": "pip_impact",
-    "notes": "hybrid in Egyptian Arabic — personal PIP/disciplinary status + policy consequences"
-  },
-  {
-    "id": "i69",
-    "question": "أنا شايل إنذار كتابي دلوقتي. ممكن أتقدم للترقية؟",
-    "language": "egyptian",
-    "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_disciplinary_data", "get_profile", "retrieve_policy"],
-    "topic": "promotion_eligibility",
-    "notes": "hybrid Egyptian — active written warning on record + promotion criteria policy"
-  },
-  {
-    "id": "i70",
-    "question": "كام يوم تدريب فاضل معايا السنة دي وإيه أقصى حد بيسمحوا بيه؟",
-    "language": "egyptian",
-    "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_training_data", "get_profile", "retrieve_policy"],
-    "topic": "training_budget",
-    "notes": "hybrid Egyptian — personal training days remaining + policy cap by grade"
-  },
-  {
-    "id": "i71",
-    "question": "ana 3andy warning active delwa2ty, ha2dar ata2addam lel promotion wala la2?",
-    "language": "franco",
-    "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_disciplinary_data", "get_profile", "retrieve_policy"],
-    "topic": "promotion_eligibility",
-    "notes": "hybrid franco — active warning check + promotion policy requirements"
-  },
-  {
-    "id": "i72",
-    "question": "law 3ayez a3mel switch le full remote, eih ely lazmeny a3melo w el grade bta3y byesma7 wala la2?",
-    "language": "franco",
-    "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_profile", "retrieve_policy"],
-    "topic": "remote_eligibility",
-    "notes": "hybrid franco — current work model + grade check against remote policy"
-  },
-  {
-    "id": "i73",
-    "question": "What is the maximum carry-over for annual leave, and how many days have I actually carried over from last year?",
+    "id": "p09",
+    "question": "What is the notice period?",
     "language": "english",
-    "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_leave_data", "retrieve_policy"],
-    "topic": "leave_carryover",
-    "notes": "hybrid — personal carried-over days + policy carry-over cap by tenure"
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "offboarding",
+    "notes": "generic phrasing with no 'my' — routes to policy"
   },
   {
-    "id": "i74",
-    "question": "My performance has been declining. At what point would the company formally start a disciplinary process against me?",
-    "language": "english",
-    "complexity": "L4",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_performance_data", "get_disciplinary_data", "retrieve_policy"],
-    "topic": "discipline_threshold",
-    "notes": "hybrid L4 — personal trend + active warnings + progressive discipline policy"
-  },
-  {
-    "id": "i75",
-    "question": "Do I qualify for an emergency interest-free loan right now?",
-    "language": "english",
-    "complexity": "L3",
-    "expected_intent": "hybrid",
-    "expected_tools": ["get_profile", "retrieve_policy"],
-    "topic": "loan_eligibility",
-    "notes": "hybrid — probation status from profile + loan eligibility policy (post-probation only)"
-  },
-  {
-    "id": "i76",
+    "id": "p10",
     "question": "What is the company's policy on business travel per diem?",
     "language": "english",
     "complexity": "L2",
     "expected_intent": "policy",
-    "expected_tools": ["retrieve_policy"],
+    "expected_tools": [
+      "retrieve_policy"
+    ],
     "topic": "travel",
-    "notes": "pure policy — per diem rates are the same for all; no personal data needed"
+    "notes": "pure policy — per diem rates are same for all"
   },
   {
-    "id": "i77",
+    "id": "p11",
+    "question": "ما هي إجراءات الإجراء التأديبي التدريجي في الشركة؟",
+    "language": "arabic",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "discipline",
+    "notes": "pure policy in Arabic"
+  },
+  {
+    "id": "p12",
+    "question": "ما شروط الحصول على منحة دراسية؟",
+    "language": "arabic",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "training",
+    "notes": "scholarship conditions — same for all"
+  },
+  {
+    "id": "p13",
+    "question": "ما هي نماذج العمل المرن المعتمدة وما الموافقات المطلوبة؟",
+    "language": "arabic",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "remote_work",
+    "notes": "pure policy"
+  },
+  {
+    "id": "p14",
+    "question": "كم يوم إجازة أبوة يحق لأي موظف؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "leave_policy",
+    "notes": "paternity leave entitlement is policy not personal"
+  },
+  {
+    "id": "p15",
     "question": "ما هي شروط استحقاق قرض الطوارئ بدون فوائد؟",
     "language": "arabic",
     "complexity": "L2",
     "expected_intent": "policy",
-    "expected_tools": ["retrieve_policy"],
+    "expected_tools": [
+      "retrieve_policy"
+    ],
     "topic": "benefits",
-    "notes": "pure policy in MSA Arabic — loan eligibility rules are same for all"
+    "notes": "pure policy — loan eligibility rules same for all"
   },
   {
-    "id": "i78",
-    "question": "بيقولوا في الشركة إن في خطة توفير طوعية. إيه شروطها وأنا أنا مستحقها؟",
+    "id": "p16",
+    "question": "ما هي نسبة تعويض العمل الإضافي في أيام الأسبوع؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "overtime",
+    "notes": "pure policy — same rate for all"
+  },
+  {
+    "id": "p17",
+    "question": "متى تبدأ التغطية التأمينية الصحية للموظف الجديد؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "benefits",
+    "notes": "pure policy — same for all new employees"
+  },
+  {
+    "id": "p18",
+    "question": "ما هي الجرائم التي تستوجب الفصل الفوري دون إنذار؟",
+    "language": "arabic",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "discipline",
+    "notes": "gross misconduct policy — same for all"
+  },
+  {
+    "id": "p19",
+    "question": "ما هو الحد الأقصى لمبلغ قرض الطوارئ وشروط السداد؟",
+    "language": "arabic",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "benefits",
+    "notes": "pure policy — same terms for all eligible employees"
+  },
+  {
+    "id": "p20",
+    "question": "ما هي وحدات التدريب الإلزامية السنوية ومواعيد إتمامها؟",
+    "language": "arabic",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "training",
+    "notes": "pure policy — mandatory modules same for all"
+  },
+  {
+    "id": "p21",
+    "question": "إيه خطوات الإجراء التأديبي من أول تحذير للفصل؟",
+    "language": "egyptian",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "discipline",
+    "notes": "pure policy in Egyptian Arabic"
+  },
+  {
+    "id": "p22",
+    "question": "بدل الريموت بكام وإيه شروطه؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "allowances",
+    "notes": "remote allowance is a policy rule"
+  },
+  {
+    "id": "p23",
+    "question": "إيه نسبة الزيادة في الراتب لو التقييم 4؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "compensation",
+    "notes": "increment percentage is a policy table — generic not personal"
+  },
+  {
+    "id": "p24",
+    "question": "إيه هي أنواع الإجازات المدفوعة في الشركة؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "leave_policy",
+    "notes": "leave types are policy — same for all"
+  },
+  {
+    "id": "p25",
+    "question": "إيه شروط الالتحاق ببرنامج الادخار الطوعي؟",
+    "language": "egyptian",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "benefits",
+    "notes": "savings plan eligibility is policy"
+  },
+  {
+    "id": "p26",
+    "question": "إيه حد التأمين على الحياة اللي بتقدمه الشركة؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "benefits",
+    "notes": "life insurance benefit is pure policy"
+  },
+  {
+    "id": "p27",
+    "question": "إيه هو يوم صرف الرواتب كل شهر؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "compensation",
+    "notes": "salary payment day is policy — same for all"
+  },
+  {
+    "id": "p28",
+    "question": "إيه الإجراء لو صحفي اتصل بيا وعايز تعليق عن الشركة؟",
+    "language": "egyptian",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "ethics",
+    "notes": "media contact policy — same procedure for all"
+  },
+  {
+    "id": "p29",
+    "question": "إيه المصاريف اللي بتترجعلك وإيه الحدود بتاعتها؟",
+    "language": "egyptian",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "travel",
+    "notes": "reimbursable expense policy — same limits for all"
+  },
+  {
+    "id": "p30",
+    "question": "إيه مدة فترة الاختبار وإمتى بتتعمل مراجعة الأداء فيها؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "employment_terms",
+    "notes": "probation duration and review timing is pure policy"
+  },
+  {
+    "id": "p31",
+    "question": "eih el notice period lel G3 lw ista2al?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "offboarding",
+    "notes": "pure policy in franco"
+  },
+  {
+    "id": "p32",
+    "question": "eih el conditions el lazem atammelhom 3ashan atragga?",
+    "language": "franco",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "promotion",
+    "notes": "promotion criteria — policy"
+  },
+  {
+    "id": "p33",
+    "question": "el health insurance biyeghati eih lel atfal?",
+    "language": "franco",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "benefits",
+    "notes": "coverage rules are policy"
+  },
+  {
+    "id": "p34",
+    "question": "eih nisbel ta2meen el egtima3y ely byet5esem men el mou3af?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "compensation",
+    "notes": "social insurance rate is pure policy"
+  },
+  {
+    "id": "p35",
+    "question": "eih el overtime rate lel ayam el 3adia?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "overtime",
+    "notes": "overtime rate is pure policy"
+  },
+  {
+    "id": "p36",
+    "question": "emta el ta2meen el se7y biyebda2 lel mou8af el gedid?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "benefits",
+    "notes": "insurance start date is pure policy"
+  },
+  {
+    "id": "p37",
+    "question": "eih el ta2meen 3ala el hayah ely el company btet2addam bih?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "benefits",
+    "notes": "life insurance policy — same for all"
+  },
+  {
+    "id": "p38",
+    "question": "eih el gara2em ely bte2adi le fashl fouri?",
+    "language": "franco",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "discipline",
+    "notes": "gross misconduct — pure policy"
+  },
+  {
+    "id": "p39",
+    "question": "eih el mawded el lazem a2addem fiha ta2reer el masarif ba3d el se7b?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "travel",
+    "notes": "expense claim deadline is pure policy"
+  },
+  {
+    "id": "p40",
+    "question": "eih el modules el training el elzamya w emta lazem tekhlas?",
+    "language": "franco",
+    "complexity": "L2",
+    "expected_intent": "policy",
+    "expected_tools": [
+      "retrieve_policy"
+    ],
+    "topic": "training",
+    "notes": "mandatory training is pure policy"
+  },
+  {
+    "id": "e01",
+    "question": "How many annual leave days do I have remaining this year?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_leave_data"
+    ],
+    "topic": "leave",
+    "notes": "personal leave balance"
+  },
+  {
+    "id": "e02",
+    "question": "What is my current net salary?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_salary_data"
+    ],
+    "topic": "salary",
+    "notes": "personal salary data"
+  },
+  {
+    "id": "e03",
+    "question": "What was my rating in the last performance review?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_performance_data"
+    ],
+    "topic": "performance",
+    "notes": "personal rating"
+  },
+  {
+    "id": "e04",
+    "question": "What is my current job grade and department?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_profile"
+    ],
+    "topic": "profile",
+    "notes": "personal profile"
+  },
+  {
+    "id": "e05",
+    "question": "Do I have any pending leave requests?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_leave_data"
+    ],
+    "topic": "leave",
+    "notes": "personal leave data"
+  },
+  {
+    "id": "e06",
+    "question": "Show me my OKRs for this cycle.",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_performance_data"
+    ],
+    "topic": "performance",
+    "notes": "personal OKRs"
+  },
+  {
+    "id": "e07",
+    "question": "Have I completed the mandatory compliance training this year?",
+    "language": "english",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_training_data"
+    ],
+    "topic": "training",
+    "notes": "personal training record"
+  },
+  {
+    "id": "e08",
+    "question": "Do I have any active disciplinary warnings on my record?",
+    "language": "english",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_disciplinary_data"
+    ],
+    "topic": "disciplinary",
+    "notes": "personal disciplinary record"
+  },
+  {
+    "id": "e09",
+    "question": "How much leave do I have?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_leave_data"
+    ],
+    "topic": "leave",
+    "notes": "ambiguous 'how much' — should trigger personal not policy"
+  },
+  {
+    "id": "e10",
+    "question": "Am I on a PIP?",
+    "language": "english",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_disciplinary_data"
+    ],
+    "topic": "disciplinary",
+    "notes": "must check personal record, not call policy"
+  },
+  {
+    "id": "e11",
+    "question": "كم يوم إجازة سنوية تبقى لي هذا العام؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_leave_data"
+    ],
+    "topic": "leave",
+    "notes": "personal leave balance"
+  },
+  {
+    "id": "e12",
+    "question": "ما هو راتبي الصافي هذا الشهر؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_salary_data"
+    ],
+    "topic": "salary",
+    "notes": "personal salary"
+  },
+  {
+    "id": "e13",
+    "question": "ما كان تقييمي في آخر دورة أداء؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_performance_data"
+    ],
+    "topic": "performance",
+    "notes": "personal rating"
+  },
+  {
+    "id": "e14",
+    "question": "هل لديّ أي إنذارات تأديبية نشطة؟",
+    "language": "arabic",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_disciplinary_data"
+    ],
+    "topic": "disciplinary",
+    "notes": "personal disciplinary record"
+  },
+  {
+    "id": "e15",
+    "question": "ما هو مستواي الوظيفي وقسمي الحالي؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_profile"
+    ],
+    "topic": "profile",
+    "notes": "personal profile data"
+  },
+  {
+    "id": "e16",
+    "question": "هل أكملت وحدات التدريب الإلزامية هذا العام؟",
+    "language": "arabic",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_training_data"
+    ],
+    "topic": "training",
+    "notes": "personal training completion status"
+  },
+  {
+    "id": "e17",
+    "question": "هل لديّ طلبات إجازة معلقة؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_leave_data"
+    ],
+    "topic": "leave",
+    "notes": "personal pending leave requests"
+  },
+  {
+    "id": "e18",
+    "question": "ما هي أهدافي لهذا الربع؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_performance_data"
+    ],
+    "topic": "performance",
+    "notes": "personal OKRs"
+  },
+  {
+    "id": "e19",
+    "question": "كم بلغ مجموع ما صرفته من ميزانية التدريب حتى الآن؟",
+    "language": "arabic",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_training_data"
+    ],
+    "topic": "training",
+    "notes": "personal training budget usage"
+  },
+  {
+    "id": "e20",
+    "question": "ما تاريخ انتهاء فترة الاختبار لديّ؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_profile"
+    ],
+    "topic": "employment_terms",
+    "notes": "personal probation end date from profile"
+  },
+  {
+    "id": "e21",
+    "question": "كام يوم إجازة فاضلي السنة دي؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_leave_data"
+    ],
+    "topic": "leave",
+    "notes": "personal leave balance"
+  },
+  {
+    "id": "e22",
+    "question": "إيه مرتبي الصافي الشهر ده؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_salary_data"
+    ],
+    "topic": "salary",
+    "notes": "personal salary"
+  },
+  {
+    "id": "e23",
+    "question": "إيه تقييمي في آخر مراجعة أداء؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_performance_data"
+    ],
+    "topic": "performance",
+    "notes": "personal rating"
+  },
+  {
+    "id": "e24",
+    "question": "إيه درجتي الوظيفية دلوقتي؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_profile"
+    ],
+    "topic": "profile",
+    "notes": "personal job grade"
+  },
+  {
+    "id": "e25",
+    "question": "عندي إنذارات تأديبية نشطة؟",
+    "language": "egyptian",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_disciplinary_data"
+    ],
+    "topic": "disciplinary",
+    "notes": "personal disciplinary record"
+  },
+  {
+    "id": "e26",
+    "question": "خلصت الترينينج الإلزامي السنة دي؟",
+    "language": "egyptian",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_training_data"
+    ],
+    "topic": "training",
+    "notes": "personal training completion"
+  },
+  {
+    "id": "e27",
+    "question": "عندي طلبات إجازة لسه مستنية موافقة؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_leave_data"
+    ],
+    "topic": "leave",
+    "notes": "personal pending leave requests"
+  },
+  {
+    "id": "e28",
+    "question": "إيه الـ OKRs بتاعتي الكوارتر ده؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_performance_data"
+    ],
+    "topic": "performance",
+    "notes": "personal OKRs"
+  },
+  {
+    "id": "e29",
+    "question": "صرفت قد إيه من ميزانية التدريب بتاعتي؟",
+    "language": "egyptian",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_training_data"
+    ],
+    "topic": "training",
+    "notes": "personal training budget used"
+  },
+  {
+    "id": "e30",
+    "question": "أنا على PIP دلوقتي؟",
+    "language": "egyptian",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_disciplinary_data"
+    ],
+    "topic": "disciplinary",
+    "notes": "personal PIP status"
+  },
+  {
+    "id": "e31",
+    "question": "kam yom agaza fadel 3andy el sana dy?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_leave_data"
+    ],
+    "topic": "leave",
+    "notes": "personal leave balance"
+  },
+  {
+    "id": "e32",
+    "question": "eih maratby el net el shahr da?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_salary_data"
+    ],
+    "topic": "salary",
+    "notes": "personal salary"
+  },
+  {
+    "id": "e33",
+    "question": "eih el rating bta3y fy akher review?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_performance_data"
+    ],
+    "topic": "performance",
+    "notes": "personal rating"
+  },
+  {
+    "id": "e34",
+    "question": "eih el grade bta3y delwa2ty?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_profile"
+    ],
+    "topic": "profile",
+    "notes": "personal job grade"
+  },
+  {
+    "id": "e35",
+    "question": "3andy indarat ta2dibiya active delwa2ty?",
+    "language": "franco",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_disciplinary_data"
+    ],
+    "topic": "disciplinary",
+    "notes": "personal disciplinary record"
+  },
+  {
+    "id": "e36",
+    "question": "khalaset el training el elzamy el sana dy?",
+    "language": "franco",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_training_data"
+    ],
+    "topic": "training",
+    "notes": "personal training completion"
+  },
+  {
+    "id": "e37",
+    "question": "3andy talabat agaza lesa mosta2bala?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_leave_data"
+    ],
+    "topic": "leave",
+    "notes": "personal pending leave requests"
+  },
+  {
+    "id": "e38",
+    "question": "eih el OKRs bta3ty el quarter da?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_performance_data"
+    ],
+    "topic": "performance",
+    "notes": "personal OKRs"
+  },
+  {
+    "id": "e39",
+    "question": "srafet 2ad eih men budget el training bta3y?",
+    "language": "franco",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_training_data"
+    ],
+    "topic": "training",
+    "notes": "personal training budget usage"
+  },
+  {
+    "id": "e40",
+    "question": "ana 3ala PIP delwa2ty wala la2?",
+    "language": "franco",
+    "complexity": "L2",
+    "expected_intent": "personal",
+    "expected_tools": [
+      "get_disciplinary_data"
+    ],
+    "topic": "disciplinary",
+    "notes": "personal PIP status"
+  },
+  {
+    "id": "h01",
+    "question": "Am I eligible for the annual bonus this year?",
+    "language": "english",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "bonus_eligibility",
+    "notes": "needs personal rating + bonus policy rules"
+  },
+  {
+    "id": "h02",
+    "question": "Can I apply for a promotion right now?",
+    "language": "english",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_performance_data",
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "promotion_eligibility",
+    "notes": "needs grade+tenure+rating+policy criteria"
+  },
+  {
+    "id": "h03",
+    "question": "What end-of-service gratuity would I receive if I resign today?",
+    "language": "english",
+    "complexity": "L4",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "get_salary_data",
+      "retrieve_policy"
+    ],
+    "topic": "gratuity_calculation",
+    "notes": "needs tenure+salary+gratuity policy table"
+  },
+  {
+    "id": "h04",
+    "question": "Based on my rating, what salary increment will I get?",
+    "language": "english",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "salary_increment",
+    "notes": "needs personal rating + increment policy table"
+  },
+  {
+    "id": "h05",
+    "question": "How much notice do I need to give if I resign?",
+    "language": "english",
+    "complexity": "L2",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "notice_period",
+    "notes": "notice period depends on personal grade + policy table"
+  },
+  {
+    "id": "h06",
+    "question": "Tell me about my performance and what increments the company gives for my rating.",
+    "language": "english",
+    "complexity": "L4",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "salary_increment",
+    "notes": "explicitly asks for both personal and policy"
+  },
+  {
+    "id": "h07",
+    "question": "My manager told me I might be put on a PIP. What does that mean for my bonus and salary increment?",
+    "language": "english",
+    "complexity": "L4",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_disciplinary_data",
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "pip_impact",
+    "notes": "checks personal status + PIP policy outcomes"
+  },
+  {
+    "id": "h08",
+    "question": "How much of my training budget have I used, and what's the maximum the company allows for my grade?",
+    "language": "english",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_training_data",
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "training_budget",
+    "notes": "personal training usage + policy budget table by grade"
+  },
+  {
+    "id": "h09",
+    "question": "Do I qualify for an emergency interest-free loan right now?",
+    "language": "english",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "loan_eligibility",
+    "notes": "probation status from profile + loan eligibility policy"
+  },
+  {
+    "id": "h10",
+    "question": "If I take unpaid leave for a month, how does that affect my end-of-service gratuity?",
+    "language": "english",
+    "complexity": "L4",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "get_salary_data",
+      "retrieve_policy"
+    ],
+    "topic": "gratuity_calculation",
+    "notes": "personal tenure/salary + gratuity + unpaid leave policy"
+  },
+  {
+    "id": "h11",
+    "question": "هل أنا مؤهل للمكافأة السنوية بناءً على وضعي الحالي؟",
+    "language": "arabic",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "bonus_eligibility",
+    "notes": "hybrid in Arabic — needs rating + policy"
+  },
+  {
+    "id": "h12",
+    "question": "ما مكافأة نهاية الخدمة التي سأحصل عليها لو استقلت اليوم؟",
+    "language": "arabic",
+    "complexity": "L4",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "get_salary_data",
+      "retrieve_policy"
+    ],
+    "topic": "gratuity_calculation",
+    "notes": "calculation hybrid in Arabic"
+  },
+  {
+    "id": "h13",
+    "question": "هل يمكنني التقدم للترقية الآن؟",
+    "language": "arabic",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_performance_data",
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "promotion_eligibility",
+    "notes": "hybrid in Arabic"
+  },
+  {
+    "id": "h14",
+    "question": "كم يوم إشعار محتاج أقدمه لو قررت الاستقالة؟",
+    "language": "arabic",
+    "complexity": "L2",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "notice_period",
+    "notes": "depends on personal grade + policy"
+  },
+  {
+    "id": "h15",
+    "question": "ما رصيد ميزانية التدريب المتبقية لديّ مقارنةً بما تسمح به سياسة الشركة لدرجتي؟",
+    "language": "arabic",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_training_data",
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "training_budget",
+    "notes": "personal training balance vs policy allowance for grade"
+  },
+  {
+    "id": "h16",
+    "question": "هل يحق لي الاستفادة من خطة الادخار الطوعي بناءً على درجتي ومدة خدمتي؟",
+    "language": "arabic",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "savings_eligibility",
+    "notes": "grade + tenure check against savings plan policy"
+  },
+  {
+    "id": "h17",
+    "question": "بناءً على تقييمي، ما نسبة الزيادة التي سأحصل عليها؟",
+    "language": "arabic",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "salary_increment",
+    "notes": "personal rating + increment table"
+  },
+  {
+    "id": "h18",
+    "question": "هل أستطيع الحصول على قرض طوارئ بدون فوائد في الوقت الحالي؟",
+    "language": "arabic",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "loan_eligibility",
+    "notes": "probation status from profile + loan policy"
+  },
+  {
+    "id": "h19",
+    "question": "ما الحد الأقصى لترحيل الإجازة السنوية، وكم يوماً رحّلته فعلاً من العام الماضي؟",
+    "language": "arabic",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_leave_data",
+      "retrieve_policy"
+    ],
+    "topic": "leave_carryover",
+    "notes": "personal carried days + policy carry-over cap"
+  },
+  {
+    "id": "h20",
+    "question": "هل أنا مؤهل للانضمام إلى أكاديمية القيادة هذا العام؟",
+    "language": "arabic",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_performance_data",
+      "get_profile",
+      "retrieve_policy",
+      "get_disciplinary_data"
+    ],
+    "topic": "training_eligibility",
+    "notes": "grade+tenure+rating+disciplinary status + academy policy"
+  },
+  {
+    "id": "h21",
+    "question": "أنا مستحق بونص السنه دي ولا لأ؟",
     "language": "egyptian",
     "complexity": "L3",
     "expected_intent": "hybrid",
-    "expected_tools": ["get_profile", "retrieve_policy"],
-    "topic": "savings_eligibility",
-    "notes": "hybrid Egyptian — policy explanation + personal grade check for G3+ requirement"
+    "expected_tools": [
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "bonus_eligibility",
+    "notes": "hybrid in Egyptian"
   },
   {
-    "id": "i79",
-    "question": "eih nisbet el match ely el company bte3melo 3ala el savings plan, w ana mosta7e2 ada2 el7 wala la2?",
+    "id": "h22",
+    "question": "لو استقلت النهارده هاخد مكافأة نهاية خدمة قد إيه؟",
+    "language": "egyptian",
+    "complexity": "L4",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "get_salary_data",
+      "retrieve_policy"
+    ],
+    "topic": "gratuity_calculation",
+    "notes": "calculation hybrid in Egyptian"
+  },
+  {
+    "id": "h23",
+    "question": "لو اتحطيت على PIP، هيأثر ده على البونص بتاعي؟",
+    "language": "egyptian",
+    "complexity": "L4",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_disciplinary_data",
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "pip_impact",
+    "notes": "personal PIP status + policy consequences"
+  },
+  {
+    "id": "h24",
+    "question": "أنا شايل إنذار كتابي دلوقتي. ممكن أتقدم للترقية؟",
+    "language": "egyptian",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_disciplinary_data",
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "promotion_eligibility",
+    "notes": "active warning + promotion criteria policy"
+  },
+  {
+    "id": "h25",
+    "question": "كام يوم تدريب فاضل معايا وإيه أقصى حد بيسمحوا بيه لدرجتي؟",
+    "language": "egyptian",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_training_data",
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "training_budget",
+    "notes": "personal training days + policy cap by grade"
+  },
+  {
+    "id": "h26",
+    "question": "بناءً على تقييمي، هاخد قد إيه زيادة في المرتب؟",
+    "language": "egyptian",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "salary_increment",
+    "notes": "personal rating + increment table"
+  },
+  {
+    "id": "h27",
+    "question": "أقدر آخد قرض طوارئ بدون فوايد دلوقتي؟",
+    "language": "egyptian",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "loan_eligibility",
+    "notes": "probation status + loan eligibility policy"
+  },
+  {
+    "id": "h28",
+    "question": "بيقولوا في الشركة إن في خطة توفير طوعية. إيه شروطها وأنا مستحقها؟",
+    "language": "egyptian",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "savings_eligibility",
+    "notes": "policy explanation + personal grade check for G3+ requirement"
+  },
+  {
+    "id": "h29",
+    "question": "لو اخدت إجازة بدون مرتب شهر، ده هيأثر على مكافأة نهاية الخدمة بتاعتي إزاي؟",
+    "language": "egyptian",
+    "complexity": "L4",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "get_salary_data",
+      "retrieve_policy"
+    ],
+    "topic": "gratuity_calculation",
+    "notes": "personal tenure/salary + gratuity + unpaid leave policy"
+  },
+  {
+    "id": "h30",
+    "question": "كام يوم إجازة رحّلتهم من السنة اللي فاتت وإيه الحد الأقصى المسموح بيه؟",
+    "language": "egyptian",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_leave_data",
+      "retrieve_policy"
+    ],
+    "topic": "leave_carryover",
+    "notes": "personal carry-over days + policy cap"
+  },
+  {
+    "id": "h31",
+    "question": "ana mosta7e2 el bonus el sana di wala la2?",
     "language": "franco",
     "complexity": "L3",
     "expected_intent": "hybrid",
-    "expected_tools": ["get_profile", "retrieve_policy"],
-    "topic": "savings_eligibility",
-    "notes": "hybrid franco — company match rate from policy + personal grade eligibility check"
+    "expected_tools": [
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "bonus_eligibility",
+    "notes": "hybrid in franco"
   },
   {
-    "id": "i80",
+    "id": "h32",
+    "question": "lw esta2elt en naharda, hakhod end of service ad eih?",
+    "language": "franco",
+    "complexity": "L4",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "get_salary_data",
+      "retrieve_policy"
+    ],
+    "topic": "gratuity_calculation",
+    "notes": "hybrid calculation in franco"
+  },
+  {
+    "id": "h33",
+    "question": "ana 3andy warning active delwa2ty, ha2dar ata2addam lel promotion wala la2?",
+    "language": "franco",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_disciplinary_data",
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "promotion_eligibility",
+    "notes": "active warning + promotion policy requirements"
+  },
+  {
+    "id": "h34",
+    "question": "law 3ayez a3mel switch le full remote, eih ely lazmeny a3melo w el grade bta3y byesma7 wala la2?",
+    "language": "franco",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "remote_eligibility",
+    "notes": "current work model + grade check against remote policy"
+  },
+  {
+    "id": "h35",
+    "question": "eih nisbet el match ely el company bte3melo 3ala el savings plan, w ana mosta7e2 wala la2?",
+    "language": "franco",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "savings_eligibility",
+    "notes": "company match rate from policy + personal grade eligibility"
+  },
+  {
+    "id": "h36",
+    "question": "3ala asas el rating bta3y, hakhod 2ad eih zeyada fel mrateb?",
+    "language": "franco",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "salary_increment",
+    "notes": "personal rating + increment policy table"
+  },
+  {
+    "id": "h37",
+    "question": "a2dar akhod 2ard taware2 bl0% fa2eda delwa2ty?",
+    "language": "franco",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "loan_eligibility",
+    "notes": "probation status from profile + loan eligibility policy"
+  },
+  {
+    "id": "h38",
+    "question": "lw el manager 2ally momken atabt 3ala PIP, eih ta2siro 3ala el bonus w el zeyada?",
+    "language": "franco",
+    "complexity": "L4",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_disciplinary_data",
+      "get_performance_data",
+      "retrieve_policy"
+    ],
+    "topic": "pip_impact",
+    "notes": "personal PIP/disciplinary + policy consequences"
+  },
+  {
+    "id": "h39",
+    "question": "eih el 7ad el a2sa le naql el agaza, w ana na2alt 2ad eih men el sana elly fatit?",
+    "language": "franco",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_leave_data",
+      "retrieve_policy"
+    ],
+    "topic": "leave_carryover",
+    "notes": "personal carry-over + policy cap"
+  },
+  {
+    "id": "h40",
+    "question": "kam yom training fadel m3aya w eih el 7ad el akbar el masmo7 bih le daraget?",
+    "language": "franco",
+    "complexity": "L3",
+    "expected_intent": "hybrid",
+    "expected_tools": [
+      "get_training_data",
+      "get_profile",
+      "retrieve_policy"
+    ],
+    "topic": "training_budget",
+    "notes": "personal training days remaining + policy cap by grade"
+  },
+  {
+    "id": "o01",
+    "question": "What is the weather in Cairo today?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — not HR"
+  },
+  {
+    "id": "o02",
+    "question": "Can you write me a Python script to sort a list?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — coding task"
+  },
+  {
+    "id": "o03",
+    "question": "What is the stock price of Horizon Tech?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — finance not HR"
+  },
+  {
+    "id": "o04",
     "question": "Can you help me draft an email to my manager?",
     "language": "english",
     "complexity": "L1",
     "expected_intent": "out_of_scope",
     "expected_tools": [],
     "topic": "out_of_scope",
-    "notes": "OOS — creative writing task, not an HR question; already using out_of_scope intent"
+    "notes": "OOS — creative writing, not HR"
+  },
+  {
+    "id": "o05",
+    "question": "What is the best restaurant near the office?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — local recommendation"
+  },
+  {
+    "id": "o06",
+    "question": "Translate this sentence into French for me.",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — translation task"
+  },
+  {
+    "id": "o07",
+    "question": "What are the latest football results?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — sports news"
+  },
+  {
+    "id": "o08",
+    "question": "Can you summarize this news article for me?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — general assistant task"
+  },
+  {
+    "id": "o09",
+    "question": "What is 15% of 3,500?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — general math, no HR context"
+  },
+  {
+    "id": "o10",
+    "question": "Who is the CEO of Amazon?",
+    "language": "english",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — general knowledge"
+  },
+  {
+    "id": "o11",
+    "question": "ما هو سعر الدولار اليوم؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — exchange rate not HR"
+  },
+  {
+    "id": "o12",
+    "question": "ما هو أفضل مطعم في القاهرة؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — restaurant recommendation"
+  },
+  {
+    "id": "o13",
+    "question": "اكتب لي قصيدة عن الربيع.",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — creative writing"
+  },
+  {
+    "id": "o14",
+    "question": "ما هو أحدث هاتف من شركة آبل؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — tech product news"
+  },
+  {
+    "id": "o15",
+    "question": "كيف أطبخ كنافة؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — cooking recipe"
+  },
+  {
+    "id": "o16",
+    "question": "ما هي نتائج مباريات كرة القدم أمس؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — sports results"
+  },
+  {
+    "id": "o17",
+    "question": "ترجم هذه الجملة إلى الإنجليزية: أنا سعيد اليوم.",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — translation task"
+  },
+  {
+    "id": "o18",
+    "question": "ما هي أسهم شركة أمازون اليوم؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — stock market"
+  },
+  {
+    "id": "o19",
+    "question": "ما توقعات الطقس لهذا الأسبوع في الإسكندرية؟",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — weather"
+  },
+  {
+    "id": "o20",
+    "question": "ساعدني في كتابة رسالة تهنئة لزميلي بمناسبة عيد ميلاده.",
+    "language": "arabic",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — creative writing, not HR"
+  },
+  {
+    "id": "o21",
+    "question": "إيه سعر الدولار النهارده؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — exchange rate"
+  },
+  {
+    "id": "o22",
+    "question": "إيه أحسن مطعم في المعادي؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — local recommendation"
+  },
+  {
+    "id": "o23",
+    "question": "إيه نتيجة ماتش الأهلي إمبارح؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — sports news"
+  },
+  {
+    "id": "o24",
+    "question": "إزاي أعمل كيكة شوكولاتة؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — recipe"
+  },
+  {
+    "id": "o25",
+    "question": "ممكن تكتبلي إيميل تهنئة لمديري؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — creative writing"
+  },
+  {
+    "id": "o26",
+    "question": "إيه آخر إصدار من الأيفون؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — tech product"
+  },
+  {
+    "id": "o27",
+    "question": "ترجملي الجملة دي للإنجليزي: أنا مبسوط النهارده.",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — translation task"
+  },
+  {
+    "id": "o28",
+    "question": "إيه الجو هيكون عامل إزاي بكره في القاهرة؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — weather"
+  },
+  {
+    "id": "o29",
+    "question": "إيه الأخبار الرياضية النهارده؟",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — sports news"
+  },
+  {
+    "id": "o30",
+    "question": "ساعدني أكتب بوست على لينكدإن عن شغلي.",
+    "language": "egyptian",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — social media writing"
+  },
+  {
+    "id": "o31",
+    "question": "eih se3r el dollar en naharda?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — exchange rate"
+  },
+  {
+    "id": "o32",
+    "question": "eih a7san mat3am fel ma3adi?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — restaurant recommendation"
+  },
+  {
+    "id": "o33",
+    "question": "eih nateget match el ahly embareh?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — sports news"
+  },
+  {
+    "id": "o34",
+    "question": "ezay a3mel chocolate cake?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — recipe"
+  },
+  {
+    "id": "o35",
+    "question": "momken tektebly email tehn2a le moudiry?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — creative writing"
+  },
+  {
+    "id": "o36",
+    "question": "eih akher esfar men el iPhone?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — tech product"
+  },
+  {
+    "id": "o37",
+    "question": "targamlly el gomla dy lel englizi: ana mabsout en naharda.",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — translation task"
+  },
+  {
+    "id": "o38",
+    "question": "eih el gaw heykon 3amel ezay bokra fel 2ahera?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — weather forecast"
+  },
+  {
+    "id": "o39",
+    "question": "eih el akhbar el reyadia en naharda?",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — sports news"
+  },
+  {
+    "id": "o40",
+    "question": "sa3edny akteb post 3ala linkedin 3an shoghlly.",
+    "language": "franco",
+    "complexity": "L1",
+    "expected_intent": "out_of_scope",
+    "expected_tools": [],
+    "topic": "out_of_scope",
+    "notes": "OOS — social media writing"
   }
 ]
-

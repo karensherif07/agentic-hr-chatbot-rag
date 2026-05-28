@@ -10,7 +10,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from tqdm import tqdm
 
-from experiments.run_ragas_eval import _strip_thinking
+from agent import _strip_think_blocks
 
 load_dotenv()
 
@@ -445,7 +445,7 @@ def _call_llm(
             # ── Strip <think> blocks (Qwen3 + any model that emits them) ──────
             text = _strip_think_blocks(text)
             # Belt-and-suspenders: also call the imported ragas stripper
-            text = _strip_thinking(text).strip()
+            text = _strip_think_blocks(text).strip()
 
             if not text:
                 if retry_prompt and current != retry_prompt:

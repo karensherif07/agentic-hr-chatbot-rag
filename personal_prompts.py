@@ -226,6 +226,27 @@ def format_personal_data(data: dict) -> str:
 
     leave_verdict = f"YES ({annual_remaining:.0f} days remaining)" if annual_remaining > 0 else "NO — balance is zero"
     lines.append("  Can take more annual leave: " + leave_verdict)
+
+    # Pre-calculate gratuity and overtime so the LLM never needs to compute
+    base = float(salary.get("base_salary", 0)) if salary else 0
+    if base > 0 and tenure_months > 0:
+        tenure_years = tenure_months / 12
+        if tenure_years < 1:
+            gratuity = 0
+        elif tenure_years <= 3:
+            gratuity = round(base * 0.5 * tenure_years)
+        elif tenure_years <= 5:
+            gratuity = round(base * 1.0 * tenure_years)
+        else:
+            gratuity = round(base * 1.5 * tenure_years)
+        hourly = round(base / 30 / 8, 2)
+        overtime_weekday = round(hourly * 1.5, 2)
+        overtime_weekend  = round(hourly * 2.0, 2)
+        lines.append(f"  Gratuity if resign now: {gratuity:,.0f} EGP "
+                     f"(base {base:,.0f} × {tenure_years:.1f} yrs × applicable multiplier)")
+        lines.append(f"  Hourly rate: {hourly:,.2f} EGP | Overtime weekday: {overtime_weekday:,.2f} EGP/hr (1.5×) | "
+                     f"Overtime weekend/holiday: {overtime_weekend:,.2f} EGP/hr (2×)")
+
     lines.append("")
     return "\n".join(lines).strip()
 
@@ -294,50 +315,56 @@ _PERSONAL_RULES_FRANCO = (
 # ── Hybrid rules — combines DB data with policy context ───────────────────
 _HYBRID_RULES_EN = (
     "RULES:\n"
-    "1. State the employee's actual data FIRST (exact fields from the data block — especially work_model).\n"
-    "2. WORKING HOURS / SCHEDULE: Always lead with 'Work arrangement' / work_model (remote, hybrid, or on-site). "
-    "If remote: make clear they are not required to be in the office daily; standard start/end times from policy still apply "
-    "unless an exception is stated. Do NOT describe them like a full-time office worker if work_model is remote.\n"
-    "3. Then cite the relevant policy lines (shift length, breaks, typical corporate hours) with [Page N | AR/EN].\n"
-    "4. Combine into one concise answer — do not repeat the same fact in multiple sentences.\n"
-    "5. No page citations for the personal/database part — only for policy sentences.\n"
+    "1. Answer the question DIRECTLY in the first sentence. Do not open with work-model boilerplate.\n"
+    "2. GRADE: Always state the employee's grade (e.g. 'As a G3 employee...') when applying any "
+    "grade-based policy rule. The grade must appear in the answer.\n"
+    "3. CALCULATIONS: When the question asks 'how much would I get' or involves a monetary amount, "
+    "ALWAYS compute and state the final EGP figure using the employee's actual salary data. "
+    "Show the formula briefly: e.g. '1 month × 36,000 EGP base = 36,000 EGP'.\n"
+    "4. WORKING HOURS: If work_model is remote, make clear they are not required in the office daily. "
+    "State the relevant policy hours (shift length, breaks) with a page citation.\n"
+    "5. Cite policy sentences with [Page N | AR/EN]. No citations for DB data.\n"
     "6. LANGUAGE LOCK: Reply in English only.\n"
+    "7. ELIGIBILITY: Use the ELIGIBILITY PRE-CHECK verdicts verbatim. Never re-derive them.\n"
+    "8. Keep the answer under 5 sentences. No repetition.\n"
 )
 
 _HYBRID_RULES_AR = (
     "القواعد:\n"
-    "1. اذكر بيانات الموظف أولاً (خصوصاً نموذج العمل work_model).\n"
-    "2. ساعات العمل / الجدول: ابدأ بتوضيح طريقة العمل (عن بُعد، هجين، أو في المكتب). "
-    "إذا كان عن بُعد: أوضح أن الحضور اليومي للمكتب غير مطلوب؛ أوقات بداية ونهاية الدوام من السياسة تظل سارية ما لم يُستثنَ. "
-    "لا تصِف الموظف كمن يعمل يومياً من المكتب إذا كان العمل عن بُعد.\n"
-    "3. ثم استشهد بما ينطبق من السياسة مع [Page N | AR/EN].\n"
-    "4. إجابة موجزة دون تكرار نفس الجملة.\n"
-    "5. لا أرقام صفحات لجزء قاعدة البيانات — فقط لجمل السياسة.\n"
+    "1. أجب على السؤال مباشرةً في الجملة الأولى. لا تبدأ بوصف نموذج العمل.\n"
+    "2. الدرجة: اذكر دائماً درجة الموظف (مثلاً 'بوصفك موظفاً من الدرجة G3...') عند تطبيق أي قاعدة سياسة مرتبطة بالدرجة.\n"
+    "3. الحسابات: إذا سأل الموظف 'كم سأحصل' أو عن مبلغ مالي، احسب الرقم النهائي بالجنيه المصري "
+    "باستخدام بيانات راتبه الفعلية. أظهر الحساب باختصار: مثلاً 'شهر × 36,000 جنيه = 36,000 جنيه'.\n"
+    "4. ساعات العمل: إذا كان العمل عن بُعد، وضّح أن الحضور اليومي للمكتب غير مطلوب، ثم اذكر ساعات السياسة مع رقم الصفحة.\n"
+    "5. استشهد بجمل السياسة مع [Page N | AR/EN]. لا أرقام صفحات لبيانات قاعدة البيانات.\n"
     "6. قفل اللغة: أجب بالعربية فقط.\n"
+    "7. الأهلية: استخدم نتائج ELIGIBILITY PRE-CHECK حرفياً. لا تُعيد حسابها.\n"
+    "8. الإجابة في 5 جمل كحد أقصى. بدون تكرار.\n"
 )
 
 _HYBRID_RULES_EGY = (
     "القواعد:\n"
-    "1. اذكر بيانات الموظف الأول — وخصوصاً شغلك عن بُعد ولا هجين ولا من المكتب (work_model).\n"
-    "2. ساعات الشغل: لو أنت remote متقولش إنك لازم تقعد في الشركة كل يوم؛ الأوقات الرسمية من السياسة لسه بتتطبق. "
-    "لو hybrid أو office وضّح الفرق باختصار.\n"
-    "3. بعدين استشهد بالسياسة مع [Page N | AR/EN].\n"
-    "4. من غير تكرار نفس الكلام مرتين.\n"
-    "5. لا أرقام صفحات للبيانات الشخصية — بس للسياسة.\n"
+    "1. جاوب على السؤال في الجملة الأولى مباشرة. متبدأش بوصف نموذج العمل.\n"
+    "2. الدرجة: لازم تقول درجة الموظف (مثلاً 'إنت G3...') لما بتطبق قاعدة بتتعلق بالدرجة.\n"
+    "3. الحسابات: لو السؤال عن 'هاخد كام'، احسب الرقم بالجنيه بناءً على الراتب الفعلي. "
+    "مثلاً: 'شهر × 36,000 جنيه = 36,000 جنيه'.\n"
+    "4. العمل عن بُعد: لو شغلك remote متقولش إنك لازم تحضر كل يوم؛ ساعات السياسة لسه بتتطبق.\n"
+    "5. استشهد بالسياسة مع [Page N | AR/EN]. لا أرقام صفحات للبيانات الشخصية.\n"
     "6. قفل اللغة: عامية مصرية بس.\n"
+    "7. الأهلية: استخدم نتيجة ELIGIBILITY PRE-CHECK زي ما هي. متحسبهاش من جديد.\n"
+    "8. الإجابة في 5 جمل كحد أقصى.\n"
 )
 
 _HYBRID_RULES_FRANCO = (
-    "OUTPUT: Franco Arabi — Egyptian Arabic in Latin letters, natural texting style "
-    "(3=ع, 7=ح, 5=خ, 2=أ/ء, 4=ش). Short sentences; يعني، كده، عشان، لو where natural. "
-    "No formal فصحى paragraphs. Do not answer in English.\n"
+    "OUTPUT: Franco Arabi — Egyptian Arabic in Latin letters, short WhatsApp-style sentences. "
+    "3=ع, 7=ح, 5=خ, 2=أ. No formal Arabic. No English.\n"
     "RULES:\n"
-    "1. 2ol el bayanat el shakhseya awwel — khosousan work_model (remote / hybrid / office).\n"
-    "2. Law remote: wa7yed en el attendance el yomiyyan fel ma7kam mesh matloob; el mawa3id el rasmeya men el policy lissa matlooba. "
-    "Mat2olsh en el shoghl zay employee office kamel law howwa remote.\n"
-    "3. Ba3den el policy ma3 [Page N | AR/EN] lel ta2seel (sa3at, breaks, shift).\n"
-    "4. Mat3awdsh takrar nafs el fekra maratein.\n"
-    "5. Mafish [Page …] lel gomel el database — bas lel policy.\n"
+    "1. Egeb 3ala el so2al directly fel gomla el awlany. Mafish intro 3an work model.\n"
+    "2. Grade: law fi policy rule 3ala asas el grade, 2ol el grade (e.g. 'enta G3').\n"
+    "3. Hisabat: law el so2al 3an 'hakhod ad eih', e7seb el mablagh bel geneih men el rateb el fe2li. "
+    "Mithalan: 'shahr × 36,000 = 36,000 geneih'.\n"
+    "4. El policy: 2ol el rule el sa7 men el policy context. Mafish takhmin.\n"
+    "5. El so2al bass — mafish kalam zeyada.\n"
 )
 
 # ── Prompt templates ───────────────────────────────────────────

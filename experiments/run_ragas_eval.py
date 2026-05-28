@@ -25,8 +25,8 @@ parser.add_argument("--generated-checkpoint", default="generation_checkpoint.jso
 parser.add_argument("--checkpoint",   default="ragas_checkpoint.json")
 parser.add_argument("--output",       default="ragas_results.json")
 parser.add_argument("--errors-log",   default="ragas_errors.json")
-parser.add_argument("--batch-size",   type=int,   default=5)
-parser.add_argument("--batch-sleep",  type=float, default=15.0)
+parser.add_argument("--batch-size",   type=int,   default=2)
+parser.add_argument("--batch-sleep",  type=float, default=30.0)
 args = parser.parse_args()
 
 BASE_WAIT = 20
@@ -63,7 +63,7 @@ if GEMINI_KEY:
             temperature=0,
         )
         # Force Groq — Gemini free tier exhausted
-        EVAL_LLM = LangchainLLMWrapper(langchain_llm=_groq("llama-3.1-8b-instant"))
+        EVAL_LLM = LangchainLLMWrapper(langchain_llm=_groq("llama-3.3-70b-versatile"))
         print("✓ Evaluator: llama-3.3-70b-versatile via Groq")
     except ImportError:
         EVAL_LLM = LangchainLLMWrapper(langchain_llm=_groq("llama-3.1-8b-instant"))
