@@ -1,678 +1,2018 @@
 {
   "meta": {
     "purpose": "Hybrid answer generation evaluation — Horizon Tech HR Chatbot",
-    "experiment": "Hybrid Query Evaluation",
-    "total_queries": 80,
-    "languages": ["english", "arabic_msa", "egyptian_arabic", "franco_arabic"],
-    "queries_per_language": 20,
-    "version": "1.0",
-    "metrics": [
-      "M1 — Tool Accuracy         : retrieve_policy AND correct DB tool(s) both called (rule-based)",
-      "M2 — Policy Grounding      : answer contains [Page N | AR/EN] citation (rule-based) + policy fact correct (LLM judge)",
-      "M3 — Personal Data Ground. : expected DB value present in answer (rule-based)"
+    "experiment": "Hybrid Query Evaluation v2",
+    "employee_id": 5,
+    "employee_name": "Nour Khalil",
+    "employee_grade": "G3",
+    "employee_profile_summary": "Senior Software Engineer | Engineering | hired 2021-04-15 | fully remote | full-time | not on probation | manager: Sara El-Masry",
+    "total_queries": 160,
+    "languages": [
+      "english",
+      "arabic_msa",
+      "egyptian_arabic",
+      "franco_arabic"
     ],
-    "hybrid_definition": "Question requires BOTH a policy rule AND this employee's personal data to answer fully",
+    "queries_per_language": 40,
+    "version": "2.0",
+    "metrics": [
+      "M1a — Policy Retrieved     : retrieve_policy called (rule-based)",
+      "M1b — DB Tool Called       : at least one expected DB tool called (rule-based)",
+      "M2  — Policy Correctness   : answer correctly states policy rule (LLM judge, ar_llm)",
+      "M3  — Personal Data Ground.: expected DB value present in answer (rule-based)"
+    ],
+    "hybrid_definition": "Question requires BOTH a policy rule AND this employee's personal DB data to answer fully",
+    "employee_db_values": {
+      "grade": "G3",
+      "job_title": "senior software engineer",
+      "hire_date": "2021-04-15",
+      "work_model": "remote",
+      "employment_type": "full-time",
+      "probation_status": "not in probation",
+      "manager_name": "Sara El-Masry",
+      "rating": "5",
+      "bonus_eligible": "YES",
+      "promo_eligible": "YES",
+      "schol_eligible": "YES",
+      "base_salary": "36000",
+      "gross_salary": "38800",
+      "net_salary": "29020",
+      "remaining_days": "23",
+      "budget_remaining_usd": "3800"
+    },
+    "topics_01_20": "bonus | notice | promotion | gratuity | savings plan | carry-over | travel class | gym subsidy | scholarship | salary increment | work hours | training budget | unpaid leave | remote switch | health add-ons | probation | overtime | per diem | loan eligibility | termination payout",
+    "topics_21_40": "leadership academy | life insurance | LTD benefit | manager approval | tenure & leave entitlement | OKR progress | savings contribution & match | remote allowances | social insurance deduction | net salary & payday | conference budget | AWS cert coverage | mentorship | mandatory training | EAP sessions | childcare subsidy | phased parental return | fertility grant | wellness reimbursement | max emergency loan",
     "design_notes": [
-      "Queries are medium difficulty — they clearly need both policy and personal data",
-      "Each query maps to one expected_db_tool (the planner should pick it) + retrieve_policy",
-      "grounding_field: the personal DB field the answer must include",
-      "policy_keyword: a word/phrase the answer must contain from policy context",
-      "Topics: bonus eligibility, promotion, notice period, leave carry-over, gratuity,",
-      "  savings plan, training budget, scholarship, work hours, health insurance add-ons"
+      "Run with: python run_hybrid_eval.py --employee_id 5",
+      "Checkpoint support: --checkpoint flag to resume; use --clear-checkpoint to restart",
+      "expected_db_value documents the value Nour's personal_data_str should contain for M3",
+      "grounding_field maps to _extract_personal_value() regex patterns in run_hybrid_eval.py",
+      "All queries are hybrid: require retrieve_policy + at least one DB tool"
     ]
   },
-
   "queries": {
-
     "english": [
       {
         "id": "HY-EN-01",
         "query": "Am I eligible for the annual bonus this year?",
-        "expected_tools": ["retrieve_policy", "get_performance_data", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
         "grounding_field": "bonus_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "bonus",
         "topic": "bonus"
       },
       {
         "id": "HY-EN-02",
         "query": "How much notice do I need to give if I resign?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "notice",
         "topic": "offboarding"
       },
       {
         "id": "HY-EN-03",
         "query": "Can I apply for a promotion?",
-        "expected_tools": ["retrieve_policy", "get_performance_data", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
         "grounding_field": "promo_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "promotion",
         "topic": "performance"
       },
       {
         "id": "HY-EN-04",
         "query": "How much end-of-service gratuity would I receive if I resign now?",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_salary_data"],
-        "grounding_field": "net_salary",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
         "policy_keyword": "gratuity",
         "topic": "offboarding"
       },
       {
         "id": "HY-EN-05",
         "query": "Am I eligible to join the voluntary savings plan?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "savings",
         "topic": "benefits"
       },
       {
         "id": "HY-EN-06",
         "query": "Can I carry over my unused annual leave to next year?",
-        "expected_tools": ["retrieve_policy", "get_leave_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_leave_data"
+        ],
         "grounding_field": "remaining_days",
+        "expected_db_value": "23",
         "policy_keyword": "carry",
         "topic": "leave"
       },
       {
         "id": "HY-EN-07",
         "query": "What travel class am I entitled to for a long-haul business trip?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "travel",
         "topic": "travel"
       },
       {
         "id": "HY-EN-08",
         "query": "What is my gym subsidy amount?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "gym",
         "topic": "benefits"
       },
       {
         "id": "HY-EN-09",
         "query": "Am I eligible to apply for a scholarship this year?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "schol_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "scholarship",
         "topic": "training"
       },
       {
         "id": "HY-EN-10",
         "query": "What salary increment percentage can I expect based on my last rating?",
-        "expected_tools": ["retrieve_policy", "get_performance_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data"
+        ],
         "grounding_field": "rating",
+        "expected_db_value": "5",
         "policy_keyword": "increment",
         "topic": "salary"
       },
       {
         "id": "HY-EN-11",
         "query": "What are my standard working hours given my role and department?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "job_title",
+        "expected_db_value": "senior software engineer",
         "policy_keyword": "hours",
         "topic": "work_schedule"
       },
       {
         "id": "HY-EN-12",
         "query": "How much of my training budget is left and what can I spend it on?",
-        "expected_tools": ["retrieve_policy", "get_training_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
         "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
         "policy_keyword": "training",
         "topic": "training"
       },
       {
         "id": "HY-EN-13",
         "query": "If I go on unpaid leave, how long am I allowed to take?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "unpaid",
         "topic": "leave"
       },
       {
         "id": "HY-EN-14",
         "query": "Can I switch to a fully remote work arrangement?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "work_model",
+        "expected_db_value": "remote",
         "policy_keyword": "remote",
         "topic": "work_schedule"
       },
       {
         "id": "HY-EN-15",
         "query": "What health insurance optional add-ons can I enrol in?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
         "policy_keyword": "insurance",
         "topic": "benefits"
       },
       {
         "id": "HY-EN-16",
         "query": "Am I still on probation and what does that mean for my leave?",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_leave_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_leave_data"
+        ],
         "grounding_field": "probation_status",
+        "expected_db_value": "not in probation",
         "policy_keyword": "probation",
         "topic": "probation"
       },
       {
         "id": "HY-EN-17",
         "query": "What overtime rate would I be paid for working on a weekend?",
-        "expected_tools": ["retrieve_policy", "get_salary_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
         "grounding_field": "base_salary",
+        "expected_db_value": "36000",
         "policy_keyword": "overtime",
         "topic": "salary"
       },
       {
         "id": "HY-EN-18",
         "query": "What is the daily per diem I get for a domestic business trip?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "per diem",
         "topic": "travel"
       },
       {
         "id": "HY-EN-19",
         "query": "Am I eligible for the emergency interest-free loan?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "probation_status",
+        "expected_db_value": "not in probation",
         "policy_keyword": "loan",
         "topic": "benefits"
       },
       {
         "id": "HY-EN-20",
         "query": "What would my end-of-service payment be if the company terminated my contract?",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_salary_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
         "grounding_field": "net_salary",
+        "expected_db_value": "29020",
         "policy_keyword": "termination",
         "topic": "offboarding"
+      },
+      {
+        "id": "HY-EN-21",
+        "query": "Am I eligible to be nominated for the Leadership Academy this year?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
+        "grounding_field": "rating",
+        "expected_db_value": "5",
+        "policy_keyword": "leadership academy",
+        "topic": "training"
+      },
+      {
+        "id": "HY-EN-22",
+        "query": "If I were to pass away, what would my group life insurance pay out to my beneficiary?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "gross_salary",
+        "expected_db_value": "38800",
+        "policy_keyword": "life insurance",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EN-23",
+        "query": "What monthly long-term disability benefit would I receive if I was medically unable to work for over 90 consecutive days?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
+        "policy_keyword": "disability",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EN-24",
+        "query": "Who is my direct manager and do I need their sign-off before my leave request is approved?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "manager_name",
+        "expected_db_value": "Sara El-Masry",
+        "policy_keyword": "approval",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-EN-25",
+        "query": "How long have I been at Horizon Tech and what annual leave entitlement does that give me?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "hire_date",
+        "expected_db_value": "2021-04-15",
+        "policy_keyword": "annual leave",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-EN-26",
+        "query": "What is my current OKR progress this half and am I on track?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data"
+        ],
+        "grounding_field": "rating",
+        "expected_db_value": "5",
+        "policy_keyword": "okr",
+        "topic": "performance"
+      },
+      {
+        "id": "HY-EN-27",
+        "query": "How much of my salary can I contribute to the voluntary savings plan and what does the company match?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "grade",
+        "expected_db_value": "G3",
+        "policy_keyword": "savings",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EN-28",
+        "query": "I work fully remotely — what allowances am I currently receiving for that arrangement?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "work_model",
+        "expected_db_value": "remote",
+        "policy_keyword": "remote",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EN-29",
+        "query": "How much is deducted from my salary every month for social insurance contributions?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
+        "policy_keyword": "social insurance",
+        "topic": "salary"
+      },
+      {
+        "id": "HY-EN-30",
+        "query": "What was my actual net take-home pay last month and on what date does the company pay salaries?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "net_salary",
+        "expected_db_value": "29020",
+        "policy_keyword": "payday",
+        "topic": "salary"
+      },
+      {
+        "id": "HY-EN-31",
+        "query": "I want to attend an external tech conference — how much learning budget do I have remaining?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
+        "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
+        "policy_keyword": "conference",
+        "topic": "training"
+      },
+      {
+        "id": "HY-EN-32",
+        "query": "If I sit the AWS Solutions Architect exam, will the company cover the fee and at what percentage?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
+        "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
+        "policy_keyword": "certification",
+        "topic": "training"
+      },
+      {
+        "id": "HY-EN-33",
+        "query": "Can I participate in the mentorship programme as a mentor and will it be formally noted in my HR file?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "grade",
+        "expected_db_value": "G3",
+        "policy_keyword": "mentor",
+        "topic": "training"
+      },
+      {
+        "id": "HY-EN-34",
+        "query": "Which mandatory compliance training modules apply to me and what are the annual deadlines?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "job_title",
+        "expected_db_value": "senior software engineer",
+        "policy_keyword": "compliance",
+        "topic": "training"
+      },
+      {
+        "id": "HY-EN-35",
+        "query": "How many EAP counselling sessions can I access per year and how do I contact the programme?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "eap",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EN-36",
+        "query": "Am I eligible for the monthly childcare subsidy and how much is it per child?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "childcare",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EN-37",
+        "query": "After my recent paternity leave, can I return to work on reduced hours at full pay for a transition period?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "phased return",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-EN-38",
+        "query": "Am I eligible for the fertility treatment assistance grant and how do I apply for it?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "hire_date",
+        "expected_db_value": "2021-04-15",
+        "policy_keyword": "fertility",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EN-39",
+        "query": "Can I claim the annual wellness reimbursement and what types of expenses qualify?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "wellness",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EN-40",
+        "query": "What is the maximum emergency interest-free loan amount I can apply for from Horizon Tech?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data",
+          "get_profile"
+        ],
+        "grounding_field": "net_salary",
+        "expected_db_value": "29020",
+        "policy_keyword": "loan",
+        "topic": "benefits"
       }
     ],
-
     "arabic_msa": [
       {
         "id": "HY-AR-01",
         "query": "هل أنا مؤهل للحصول على المكافأة السنوية هذا العام؟",
-        "expected_tools": ["retrieve_policy", "get_performance_data", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
         "grounding_field": "bonus_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "مكافأة",
         "topic": "bonus"
       },
       {
         "id": "HY-AR-02",
         "query": "كم مدة الإشعار التي يجب أن أقدمها عند استقالتي؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "إشعار",
         "topic": "offboarding"
       },
       {
         "id": "HY-AR-03",
         "query": "هل يمكنني التقدم للترقية إلى الدرجة الأعلى؟",
-        "expected_tools": ["retrieve_policy", "get_performance_data", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
         "grounding_field": "promo_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "ترقية",
         "topic": "performance"
       },
       {
         "id": "HY-AR-04",
-        "query": "ما مبلغ مكافأة نهاية الخدمة الذي سأحصل عليه إذا استقلت الآن؟",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_salary_data"],
-        "grounding_field": "net_salary",
+        "query": "كم مكافأة نهاية الخدمة التي سأحصل عليها لو استقلت الآن؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
         "policy_keyword": "نهاية الخدمة",
         "topic": "offboarding"
       },
       {
         "id": "HY-AR-05",
-        "query": "هل أنا مؤهل للانضمام إلى خطة الادخار الطوعية؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "هل أنا مؤهل للاشتراك في خطة الادخار الطوعي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "ادخار",
         "topic": "benefits"
       },
       {
         "id": "HY-AR-06",
-        "query": "هل يمكنني ترحيل أيام الإجازة السنوية غير المستخدمة إلى العام القادم؟",
-        "expected_tools": ["retrieve_policy", "get_leave_data"],
+        "query": "هل يمكنني ترحيل أيام الإجازة السنوية غير المستخدمة للعام القادم؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_leave_data"
+        ],
         "grounding_field": "remaining_days",
+        "expected_db_value": "23",
         "policy_keyword": "ترحيل",
         "topic": "leave"
       },
       {
         "id": "HY-AR-07",
-        "query": "ما درجة السفر التي أستحقها في رحلة عمل طويلة؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "ما درجة السفر المستحقة لي في رحلات العمل الطويلة؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "سفر",
         "topic": "travel"
       },
       {
         "id": "HY-AR-08",
-        "query": "ما قيمة دعم الصالة الرياضية الذي أحصل عليه؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "كم مبلغ دعم عضوية النادي الرياضي الذي أستحقه؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
-        "policy_keyword": "رياضية",
+        "expected_db_value": "G3",
+        "policy_keyword": "نادي",
         "topic": "benefits"
       },
       {
         "id": "HY-AR-09",
         "query": "هل أنا مؤهل للتقدم بطلب منحة دراسية هذا العام؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "schol_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "منحة",
         "topic": "training"
       },
       {
         "id": "HY-AR-10",
-        "query": "ما نسبة زيادة الراتب المتوقعة بناءً على تقييمي الأخير؟",
-        "expected_tools": ["retrieve_policy", "get_performance_data"],
+        "query": "ما نسبة الزيادة في الراتب التي أتوقعها بناءً على آخر تقييم لي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data"
+        ],
         "grounding_field": "rating",
+        "expected_db_value": "5",
         "policy_keyword": "زيادة",
         "topic": "salary"
       },
       {
         "id": "HY-AR-11",
-        "query": "ما ساعات عملي الرسمية بناءً على وظيفتي وقسمي؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "ما ساعات العمل الرسمية المطبقة على منصبي وقسمي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "job_title",
+        "expected_db_value": "senior software engineer",
         "policy_keyword": "ساعات",
         "topic": "work_schedule"
       },
       {
         "id": "HY-AR-12",
-        "query": "كم المبلغ المتبقي من ميزانية التدريب وما الذي يمكن إنفاقه عليه؟",
-        "expected_tools": ["retrieve_policy", "get_training_data"],
+        "query": "كم تبقى من ميزانية التدريب لديّ وعلى ماذا يمكنني إنفاقها؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
         "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
         "policy_keyword": "تدريب",
         "topic": "training"
       },
       {
         "id": "HY-AR-13",
-        "query": "إذا أردت أخذ إجازة بدون راتب، كم المدة المسموح بها؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "في حال الحاجة إلى إجازة بدون راتب، ما المدة المسموح بها؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "بدون راتب",
         "topic": "leave"
       },
       {
         "id": "HY-AR-14",
-        "query": "هل يمكنني التحول إلى نظام العمل عن بُعد بالكامل؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "هل يمكنني التحول إلى نظام العمل عن بُعد بشكل كامل؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "work_model",
-        "policy_keyword": "بُعد",
+        "expected_db_value": "remote",
+        "policy_keyword": "بعد",
         "topic": "work_schedule"
       },
       {
         "id": "HY-AR-15",
-        "query": "ما الإضافات الاختيارية للتأمين الصحي التي يمكنني الاشتراك بها؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "ما الإضافات الاختيارية في التأمين الصحي التي يمكنني الاشتراك بها؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
         "policy_keyword": "تأمين",
         "topic": "benefits"
       },
       {
         "id": "HY-AR-16",
-        "query": "هل ما زلت في فترة الاختبار وما تأثير ذلك على إجازتي؟",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_leave_data"],
+        "query": "هل لا أزال في فترة الاختبار وما تأثير ذلك على حق الإجازة؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_leave_data"
+        ],
         "grounding_field": "probation_status",
+        "expected_db_value": "not in probation",
         "policy_keyword": "اختبار",
         "topic": "probation"
       },
       {
         "id": "HY-AR-17",
-        "query": "ما معدل الأجر الإضافي الذي سأتقاضاه عند العمل في عطلة نهاية الأسبوع؟",
-        "expected_tools": ["retrieve_policy", "get_salary_data"],
+        "query": "ما معدل الوقت الإضافي الذي سأحصل عليه لو عملت في عطلة نهاية الأسبوع؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
         "grounding_field": "base_salary",
+        "expected_db_value": "36000",
         "policy_keyword": "إضافي",
         "topic": "salary"
       },
       {
         "id": "HY-AR-18",
-        "query": "ما قيمة البدل اليومي في رحلات العمل الداخلية؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "ما البدل اليومي المستحق لي في رحلات العمل الداخلية؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
-        "policy_keyword": "بدل",
+        "expected_db_value": "G3",
+        "policy_keyword": "بدل يومي",
         "topic": "travel"
       },
       {
         "id": "HY-AR-19",
-        "query": "هل أنا مؤهل للحصول على قرض طارئ بدون فوائد؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "هل أنا مؤهل للحصول على قرض طارئ بدون فوائد من الشركة؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "probation_status",
+        "expected_db_value": "not in probation",
         "policy_keyword": "قرض",
         "topic": "benefits"
       },
       {
         "id": "HY-AR-20",
-        "query": "ما المبلغ الذي سأتقاضاه عند إنهاء الخدمة من قِبل الشركة؟",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_salary_data"],
+        "query": "ما التسوية المالية التي ستصرف لي لو أنهت الشركة عقدي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
         "grounding_field": "net_salary",
+        "expected_db_value": "29020",
         "policy_keyword": "إنهاء",
         "topic": "offboarding"
+      },
+      {
+        "id": "HY-AR-21",
+        "query": "هل أنا مؤهل للترشح لبرنامج أكاديمية القيادة هذا العام؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
+        "grounding_field": "rating",
+        "expected_db_value": "5",
+        "policy_keyword": "أكاديمية القيادة",
+        "topic": "training"
+      },
+      {
+        "id": "HY-AR-22",
+        "query": "كم سيحصل المستفيد من تأمين الحياة الجماعي في حال وفاتي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "gross_salary",
+        "expected_db_value": "38800",
+        "policy_keyword": "تأمين الحياة",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-AR-23",
+        "query": "ما مبلغ استحقاق العجز طويل الأمد شهريًا إذا عجزت عن العمل لأكثر من 90 يومًا متتالية؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
+        "policy_keyword": "عجز",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-AR-24",
+        "query": "من هو مديري المباشر وهل أحتاج موافقته قبل اعتماد طلب الإجازة؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "manager_name",
+        "expected_db_value": "Sara El-Masry",
+        "policy_keyword": "اعتماد",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-AR-25",
+        "query": "كم عدد سنوات خدمتي في أفق التقنية وما رصيد الإجازة السنوية المستحق لي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "hire_date",
+        "expected_db_value": "2021-04-15",
+        "policy_keyword": "إجازة سنوية",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-AR-26",
+        "query": "ما مستوى تقدمي في أهداف OKR لهذا النصف وهل أنا على المسار الصحيح؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data"
+        ],
+        "grounding_field": "rating",
+        "expected_db_value": "5",
+        "policy_keyword": "أهداف",
+        "topic": "performance"
+      },
+      {
+        "id": "HY-AR-27",
+        "query": "كم يمكنني المساهمة به في خطة الادخار الطوعي وما نسبة مساهمة الشركة المقابلة؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "grade",
+        "expected_db_value": "G3",
+        "policy_keyword": "ادخار",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-AR-28",
+        "query": "ما البدلات التي أستحقها نظرًا لعملي عن بُعد بشكل كامل؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "work_model",
+        "expected_db_value": "remote",
+        "policy_keyword": "بعد",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-AR-29",
+        "query": "كم يُقتطع من راتبي شهريًا لصالح التأمينات الاجتماعية؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
+        "policy_keyword": "تأمينات اجتماعية",
+        "topic": "salary"
+      },
+      {
+        "id": "HY-AR-30",
+        "query": "ما صافي راتبي الذي استلمته الشهر الماضي وفي أي تاريخ تصرف الرواتب؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "net_salary",
+        "expected_db_value": "29020",
+        "policy_keyword": "صرف الراتب",
+        "topic": "salary"
+      },
+      {
+        "id": "HY-AR-31",
+        "query": "أريد حضور مؤتمر تقني خارجي — كم تبقى لي من ميزانية التعلم؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
+        "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
+        "policy_keyword": "مؤتمر",
+        "topic": "training"
+      },
+      {
+        "id": "HY-AR-32",
+        "query": "هل ستتحمل الشركة تكلفة اختبار شهادة AWS Solutions Architect وبأي نسبة؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
+        "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
+        "policy_keyword": "شهادة",
+        "topic": "training"
+      },
+      {
+        "id": "HY-AR-33",
+        "query": "هل يمكنني الانضمام لبرنامج الإرشاد كمرشد وهل سيُسجَّل ذلك رسميًا في ملفي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "grade",
+        "expected_db_value": "G3",
+        "policy_keyword": "إرشاد",
+        "topic": "training"
+      },
+      {
+        "id": "HY-AR-34",
+        "query": "ما دورات التدريب الإلزامية التي تنطبق عليّ وما مواعيدها النهائية؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "job_title",
+        "expected_db_value": "senior software engineer",
+        "policy_keyword": "إلزامي",
+        "topic": "training"
+      },
+      {
+        "id": "HY-AR-35",
+        "query": "كم عدد جلسات الاستشارة النفسية المتاحة لي سنويًا ضمن برنامج دعم الموظفين؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "استشارة",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-AR-36",
+        "query": "هل أنا مؤهل لدعم رعاية الأطفال وكم المبلغ الشهري لكل طفل؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "أطفال",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-AR-37",
+        "query": "هل يمكنني العودة من إجازة الأبوة بجدول عمل مخفض مع الاحتفاظ بالراتب الكامل؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "عودة",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-AR-38",
+        "query": "هل أنا مؤهل لمنحة علاج الخصوبة وكيف أتقدم بطلب؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "hire_date",
+        "expected_db_value": "2021-04-15",
+        "policy_keyword": "خصوبة",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-AR-39",
+        "query": "هل يمكنني المطالبة بتعويض العافية السنوي وما أنواع المصاريف المقبولة؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "عافية",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-AR-40",
+        "query": "ما الحد الأقصى للقرض الطارئ بدون فوائد الذي يمكنني الحصول عليه من الشركة؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data",
+          "get_profile"
+        ],
+        "grounding_field": "net_salary",
+        "expected_db_value": "29020",
+        "policy_keyword": "قرض",
+        "topic": "benefits"
       }
     ],
-
     "egyptian_arabic": [
       {
         "id": "HY-EGY-01",
         "query": "أنا مستحق المكافأة السنوية السنة دي؟",
-        "expected_tools": ["retrieve_policy", "get_performance_data", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
         "grounding_field": "bonus_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "مكافأة",
         "topic": "bonus"
       },
       {
         "id": "HY-EGY-02",
-        "query": "لو استقلت لازم أدي إشعار كام يوم؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "لو استقلت، لازم أديهم إشعار كام يوم قبل؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "إشعار",
         "topic": "offboarding"
       },
       {
         "id": "HY-EGY-03",
-        "query": "أقدر أتقدم على ترقية دلوقتي؟",
-        "expected_tools": ["retrieve_policy", "get_performance_data", "get_profile"],
+        "query": "أقدر أتقدم للترقية دلوقتي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
         "grounding_field": "promo_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "ترقية",
         "topic": "performance"
       },
       {
         "id": "HY-EGY-04",
-        "query": "لو استقلت دلوقتي، هاخد مكافأة نهاية خدمة كام؟",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_salary_data"],
-        "grounding_field": "net_salary",
-        "policy_keyword": "نهاية",
+        "query": "لو استقلت دلوقتي، هاخد مكافأة نهاية الخدمة كام؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
+        "policy_keyword": "نهاية الخدمة",
         "topic": "offboarding"
       },
       {
         "id": "HY-EGY-05",
-        "query": "أقدر أشترك في خطة الادخار الطوعي؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "أنا مستحق أشترك في خطة الادخار الطوعي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "ادخار",
         "topic": "benefits"
       },
       {
         "id": "HY-EGY-06",
-        "query": "ممكن أرحل أيام الأجازة اللي ما أخدتهاش للسنة الجاية؟",
-        "expected_tools": ["retrieve_policy", "get_leave_data"],
+        "query": "الأجازة اللي ما خدتيهاش، ممكن تترحل للسنة الجاية؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_leave_data"
+        ],
         "grounding_field": "remaining_days",
+        "expected_db_value": "23",
         "policy_keyword": "ترحيل",
         "topic": "leave"
       },
       {
         "id": "HY-EGY-07",
-        "query": "في سفريات الشغل الطويلة، بسافر بالدرجة إيه؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "في سفريات الشغل الطويلة، بسافر بأنهي درجة؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "سفر",
         "topic": "travel"
       },
       {
         "id": "HY-EGY-08",
-        "query": "دعم الجيم بتاعي كام جنيه في الشهر؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "دعم اشتراك النادي بتاعي كام في الشهر؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
-        "policy_keyword": "جيم",
+        "expected_db_value": "G3",
+        "policy_keyword": "نادي",
         "topic": "benefits"
       },
       {
         "id": "HY-EGY-09",
-        "query": "أنا مستحق منحة دراسية السنة دي؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "أنا مستحق أتقدم لمنحة دراسية السنة دي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "schol_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "منحة",
         "topic": "training"
       },
       {
         "id": "HY-EGY-10",
-        "query": "بناءً على آخر تقييم بتاعي، هاخد كام زيادة في المرتب؟",
-        "expected_tools": ["retrieve_policy", "get_performance_data"],
+        "query": "بناءً على آخر تقييم، هاخد زيادة راتب كام؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data"
+        ],
         "grounding_field": "rating",
+        "expected_db_value": "5",
         "policy_keyword": "زيادة",
         "topic": "salary"
       },
       {
         "id": "HY-EGY-11",
-        "query": "ساعات شغلي الرسمية كام بناءً على وظيفتي؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "ساعات الشغل الرسمية بتاعتي إيه على أساس منصبي وقسمي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "job_title",
+        "expected_db_value": "senior software engineer",
         "policy_keyword": "ساعات",
         "topic": "work_schedule"
       },
       {
         "id": "HY-EGY-12",
-        "query": "فاضل لي كام في ميزانية التدريب وأقدر أصرفها على إيه؟",
-        "expected_tools": ["retrieve_policy", "get_training_data"],
+        "query": "فاضل كام من ميزانية التدريب وأصرفها على إيه؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
         "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
         "policy_keyword": "تدريب",
         "topic": "training"
       },
       {
         "id": "HY-EGY-13",
-        "query": "لو حبيت تاخد إجازة بدون مرتب، أقصاها كام يوم؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "لو محتاج أجازة بدون راتب، أقصاها كام يوم؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "بدون راتب",
         "topic": "leave"
       },
       {
         "id": "HY-EGY-14",
-        "query": "أقدر أحول نظام شغلي يبقى remote بالكامل؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "ممكن أحول شغلي يبقى ريموت كامل؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "work_model",
-        "policy_keyword": "remote",
+        "expected_db_value": "remote",
+        "policy_keyword": "ريموت",
         "topic": "work_schedule"
       },
       {
         "id": "HY-EGY-15",
         "query": "في إضافات اختيارية للتأمين الصحي أقدر أشترك فيها؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
         "policy_keyword": "تأمين",
         "topic": "benefits"
       },
       {
         "id": "HY-EGY-16",
         "query": "لسه في فترة الاختبار وده بيأثر إزاي على الأجازة بتاعتي؟",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_leave_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_leave_data"
+        ],
         "grounding_field": "probation_status",
+        "expected_db_value": "not in probation",
         "policy_keyword": "اختبار",
         "topic": "probation"
       },
       {
         "id": "HY-EGY-17",
         "query": "لو اشتغلت يوم جمعة، هاتحسب لي الساعة بكام؟",
-        "expected_tools": ["retrieve_policy", "get_salary_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
         "grounding_field": "base_salary",
+        "expected_db_value": "36000",
         "policy_keyword": "إضافي",
         "topic": "salary"
       },
       {
         "id": "HY-EGY-18",
         "query": "البدل اليومي في سفريات الشغل الداخلية كام؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "بدل",
         "topic": "travel"
       },
       {
         "id": "HY-EGY-19",
         "query": "أقدر آخد قرض طارئ بدون فوائد من الشركة؟",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "probation_status",
+        "expected_db_value": "not in probation",
         "policy_keyword": "قرض",
         "topic": "benefits"
       },
       {
         "id": "HY-EGY-20",
         "query": "لو الشركة قررت تنهي عقدي، هاخد كام؟",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_salary_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
         "grounding_field": "net_salary",
+        "expected_db_value": "29020",
         "policy_keyword": "إنهاء",
         "topic": "offboarding"
+      },
+      {
+        "id": "HY-EGY-21",
+        "query": "أنا مستحق أتقدم لأكاديمية القيادة السنة دي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
+        "grounding_field": "rating",
+        "expected_db_value": "5",
+        "policy_keyword": "أكاديمية القيادة",
+        "topic": "training"
+      },
+      {
+        "id": "HY-EGY-22",
+        "query": "لو حصل لي حاجة، التأمين على الحياة هيدفع كام للمستفيدين؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "gross_salary",
+        "expected_db_value": "38800",
+        "policy_keyword": "تأمين الحياة",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EGY-23",
+        "query": "لو عجزت عن الشغل أكتر من 90 يوم، هاخد كام راتب شهري؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
+        "policy_keyword": "عجز",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EGY-24",
+        "query": "مين المدير اللي بيعتمد طلبات الإجازة بتاعتي وإيه الإجراء؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "manager_name",
+        "expected_db_value": "Sara El-Masry",
+        "policy_keyword": "اعتماد",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-EGY-25",
+        "query": "اشتغلت في الشركة كام سنة وده بيديني كام يوم إجازة سنوية؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "hire_date",
+        "expected_db_value": "2021-04-15",
+        "policy_keyword": "إجازة سنوية",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-EGY-26",
+        "query": "إيه التقدم في الـ OKRs بتاعتي النصف ده وأنا على المسار الصح؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data"
+        ],
+        "grounding_field": "rating",
+        "expected_db_value": "5",
+        "policy_keyword": "أهداف",
+        "topic": "performance"
+      },
+      {
+        "id": "HY-EGY-27",
+        "query": "أقدر أحط كام في خطة الادخار الطوعي والشركة هتضيف كام؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "grade",
+        "expected_db_value": "G3",
+        "policy_keyword": "ادخار",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EGY-28",
+        "query": "أنا بشتغل ريموت كامل — إيه البدلات اللي بتيجيلي عشان ده؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "work_model",
+        "expected_db_value": "remote",
+        "policy_keyword": "بعد",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EGY-29",
+        "query": "بيتخصم منى كام كل شهر للتأمينات الاجتماعية؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
+        "policy_keyword": "تأمينات",
+        "topic": "salary"
+      },
+      {
+        "id": "HY-EGY-30",
+        "query": "صافي راتبي الشهر اللي فات كان كام وامتى بالظبط بيتصرف الراتب؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "net_salary",
+        "expected_db_value": "29020",
+        "policy_keyword": "صرف",
+        "topic": "salary"
+      },
+      {
+        "id": "HY-EGY-31",
+        "query": "عايز أحضر مؤتمر تقني برا — كام فاضل في ميزانية التعلم بتاعتي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
+        "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
+        "policy_keyword": "مؤتمر",
+        "topic": "training"
+      },
+      {
+        "id": "HY-EGY-32",
+        "query": "لو خدت امتحان AWS Solutions Architect، الشركة هتدفع تكلفته ولا لأ؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
+        "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
+        "policy_keyword": "شهادة",
+        "topic": "training"
+      },
+      {
+        "id": "HY-EGY-33",
+        "query": "أقدر أشارك في برنامج الإرشاد كمنتور وده هيتسجل في ملفي الرسمي؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "grade",
+        "expected_db_value": "G3",
+        "policy_keyword": "إرشاد",
+        "topic": "training"
+      },
+      {
+        "id": "HY-EGY-34",
+        "query": "إيه التدريبات الإلزامية اللي لازم أخلصها وامتى آخر موعد؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "job_title",
+        "expected_db_value": "senior software engineer",
+        "policy_keyword": "إلزامي",
+        "topic": "training"
+      },
+      {
+        "id": "HY-EGY-35",
+        "query": "كام جلسة استشارة نفسية عندي مجانًا في السنة وأتصل بمين؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "استشارة",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EGY-36",
+        "query": "أنا مستحق دعم رعاية الأطفال وبيدفعوا كام عن كل واحد؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "أطفال",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EGY-37",
+        "query": "بعد إجازة الأبوة أقدر أرجع بساعات أقل مع راتب كامل؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "عودة",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-EGY-38",
+        "query": "أنا مستحق منحة علاج الخصوبة بتاعة الشركة وإيه الخطوات؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "hire_date",
+        "expected_db_value": "2021-04-15",
+        "policy_keyword": "خصوبة",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EGY-39",
+        "query": "أقدر آخد تعويض العافية السنوي وعلى إيه بالظبط أصرفه؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "عافية",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-EGY-40",
+        "query": "أقصى قرض طارئ بدون فوايد أقدر آخده من الشركة كام؟",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data",
+          "get_profile"
+        ],
+        "grounding_field": "net_salary",
+        "expected_db_value": "29020",
+        "policy_keyword": "قرض",
+        "topic": "benefits"
       }
     ],
-
     "franco_arabic": [
       {
         "id": "HY-FR-01",
         "query": "ana mosta7e2 el bonus el sanawi el sana di?",
-        "expected_tools": ["retrieve_policy", "get_performance_data", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
         "grounding_field": "bonus_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "bonus",
         "topic": "bonus"
       },
       {
         "id": "HY-FR-02",
         "query": "law esta2elt, lazem aded esh3ar kam yom?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "esh3ar",
         "topic": "offboarding"
       },
       {
         "id": "HY-FR-03",
         "query": "a2dar ataqadam 3ala tar2eya delwa2ty?",
-        "expected_tools": ["retrieve_policy", "get_performance_data", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
         "grounding_field": "promo_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "tar2eya",
         "topic": "performance"
       },
       {
         "id": "HY-FR-04",
         "query": "law esta2elt delwa2ty, hakhod muka2afet nehayet el 5edma ad eih?",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_salary_data"],
-        "grounding_field": "net_salary",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
         "policy_keyword": "nehayet",
         "topic": "offboarding"
       },
       {
         "id": "HY-FR-05",
         "query": "a2dar eshtarak fi khet el edde5ar el taw3i?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "savings",
         "topic": "benefits"
       },
       {
         "id": "HY-FR-06",
         "query": "momken a2el ayam agaza elly ma5adtesh lel sana el gaya?",
-        "expected_tools": ["retrieve_policy", "get_leave_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_leave_data"
+        ],
         "grounding_field": "remaining_days",
+        "expected_db_value": "23",
         "policy_keyword": "carry",
         "topic": "leave"
       },
       {
         "id": "HY-FR-07",
         "query": "fi safar shoghl taweel, bysafar be anhi daraga?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "daraga",
         "topic": "travel"
       },
       {
         "id": "HY-FR-08",
         "query": "el gym subsidy bta3y kam gneih fel shahr?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "gym",
         "topic": "benefits"
       },
       {
         "id": "HY-FR-09",
         "query": "ana mosta7e2 men7a deraseyya el sana di?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "schol_eligible",
+        "expected_db_value": "YES",
         "policy_keyword": "men7a",
         "topic": "training"
       },
       {
         "id": "HY-FR-10",
         "query": "3ala asas akher ta2yeem, hakhod ad eih zeyadah fel rateb?",
-        "expected_tools": ["retrieve_policy", "get_performance_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data"
+        ],
         "grounding_field": "rating",
+        "expected_db_value": "5",
         "policy_keyword": "zeyadah",
         "topic": "salary"
       },
       {
         "id": "HY-FR-11",
-        "query": "mawa3id shoghlي el rasmeya eih 3ala asas el wazifa bta3ty?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "mawa3id shoghl el rasmeya eih 3ala asas el wazifa bta3ty?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "job_title",
+        "expected_db_value": "senior software engineer",
         "policy_keyword": "sa3at",
         "topic": "work_schedule"
       },
       {
         "id": "HY-FR-12",
         "query": "fadel kam men budget el training w a2dar asrfo 3ala eih?",
-        "expected_tools": ["retrieve_policy", "get_training_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
         "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
         "policy_keyword": "training",
         "topic": "training"
       },
       {
         "id": "HY-FR-13",
         "query": "law 3ayez agaza bala rateb, a2sa kam yom?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "bala rateb",
         "topic": "leave"
       },
       {
         "id": "HY-FR-14",
         "query": "a2dar a7awel el shoghl bta3y yeb2a remote kamil?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "work_model",
+        "expected_db_value": "remote",
         "policy_keyword": "remote",
         "topic": "work_schedule"
       },
       {
         "id": "HY-FR-15",
-        "query": "fi edhafat ikhteyareya lel ta2min el se77i a2dar eshtarak fيha?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "query": "fi edhafat ikhteyareya lel ta2min el se77i a2dar eshtarak fiha?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
         "policy_keyword": "ta2min",
         "topic": "benefits"
       },
       {
         "id": "HY-FR-16",
         "query": "lesa f probation wala laa? w da biye2sar 3ala agaza bta3ty ezay?",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_leave_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_leave_data"
+        ],
         "grounding_field": "probation_status",
+        "expected_db_value": "not in probation",
         "policy_keyword": "probation",
         "topic": "probation"
       },
       {
         "id": "HY-FR-17",
         "query": "law eshtgalt yom gom3a, el sa3a btet7eseb bkam?",
-        "expected_tools": ["retrieve_policy", "get_salary_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
         "grounding_field": "base_salary",
+        "expected_db_value": "36000",
         "policy_keyword": "overtime",
         "topic": "salary"
       },
       {
         "id": "HY-FR-18",
         "query": "el badal el yawmi fi safar shoghl dakhli kam?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "grade",
+        "expected_db_value": "G3",
         "policy_keyword": "per diem",
         "topic": "travel"
       },
       {
         "id": "HY-FR-19",
         "query": "a2dar akhod kard tare2 bla fawa2ed men el shirka?",
-        "expected_tools": ["retrieve_policy", "get_profile"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
         "grounding_field": "probation_status",
+        "expected_db_value": "not in probation",
         "policy_keyword": "loan",
         "topic": "benefits"
       },
       {
         "id": "HY-FR-20",
         "query": "law el shirka kararet tenhi 3a2dy, hakhod ad eih?",
-        "expected_tools": ["retrieve_policy", "get_profile", "get_salary_data"],
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
         "grounding_field": "net_salary",
+        "expected_db_value": "29020",
         "policy_keyword": "termination",
         "topic": "offboarding"
+      },
+      {
+        "id": "HY-FR-21",
+        "query": "ana mosta7e2 lel leadership academy el sana di wala la2?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data",
+          "get_profile"
+        ],
+        "grounding_field": "rating",
+        "expected_db_value": "5",
+        "policy_keyword": "academy",
+        "topic": "training"
+      },
+      {
+        "id": "HY-FR-22",
+        "query": "law 7aga 7asaletli, el ta2min 3al 7ayah hyed3 ad eih lel mosta7e2?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "gross_salary",
+        "expected_db_value": "38800",
+        "policy_keyword": "ta2min 7ayah",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-FR-23",
+        "query": "law 3agazt 3an el shoghl akthar men 90 yom, hakhod kam rateb shehri?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
+        "policy_keyword": "3agz",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-FR-24",
+        "query": "meen el moder elly byet3emed talab el agaza bta3ty w ezay el process?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "manager_name",
+        "expected_db_value": "Sara El-Masry",
+        "policy_keyword": "e3temad",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-FR-25",
+        "query": "eshtgalt fel shirka kam sana w da biyedeeni kam yom agaza sanaweyya?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "hire_date",
+        "expected_db_value": "2021-04-15",
+        "policy_keyword": "agaza",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-FR-26",
+        "query": "el OKRs btu3ty fe el nesf da 3ala kamo w ana 3ala el massar?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_performance_data"
+        ],
+        "grounding_field": "rating",
+        "expected_db_value": "5",
+        "policy_keyword": "okr",
+        "topic": "performance"
+      },
+      {
+        "id": "HY-FR-27",
+        "query": "a2dar a7ot ad eih fel savings plan el tawa3i w el shirka heted3am bkam?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "grade",
+        "expected_db_value": "G3",
+        "policy_keyword": "savings",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-FR-28",
+        "query": "ana bashtaghal remote kamil — eih el badlat elly bakhod 3ashano?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile",
+          "get_salary_data"
+        ],
+        "grounding_field": "work_model",
+        "expected_db_value": "remote",
+        "policy_keyword": "remote",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-FR-29",
+        "query": "byet5esem menni kam kol shahr lel ta2minat el egtemae3ya?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "base_salary",
+        "expected_db_value": "36000",
+        "policy_keyword": "ta2minat",
+        "topic": "salary"
+      },
+      {
+        "id": "HY-FR-30",
+        "query": "net salary bta3y el shahr el fat kan ad eih w emta byet9raf el rateb?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data"
+        ],
+        "grounding_field": "net_salary",
+        "expected_db_value": "29020",
+        "policy_keyword": "9arf",
+        "topic": "salary"
+      },
+      {
+        "id": "HY-FR-31",
+        "query": "3ayez a7dar mo2tamar taqani barra — fadel ad eih men budget el ta3lim?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
+        "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
+        "policy_keyword": "mo2tamar",
+        "topic": "training"
+      },
+      {
+        "id": "HY-FR-32",
+        "query": "law 3ayez a3mel imte7an AWS Solutions Architect, el shirka hated3am bkam?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_training_data"
+        ],
+        "grounding_field": "budget_remaining_usd",
+        "expected_db_value": "3800",
+        "policy_keyword": "cert",
+        "topic": "training"
+      },
+      {
+        "id": "HY-FR-33",
+        "query": "a2dar eshtarak fel mentorship program k mentor w da hyetsegel fe melaffi?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "grade",
+        "expected_db_value": "G3",
+        "policy_keyword": "mentor",
+        "topic": "training"
+      },
+      {
+        "id": "HY-FR-34",
+        "query": "eih el trainings el elzameyya elly 3alayya w emta el mawa3eed el nehae3ya?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "job_title",
+        "expected_db_value": "senior software engineer",
+        "policy_keyword": "elzamy",
+        "topic": "training"
+      },
+      {
+        "id": "HY-FR-35",
+        "query": "kam session eap muta7a lel counselling kol sana w ezay at9el bihom?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "eap",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-FR-36",
+        "query": "ana mosta7e2 le da3m re3aya el atfal w da kam 3an kol tfl?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "atfal",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-FR-37",
+        "query": "ba3d agezet el abuwwa, a2dar arga3 bsa3at a2al ma3 rateb kamil?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "rogo3",
+        "topic": "leave"
+      },
+      {
+        "id": "HY-FR-38",
+        "query": "ana mosta7e2 le men7et 3elaj el 5osouba w eih el 5tuwwat?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "hire_date",
+        "expected_db_value": "2021-04-15",
+        "policy_keyword": "5osouba",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-FR-39",
+        "query": "a2dar a3mel claim lel wellness reimbursement el sanawi w 3ala eih asrfo?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_profile"
+        ],
+        "grounding_field": "employment_type",
+        "expected_db_value": "full-time",
+        "policy_keyword": "wellness",
+        "topic": "benefits"
+      },
+      {
+        "id": "HY-FR-40",
+        "query": "a2sa kard tare2 bla fawa2ed a2dar akhdo men el shirka ad eih?",
+        "expected_tools": [
+          "retrieve_policy",
+          "get_salary_data",
+          "get_profile"
+        ],
+        "grounding_field": "net_salary",
+        "expected_db_value": "29020",
+        "policy_keyword": "kard",
+        "topic": "benefits"
       }
     ]
   }

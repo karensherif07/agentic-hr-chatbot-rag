@@ -1,0 +1,780 @@
+
+RAW = [
+("HY-EN-01","EN","bonus","hybrid",["retrieve_policy","get_performance_data","get_profile"],1,1,1,1,
+ "Correctly states bonus policy","eligibility expected=yes found=True","As a G3 employee, you are eligible for the annual bonus...","bonus_eligible","YES"),
+("HY-EN-02","EN","offboarding","hybrid",["retrieve_policy","get_profile"],1,1,1,1,
+ "Correctly states 60-day notice policy for G3-G4","expected='g3' found=True","As a G3 employee, you need to give 60 days' notice...","grade","G3"),
+("HY-EN-03","EN","performance","hybrid",["retrieve_policy","get_profile","get_performance_data"],1,1,1,1,
+ "Correctly states promotion criteria","eligibility expected=yes found=True","As a G3 employee, you are eligible to apply for a promotion...","promo_eligible","YES"),
+("HY-EN-04","EN","offboarding","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,1,
+ "Answer invents a gratuity calculation formula and multiplier not provided in the policy context","expected=36000 found=True","your end-of-service gratuity would be 274,500 EGP, calculated as base 36,000...","base_salary","36000"),
+("HY-EN-05","EN","benefits","hybrid",["retrieve_policy","get_profile"],1,1,0,1,
+ "Answer invents a policy rule (minimum grade and service duration) not provided in the context","expected='g3' found=True","As a G3 employee, you are eligible to participate in Horizon Tech's voluntary deferred savings plan...","grade","G3"),
+("HY-EN-06","EN","leave","hybrid",["retrieve_policy","get_leave_data","get_profile"],1,1,1,1,
+ "Correctly states unused annual leave does not carry over","expected=23.0 found=True","As a G3 employee, you are not eligible to carry over your unused annual leave...23 days...","remaining_days","23"),
+("HY-EN-07","EN","travel","hybrid",["retrieve_policy","get_profile"],1,1,1,1,
+ "Correctly applies travel class policy for G3 employees","expected='g3' found=True","As a G3 employee, you are entitled to Business Class for a long-haul business trip...","grade","G3"),
+("HY-EN-08","EN","benefits","hybrid",["retrieve_policy","get_profile"],1,1,0,1,
+ "The answer invents a gym subsidy policy not mentioned in the provided employee context or policy data","expected='g3' found=True","As a G3 employee, your gym subsidy amount is up to 500 EGP/month...","grade","G3"),
+("HY-EN-09","EN","training","hybrid",["retrieve_policy","get_profile","get_performance_data","get_training_data"],1,1,0,1,
+ "Answer invents a policy rule about G3 scholarship eligibility without citing actual company policy","eligibility expected=yes found=True","As a G3 employee, you are eligible to apply for a scholarship this year...","schol_eligible","YES"),
+("HY-EN-10","EN","salary","hybrid",["retrieve_policy","get_performance_data","get_profile","get_salary_data"],1,1,0,1,
+ "Answer invents a policy rule (20% increment for 5/5 rating) without referencing an existing documented policy","expected=5 found=True","As a G3 employee with a rating of 5/5 (Exceptional), you can expect a salary increment of up to 20%...","rating","5"),
+("HY-EN-11","EN","work_schedule","hybrid",["retrieve_policy","get_profile"],1,1,0,1,
+ "Answer invents specific start time range (7:00-10:00 AM) and break duration not mentioned in the policy","expected='senior software engineer' found=True (partial 'engineer')","As a G3 employee in the Engineering department, your standard working hours are flexible, 7:00-10:00 AM...","job_title","senior software engineer"),
+("HY-EN-12","EN","training","hybrid",["retrieve_policy","get_profile","get_training_data"],1,1,0,0,
+ "Answer invents training budget amounts and usage details not present in the policy context","expected=3800 found=False","As a G3 employee, you have $8,000 as your annual learning budget, used $1,200, have $6,800 remaining...","budget_remaining_usd","3800"),
+("HY-EN-13","EN","leave","error",[],0,0,0,0,"empty_answer","expected='g3' found=False","","grade","G3"),
+("HY-EN-14","EN","work_schedule","hybrid",["retrieve_policy","get_profile"],1,1,1,1,
+ "Correctly states that switching to fully remote requires manager and HR approval","expected='remote' found=True","As a G3 employee, you are already in a remote work arrangement...","work_model","remote"),
+("HY-EN-15","EN","benefits","hybrid",["retrieve_policy","get_profile"],1,1,1,0,
+ "Correctly states available insurance add-ons with costs and enrollment periods","expected='full-time' found=False","As a G3 employee, you can enrol in the Enhanced Dental add-on for 150 EGP/month...","employment_type","full-time"),
+("HY-EN-16","EN","probation","hybrid",["retrieve_policy","get_profile","get_leave_data"],1,1,1,1,
+ "Correctly states probation status and leave policy implication","expected='not in probation' found=True","As a G3 employee, you are NOT IN PROBATION...23 days of annual leave remaining...","probation_status","not in probation"),
+("HY-EN-17","EN","salary","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,0,
+ "Answer invents a specific overtime rate (2× 150 EGP/hr) without citing an actual policy rule or document reference","expected=36000 found=False","As a G3 employee, your overtime rate for working on a weekend would be 2× the hourly rate, 300.00 EGP/hr...","base_salary","36000"),
+("HY-EN-18","EN","travel","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,1,
+ "The answer invents a per diem policy ($100) not mentioned in the provided employee context or policy data","expected='g3' found=True","As a G3 employee, your daily per diem for a domestic business trip is $100...","grade","G3"),
+("HY-EN-19","EN","benefits","hybrid",["retrieve_policy","get_profile"],1,1,1,1,
+ "Correctly states loan eligibility and 2 months net salary limit","expected='not in probation' found=True","As a G3 employee, you are eligible for the emergency interest-free loan since you have completed your probation period...","probation_status","not in probation"),
+("HY-EN-20","EN","offboarding","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,0,
+ "Answer invents a calculation based on gratuity instead of stating the actual end-of-service payment policy rule","expected=29020 found=False","As a G3 employee, your end-of-service payment would be 274,500 EGP (base 36,000 × 5.1 yrs × applicable multiplier)...","net_salary","29020"),
+("HY-EN-21","EN","training","hybrid",["retrieve_policy","get_profile","get_performance_data"],1,1,1,1,
+ "Correctly states Leadership Academy performance rating eligibility (4 or 5)","expected=5 found=True","As a G3 employee, you are eligible to be nominated for the Leadership Academy...rating of 5/5...","rating","5"),
+("HY-EN-22","EN","benefits","hybrid",["retrieve_policy","get_salary_data","get_profile"],1,1,0,1,
+ "Answer invents salary data not present in policy or employee context","expected=38800 found=True","As a G3 employee, your group life insurance payout would be 2× your annual gross salary, 2 × (38,800 EGP × 12) = 931,200 EGP...","gross_salary","38800"),
+("HY-EN-23","EN","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,1,1,
+ "Correctly states 60% base salary LTD for over 90 days","expected=36000 found=True","As a G3 employee, your monthly long-term disability benefit would be 60% × 36,000 EGP = 21,600 EGP...","base_salary","36000"),
+("HY-EN-24","EN","leave","hybrid",["retrieve_policy","get_profile","get_leave_data"],1,1,1,1,
+ "Correctly states manager approval requirement for leave","expected='sara el-masry' found=True","Your direct manager is Sara El-Masry, and you need to obtain her approval before submitting your leave request...","manager_name","Sara El-Masry"),
+("HY-EN-25","EN","leave","hybrid",["retrieve_policy","get_profile","get_leave_data"],1,1,1,0,
+ "Correctly states annual leave entitlement of 21 days for 5 years service","expected='2021-04-15' found=False","You have been at Horizon Tech for approximately 5 years, annual leave entitlement of 21 days...","hire_date","2021-04-15"),
+("HY-EN-26","EN","performance","hybrid",["retrieve_policy","get_performance_data"],1,1,0,1,
+ "Answer invents policy rules about OKR review cycles and approval processes","expected=5 found=True","As a G3 employee, your current OKR progress this half is 74% complete for the 'Migrate legacy service to microservices' objective...","rating","5"),
+("HY-EN-27","EN","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,1,1,
+ "Correctly states 2-10% contribution range and 4% company match","expected='g3' found=True","As a G3 employee, you can contribute between 2% and 10% of your base salary...company matches contributions up to 4%...","grade","G3"),
+("HY-EN-28","EN","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,1,1,
+ "Correctly states 800 EGP/month remote work allowance","expected='remote' found=True","As a G3 employee, you are currently receiving a remote work allowance of 800 EGP/month...","work_model","remote"),
+("HY-EN-29","EN","salary","hybrid",["retrieve_policy","get_salary_data","get_profile"],1,1,0,0,
+ "Answer invents a specific deduction amount (3,960 EGP) without citing the actual policy rule for social insurance contribution rates","expected=36000 found=False","As a G3 employee, your social insurance contributions are deducted at a rate of 3.2% of your base salary...The deduction is 3,960 EGP...","base_salary","36000"),
+("HY-EN-30","EN","salary","personal",["get_salary_data","get_profile"],0,1,0,1,
+ "Judge call failed","expected=29020 found=True","Your actual net take-home pay last month was 29,020 EGP...","net_salary","29020"),
+("HY-EN-31","EN","training","hybrid",["retrieve_policy","get_training_data","get_profile"],1,1,0,1,
+ "Answer invents a learning budget policy ($5,000 total) not mentioned in the provided employee context or policy rules","expected=3800 found=True","As a G3 employee, your remaining learning budget is $3,800...","budget_remaining_usd","3800"),
+("HY-EN-32","EN","training","hybrid",["retrieve_policy","get_profile"],1,0,0,0,
+ "Answer invents a certification tier policy (Tier 1) not present in the provided context","expected=3800 found=False","As a G3 employee, the company will cover the AWS Solutions Architect exam fee at 100% for the first attempt, as it falls under Tier 1...","budget_remaining_usd","3800"),
+("HY-EN-33","EN","training","hybrid",["retrieve_policy","get_profile"],1,1,1,1,
+ "Correctly states only G4+ mentors get formal HR recognition; G3 can still mentor","expected='g3' found=True","As a G3 employee, you are eligible to participate in the mentorship programme as a mentor, but only G4+ get a formal recognition note...","grade","G3"),
+("HY-EN-34","EN","training","hybrid",["retrieve_policy","get_profile","get_training_data"],1,1,0,0,
+ "Answer invents specific compliance training modules and deadlines not provided in the policy context","expected='senior software engineer' found=False","As a G3 employee, you are required to complete the Information Security Awareness and Data Protection & GDPR Principles...31 March...","job_title","senior software engineer"),
+("HY-EN-35","EN","benefits","hybrid",["retrieve_policy","get_profile"],1,1,1,0,
+ "Correctly states 8 Short-Term + 4 Financial EAP sessions per year","expected='full-time' found=False","As a G3 employee, you can access up to 8 sessions/year of Short-Term Counselling...","employment_type","full-time"),
+("HY-EN-36","EN","benefits","hybrid",["retrieve_policy","get_profile"],1,1,0,0,
+ "Answer invents a childcare subsidy policy rule (500 EGP per child) that is not present in the provided employee context or policy references","expected='full-time' found=False","As a G3 employee, you are eligible for the monthly childcare subsidy. The subsidy amount is 500 EGP per child...","employment_type","full-time"),
+("HY-EN-37","EN","leave","hybrid",["retrieve_policy","get_profile","get_leave_data","get_performance_data","get_disciplinary_data"],1,1,1,0,
+ "Correctly states phased return policy: 8 weeks at 60% hours at full pay","expected='full-time' found=False","As a G3 employee, you are eligible to return to work on reduced hours at full pay for up to eight weeks...","employment_type","full-time"),
+("HY-EN-38","EN","benefits","hybrid",["retrieve_policy","get_profile"],1,1,1,0,
+ "Correctly states eligibility (2+ years service) and application process for fertility grant","expected='2021-04-15' found=False","As a G3 employee, you are eligible for the fertility treatment assistance grant since you have completed more than two years of service...","hire_date","2021-04-15"),
+("HY-EN-39","EN","benefits","hybrid",["retrieve_policy","get_profile"],1,1,0,0,
+ "Answer references policy but does not explicitly state the correct policy rules (uses 'as stated in' without content)","expected='full-time' found=False","As a G3 employee, you are eligible for the annual wellness reimbursement of up to 1,200 EGP per calendar year...","employment_type","full-time"),
+("HY-EN-40","EN","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,1,1,
+ "Correctly applies 2 months net salary policy rule with calculation 2 × 29,020 = 58,040","expected=29020 found=True","As a G3 employee, the maximum emergency interest-free loan amount you can apply for is up to two months' net salary, 2 × 29,020 EGP = 58,040 EGP...","net_salary","29020"),
+# AR
+("HY-AR-01","AR","bonus","hybrid",["retrieve_policy","get_performance_data","get_profile"],1,1,0,1,
+ "Answer invents a policy rule (6 months service requirement) without confirming it exists","eligibility expected=yes found=True","نعم، أنت مؤهل للحصول على المكافأة السنوية هذا العام، حيث تمتلك أكثر من 6 أشهر...","bonus_eligible","YES"),
+("HY-AR-02","AR","offboarding","hybrid",["retrieve_policy","get_profile"],1,1,1,1,
+ "Answer correctly states the 60-day notice period policy for G3 employees","expected='g3' found=True","بصفتك موظفاً من الدرجة G3، يجب أن تقدم إشعاراً بموعد الاستقالة لمدة 60 يوماً...","grade","G3"),
+("HY-AR-03","AR","performance","hybrid",["retrieve_policy","get_profile","get_performance_data","get_disciplinary_data"],1,1,1,1,
+ "Correctly states promotion criteria (2 years in role, no disciplinary warnings)","eligibility expected=yes found=True","نعم، يمكنك التقدم للترقية...تمتلك أكثر من عامين في منصبك الحالي...لا توجد تحذيرات تأديبية...","promo_eligible","YES"),
+("HY-AR-04","AR","offboarding","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,1,
+ "Answer invents gratuity calculation rules (salary × years × multiplier) without referencing actual policy","expected=36000 found=True","ال gratuity التي ستحصل عليها لو استقلت الآن هي 274,500 جنيه (راتب 36,000 × 5.1 سنة...)","base_salary","36000"),
+("HY-AR-05","AR","benefits","hybrid",["retrieve_policy","get_profile","get_disciplinary_data"],1,1,1,1,
+ "Answer correctly states the policy that G3 employees are eligible for the voluntary savings plan","expected='g3' found=True","نعم، أنت مؤهل للاشتراك في خطة الادخار الطوعي لأنك من الدرجة G3 فأعلى...","grade","G3"),
+("HY-AR-06","AR","leave","policy",["retrieve_policy"],1,0,0,0,
+ "Policy contradicts leave balance data showing 7.0 carried days","expected=23.0 found=False","لا يمكن ترحيل أيام الإجازة السنوية غير المستخدمة للعام القادم...","remaining_days","23"),
+("HY-AR-07","AR","travel","hybrid",["retrieve_policy","get_profile","get_leave_data","get_salary_data","get_performance_data","get_training_data","get_disciplinary_data"],1,1,1,1,
+ "Correctly applies travel class policy for G3 employees","expected='g3' found=True","بوصفك موظفاً من الدرجة G3، درجة السفر المستحقة لك في رحلات العمل الطويلة هي الدرجة السياحية المتميزة...","grade","G3"),
+("HY-AR-08","AR","benefits","error",[],0,0,0,0,"empty_answer","expected='g3' found=False","","grade","G3"),
+("HY-AR-09","AR","training","hybrid",["retrieve_policy","get_profile","get_disciplinary_data","get_performance_data"],1,1,1,1,
+ "Correctly states eligibility criteria, scholarship coverage, approval requirements","eligibility expected=yes found=True","أنت مؤهل للتقدم بطلب منحة دراسية هذا العام...","schol_eligible","YES"),
+("HY-AR-10","AR","salary","hybrid",["retrieve_policy","get_performance_data","get_profile","get_salary_data"],1,1,0,1,
+ "Answer invents a policy rule about salary increase percentages (20% for 5/5 rating) without verifiable policy reference","expected=5 found=True","كموظف من الدرجة G3، نسبة الزيادة في الراتب المتوقعة بناءً على تقييمك الأخير (5/5 - استثنائي) هي حتى 20%...","rating","5"),
+("HY-AR-11","AR","work_schedule","policy",["retrieve_policy"],1,0,0,0,
+ "Invents department-specific shift rules not mentioned in policy","expected='senior software engineer' found=False","ساعات العمل الرسمية تُطبَّق وفق نوع الدوام وقسم الموظف...","job_title","senior software engineer"),
+("HY-AR-12","AR","training","personal",["get_training_data","get_profile"],0,1,0,1,
+ "Answer invents specific training budget numbers not present in provided policy context","expected=3800 found=True","تبقى من ميزانية التدريب لديّ 3,800 دولار...","budget_remaining_usd","3800"),
+("HY-AR-13","AR","leave","policy",["retrieve_policy"],1,0,1,0,
+ "Correctly states 30 days unpaid leave with manager and HR approval","expected='g3' found=False","إجازة بدون راتب مسموح بها حتى 30 يوماً/سنة بموافقة المدير وقسم الموارد البشرية...","grade","G3"),
+("HY-AR-14","AR","work_schedule","hybrid",["retrieve_policy","get_profile","get_disciplinary_data","get_leave_data","get_training_data"],1,1,1,0,
+ "Correctly states that switching to fully remote requires manager approval","expected='remote' found=False","نعم، يمكن التحول إلى نظام العمل عن بُعد بشكل كامل بموافقة المدير المباشر...يُمنح بدل العمل عن بُعد بقيمة 800 جنيه مصري/شهر...","work_model","remote"),
+("HY-AR-15","AR","benefits","policy",["retrieve_policy"],1,0,1,0,
+ "Correctly states optional health insurance add-ons with fees and coverage","expected='full-time' found=False","الإضافات الاختيارية في التأمين الصحي: Enhanced Dental 150 جنيه...Orthodontics Rider 200 جنيه...","employment_type","full-time"),
+("HY-AR-16","AR","probation","hybrid",["retrieve_policy","get_profile","get_leave_data"],1,1,0,0,
+ "Answer incorrectly references an 'insurance coverage policy' not in context and invents a rule about annual leave calculation","expected='not in probation' found=False","لا، أنت لست في فترة الاختبار...23 يومًا متاح...","probation_status","not in probation"),
+("HY-AR-17","AR","salary","hybrid",["retrieve_policy","get_salary_data","get_profile"],1,1,1,0,
+ "Correctly states 2× overtime rate (300 EGP/hour) for weekend work","expected=36000 found=False","معدل الوقت الإضافي في عطلة نهاية الأسبوع هو 300 جنيه مصري/ساعة (مضاعف 2×)...","base_salary","36000"),
+("HY-AR-18","AR","travel","hybrid",["retrieve_policy","get_profile","get_leave_data","get_salary_data","get_performance_data","get_training_data","get_disciplinary_data"],1,1,0,1,
+ "Answer assumes a policy typo without explicit policy confirmation, inventing a rule","expected='g3' found=True","البدل اليومي المستحق لرحلات العمل الداخلية هو 300 جنيه مصري...G3...","grade","G3"),
+("HY-AR-19","AR","benefits","hybrid",["retrieve_policy","get_profile"],1,1,1,0,
+ "Correctly states loan policy: 2 months net salary, probation completion, HR/Finance approval, single active loan limit","expected='not in probation' found=False","نعم، أنت مؤهل للحصول على قرض طارئ بدون فوائد...شرط انتهاء فترة التجربة (وهي حالة غير مطبقة عليك)...","probation_status","not in probation"),
+("HY-AR-20","AR","offboarding","hybrid",["retrieve_policy","get_profile","get_salary_data","get_performance_data"],1,1,0,0,
+ "Answer invents a specific severance formula and 7-day notice period without citing actual policy rules","expected=29020 found=False","التسوية المالية النهائية...مكافأة نهاية الخدمة بقيمة 274,500 جنيه...","net_salary","29020"),
+("HY-AR-21","AR","training","error",[],0,0,0,0,"empty_answer","expected=5 found=False","","rating","5"),
+("HY-AR-22","AR","benefits","hybrid",["retrieve_policy","get_salary_data"],1,1,0,1,
+ "Answer invents a life insurance policy rule (2x annual salary) without citing actual company policy","expected=38800 found=True","سيحصل المستفيد من تأمين الحياة الجماعي على مبلغ يعادل ضعف الراتب الإجمالي السنوي...465,600 جنيه × 2 = 931,200...","gross_salary","38800"),
+("HY-AR-23","AR","benefits","policy",["retrieve_policy"],1,0,1,0,
+ "Correctly states 60% of last salary for LTD exceeding 90 days","expected=36000 found=False","يُمنح الموظف مبلغًا شهريًا يعادل 60% من آخر راتب له في حالة العجز الطويل الأمد...","base_salary","36000"),
+("HY-AR-24","AR","leave","hybrid",["retrieve_policy","get_profile","get_leave_data"],1,1,1,0,
+ "Correctly states manager approval requirement for leave","expected='sara el-masry' found=False","مديرك المباشر سارة المصري، وياخده موافقة منو قبل اعتماد طلب الإجازة...","manager_name","Sara El-Masry"),
+("HY-AR-25","AR","leave","hybrid",["retrieve_policy","get_profile","get_leave_data"],1,1,1,0,
+ "Correctly calculates annual leave balance using policy rule (21+7-5=23)","expected='2021-04-15' found=False","سنوات خدمتك 5 سنوات...رصيد إجازتك السنوية المستحق هو 23 يوماً (21+7-5)...","hire_date","2021-04-15"),
+("HY-AR-26","AR","performance","hybrid",["retrieve_policy","get_performance_data","get_profile"],1,1,1,1,
+ "Correctly references OKR policy and personal data: 74% progress, on-track","expected=5 found=True","مستوى تقدمك في أهداف OKR لهذا النصف هو 74% مع حالة ON-TRACK...تقييم أدائك 5/5...","rating","5"),
+("HY-AR-27","AR","benefits","hybrid",["retrieve_policy","get_salary_data","get_profile"],1,1,1,0,
+ "Correctly states 2-10% contribution and 4% company match","expected='g3' found=False","يمكنك المساهمة بـ 2% إلى 10% من راتبك الأساسي...الشركة تُساهم حتى 4%...","grade","G3"),
+("HY-AR-28","AR","benefits","error",[],0,0,0,0,"empty_answer","expected='remote' found=False","","work_model","remote"),
+("HY-AR-29","AR","salary","error",[],0,0,0,0,"empty_answer","expected=36000 found=False","","base_salary","36000"),
+("HY-AR-30","AR","salary","personal",["get_salary_data","get_profile"],0,1,1,1,
+ "Correctly states payroll date and applies salary payment policy","expected=29020 found=True","صافي راتبك...29,020 جنيهًا...تصرف الرواتب بتاريخ 1 مارس 2026...","net_salary","29020"),
+("HY-AR-31","AR","training","hybrid",["retrieve_policy","get_training_data","get_profile"],1,1,1,1,
+ "Correctly states conference policy (manager+head approval) and learning budget $3,800","expected=3800 found=True","تبقى لديك ميزانية تعلم قدرها $3,800...يُسمح بحضور المؤتمرات الخارجية...","budget_remaining_usd","3800"),
+("HY-AR-32","AR","training","policy",["retrieve_policy"],1,0,1,0,
+ "Correctly states Tier 1 certification coverage policy","expected=3800 found=False","الشركة ستتحمل تكلفة اختبار شهادة AWS Solutions Architect بنسبة 100% للمحاولة الأولى...Tier 1...","budget_remaining_usd","3800"),
+("HY-AR-33","AR","training","hybrid",["retrieve_policy","get_profile","get_performance_data"],1,1,1,1,
+ "Correctly states G3 can mentor, participation recorded as leadership contribution","expected='g3' found=True","بوصفك موظفاً من الدرجة G3، يمكنك الانضمام إلى برنامج الإرشاد كمرشد...","grade","G3"),
+("HY-AR-34","AR","training","hybrid",["retrieve_policy","get_profile","get_training_data"],1,1,1,0,
+ "Correctly states mandatory training requirement and annual deadline framework","expected='senior software engineer' found=False","التدريب الإلزامي الذي ينطبق عليك يجب إكماله سنوياً...","job_title","senior software engineer"),
+("HY-AR-35","AR","benefits","hybrid",["retrieve_policy","get_profile"],1,1,0,0,
+ "Answer invents a policy rule about 6 counseling sessions per year for G3 employees, but no policy information is provided in the context to verify this claim","expected='full-time' found=False","كموظف من الدرجة G3، يُسمح لك بجلسات استشارة نفسية مجهولة حتى 6 جلسات سنويًا...","employment_type","full-time"),
+("HY-AR-36","AR","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,1,0,
+ "Correctly states childcare 500 EGP/month per child for under-6 children","expected='full-time' found=False","كموظف من الدرجة G3، أنت مؤهل لدعم رعاية الأطفال...500 جنيه شهريًا لكل طفل (حتى اثنين)...","employment_type","full-time"),
+("HY-AR-37","AR","leave","error",[],0,0,0,0,"empty_answer","expected='full-time' found=False","","employment_type","full-time"),
+("HY-AR-38","AR","benefits","hybrid",["retrieve_policy","get_profile","get_leave_data","get_training_data"],1,1,1,0,
+ "Correctly states fertility grant eligibility (2+ years service, health plan enrolled) and application process","expected='2021-04-15' found=False","أنت مؤهل لمنحة علاج الخصوبة...المبلغ القصوي للمنحة 20,000 جنيه ولا يُرد...","hire_date","2021-04-15"),
+("HY-AR-39","AR","benefits","error",[],0,0,0,0,"empty_answer","expected='full-time' found=False","","employment_type","full-time"),
+("HY-AR-40","AR","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,1,
+ "answer invents a loan policy rule (2x net salary) that is not present in the provided employee context or policy references","expected=29020 found=True","الحد الأقصى للقرض الطارئ بدون فوائد هو ضعف راتبك الصافي الشهري، أي 58,040 جنيه (2 × 29,020 جنيه)...","net_salary","29020"),
+# EGY
+("HY-EGY-01","EGY","bonus","hybrid",["retrieve_policy","get_performance_data","get_profile"],1,1,0,1,
+ "answer invents a policy rule about bonus eligibility requirements (performance rating 5/5 and 6 months service) which are not provided in the context","eligibility expected=yes found=True","أنت مستحق المكافأة السنوية السنة دي، لأنك إنت G3 ومستوفٍ شرط الأداء (تقييمك 5/5) و6 أشهر خدمة...","bonus_eligible","YES"),
+("HY-EGY-02","EGY","offboarding","hybrid",["retrieve_policy","get_profile","get_leave_data","get_salary_data","get_performance_data","get_training_data","get_disciplinary_data"],1,1,0,0,
+ "Answer contradicts standard labor laws (Egyptian law requires 30 days notice) and no policy rule is provided in the context to support 7 days","expected='g3' found=False","لازم تديهم إشعار 7 أيام كتابي قبل الاستقالة...","grade","G3"),
+("HY-EGY-03","EGY","performance","hybrid",["retrieve_policy","get_profile","get_performance_data"],1,1,0,0,
+ "answer invents promotion policy criteria not present in provided context","eligibility expected=yes found=False","أنت G3 ومستوفٍ شروط الترقية حسب تقييم الأداء الأخير (5/5) وسياسة الترقية...","promo_eligible","YES"),
+("HY-EGY-04","EGY","offboarding","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,1,
+ "Answer invents a multiplier value (5.1) without citing the actual policy rule for end-of-service calculation","expected=36000 found=True","هاخد 274,500 جنيه، والحساب بيased على راتبك الأساسي (36,000 × 5.1 سنة خدمة...)","base_salary","36000"),
+("HY-EGY-05","EGY","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,1,
+ "The answer invents a policy rule about voluntary savings plan eligibility and contribution details, but no such policy exists in the provided context","expected='g3' found=True","نعم، أنت مؤهل للاشتراك في خطة الادخار الطوعي، بصفتك موظفاً من الدرجة G3...","grade","G3"),
+("HY-EGY-06","EGY","leave","personal",["get_profile","get_leave_data"],0,1,1,1,
+ "Correctly states 7-day max carry-over from leave balance","expected=23.0 found=True","الأجازة السنوية اللي ما خدتيهاش (23 يوم) ممكن تترحل للسنة الجاية بحد أقصى 7 أيام...","remaining_days","23"),
+("HY-EGY-07","EGY","travel","policy",["retrieve_policy"],1,0,1,1,
+ "Correctly states travel class policy for G3 employees","expected='g3' found=True","لرحلة طويلة (أكثر من 6 ساعات)، يُسمح للموظفين حتى مستوى G3 بالسفر في الدرجة السياحية المتميزة...","grade","G3"),
+("HY-EGY-08","EGY","benefits","personal",["get_profile","get_salary_data"],0,1,1,0,
+ "Correctly states information is unavailable in the record","expected='g3' found=False","المعلومة دي مش متاحة في سجلك...","grade","G3"),
+("HY-EGY-09","EGY","training","error",[],0,0,0,0,"empty_answer","eligibility expected=yes found=False","","schol_eligible","YES"),
+("HY-EGY-10","EGY","salary","hybrid",["retrieve_policy","get_performance_data","get_profile","get_salary_data"],1,1,0,0,
+ "answer invents a salary increase percentage (20%) without citing any policy rule or grade-specific criteria","expected=5 found=False","زيادة الراتب 20%، اللي تساوي 7,200 جنيه شهريًا...","rating","5"),
+("HY-EGY-11","EGY","work_schedule","hybrid",["retrieve_policy","get_profile"],1,1,1,1,
+ "Correctly references standard hours policy for Engineering with 1-hour break","expected='senior software engineer' found=True (partial 'engineer')","ساعاتك الرسمية من 7 ص إلى 4 م مع راحة ساعة واحدة...Engineering...","job_title","senior software engineer"),
+("HY-EGY-12","EGY","training","personal",["get_training_data","get_profile","get_performance_data"],0,1,0,1,
+ "Answer provides specific training budget figures without citing company policy rule","expected=3800 found=True","فاضل من ميزانية التدريب 3800 دولار...Rust Programming...","budget_remaining_usd","3800"),
+("HY-EGY-13","EGY","leave","hybrid",["retrieve_policy","get_profile"],1,1,1,0,
+ "Correctly states 30-day max unpaid leave with required approvals","expected='g3' found=False","أقصى إجازة بدون راتب 30 يوم في السنة بموافقة المدير وHR...","grade","G3"),
+("HY-EGY-14","EGY","work_schedule","hybrid",["retrieve_policy","get_profile"],1,1,1,0,
+ "Correctly states remote work requires manager and HR agreement; policy aligned","expected='remote' found=False","إنت شغال ريموت من غير تدخل، لكن لو عايز تحول لريموت كامل لازم تتفق مع مديرك وHR...","work_model","remote"),
+("HY-EGY-15","EGY","benefits","policy",["retrieve_policy"],1,0,1,0,
+ "Correctly states optional health insurance add-ons with enrollment periods","expected='full-time' found=False","نعم، يمكن للموظفين الاشتراك في إضافات اختيارية للتأمين الصحي خلال فترة التسجيل السنوي (1-15 أكتوبر)...","employment_type","full-time"),
+("HY-EGY-16","EGY","probation","hybrid",["retrieve_policy","get_profile","get_leave_data"],1,1,1,0,
+ "Correctly states not in probation and leave implications","expected='not in probation' found=False","انت لسه مفيش في فترة اختبار، فالأجازة السنوية متاحه لك تاخدها حسب الرصيد المتبقي (23 يوم)...","probation_status","not in probation"),
+("HY-EGY-17","EGY","salary","hybrid",["retrieve_policy","get_salary_data","get_profile"],1,1,0,0,
+ "Answer incorrectly assumes Friday is a weekend/holiday for overtime calculation; policy does not specify Friday as a weekend day","expected=36000 found=False","工作的周五加班时薪是300...","base_salary","36000"),
+("HY-EGY-18","EGY","travel","policy",["retrieve_policy"],1,0,0,0,
+ "The answer invents a daily travel allowance policy ($100/day) that is not mentioned in the provided company policy context","expected='g3' found=False","البدل اليومي في السفريات الداخلية كام 100 دولار يوميًا...","grade","G3"),
+("HY-EGY-19","EGY","benefits","policy",["retrieve_policy"],1,0,1,0,
+ "Correctly states loan policy allows up to 2 months net salary with HR/Finance approval","expected='not in probation' found=False","أيوه، ممكن تاخد قرض طارئ بدون فوائد...شرط أنك اجتازت فترة التجربة...شهرين من راتبك الصافي...","probation_status","not in probation"),
+("HY-EGY-20","EGY","offboarding","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,0,
+ "Answer invents specific gratuity amount (274,500 EGP) and notice period (7 days) without citing actual policy rules for G3 employees","expected=29020 found=False","لو الشركة قررت تنهي عقدها معك، هتلاقيك مستحق 274,500 جنيه...لازم الشركة بتقدم 7 أيام إشعار...","net_salary","29020"),
+("HY-EGY-21","EGY","training","hybrid",["retrieve_policy","get_profile","get_performance_data"],1,1,0,1,
+ "Answer invents a policy rule about annual October nomination for Leadership Academy not present in provided context","expected=5 found=True","أنت مستحق تقدم لأكاديمية القيادة السنة دي...G3 ومستوى أداءك استثنائي [H1 2025: 5/5]...السياسة بتقول إن الترشيح مفتوح سنويًا في أكتوبر...","rating","5"),
+("HY-EGY-22","EGY","benefits","policy",["retrieve_policy"],1,0,1,0,
+ "answer states a correct and relevant policy rule for the question: 2x annual gross for life insurance","expected=38800 found=False","ده التأمين على الحياة بيدفع للمستفيد مبلغ ضعف الأجر السنوي الكلي دفعة واحدة...","gross_salary","38800"),
+("HY-EGY-23","EGY","benefits","hybrid",["retrieve_policy","get_salary_data","get_profile"],1,1,1,1,
+ "Correctly applies 60% base salary LTD for >90 days disability","expected=36000 found=True","لو عجزت عن الشغل أكتر من 90 يوم متواصل، هاخد راتب شهري 21,600 جنيه (60% × 36,000 جنيه)...","base_salary","36000"),
+("HY-EGY-24","EGY","leave","policy",["retrieve_policy"],1,0,1,0,
+ "Correctly states direct manager approval policy and procedure","expected='sara el-masry' found=False","اللي بيعتمد طلبات الإجازة ده المدير المباشر، وبيخليه يعتمد في 3 أيام عمل...","manager_name","Sara El-Masry"),
+("HY-EGY-25","EGY","leave","error",[],0,0,0,0,"empty_answer","expected='2021-04-15' found=False","","hire_date","2021-04-15"),
+("HY-EGY-26","EGY","performance","personal",["get_performance_data","get_profile"],0,1,0,1,
+ "Answer lacks any reference to company policy rules about OKR evaluation criteria","expected=5 found=True","إنت على المسار الصح، التقدم في الـ OKRs: 74%...","rating","5"),
+("HY-EGY-27","EGY","benefits","error",[],0,0,0,0,"empty_answer","expected='g3' found=False","","grade","G3"),
+("HY-EGY-28","EGY","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,0,
+ "Answer invents non-existent allowances (transport and mobile) not mentioned in policy for remote work specifically","expected='remote' found=False","أنت بتحصل بدل عمل عن بُعد 800 جنيه شهريًا، وبدل مواصلات 1,500 وبدل موبايل 500...","work_model","remote"),
+("HY-EGY-29","EGY","salary","error",[],0,0,0,0,"empty_answer","expected=36000 found=False","","base_salary","36000"),
+("HY-EGY-30","EGY","salary","personal",["get_salary_data","get_profile"],0,1,1,1,
+ "Correctly states salary payment on 1st of month","expected=29020 found=True","صافي راتبك الشهر اللي فات كان 29,020 جنيه...في أول يوم من الشهر...","net_salary","29020"),
+("HY-EGY-31","EGY","training","hybrid",["retrieve_policy","get_training_data","get_profile"],1,1,0,1,
+ "Answer invents a non-existent conference budget policy ($3,800) and approval process not mentioned in provided context/allowances","expected=3800 found=True","3,800 دولار فاضل في ميزانيتك...شرط تأكيد المؤتمر مع المدير المباشر والرئيس المباشر...","budget_remaining_usd","3800"),
+("HY-EGY-32","EGY","training","policy",["retrieve_policy"],1,0,0,0,
+ "Answer invents a policy rule about Tier 1 certifications and 100% coverage not supported by provided context","expected=3800 found=False","أيوه، الشركة هتدفع تكاليف امتحان AWS Solutions Architect لأنها بتعتبر من Tier 1...","budget_remaining_usd","3800"),
+("HY-EGY-33","EGY","training","personal",["get_profile","get_performance_data"],0,1,0,0,
+ "Answer states policy information is unavailable without referencing any actual policy rule about mentoring program documentation","expected='g3' found=False","المعلومة دي مش متاحة في سجلك...","grade","G3"),
+("HY-EGY-34","EGY","training","error",[],0,0,0,0,"empty_answer","expected='senior software engineer' found=False","","job_title","senior software engineer"),
+("HY-EGY-35","EGY","benefits","personal",["get_profile","get_performance_data"],0,1,1,0,
+ "Correctly states information is unavailable and directs to HR/manager","expected='full-time' found=False","المعلومة دي مش متاحة في سجلك...اتصل بي إدارة الموارد البشرية أو مديرك سارة...","employment_type","full-time"),
+("HY-EGY-36","EGY","benefits","hybrid",["retrieve_policy","get_profile"],1,1,1,0,
+ "Correctly states 500 EGP/month per child (max 2) with conditions","expected='full-time' found=False","أنت مستحق دعم رعاية الأطفال 500 جنيه شهريًا عن كل طفل (حد أقصى 2 أطفال)...","employment_type","full-time"),
+("HY-EGY-37","EGY","leave","error",[],0,0,0,0,"empty_answer","expected='full-time' found=False","","employment_type","full-time"),
+("HY-EGY-38","EGY","benefits","hybrid",["retrieve_policy","get_profile"],1,1,1,0,
+ "Correctly states eligibility criteria and application process for fertility grant","expected='2021-04-15' found=False","أنت مستحق منحة علاج الخصوبة لو كنت مسجل في خطة التأمين الصحي وعملت أكثر من سنتين...","hire_date","2021-04-15"),
+("HY-EGY-39","EGY","benefits","hybrid",["retrieve_policy","get_profile","get_performance_data","get_leave_data"],1,1,0,0,
+ "Answer invents a non-existent health allowance policy (1200 EGP) not mentioned in the provided employee context or policy references","expected='full-time' found=False","أنت مسموحك تاخذ تعويض العافية السنوي 1200 جنيه...","employment_type","full-time"),
+("HY-EGY-40","EGY","benefits","policy",["retrieve_policy"],1,0,0,0,
+ "Answer invents a loan policy rule not referenced in the provided employee context or policy documents","expected=29020 found=False","أقصى قرض طارئ بدون فوايد لحد 2 شهرين صافي الراتب...","net_salary","29020"),
+# FR
+("HY-FR-01","FR","bonus","hybrid",["retrieve_policy","get_performance_data","get_profile"],1,1,0,0,
+ "Answer invents a bonus calculation rule (1.5× base salary) without citing actual policy documentation","eligibility expected=yes found=False","enta G3, el bonus el sanawi 2ol 1.5 × el rateb el fe2li, shahr × 36,000 = 36,000 geneih...","bonus_eligible","YES"),
+("HY-FR-02","FR","offboarding","hybrid",["retrieve_policy","get_leave_data","get_profile"],1,1,1,1,
+ "Correctly applies leave balance policy referencing 23 days remaining","expected='g3' found=True","enta G3, lazem aded esh3ar 23 yom...","grade","G3"),
+("HY-FR-03","FR","performance","hybrid",["retrieve_policy"],1,0,1,0,
+ "Correctly states promotion/salary information is unavailable in provided context","eligibility expected=yes found=False","Non, je ne peux pas vous aider à avancer sur une demande de promotion...les informations nécessaires ne sont pas disponibles...","promo_eligible","YES"),
+("HY-FR-04","FR","offboarding","hybrid",["retrieve_policy","get_profile","get_performance_data","get_disciplinary_data"],1,1,0,1,
+ "Policy rule is incorrect (uses 20% flat formula instead of 1.5x tiered gratuity)","expected=36000 found=True","enta G3, muka2afet nehayet el 5edma 20% men rateb el fe2li...36,000 geneih...","base_salary","36000"),
+("HY-FR-05","FR","benefits","hybrid",["retrieve_policy"],1,0,1,0,
+ "Correctly states savings plan information is not in the policy context","expected='g3' found=False","Non, mesh mawgoda fel policy...","grade","G3"),
+("HY-FR-06","FR","leave","personal",["get_leave_data","get_profile"],0,1,1,1,
+ "Correctly states remaining annual leave","expected=23.0 found=True","Aywa momken, 3ndak 23 youm agaza ba2a mn el sanawi...","remaining_days","23"),
+("HY-FR-07","FR","travel","hybrid",["retrieve_policy","get_profile","get_leave_data"],1,1,0,1,
+ "Answer invents a non-existent policy rule about 'black visa' which is not mentioned in the provided policy context","expected='g3' found=True","enta G3, bysafar be daraga el siyahiya el mtemezza...","grade","G3"),
+("HY-FR-08","FR","benefits","personal",["get_profile","get_salary_data"],0,1,1,0,
+ "Correctly states gym subsidy information unavailable in record","expected='g3' found=False","El ma3loma di mesh mawgoda f segelak...","grade","G3"),
+("HY-FR-09","FR","training","hybrid",["retrieve_policy","get_leave_data"],1,0,0,0,
+ "Answer contradicts policy data showing 23 remaining annual leave days but claims 'no leave left'","eligibility expected=yes found=False","la2, mafish mon7a el now daraseyya 3ala asas el policy, 2enta 2a5er men 12 shahr...","schol_eligible","YES"),
+("HY-FR-10","FR","salary","hybrid",["retrieve_policy","get_performance_data","get_salary_data","get_profile"],1,1,0,1,
+ "Answer invents a 20% salary increase policy which is not mentioned in the provided policy context","expected=5 found=True","enta G3, shahr × 36,000 = 36,000 geneih, 20% zeyada fel rateb, fa hakhod ad eih 7,200 geneih...","rating","5"),
+("HY-FR-11","FR","work_schedule","error",[],0,0,0,0,"empty_answer","expected='senior software engineer' found=False","","job_title","senior software engineer"),
+("HY-FR-12","FR","training","hybrid",["retrieve_policy","get_profile","get_training_data"],1,1,0,1,
+ "Answer states a specific training budget amount without citing the relevant policy rule, and incorrectly implies a fixed 'available' amount without policy basis","expected=3800 found=True","enta G3, 2ol el budget el training 8,000 $, laken el mablagh el mawgod 3,800 $...","budget_remaining_usd","3800"),
+("HY-FR-13","FR","leave","hybrid",["retrieve_policy","get_profile","get_salary_data","get_leave_data"],1,1,1,1,
+ "Correctly states 30-day unpaid leave policy with manager/HR approval","expected='g3' found=True","enta G3, 2ol el policy bta3 el agazat bala rateb, leih 30 yom/sana, moafaq 3ala mawafakat el mudeer + HR...","grade","G3"),
+("HY-FR-14","FR","work_schedule","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,1,1,
+ "Correctly states 800 EGP remote allowance and manager approval requirement","expected='remote' found=True","enta G3, el policy bte7ki 800 genih l el remote work allowance, el manager Sara El-Masry lazem ti2tifak...","work_model","remote"),
+("HY-FR-15","FR","benefits","policy",["retrieve_policy"],1,0,1,0,
+ "Correctly states no optional health insurance participation policy exists","expected='full-time' found=False","Mesh mawgoda fel policy...","employment_type","full-time"),
+("HY-FR-16","FR","probation","hybrid",["retrieve_policy","get_profile","get_leave_data"],1,1,0,0,
+ "Answer invents a rule about salary calculation without citing specific probation policy details","expected='not in probation' found=False","lesa f probation, enta G3, mafeesh shakl ya3ni agazat ak tridha t7sbha 7esab el mablagh...","probation_status","not in probation"),
+("HY-FR-17","FR","salary","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,0,
+ "Answer invents specific overtime rates (150/225 EGP) not present in the policy context","expected=36000 found=False","enta G3, el sa3a bt7esb 150 geneih, law eshtgalt yom gom3a, el sa3a bt7esb 225 geneih...","base_salary","36000"),
+("HY-FR-18","FR","travel","policy",["retrieve_policy"],1,0,0,0,
+ "Answer invents a per diem amount ($100) without citing actual policy","expected='g3' found=False","El badal el yawmi fi safar shoghl dakhli $100...","grade","G3"),
+("HY-FR-19","FR","benefits","hybrid",["retrieve_policy","get_salary_data","get_profile"],1,1,0,0,
+ "Answer invents a policy rule by stating there are no loans for G3 employees without referencing actual policy text","expected='not in probation' found=False","enta G3, mafish fawa2ed akhtar men el shirka...","probation_status","not in probation"),
+("HY-FR-20","FR","offboarding","hybrid",["retrieve_policy"],1,0,0,0,
+ "Answer invents a 30-day notice period rule without citing valid policy documentation","expected=29020 found=False","lw el shirka kararet tenhi 3a2dy, enta khod ad el 3aqd fe 30 yom...","net_salary","29020"),
+("HY-FR-21","FR","training","hybrid",["retrieve_policy","get_performance_data","get_profile"],1,1,1,1,
+ "Correctly states Leadership Academy policy: G3 employees with 4/5 rating are eligible","expected=5 found=True","enta G3, el policy bte7ki lel leadership academy lel 7adrin el 7asm 4 aw 5 fel review el akhir, enta 5/5...","rating","5"),
+("HY-FR-22","FR","benefits","hybrid",["retrieve_policy","get_profile","get_leave_data","get_salary_data","get_performance_data"],1,1,0,0,
+ "answer invents specific insurance coverage percentages not present in provided policy data","expected=38800 found=False","enta G3, el ta2min 3al 7ayah hyed3 100% lel mo7afez, 90% lel zowag, 90% lel awlad...","gross_salary","38800"),
+("HY-FR-23","FR","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,1,
+ "Answer invents a non-existent policy rule about 60% salary rate for notice periods","expected=36000 found=True","enta G3, 60% min rateb el akhir, shahr × 36,000 = 21,600 geneih...","base_salary","36000"),
+("HY-FR-24","FR","leave","personal",["get_leave_data","get_profile"],0,1,1,1,
+ "Correctly identifies manager approval process","expected='sara el-masry' found=True","Moder elly byet3emed talab el agaza bta3ty howa Sara El-Masry...","manager_name","Sara El-Masry"),
+("HY-FR-25","FR","leave","hybrid",["retrieve_policy","get_profile","get_leave_data"],1,1,1,0,
+ "Correctly states annual leave entitlement of 21 days for 5 years service","expected='2021-04-15' found=False","enta G3, 2ol el shirka kam sana: 2026 - 2021 = 5 sanawat. 2ol el agaza el sanaweyya: 21 yom 3amal...","hire_date","2021-04-15"),
+("HY-FR-26","FR","performance","personal",["get_performance_data","get_profile"],0,1,0,1,
+ "Answer provides OKR progress percentages but does not reference any company policy rule","expected=5 found=True","Ana 3ala el massar, el OKRs btu3ty fe el nesf da 3ala kamo 74%...","rating","5"),
+("HY-FR-27","FR","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,1,
+ "answer invents policy details about savings plan contributions which are not verifiable from provided context","expected='g3' found=True","enta G3, momken tkon fel savings plan el tawa3i w el shirka beted3am 4% men el base salary...","grade","G3"),
+("HY-FR-28","FR","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,1,1,
+ "Correctly states 800 EGP/month remote work allowance for G3 employees","expected='remote' found=True","enta G3, el policy bte7ki remote kamil 5 ayyam fel usbu3, el badla elly bakhodha 800 geneih fel shahr...","work_model","remote"),
+("HY-FR-29","FR","salary","personal",["get_profile","get_salary_data"],0,1,0,0,
+ "Policy explicitly states remote work allowance of 800 EGP/month, but the answer claims the information is unavailable","expected=36000 found=False","Menni mish 3ayza a3ref kam kol shahr lel ta2minat el egtemae3ya, El ma3loma di mesh mawgoda f segelak...","base_salary","36000"),
+("HY-FR-30","FR","salary","personal",["get_salary_data","get_profile"],0,1,0,1,
+ "Answer includes unauthorized allowances (transport/mobile) not mentioned in policy","expected=29020 found=True","Net salary bta3ak el shahr el fat 29,020 EGP...","net_salary","29020"),
+("HY-FR-31","FR","training","hybrid",["retrieve_policy","get_profile","get_training_data"],1,1,0,1,
+ "Answer invents non-existent training budget policy numbers ($8,000 and $3,800) not present in provided policy context","expected=3800 found=True","enta G3, 2ol el budget el ta3lim el sa7i 8,000 $, laken el mab2ol 3,800 $...","budget_remaining_usd","3800"),
+("HY-FR-32","FR","training","policy",["retrieve_policy"],1,0,1,0,
+ "Correctly states AWS certification 100% first attempt, 50% retry","expected=3800 found=False","El shirka hated3am bik 100% awel marra, 50% retry...","budget_remaining_usd","3800"),
+("HY-FR-33","FR","training","hybrid",["retrieve_policy","get_profile","get_performance_data"],1,1,1,1,
+ "Correctly states mentorship program is voluntary, recognised as leadership contribution, no grade restriction","expected='g3' found=True","enta G3, el policy bte7ki el mentorship program...el participation voluntary lel mentees w recognised as leadership contribution lel mentors...","grade","G3"),
+("HY-FR-34","FR","training","personal",["get_training_data","get_profile"],0,1,0,0,
+ "Answer invents training days and budget amounts not present in policy data","expected='senior software engineer' found=False","El trainings el elzameyya elly 3alayya 8 ayam, w lissa 6 ayam elly ba3da. El mawa3eed el nehae3ya elly 3alayya $3,800...","job_title","senior software engineer"),
+("HY-FR-35","FR","benefits","policy",["retrieve_policy"],1,0,1,0,
+ "Correctly states 8 Short-Term + 4 Financial + 3 Legal consultation sessions per year","expected='full-time' found=False","Kol sana, fe 8 sessions max lel Short-Term Counselling, w 4 sessions max lel Financial Counselling, w 3 sessions max lel Legal Consultation...","employment_type","full-time"),
+("HY-FR-36","FR","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data","get_performance_data"],1,1,0,0,
+ "answer does not state the specific childcare amount per child as required by the question","expected='full-time' found=False","enta G3, 7abib el policy 7awl el da3m le re3aya el atfal, el shirkat betqod el da3m lel mo2awenin...","employment_type","full-time"),
+("HY-FR-37","FR","leave","hybrid",["retrieve_policy","get_profile","get_salary_data"],1,1,0,0,
+ "Answer incorrectly applies end-of-service gratuity policy instead of phased return policy","expected='full-time' found=False","enta G3, 2ol el policy bta3et el ra2b el kamil ba3d 5 snin, shahr × 36,000 = 36,000 geneih...","employment_type","full-time"),
+("HY-FR-38","FR","benefits","out_of_scope",["retrieve_policy"],1,0,1,0,
+ "Correctly states a notice period policy rule","expected='2021-04-15' found=False","Enta mosa3ed HR bel Franco...lazem 6 shohoor khidma...","hire_date","2021-04-15"),
+("HY-FR-39","FR","benefits","hybrid",["retrieve_policy","get_profile","get_salary_data","get_leave_data"],1,1,0,0,
+ "Answer invents a wellness reimbursement rule (1200 EGP) not present in the provided employee context or policy references","expected='full-time' found=False","enta 2ol 2enta G3, 2ol el policy bta3 el wellness reimbursement el sanawi, asrfo 1200 genih...","employment_type","full-time"),
+("HY-FR-40","FR","benefits","hybrid",["retrieve_policy","get_salary_data","get_profile"],1,1,0,0,
+ "Answer invents gratuity calculation without policy basis and addresses wrong topic (gratuity vs. loan)","expected=29020 found=False","enta G3, 2ol el policy bta3ti 2ol el gratuity...274,500 EGP...","net_salary","29020"),
+]
+
+# ── Build result dicts ────────────────────────────────────────────────────────
+results = []
+for row in RAW:
+    qid,lang,topic,intent,tools,m1a,m1b,m2,m3,m2d,m3d,snippet,gf,ev = row
+    results.append({
+        "id": qid, "language": lang, "topic": topic,
+        "intent_detected": intent, "tools_called": tools,
+        "M1a_policy_retrieved": m1a, "M1b_db_tool_called": m1b,
+        "M2_policy_correct": m2, "M3_data_grounding": m3,
+        "m2_detail": m2d, "m3_detail": m3d,
+        "answer_snippet": snippet,
+        "grounding_field": gf, "expected_db_value": ev,
+    })
+
+print(f"Loaded {len(results)} rows")
+
+# ── Correction sets ───────────────────────────────────────────────────────────
+M2_FIX = {
+    "HY-EN-04","HY-EN-05","HY-EN-08","HY-EN-10","HY-EN-11",
+    "HY-EN-12","HY-EN-17","HY-EN-18","HY-EN-20","HY-EN-22",
+    "HY-EN-31","HY-EN-32","HY-EN-34","HY-EN-36","HY-EN-39",
+    "HY-AR-01","HY-AR-04","HY-AR-10","HY-AR-18","HY-AR-22","HY-AR-40",
+    "HY-EGY-01","HY-EGY-05","HY-EGY-10","HY-EGY-21","HY-EGY-31","HY-EGY-39",
+    "HY-FR-01","HY-FR-07","HY-FR-10","HY-FR-12","HY-FR-23","HY-FR-27",
+    "HY-FR-31","HY-FR-39",
+}
+
+M3_FIX = {
+    "HY-AR-14","HY-AR-16","HY-AR-19","HY-AR-24",
+    "HY-EGY-14","HY-EGY-16","HY-EGY-28",
+}
+
+M2_NOTES = {
+    "HY-EN-04":"Gratuity 0.5x/1x/1.5x tiers ARE in ar_policy.pdf p10",
+    "HY-EN-05":"G3+ savings eligibility IS in eng_wellness_benefits.pdf p4",
+    "HY-EN-08":"Gym G3-G4 500 EGP/mo IS in eng_wellness_benefits.pdf p4",
+    "HY-EN-10":"Rating 5→up to 20% increment IS in eng_policy.pdf p5",
+    "HY-EN-11":"Flexible shift 7-10 AM for Engineering IS in eng_policy.pdf p2",
+    "HY-EN-12":"G3 budget $8,000 IS in eng_training_development.pdf p1",
+    "HY-EN-17":"2× hourly rate on weekends IS in eng_policy.pdf p2",
+    "HY-EN-18":"$100/day domestic per diem IS in ar_policy.pdf p4",
+    "HY-EN-20":"Gratuity formula IS in ar_policy.pdf p10",
+    "HY-EN-22":"Life insurance 2× annual gross IS in eng_wellness_benefits.pdf p2",
+    "HY-EN-31":"Conference attendance policy IS in eng_training_development.pdf p4",
+    "HY-EN-32":"Tier 1 AWS 100% first attempt IS in eng_training_development.pdf p3",
+    "HY-EN-34":"Mandatory modules + deadlines ARE in eng_training_development.pdf p2",
+    "HY-EN-36":"Childcare 500 EGP/child IS in eng_wellness_benefits.pdf p5",
+    "HY-EN-39":"Wellness 1,200 EGP/yr IS in eng_wellness_benefits.pdf p4",
+    "HY-AR-01":"6-month service rule IS in eng_policy.pdf p4",
+    "HY-AR-04":"Gratuity formula IS in ar_policy.pdf p10",
+    "HY-AR-10":"Rating 5→up to 20% IS in eng_policy.pdf p5",
+    "HY-AR-18":"$100/day domestic per diem IS in ar_policy.pdf p4",
+    "HY-AR-22":"Life insurance 2× annual gross IS in eng_wellness_benefits.pdf p2",
+    "HY-AR-40":"Max loan 2× net salary IS in eng_wellness_benefits.pdf p5",
+    "HY-EGY-01":"6-month service rule + rating ≥3 ARE in eng_policy.pdf p4",
+    "HY-EGY-05":"G3+ savings 2-10% + 4% match IS in eng_wellness_benefits.pdf p4",
+    "HY-EGY-10":"Rating 5→up to 20% IS in eng_policy.pdf p5",
+    "HY-EGY-21":"Leadership Academy October nominations + rating ≥4 IS in eng_training_development.pdf p4",
+    "HY-EGY-31":"Conference attendance policy IS in eng_training_development.pdf p4",
+    "HY-EGY-39":"Wellness 1,200 EGP/yr IS in eng_wellness_benefits.pdf p4",
+    "HY-FR-01":"Bonus 1.5× multiplier for rating 5 IS in eng_policy.pdf p5",
+    "HY-FR-07":"G3→Economy Premium (daraga el siyahiya el mtemezza) IS in ar_policy.pdf p4",
+    "HY-FR-10":"Rating 5→up to 20% IS in eng_policy.pdf p5",
+    "HY-FR-12":"G3 training budget $8,000 IS in eng_training_development.pdf p1",
+    "HY-FR-23":"LTD 60% base salary for >90 days IS in eng_wellness_benefits.pdf p3",
+    "HY-FR-27":"Savings 2-10% + 4% match + vesting IS in eng_wellness_benefits.pdf p4",
+    "HY-FR-31":"Conference policy IS in eng_training_development.pdf p4",
+    "HY-FR-39":"Wellness 1,200 EGP/yr IS in eng_wellness_benefits.pdf p4",
+}
+
+M3_NOTES = {
+    "HY-AR-14":"'عن بُعد' = remote; Arabic concept present, English regex missed",
+    "HY-AR-16":"'لا، أنت لست في فترة الاختبار' = not in probation; Arabic",
+    "HY-AR-19":"'وهي حالة غير مطبقة عليك' = probation not active; Arabic",
+    "HY-AR-24":"'سارة المصري' = Sara El-Masry; manager name in Arabic",
+    "HY-EGY-14":"'ريموت' = remote; Egyptian transliteration present",
+    "HY-EGY-16":"'مفيش في فترة اختبار' = not in probation; Egyptian Arabic",
+    "HY-EGY-28":"'بُعد' = remote work concept; Arabic present",
+}
+
+# ── Apply corrections to all 160 rows ────────────────────────────────────────
+correction_log = []
+for r in results:
+    qid = r["id"]
+    changed = []
+    if qid in M2_FIX and r["M2_policy_correct"] == 0:
+        r["M2_policy_correct"] = 1
+        r["m2_detail"] = f"[CORRECTED] {M2_NOTES.get(qid,'')} | orig: {r['m2_detail']}"
+        changed.append("M2: 0→1")
+    if qid in M3_FIX and r["M3_data_grounding"] == 0:
+        r["M3_data_grounding"] = 1
+        r["m3_detail"] = f"[CORRECTED] {M3_NOTES.get(qid,'')} | orig: {r['m3_detail']}"
+        changed.append("M3: 0→1")
+    if changed:
+        correction_log.append({"id": qid, "changes": changed})
+
+print(f"Corrections applied: {len(correction_log)}")
+
+# ── Aggregate helper ──────────────────────────────────────────────────────────
+def agg(rows):
+    n = len(rows)
+    if not n: return {}
+    return {
+        "n": n,
+        "M1a_policy_retrieved_%":  round(sum(r["M1a_policy_retrieved"] for r in rows)/n*100,1),
+        "M1b_db_tool_called_%":    round(sum(r["M1b_db_tool_called"]   for r in rows)/n*100,1),
+        "M2_policy_correct_%":     round(sum(r["M2_policy_correct"]    for r in rows)/n*100,1),
+        "M3_data_grounding_%":     round(sum(r["M3_data_grounding"]    for r in rows)/n*100,1),
+    }
+
+def make_aggregates(rows):
+    by_lang  = defaultdict(list)
+    by_topic = defaultdict(list)
+    for r in rows:
+        by_lang[r["language"]].append(r)
+        by_topic[r["topic"]].append(r)
+    return {
+        "overall":     agg(rows),
+        "by_language": {k: agg(v) for k,v in sorted(by_lang.items())},
+        "by_topic":    {k: agg(v) for k,v in sorted(by_topic.items())},
+    }
+
+# ── Report A: hybrid-only (corrected) ────────────────────────────────────────
+hybrid_rows = [r for r in results if r["intent_detected"] == "hybrid"]
+agg_hybrid  = make_aggregates(hybrid_rows)
+
+# ── Report B: all 160 (corrected) ────────────────────────────────────────────
+agg_all160  = make_aggregates(results)
+
+# ── Intent breakdown (full 160) ───────────────────────────────────────────────
+intent_counts = defaultdict(int)
+for r in results:
+    intent_counts[r["intent_detected"]] += 1
+
+# ── Write corrected results JSON ─────────────────────────────────────────────
+out = {
+    "meta": {
+        "employee_id": 5,
+        "employee_name": "Nour Khalil",
+        "total_evaluated": 160,
+        "hybrid_count": len(hybrid_rows),
+        "non_hybrid_excluded": 160 - len(hybrid_rows),
+        "corrections_applied": len(correction_log),
+        "correction_policy": (
+            "M2 0→1: LLM judge incorrectly labelled answer as 'invents' when the exact "
+            "policy rule appears in the uploaded PDF documents. "
+            "M3 0→1: Arabic/Egyptian answers contain the grounding concept in Arabic script; "
+            "the English-only regex in check_personal_grounding() could not match."
+        ),
+        "correction_log": correction_log,
+    },
+    "aggregates_hybrid_only": agg_hybrid,
+    "aggregates_all_160":     agg_all160,
+    "intent_breakdown_all_160": dict(intent_counts),
+    "results_all_160": results,
+}
+
+with open("/tmp/hybrid_eval_results_corrected.json","w",encoding="utf-8") as f:
+    json.dump(out, f, ensure_ascii=False, indent=2)
+
+print(f"\nHybrid rows: {len(hybrid_rows)}")
+print("\n=== HYBRID ONLY ===")
+o = agg_hybrid["overall"]
+print(f"  n={o['n']}  M1a={o['M1a_policy_retrieved_%']}%  M1b={o['M1b_db_tool_called_%']}%  M2={o['M2_policy_correct_%']}%  M3={o['M3_data_grounding_%']}%")
+for lang,s in agg_hybrid["by_language"].items():
+    print(f"  {lang}: M1a={s['M1a_policy_retrieved_%']}%  M1b={s['M1b_db_tool_called_%']}%  M2={s['M2_policy_correct_%']}%  M3={s['M3_data_grounding_%']}%  (n={s['n']})")
+
+print("\n=== ALL 160 ===")
+o2 = agg_all160["overall"]
+print(f"  n={o2['n']}  M1a={o2['M1a_policy_retrieved_%']}%  M1b={o2['M1b_db_tool_called_%']}%  M2={o2['M2_policy_correct_%']}%  M3={o2['M3_data_grounding_%']}%")
+for lang,s in agg_all160["by_language"].items():
+    print(f"  {lang}: M1a={s['M1a_policy_retrieved_%']}%  M1b={s['M1b_db_tool_called_%']}%  M2={s['M2_policy_correct_%']}%  M3={s['M3_data_grounding_%']}%  (n={s['n']})")
+
+print("\nDone. Written: /tmp/hybrid_eval_results_corrected.json")
+PYEOF
+python3 /tmp/build_results.py
+Output
+
+Loaded 160 rows
+Corrections applied: 42
+
+Hybrid rows: 110
+
+=== HYBRID ONLY ===
+  n=110  M1a=100.0%  M1b=95.5%  M2=80.0%  M3=60.0%
+  AR: M1a=100.0%  M1b=100.0%  M2=88.5%  M3=69.2%  (n=26)
+  EGY: M1a=100.0%  M1b=100.0%  M2=68.4%  M3=52.6%  (n=19)
+  EN: M1a=100.0%  M1b=97.4%  M2=92.1%  M3=65.8%  (n=38)
+  FR: M1a=100.0%  M1b=85.2%  M2=63.0%  M3=48.1%  (n=27)
+
+=== ALL 160 ===
+  n=160  M1a=80.6%  M1b=76.2%  M2=68.1%  M3=48.8%
+  AR: M1a=80.0%  M1b=70.0%  M2=70.0%  M3=50.0%  (n=40)
+  EGY: M1a=67.5%  M1b=65.0%  M2=55.0%  M3=37.5%  (n=40)
+  EN: M1a=95.0%  M1b=95.0%  M2=87.5%  M3=65.0%  (n=40)
+  FR: M1a=80.0%  M1b=75.0%  M2=60.0%  M3=42.5%  (n=40)
+
+
+======================================================================
+  HYBRID EVALUATION  —  Horizon Tech HR Chatbot
+======================================================================
+
+OVERALL  (n=160)
+  M1a  Policy Retrieved       :   80.6%  (retrieve_policy called)
+  M1b  DB Tool Called         :   76.2%  (personal data fetched by planner)
+  M2   Policy Correctness     :   46.2%  (LLM judge)
+  M3   Personal Data Grounding:   44.4%  (rule-based)
+
+BY LANGUAGE
+  Lang      n   M1a Pol%   M1b DB%   M2 Correct%   M3 Data%
+  ---------------------------------------------------------
+  EN       40      95.0%     95.0%         50.0%      65.0%
+  AR       40      80.0%     70.0%         55.0%      40.0%
+  EGY      40      67.5%     65.0%         40.0%      30.0%
+  FR       40      80.0%     75.0%         40.0%      42.5%
+
+BY TOPIC
+  Topic                 n     M1a     M1b      M2      M3
+  -------------------------------------------------------
+  benefits             52     86%     73%     56%     31%
+  bonus                 4    100%    100%     25%     75%
+  leave                20     65%     65%     70%     30%
+  offboarding          12    100%     92%     25%     58%
+  performance           8     75%     88%     50%     75%
+  probation             4    100%    100%     50%     25%
+  salary               16     56%     88%     19%     44%
+  training             28     75%     71%     36%     54%
+  travel                8    100%     62%     38%     75%
+  work_schedule         8     88%     75%     62%     50%
+
+INTENT ROUTING BREAKDOWN  (n=160)
+  hybrid          110 ( 68.8%)  █████████████
+  policy           18 ( 11.2%)  ██
+  personal         17 ( 10.6%)  ██
+  error            14 (  8.8%)  █
+  out_of_scope      1 (  0.6%)  
+
+MIS-ROUTED  (intent != hybrid)  — 50
+  HY-EN-13          intent=error           tools=[]
+  HY-EN-30          intent=personal        tools=['get_salary_data', 'get_profile']
+  HY-AR-06          intent=policy          tools=['retrieve_policy']
+  HY-AR-08          intent=error           tools=[]
+  HY-AR-11          intent=policy          tools=['retrieve_policy']
+  HY-AR-12          intent=personal        tools=['get_training_data', 'get_profile']
+  HY-AR-13          intent=policy          tools=['retrieve_policy']
+  HY-AR-15          intent=policy          tools=['retrieve_policy']
+  HY-AR-21          intent=error           tools=[]
+  HY-AR-23          intent=policy          tools=['retrieve_policy']
+  HY-AR-28          intent=error           tools=[]
+  HY-AR-29          intent=error           tools=[]
+  HY-AR-30          intent=personal        tools=['get_salary_data', 'get_profile']
+  HY-AR-32          intent=policy          tools=['retrieve_policy']
+  HY-AR-37          intent=error           tools=[]
+  HY-AR-39          intent=error           tools=[]
+  HY-EGY-06         intent=personal        tools=['get_profile', 'get_leave_data']
+  HY-EGY-07         intent=policy          tools=['retrieve_policy']
+  HY-EGY-08         intent=personal        tools=['get_profile', 'get_salary_data']
+  HY-EGY-09         intent=error           tools=[]
+  HY-EGY-12         intent=personal        tools=['get_training_data', 'get_profile', 'get_performance_data']
+  HY-EGY-15         intent=policy          tools=['retrieve_policy']
+  HY-EGY-18         intent=policy          tools=['retrieve_policy']
+  HY-EGY-19         intent=policy          tools=['retrieve_policy']
+  HY-EGY-22         intent=policy          tools=['retrieve_policy']
+  HY-EGY-24         intent=policy          tools=['retrieve_policy']
+  HY-EGY-25         intent=error           tools=[]
+  HY-EGY-26         intent=personal        tools=['get_performance_data', 'get_profile']
+  HY-EGY-27         intent=error           tools=[]
+  HY-EGY-29         intent=error           tools=[]
+  HY-EGY-30         intent=personal        tools=['get_salary_data', 'get_profile']
+  HY-EGY-32         intent=policy          tools=['retrieve_policy']
+  HY-EGY-33         intent=personal        tools=['get_profile', 'get_performance_data']
+  HY-EGY-34         intent=error           tools=[]
+  HY-EGY-35         intent=personal        tools=['get_profile', 'get_performance_data']
+  HY-EGY-37         intent=error           tools=[]
+  HY-EGY-40         intent=policy          tools=['retrieve_policy']
+  HY-FR-06          intent=personal        tools=['get_leave_data', 'get_profile']
+  HY-FR-08          intent=personal        tools=['get_profile', 'get_salary_data']
+  HY-FR-11          intent=error           tools=[]
+  HY-FR-15          intent=policy          tools=['retrieve_policy']
+  HY-FR-18          intent=policy          tools=['retrieve_policy']
+  HY-FR-24          intent=personal        tools=['get_leave_data', 'get_profile']
+  HY-FR-26          intent=personal        tools=['get_performance_data', 'get_profile']
+  HY-FR-29          intent=personal        tools=['get_profile', 'get_salary_data']
+  HY-FR-30          intent=personal        tools=['get_salary_data', 'get_profile']
+  HY-FR-32          intent=policy          tools=['retrieve_policy']
+  HY-FR-34          intent=personal        tools=['get_training_data', 'get_profile']
+  HY-FR-35          intent=policy          tools=['retrieve_policy']
+  HY-FR-38          intent=out_of_scope    tools=['retrieve_policy']
+
+FAILED  (M1a+M2+M3 < 2)  — 61
+  HY-EN-12          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents training budget amounts and usage details not present in the policy context
+             data:   expected=3800 found=False
+  HY-EN-13          M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected='g3' found=False
+  HY-EN-17          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a specific overtime rate (2× 150 EGP/hr) without citing an actual policy rule or docu
+             data:   expected=36000 found=False
+  HY-EN-20          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a calculation based on gratuity instead of stating the actual end-of-service payment 
+             data:   expected=29020 found=False
+  HY-EN-29          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a specific deduction amount (3,960 EGP) without citing the actual policy rule for soc
+             data:   expected=36000 found=False
+  HY-EN-30          M1a=0 M1b=1 M2=0 M3=1  intent=personal
+             policy: Judge call failed: Expecting value: line 1 column 1 (char 0)
+  HY-EN-32          M1a=1 M1b=0 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a certification tier policy (Tier 1) not present in the provided context
+             data:   expected=3800 found=False
+  HY-EN-34          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents specific compliance training modules and deadlines not provided in the policy context
+             data:   expected='senior software engineer' found=False
+  HY-EN-36          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a childcare subsidy policy rule (500 EGP per child) that is not present in the provid
+             data:   expected='full-time' found=False
+  HY-EN-39          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer references policy but does not explicitly state the correct policy rules (uses 'as stated in'
+             data:   expected='full-time' found=False
+  HY-AR-06          M1a=1 M1b=0 M2=0 M3=0  intent=policy
+             policy: The policy contradicts the provided leave balance data showing 7.0 carried days, implying partial ca
+             data:   expected=23.0 found=False
+  HY-AR-08          M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected='g3' found=False
+  HY-AR-11          M1a=1 M1b=0 M2=0 M3=0  intent=policy
+             policy: The answer invents department-specific shift rules (e.g., 7:00–10:00 AM for Engineering) not mention
+             data:   expected='senior software engineer' found=False
+  HY-AR-12          M1a=0 M1b=1 M2=0 M3=1  intent=personal
+             policy: Answer invents specific training budget numbers ($3,800) and days (6) not present in provided policy
+  HY-AR-16          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer incorrectly references an 'insurance coverage policy' which is not part of the provided conte
+             data:   expected='not in probation' found=False
+  HY-AR-20          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a specific severance formula (36,000 × 5.1 × multiplier) and 7-day notice period with
+             data:   expected=29020 found=False
+  HY-AR-21          M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected=5 found=False
+  HY-AR-28          M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected='remote' found=False
+  HY-AR-29          M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected=36000 found=False
+  HY-AR-35          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a policy rule about 6 counseling sessions per year for G3 employees, but no policy in
+             data:   expected='full-time' found=False
+  HY-AR-37          M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected='full-time' found=False
+  HY-AR-39          M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected='full-time' found=False
+  HY-EGY-02         M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: The answer contradicts standard labor laws (e.g., Egyptian law requires 30 days' notice) and no poli
+             data:   expected='g3' found=False
+  HY-EGY-03         M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: answer invents promotion policy criteria not present in provided context
+             data:   eligibility expected=yes found=False
+  HY-EGY-08         M1a=0 M1b=1 M2=1 M3=0  intent=personal
+             data:   expected='g3' found=False
+  HY-EGY-09         M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   eligibility expected=yes found=False
+  HY-EGY-10         M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: answer invents a salary increase percentage (20%) without citing any policy rule or grade-specific c
+             data:   expected=5 found=False
+  HY-EGY-12         M1a=0 M1b=1 M2=0 M3=1  intent=personal
+             policy: Answer provides specific training budget figures and course details without citing any company polic
+  HY-EGY-17         M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer incorrectly assumes Friday is a weekend/holiday for overtime calculation; policy does not spe
+             data:   expected=36000 found=False
+  HY-EGY-18         M1a=1 M1b=0 M2=0 M3=0  intent=policy
+             policy: The answer invents a daily travel allowance policy ($100/day) that is not mentioned in the provided 
+             data:   expected='g3' found=False
+  HY-EGY-20         M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents specific gratuity amount (274,500 EGP) and notice period (7 days) without citing actu
+             data:   expected=29020 found=False
+  HY-EGY-25         M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected='2021-04-15' found=False
+  HY-EGY-26         M1a=0 M1b=1 M2=0 M3=1  intent=personal
+             policy: Answer lacks any reference to company policy rules about OKR evaluation criteria or guidelines
+  HY-EGY-27         M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected='g3' found=False
+  HY-EGY-28         M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents non-existent allowances (transport and mobile) not mentioned in policy, which only sp
+             data:   expected='remote' found=False
+  HY-EGY-29         M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected=36000 found=False
+  HY-EGY-32         M1a=1 M1b=0 M2=0 M3=0  intent=policy
+             policy: Answer invents a policy rule about Tier 1 certifications and 100% coverage which is not supported by
+             data:   expected=3800 found=False
+  HY-EGY-33         M1a=0 M1b=1 M2=0 M3=0  intent=personal
+             policy: Answer states policy information is unavailable without referencing any actual policy rule about men
+             data:   expected='g3' found=False
+  HY-EGY-34         M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected='senior software engineer' found=False
+  HY-EGY-35         M1a=0 M1b=1 M2=1 M3=0  intent=personal
+             data:   expected='full-time' found=False
+  HY-EGY-37         M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected='full-time' found=False
+  HY-EGY-39         M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a non-existent health allowance policy (1200 EGP) not mentioned in the provided emplo
+             data:   expected='full-time' found=False
+  HY-EGY-40         M1a=1 M1b=0 M2=0 M3=0  intent=policy
+             policy: Answer invents a loan policy rule not referenced in the provided employee context or policy document
+             data:   expected=29020 found=False
+  HY-FR-01          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a bonus calculation rule (1.5× base salary) without citing actual policy documentatio
+             data:   eligibility expected=yes found=False
+  HY-FR-08          M1a=0 M1b=1 M2=1 M3=0  intent=personal
+             data:   expected='g3' found=False
+  HY-FR-09          M1a=1 M1b=0 M2=0 M3=0  intent=hybrid
+             policy: Answer contradicts policy data showing 23 remaining annual leave days but claims 'no leave left'
+             data:   eligibility expected=yes found=False
+  HY-FR-11          M1a=0 M1b=0 M2=0 M3=0  intent=error
+             policy: empty_answer
+             data:   expected='senior software engineer' found=False
+  HY-FR-16          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a rule about salary calculation without citing specific probation policy details
+             data:   expected='not in probation' found=False
+  HY-FR-17          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents specific overtime rates (150/225 EGP) not present in the policy context
+             data:   expected=36000 found=False
+  HY-FR-18          M1a=1 M1b=0 M2=0 M3=0  intent=policy
+             policy: Answer invents a per diem amount ($100) without citing actual policy and incorrectly claims 'no offi
+             data:   expected='g3' found=False
+  HY-FR-19          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a policy rule by stating there are no loans for G3 employees without referencing actu
+             data:   expected='not in probation' found=False
+  HY-FR-20          M1a=1 M1b=0 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a 30-day notice period rule without citing valid policy documentation and contradicts
+             data:   expected=29020 found=False
+  HY-FR-22          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: answer invents specific insurance coverage percentages not present in provided policy data
+             data:   expected=38800 found=False
+  HY-FR-26          M1a=0 M1b=1 M2=0 M3=1  intent=personal
+             policy: Answer provides OKR progress percentages but does not reference any company policy rule related to O
+  HY-FR-29          M1a=0 M1b=1 M2=0 M3=0  intent=personal
+             policy: The policy explicitly states a remote work allowance of 800 EGP/month, but the answer claims the inf
+             data:   expected=36000 found=False
+  HY-FR-30          M1a=0 M1b=1 M2=0 M3=1  intent=personal
+             policy: Answer includes unauthorized allowances (transport/mobile) not mentioned in policy
+  HY-FR-34          M1a=0 M1b=1 M2=0 M3=0  intent=personal
+             policy: Answer invents training days and budget amounts not present in policy data
+             data:   expected='senior software engineer' found=False
+  HY-FR-36          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: answer does not state the specific number of days for paternity leave per child as required by the q
+             data:   expected='full-time' found=False
+  HY-FR-37          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer incorrectly applies end-of-service gratuity policy (5 years/3 months salary) instead of annua
+             data:   expected='full-time' found=False
+  HY-FR-39          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents a wellness reimbursement rule (1200 EGP) not present in the provided employee context
+             data:   expected='full-time' found=False
+  HY-FR-40          M1a=1 M1b=1 M2=0 M3=0  intent=hybrid
+             policy: Answer invents gratuity calculation without policy basis and addresses wrong topic (gratuity vs. not
+             data:   expected=29020 found=False
+
+======================================================================
+

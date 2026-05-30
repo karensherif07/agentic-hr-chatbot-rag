@@ -3,32 +3,25 @@ run_hybrid_eval.py
 ==================
 Evaluates hybrid answer generation for the Horizon Tech HR chatbot.
 
-KEY DESIGN FIXES vs previous version:
-  1. strip_citations(raw) is called inside run_agent before returning — so the
-     final answer NEVER contains [Page N | AR/EN] citations. Checking for them
-     was always going to give 0%. M2 is now pure LLM judge on policy correctness.
+KEY DESIGN:
+  M1a — retrieve_policy called         (rule-based)
+  M1b — correct DB tool called         (rule-based)
+  M2  — Policy Correctness             (LLM judge, ar_llm for all languages)
+  M3  — Personal Data Grounding        (rule-based, expected_db_value in answer)
 
-  2. M1 is split into two independent sub-metrics:
-     M1a — retrieve_policy called  (did the system fetch policy context?)
-     M1b — correct DB tool called  (did the planner also fetch personal data?)
-     Both reported separately. The planner intentionally skips DB tools when
-     policy context alone is enough — M1b reflects this design choice.
+CHECKPOINT SUPPORT:
+  Progress is saved to  hybrid_eval_checkpoint_eid<N>.json  after every query.
+  Re-running with the same --employee_id automatically skips completed queries
+  and resumes from where you left off.
 
-  3. M2 — Policy Correctness (LLM judge only, ar_llm for all languages)
-     Checks that the answer correctly states the policy rule for the question.
-
-  4. M3 — Personal Data Grounding (rule-based)
-     Expected DB value present in answer. Same logic as personal eval.
-
-Mirrors agent.py EXACTLY:
-  - Same run_agent() call signature
-  - Same detect_language_type() + get_semantic_dialect()
-  - Same _KEY_MAP, format_personal_data() via get_full_personal_context()
-  - skip_critique=True, history_str=""
+  --clear-checkpoint   delete the checkpoint and start fresh
+  --checkpoint PATH    use a custom checkpoint file path
 
 Usage:
-    python run_hybrid_eval.py --employee_id 42
-    python run_hybrid_eval.py --employee_id 42 --lang EN --verbose
+    python run_hybrid_eval.py --employee_id 5
+    python run_hybrid_eval.py --employee_id 5 --lang EN --verbose
+    python run_hybrid_eval.py --employee_id 5 --clear-checkpoint
+    python run_hybrid_eval.py --employee_id 5 --checkpoint my_run.json
 """
 
 import argparse
@@ -40,19 +33,13 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-from nlp_utils import detect_language_type, get_semantic_dialect
-
 
 # =============================================================================
-# M2 — POLICY CORRECTNESS (LLM judge, ar_llm for all languages)
+# M2 — POLICY CORRECTNESS (LLM judge)
 # =============================================================================
 
 def _policy_judge(ar_llm, question: str, answer: str,
                   policy_keyword: str, personal_data_str: str) -> dict:
-    """
-    Checks that the answer correctly states the policy rule relevant to the
-    question. Language of answer does not affect score.
-    """
     from agent import _invoke_with_retry, _strip_think_blocks
 
     prompt = (
@@ -79,7 +66,6 @@ def _policy_judge(ar_llm, question: str, answer: str,
         res     = _invoke_with_retry(ar_llm, prompt)
         content = _strip_think_blocks(res.content).strip()
         content = re.sub(r"```json|```", "", content).strip()
-        # Extract first valid JSON object even if there's trailing text
         m = re.search(r'\{[^{}]*"score"\s*:\s*[01][^{}]*\}', content)
         if m:
             content = m.group(0)
@@ -129,31 +115,20 @@ def _extract_personal_value(personal_data_str: str, grounding_field: str) -> str
         m = re.search(text_patterns[grounding_field], personal_data_str, re.IGNORECASE)
         return m.group(1).strip() if m else None
 
-    # job_title: extract from personal_data_str but check against answer more flexibly
-    # since Arabic/EGY/FR answers translate the title rather than repeat it in English
     if grounding_field == "job_title":
         m = re.search(r"Title:\s*([^\n|]+)", personal_data_str, re.IGNORECASE)
         if not m:
             return None
-        title = m.group(1).strip().lower()
-        # Return the most distinctive word (last word of title) for partial matching
-        # e.g. "senior software engineer" -> check if "engineer" OR full title in answer
-        words = title.split()
-        # Return tuple hint as pipe-separated so check_personal_grounding can try both
-        return title  # full title for exact match attempt; fallback handled below
+        return m.group(1).strip().lower()
 
-    # probation_status: format_personal_data emits either
-    #   "Probation status: ACTIVE — ends 2024-06-30"  or  "Probation status: NOT IN PROBATION"
-    # The full string never appears verbatim in an answer, so normalise to a canonical
-    # token the answer will actually contain.
     if grounding_field == "probation_status":
         m = re.search(r"Probation status:\s*(.+)", personal_data_str, re.IGNORECASE)
         if not m:
             return None
         raw = m.group(1).strip().upper()
         if raw.startswith("ACTIVE"):
-            return "probation"       # answer will contain "probation" or "on probation"
-        return "not in probation"    # answer will contain "not in probation" or "completed"
+            return "probation"
+        return "not in probation"
 
     return None
 
@@ -163,24 +138,17 @@ def check_personal_grounding(answer: str, personal_data_str: str,
     expected = _extract_personal_value(personal_data_str, grounding_field)
 
     if expected is None:
-        # Field not found in personal_data_str — could be a regex mismatch or missing data.
-        # Return 0 with a clear label so it shows up in failures for debugging,
-        # rather than silently granting a free pass that masks real gaps.
         return 0, "field_absent_in_db"
 
     norm_ans = answer.replace(",", "").lower()
     norm_exp = expected.replace(",", "").lower().strip()
 
-    # job_title: accept partial match (last meaningful word) or Arabic equivalents
     if grounding_field == "job_title":
-        # Full title match
         if norm_exp in norm_ans:
             return 1, f"expected='{norm_exp}' found=True"
-        # Last word match (e.g. 'engineer' from 'senior software engineer')
         last_word = norm_exp.split()[-1] if norm_exp.split() else norm_exp
         if last_word and last_word in norm_ans:
             return 1, f"expected='{norm_exp}' found=True (partial '{last_word}')"
-        # Arabic/Egyptian equivalents for common titles
         arabic_equivalents = {
             "engineer": ["مهندس", "engineer"],
             "manager":  ["مدير", "manager"],
@@ -195,7 +163,6 @@ def check_personal_grounding(answer: str, personal_data_str: str,
                     return 1, f"expected='{norm_exp}' found=True (arabic equiv)"
         return 0, f"expected='{norm_exp}' found=False"
 
-    # Eligibility verdicts
     if grounding_field in ("bonus_eligible", "promo_eligible", "schol_eligible"):
         if norm_exp == "yes":
             yes_words = ["yes", "eligible", "مؤهل", "مستحق", "aywa",
@@ -225,6 +192,38 @@ def check_personal_grounding(answer: str, personal_data_str: str,
 
 
 # =============================================================================
+# CHECKPOINT HELPERS
+# =============================================================================
+
+def _default_checkpoint_path(employee_id: int) -> Path:
+    return Path(f"hybrid_eval_checkpoint_eid{employee_id}.json")
+
+
+def _load_checkpoint(path: Path) -> dict:
+    """Load saved results keyed by query id. Returns {} if file absent."""
+    if not path.exists():
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        # Accept both {id: row} and legacy list format
+        if isinstance(data, list):
+            return {r["id"]: r for r in data}
+        return data
+    except Exception as e:
+        print(f"WARNING: could not read checkpoint {path}: {e}. Starting fresh.")
+        return {}
+
+
+def _save_checkpoint(path: Path, checkpoint: dict) -> None:
+    """Atomically write checkpoint dict to disk."""
+    tmp = path.with_suffix(".tmp")
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(checkpoint, f, ensure_ascii=False, indent=2)
+    tmp.replace(path)
+
+
+# =============================================================================
 # SINGLE QUERY RUNNER
 # =============================================================================
 
@@ -235,6 +234,7 @@ def evaluate_one(query: dict, employee_id: int,
                  verbose: bool = False) -> dict:
 
     from agent import run_agent, _KEY_MAP
+    from nlp_utils import detect_language_type, get_semantic_dialect
 
     question = query["query"]
     qid      = query["id"]
@@ -299,22 +299,24 @@ def evaluate_one(query: dict, employee_id: int,
     )
 
     row = {
-        "id":              qid,
-        "language":        qid.split("-")[1],
-        "topic":           query["topic"],
-        "query":           question,
-        "answer_snippet":  answer[:300],
+        "id":                   qid,
+        "language":             qid.split("-")[1],
+        "topic":                query["topic"],
+        "query":                question,
+        "grounding_field":      query["grounding_field"],
+        "expected_db_value":    query.get("expected_db_value", ""),
+        "answer_snippet":       answer[:300],
         "M1a_policy_retrieved": m1a,
         "M1b_db_tool_called":   m1b,
         "M2_policy_correct":    m2,
         "M3_data_grounding":    m3,
-        "m1_detail":  m1_detail,
-        "m2_detail":  m2_detail,
-        "m3_detail":  m3_detail,
-        "intent_detected":  intent,
-        "lang_detected":    lang,
-        "tools_called":     tools_called,
-        "response_time_s":  elapsed,
+        "m1_detail":            m1_detail,
+        "m2_detail":            m2_detail,
+        "m3_detail":            m3_detail,
+        "intent_detected":      intent,
+        "lang_detected":        lang,
+        "tools_called":         tools_called,
+        "response_time_s":      elapsed,
     }
 
     if verbose:
@@ -398,12 +400,12 @@ def print_report(agg: dict, results: list[dict]):
               f"{s['M3_data_grounding_%']:>8.1f}%")
 
     print(f"\nBY TOPIC")
-    hdr2 = (f"  {'Topic':<16}  {'n':>3}  {'M1a':>6}  "
+    hdr2 = (f"  {'Topic':<18}  {'n':>3}  {'M1a':>6}  "
             f"{'M1b':>6}  {'M2':>6}  {'M3':>6}")
     print(hdr2)
     print("  " + "-" * (len(hdr2) - 2))
-    for topic, s in agg["by_topic"].items():
-        print(f"  {topic:<16}  {s['n']:>3}  "
+    for topic, s in sorted(agg["by_topic"].items()):
+        print(f"  {topic:<18}  {s['n']:>3}  "
               f"{s['M1a_policy_retrieved_%']:>5.0f}%  "
               f"{s['M1b_db_tool_called_%']:>5.0f}%  "
               f"{s['M2_policy_correct_%']:>5.0f}%  "
@@ -419,7 +421,7 @@ def print_report(agg: dict, results: list[dict]):
         bar = "█" * int(pct / 5)
         print(f"  {intent:<14}  {count:>3} ({pct:>5.1f}%)  {bar}")
 
-    # Misrouted
+    # Mis-routed
     misrouted = [r for r in results if r["intent_detected"] != "hybrid"]
     if misrouted:
         print(f"\nMIS-ROUTED  (intent != hybrid)  — {len(misrouted)}")
@@ -450,19 +452,38 @@ def print_report(agg: dict, results: list[dict]):
 # =============================================================================
 
 def main():
-    parser = argparse.ArgumentParser(description="Hybrid eval — Horizon Tech HR chatbot")
-    parser.add_argument("--employee_id", type=int, required=True)
-    parser.add_argument("--benchmark",   default="hybrid_eval_benchmark.json")
-    parser.add_argument("--lang",        choices=["EN", "AR", "EGY", "FR"])
-    parser.add_argument("--verbose",     action="store_true")
+    parser = argparse.ArgumentParser(
+        description="Hybrid eval — Horizon Tech HR chatbot",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  python run_hybrid_eval.py --employee_id 5\n"
+            "  python run_hybrid_eval.py --employee_id 5 --lang EN --verbose\n"
+            "  python run_hybrid_eval.py --employee_id 5 --clear-checkpoint\n"
+            "  python run_hybrid_eval.py --employee_id 5 --checkpoint my_run.json\n"
+        )
+    )
+    parser.add_argument("--employee_id",     type=int, required=True,
+                        help="Employee ID to evaluate (use 5 for Nour Khalil)")
+    parser.add_argument("--benchmark",       default="hybrid_eval_benchmark.json",
+                        help="Path to benchmark JSON (default: hybrid_eval_benchmark.json)")
+    parser.add_argument("--lang",            choices=["EN", "AR", "EGY", "FR"],
+                        help="Run only this language subset")
+    parser.add_argument("--verbose",         action="store_true",
+                        help="Print per-query details inline")
+    parser.add_argument("--checkpoint",      default=None,
+                        help="Custom checkpoint file path (default: hybrid_eval_checkpoint_eid<N>.json)")
+    parser.add_argument("--clear-checkpoint", action="store_true",
+                        help="Delete existing checkpoint and start fresh")
     args = parser.parse_args()
 
-    path = Path(args.benchmark)
-    if not path.exists():
-        print(f"ERROR: benchmark not found at {path}", file=sys.stderr)
+    # ── Benchmark file ────────────────────────────────────────────────────────
+    bench_path = Path(args.benchmark)
+    if not bench_path.exists():
+        print(f"ERROR: benchmark not found at {bench_path}", file=sys.stderr)
         sys.exit(1)
 
-    with open(path, encoding="utf-8") as f:
+    with open(bench_path, encoding="utf-8") as f:
         bench = json.load(f)
 
     lang_key_map = {
@@ -472,15 +493,36 @@ def main():
         "FR":  "franco_arabic",
     }
 
-    all_queries = []
+    all_queries: list[dict] = []
     for lang_key, queries in bench["queries"].items():
         if args.lang and lang_key != lang_key_map[args.lang]:
             continue
         all_queries.extend(queries)
 
-    print(f"\nLoaded {len(all_queries)} queries  |  employee_id={args.employee_id}")
+    total = len(all_queries)
+    print(f"\nLoaded {total} queries  |  employee_id={args.employee_id}  "
+          f"|  benchmark={bench_path.name}")
 
-    print("Running setup()…")
+    # ── Checkpoint setup ──────────────────────────────────────────────────────
+    ckpt_path = (Path(args.checkpoint)
+                 if args.checkpoint
+                 else _default_checkpoint_path(args.employee_id))
+
+    if args.clear_checkpoint and ckpt_path.exists():
+        ckpt_path.unlink()
+        print(f"Checkpoint cleared: {ckpt_path}")
+
+    checkpoint: dict = _load_checkpoint(ckpt_path)
+
+    if checkpoint:
+        already_done = len(checkpoint)
+        remaining    = sum(1 for q in all_queries if q["id"] not in checkpoint)
+        print(f"Checkpoint found: {already_done} done, {remaining} remaining → {ckpt_path}")
+    else:
+        print(f"No checkpoint found — running all {total} queries → {ckpt_path}")
+
+    # ── Setup ─────────────────────────────────────────────────────────────────
+    print("\nRunning setup()…")
     try:
         from setup import setup
         (ar_index, en_index,
@@ -504,11 +546,29 @@ def main():
         print(f"ERROR fetching employee data: {e}", file=sys.stderr)
         sys.exit(1)
 
-    results = []
-    total   = len(all_queries)
+    # ── Run queries ───────────────────────────────────────────────────────────
+    results: list[dict] = []
+    skipped = 0
+    ran     = 0
 
     for i, query in enumerate(all_queries, 1):
-        print(f"[{i:3}/{total}] {query['id']}", end="  ", flush=True)
+        qid = query["id"]
+
+        # ── Resume: skip completed queries ────────────────────────────────
+        if qid in checkpoint:
+            results.append(checkpoint[qid])
+            skipped += 1
+            if args.verbose:
+                r = checkpoint[qid]
+                print(f"[{i:3}/{total}] {qid}  SKIP (checkpoint)  "
+                      f"M1a={r['M1a_policy_retrieved']} M1b={r['M1b_db_tool_called']} "
+                      f"M2={r['M2_policy_correct']} M3={r['M3_data_grounding']}")
+            else:
+                print(f"[{i:3}/{total}] {qid}  ↩ skip", flush=True)
+            continue
+
+        # ── Run fresh ─────────────────────────────────────────────────────
+        print(f"[{i:3}/{total}] {qid}", end="  ", flush=True)
 
         row = evaluate_one(
             query             = query,
@@ -526,6 +586,11 @@ def main():
             verbose           = args.verbose,
         )
         results.append(row)
+        ran += 1
+
+        # ── Save checkpoint after every query ─────────────────────────────
+        checkpoint[qid] = row
+        _save_checkpoint(ckpt_path, checkpoint)
 
         if not args.verbose:
             s    = row["M1a_policy_retrieved"] + row["M2_policy_correct"] + row["M3_data_grounding"]
@@ -536,6 +601,11 @@ def main():
                   f"M3={row['M3_data_grounding']}  "
                   f"intent={row['intent_detected']:8s}  ({row['response_time_s']}s)")
 
+    # ── Summary line ──────────────────────────────────────────────────────────
+    print(f"\nDone — ran {ran} new, skipped {skipped} from checkpoint  "
+          f"(total {len(results)}/{total})")
+
+    # ── Report & outputs ──────────────────────────────────────────────────────
     agg = aggregate(results)
     print_report(agg, results)
 
@@ -554,6 +624,13 @@ def main():
     with open(txt_out, "w", encoding="utf-8") as f:
         f.write(buf.getvalue())
     print(f"Report  → {txt_out}")
+
+    # ── Auto-clear checkpoint only if fully complete ──────────────────────────
+    if len(results) == total and not args.lang:
+        ckpt_path.unlink(missing_ok=True)
+        print(f"All {total} queries complete — checkpoint cleared: {ckpt_path}")
+    elif len(results) < total:
+        print(f"Partial run ({len(results)}/{total}) — checkpoint preserved: {ckpt_path}")
 
 
 if __name__ == "__main__":
