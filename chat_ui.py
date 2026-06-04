@@ -5,7 +5,7 @@ chat_ui.py — Answer rendering, expanders, history, analytics, escalation trigg
 import os
 import streamlit as st
 from setup import render_page_to_image, ARABIC_PDF_PATH_SET, ENGLISH_PDF_PATH_SET
-from utils import is_no_info_answer, confidence_badge, summarize_history, _is_arabic_source
+from utils import is_no_info_answer, summarize_history, _is_arabic_source
 from sessions import save_session
 
 
@@ -50,28 +50,6 @@ def render_answer(
         f'<div class="{css}">{answer.replace(chr(10), "<br>")}</div>',
         unsafe_allow_html=True,
     )
-
-    # Confidence badge — policy + hybrid only
-    if scores_dict and intent in ("policy", "hybrid") and not _no_info:
-        peer_scores  = list(scores_dict.values())
-        raw_score    = max(scores_dict.values())
-        label, color = confidence_badge(raw_score, peer_scores)
-        st.markdown(
-            f'<span class="conf-badge" style="background:{color}">{label}</span>',
-            unsafe_allow_html=True,
-        )
-
-    # Query Info expander
-    with st.expander("🔍 Query Info"):
-        st.info(
-            f"**Intent:** {intent} | **Lang:** {lang}"
-            + (f" | **Dialect:** {dialect}" if dialect else "")
-        )
-        if tools_called:
-            badges = " ".join(
-                f'<span class="tool-badge">🔧 {t}</span>' for t in tools_called
-            )
-            st.markdown(f"**Tools used:** {badges}", unsafe_allow_html=True)
 
     # Your data used — personal + hybrid only
     if personal_data_str and intent in ("personal", "hybrid") and not _no_info:

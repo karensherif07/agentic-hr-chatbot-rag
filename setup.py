@@ -323,7 +323,7 @@ def _build_index(
 
 
 # ── Main setup ────────────────────────────────────────────────────────────────
-
+@st.cache_resource
 def setup():
     """
     Returns:

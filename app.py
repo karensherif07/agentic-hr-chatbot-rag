@@ -75,12 +75,10 @@ with st.sidebar:
         role_label += f" · 🔑 {st.session_state.admin_role}"
     st.caption(role_label)
 
-    if st.button("Sign out"):
-        logout()
     st.divider()
 
     if is_admin():
-        st.page_link("pages/admin_portal.py", label="⚙️ Admin Portal", icon="⚙️")
+        st.page_link("pages/admin_portal.py", label="Admin Portal", icon="⚙️")
         st.divider()
 
     # ── Contact HR (employees only) ───────────────────────────
@@ -125,6 +123,11 @@ with st.sidebar:
         st.session_state.chat_history         = []
         st.session_state.conversation_summary = ""
         st.rerun()
+
+    # ── Sign out — bottom of sidebar ─────────────────────────
+    st.divider()
+    if st.button("Sign out", use_container_width=True):
+        logout()
 
 
 # ─── Session state defaults ───────────────────────────────────

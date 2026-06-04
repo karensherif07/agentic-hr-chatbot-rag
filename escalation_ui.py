@@ -77,7 +77,6 @@ def render_escalation_ui():
         return
 
     st.info(
-        "I could not find an answer in the policy documents. "
         "Would you like me to notify the HR team?"
     )
     col_a, col_b = st.columns([1, 5])

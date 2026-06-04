@@ -96,6 +96,8 @@ with tabs[0]:
             }
             lang_counts = df_ana["language"].value_counts().reset_index()
             lang_counts.columns = ["language", "count"]
+            # Remove legacy "arabic" tag from before dialect splitting
+            lang_counts = lang_counts[lang_counts["language"] != "arabic"]
             lang_counts["language"] = lang_counts["language"].map(lambda x: label_map.get(x, x))
             st.bar_chart(lang_counts.set_index("language"))
         with c2:
@@ -223,7 +225,6 @@ with tabs[1]:
             with st.expander(f"#{row['id']} — {row['question_text'][:80]}..."):
                 st.write(f"👤 {row['full_name']} ({row['department']})")
                 st.write(f"📧 {row['email']}")
-                st.write(f"🌐 {row['language']}")
                 st.write(f"🕒 {row['asked_at']}")
                 st.info(row["question_text"])
                 if st.button(f"Resolve #{row['id']}", key=f"res_{row['id']}"):
