@@ -32,6 +32,31 @@ def log_query(employee_id, intent, topic, lang, dialect, is_no_info, question):
         print(f"[analytics] {e}")
 
 
+def _strip_eligibility_for_display(personal_data_str: str) -> str:
+    """
+    Remove the ELIGIBILITY PRE-CHECK block from the string shown to the user.
+    This block is backend-only — it guides the LLM but should never be
+    visible in the 'Your data used' expander.
+    """
+    if "ELIGIBILITY PRE-CHECK" not in personal_data_str:
+        return personal_data_str
+    lines = personal_data_str.splitlines()
+    filtered = []
+    in_eligibility = False
+    for line in lines:
+        if line.strip().startswith("ELIGIBILITY PRE-CHECK"):
+            in_eligibility = True
+            continue
+        if in_eligibility:
+            # Exit the block on a blank line that follows the block content
+            if line.strip() == "":
+                # Only stop skipping once we've seen at least one eligibility line
+                in_eligibility = False
+            continue
+        filtered.append(line)
+    return "\n".join(filtered).strip()
+
+
 def render_answer(
     answer: str,
     intent: str,
@@ -54,7 +79,8 @@ def render_answer(
     # Your data used — personal + hybrid only
     if personal_data_str and intent in ("personal", "hybrid") and not _no_info:
         with st.expander("📋 Your data used to answer this"):
-            st.code(personal_data_str, language=None)
+            display_str = _strip_eligibility_for_display(personal_data_str)
+            st.code(display_str, language=None)
 
     # Source Evidence — policy + hybrid only
     if cited_docs and intent in ("policy", "hybrid") and not _no_info:
@@ -73,8 +99,8 @@ def render_answer(
                     or os.path.basename(pdf)
                     or ("Arabic Policy" if is_ar else "English Policy")
                 )
-                lang_flag = "🇸🇦" if is_ar else "🇬🇧"
-                st.markdown(f"**📄 Page {p_no} — {lang_flag} {doc_name}**")
+                lang_label = "Arabic" if is_ar else "English"
+                st.markdown(f"**📄 Page {p_no} — [{lang_label}] {doc_name}**")
                 try:
                     st.image(render_page_to_image(pdf, p_no), width=700)
                 except Exception:

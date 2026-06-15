@@ -30,7 +30,6 @@ def _send_contact_hr_email(
     subject: str,
     body: str,
 ) -> bool:
-    """Send a free-form email from employee to HR via SMTP."""
     import os, smtplib
     from email.mime.text import MIMEText
     from email.mime.multipart import MIMEMultipart
@@ -50,14 +49,11 @@ def _send_contact_hr_email(
         msg["From"]    = from_addr
         msg["To"]      = hr_email
         msg["Reply-To"] = employee_email
-
         full_body = (
             f"Message from: {employee_name} ({employee_email})\n"
-            f"{'─' * 40}\n\n"
-            f"{body}"
+            f"{'─' * 40}\n\n{body}"
         )
         msg.attach(MIMEText(full_body, "plain"))
-
         with smtplib.SMTP(smtp_host, smtp_port) as s:
             s.starttls()
             s.login(smtp_user, smtp_pass)
@@ -74,28 +70,18 @@ with st.sidebar:
     if st.session_state.get("admin_role"):
         role_label += f" · 🔑 {st.session_state.admin_role}"
     st.caption(role_label)
-
     st.divider()
 
     if is_admin():
         st.page_link("pages/admin_portal.py", label="Admin Portal", icon="⚙️")
         st.divider()
 
-    # ── Contact HR (employees only) ───────────────────────────
     if not is_admin():
         with st.expander("📧 Contact HR"):
             with st.form("contact_hr_form", clear_on_submit=True):
-                subject = st.text_input(
-                    "Subject",
-                    placeholder="e.g. Leave request question",
-                )
-                body = st.text_area(
-                    "Message",
-                    placeholder="Write your message to HR here...",
-                    height=120,
-                )
+                subject = st.text_input("Subject", placeholder="e.g. Leave request question")
+                body = st.text_area("Message", placeholder="Write your message to HR here...", height=120)
                 send_btn = st.form_submit_button("Send", use_container_width=True)
-
             if send_btn:
                 if not subject.strip() or not body.strip():
                     st.warning("Please fill in both subject and message.")
@@ -115,7 +101,6 @@ with st.sidebar:
                             st.success("✅ Your message has been sent to HR.")
                         else:
                             st.error("Failed to send. Check SMTP settings in .env.")
-
         st.divider()
 
     if st.button("🗑 Clear chat history"):
@@ -124,9 +109,21 @@ with st.sidebar:
         st.session_state.conversation_summary = ""
         st.rerun()
 
-    # ── Sign out — bottom of sidebar ─────────────────────────
+    # ── Sign out pinned to the very bottom of sidebar ─────────
+    st.markdown("""
+    <style>
+    section[data-testid="stSidebar"] > div:first-child {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100vh !important;
+    }
+    .sidebar-spacer { flex: 1 1 auto; }
+    </style>
+    <div class="sidebar-spacer"></div>
+    
+    """, unsafe_allow_html=True)
     st.divider()
-    if st.button("Sign out", use_container_width=True):
+    if st.button("Sign out", use_container_width=True, key="signout_btn"):
         logout()
 
 
@@ -154,22 +151,69 @@ if not st.session_state.history_loaded:
 # ─── CSS ──────────────────────────────────────────────────────
 st.markdown("""
 <style>
-.rtl-answer{direction:rtl;text-align:right;font-size:1rem;line-height:1.9;padding:.5rem 0}
-.ltr-answer{direction:ltr;text-align:left;font-size:1rem;line-height:1.9;padding:.5rem 0}
-.conf-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.72rem;
-            font-weight:600;color:white;margin-left:8px;vertical-align:middle}
-.mic-container{background:#f8f9fa;border-radius:20px;padding:20px;border:1px solid #dee2e6;
-               margin-top:20px;box-shadow:0 4px 6px rgba(0,0,0,.05)}
-.tool-badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:.7rem;
-            background:#e3f2fd;color:#1565c0;margin:2px;border:1px solid #bbdefb}
-</style>""", unsafe_allow_html=True)
+/* ── Strip Streamlit's own chat bubble backgrounds so ours win ── */
+[data-testid="stChatMessage"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 4px 0 !important;
+}
+
+/* ── Assistant reply bubble: semi-transparent lift over navy bg ── */
+.ltr-answer, .rtl-answer, .welcome-bubble {
+    font-size: 1rem;
+    line-height: 1.8;
+    padding: .7rem 1rem;
+    border-radius: 10px;
+    margin: .15rem 0;
+    color: inherit;
+    background: rgba(255, 255, 255, 0.10);
+}
+.rtl-answer    { direction: rtl; text-align: right; }
+.ltr-answer    { direction: ltr; text-align: left;  }
+.welcome-bubble{ direction: ltr; text-align: left;  }
+
+/* ── User message bubble: warmer tint to distinguish from assistant ── */
+.user-bubble {
+    font-size: 1rem;
+    line-height: 1.8;
+    padding: .7rem 1rem;
+    border-radius: 10px;
+    margin: .15rem 0;
+    color: inherit;
+    background: rgba(100, 160, 255, 0.13);
+    direction: ltr;
+    text-align: left;
+}
+
+/* ── Badges ── */
+.conf-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: .72rem; font-weight: 600; color: white;
+    margin-left: 8px; vertical-align: middle;
+}
+.tool-badge {
+    display: inline-block; padding: 1px 7px; border-radius: 10px;
+    font-size: .7rem; background: #e3f2fd; color: #1565c0;
+    margin: 2px; border: 1px solid #bbdefb;
+}
+
+/* ── Voice buttons: rendered via components.v1.html, no CSS needed ── */
+/* Pad textarea right edge so typed text clears the button area       */
+div[data-testid="stChatInputContainer"] textarea {
+    padding-right: 100px !important;
+}
+div[data-testid="stChatInputContainer"] textarea {
+    padding-right: 100px !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 if is_admin():
     st.info("👋 You are logged in as an HR administrator.\n\nUse the **⚙️ Admin Portal** button in the sidebar.")
     st.stop()
 
-st.title("💼 HR Assistant")
-st.caption("Ask in English, Arabic (MSA or Egyptian), or Franco Arabic.")
+# st.title("💼 HR Assistant")
 
 # ─── Load models ──────────────────────────────────────────────
 try:
@@ -178,7 +222,7 @@ try:
      reranker, dialect_pipe, ara_tokenizer) = setup()
     st.session_state.en_llm       = en_llm
     st.session_state.ar_llm       = ar_llm
-    st.session_state.dialect_pipe = dialect_pipe   # stored so dialect detection is consistent
+    st.session_state.dialect_pipe = dialect_pipe
 except Exception as e:
     st.error(f"Setup Error: {e}")
     st.stop()
@@ -186,16 +230,40 @@ except Exception as e:
 # ─── Render history ───────────────────────────────────────────
 chat_container = st.container()
 with chat_container:
-    for msg in st.session_state.chat_history:
-        with st.chat_message(msg["role"]):
-            is_rtl = msg.get("is_arabic", False) and not msg.get("is_franco", False)
-            css    = "rtl-answer" if is_rtl else "ltr-answer"
+    if not st.session_state.chat_history:
+        with st.chat_message("assistant"):
             st.markdown(
-                f'<div class="{css}">{msg["content"].replace(chr(10), "<br>")}</div>',
+                '<div class="welcome-bubble">'
+                "👋 <strong>Welcome to the Employee Support Chatbot.</strong><br><br>"
+                "I can help with HR policies and employee information.<br>"
+                "You may ask questions in:<br>"
+                "&nbsp;&nbsp;🌐 English<br>"
+                "&nbsp;&nbsp;📜 Modern Standard Arabic<br>"
+                "&nbsp;&nbsp;🗣️ Egyptian Arabic<br>"
+                "&nbsp;&nbsp;💬 Franco-Arabic<br><br>"
+                "How can I assist you today?"
+                "</div>",
                 unsafe_allow_html=True,
             )
 
+    for msg in st.session_state.chat_history:
+        with st.chat_message(msg["role"]):
+            if msg["role"] == "user":
+                st.markdown(
+                    f'<div class="user-bubble">{msg["content"].replace(chr(10), "<br>")}</div>',
+                    unsafe_allow_html=True,
+                )
+            else:
+                is_rtl = msg.get("is_arabic", False) and not msg.get("is_franco", False)
+                css = "rtl-answer" if is_rtl else "ltr-answer"
+                st.markdown(
+                    f'<div class="{css}">{msg["content"].replace(chr(10), "<br>")}</div>',
+                    unsafe_allow_html=True,
+                )
+
 # ─── Input ────────────────────────────────────────────────────
+render_voice_panel()
+
 question = st.session_state.pop("transcribed_voice_question", None)
 if question is None:
     question = st.chat_input("Ask your question…")
@@ -207,13 +275,15 @@ if question:
 
     with chat_container:
         with st.chat_message("user"):
-            st.markdown(question)
+            st.markdown(
+                f'<div class="user-bubble">{question.replace(chr(10), "<br>")}</div>',
+                unsafe_allow_html=True,
+            )
 
         with st.chat_message("assistant"):
             with st.spinner("Thinking…"):
                 try:
                     lang    = detect_language_type(question)
-                    # Pass dialect_pipe (not ara_tokenizer) — matches agent.py requirement
                     dialect = get_semantic_dialect(question, dialect_pipe) if lang == "arabic" else None
 
                     history_str = build_history_str(
@@ -235,7 +305,7 @@ if question:
                         critique_llm=critique_llm,
                         reranker=reranker,
                         ara_tokenizer=ara_tokenizer,
-                        dialect_pipe=dialect_pipe,   # ← was missing before
+                        dialect_pipe=dialect_pipe,
                     )
 
                     answer            = result["answer"]
@@ -282,7 +352,6 @@ if question:
                     st.code(traceback.format_exc())
 
 render_escalation_ui()
-render_voice_panel()
 
 # ─── Bottom action bar ────────────────────────────────────────
 if st.session_state.get("last_answer"):

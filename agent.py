@@ -858,6 +858,32 @@ def run_agent(
     top_docs:     list = []
     scores_dict:  dict = {}
 
+    # ── Greeting short-circuit (before any LLM call) ──────────────────────────
+    _GREETING_RE = re.compile(
+        r"^\s*(hi|hello|hey|greetings|good\s+morning|good\s+afternoon|good\s+evening"
+        r"|ahlan|ahlan wa sahlan|marhaba|salam|السلام عليكم|مرحبا|أهلاً|هاي|هلو"
+        r"|هالو|ازيك|ازيك؟|ايه الاخبار|إزيك|صباح الخير|مساء الخير"
+        r"|salam|sala[mn]o|alo|hola|ciao|salut)\W*$",
+        re.IGNORECASE,
+    )
+    if _GREETING_RE.match(question.strip()):
+        greeting_replies = {
+            "arabic":  "أهلاً وسهلاً! 👋 أنا مساعدك لشؤون الموارد البشرية. كيف أقدر أساعدك اليوم؟",
+            "franco":  "Ahlan! 👋 Ana hena a3awwadak fi ay 7aga mota3ale2a bi HR. Ezay a2dar asa3dak?",
+            "english": "Hello! 👋 I'm your HR assistant. How can I help you today?",
+        }
+        reply = greeting_replies.get(lang, greeting_replies["english"])
+        return {
+            "answer":        reply,
+            "docs":          [],
+            "cited_docs":    [],
+            "scores":        {},
+            "intent":        "out_of_scope",
+            "topic":         "none",
+            "tools_called":  [],
+            "personal_data": "",
+        }
+
     # ── Stage 1: classify intent ──────────────────────────────────────────────
     intent = _classify_intent(question, routing_llm)
 
