@@ -63,7 +63,7 @@ export default function SourceEvidence({ docs }: { docs: CitedDoc[] }) {
         <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 14 }}>
           {list.map((d, i) => (
             <div key={i} className="glass-panel" style={{ padding: 14 }}>
-              <div style={{ fontSize: 12.5, fontWeight: 600, marginBottom: 8, color: "var(--brass-300)" }}>
+              <div style={{ fontSize: 12.5, fontWeight: 600, marginBottom: 8, color: "var(--indigo-600)" }}>
                 Page {d.page} — [{d.lang === "arabic" ? "Arabic" : "English"}] {d.doc_name}
               </div>
               <PdfPage doc={d} />

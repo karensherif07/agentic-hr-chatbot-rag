@@ -5,6 +5,7 @@ import SourceEvidence from "../components/SourceEvidence";
 import PersonalDataPanel from "../components/PersonalDataPanel";
 import EscalationBanner from "../components/EscalationBanner";
 import VoiceRecorder from "../components/VoiceRecorder";
+import SuggestedQuestions from "../components/SuggestedQuestions";
 import { api, BASE_URL } from "../api/client";
 import type { ChatMessage, ChatResponse } from "../api/types";
 
@@ -134,6 +135,8 @@ export default function ChatPage() {
               How can I assist you today?
             </div>
           )}
+
+          {history.length === 0 && <SuggestedQuestions onPick={(q) => sendQuestion(q)} />}
 
           {history.map((msg, i) => {
             const meta = metaByIndex[i];

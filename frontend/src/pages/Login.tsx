@@ -24,10 +24,11 @@ export default function Login() {
         display: "grid",
         placeItems: "center",
         padding: 24,
+        background: "radial-gradient(120% 100% at 50% -10%, var(--indigo-50) 0%, var(--bg) 55%)",
       }}
     >
       <div className="glass-panel" style={{ width: "100%", maxWidth: 420, padding: "40px 36px" }}>
-        <div style={{ marginBottom: 6, color: "var(--brass-300)", fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 600 }}>
+        <div style={{ marginBottom: 6, color: "var(--indigo-600)", fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 600 }}>
           Horizon Tech
         </div>
         <h1

@@ -24,7 +24,7 @@ export default function AdminPage() {
     <div style={{ maxWidth: 1180, margin: "0 auto", padding: "32px 28px 60px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div>
-          <div style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--brass-300)", fontWeight: 600 }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--indigo-600)", fontWeight: 600 }}>
             Horizon Tech
           </div>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: "1.8rem", fontWeight: 500, margin: "4px 0" }}>
@@ -53,9 +53,9 @@ export default function AdminPage() {
             onClick={() => setTab(t.id)}
             className="btn"
             style={{
-              background: tab === t.id ? "rgba(201,162,39,0.16)" : "rgba(255,255,255,0.04)",
-              border: `1px solid ${tab === t.id ? "rgba(201,162,39,0.4)" : "var(--line-strong)"}`,
-              color: tab === t.id ? "var(--brass-300)" : "var(--text-mid)",
+              background: tab === t.id ? "rgba(91, 95, 227,0.16)" : "var(--surface-alt)",
+              border: `1px solid ${tab === t.id ? "rgba(91, 95, 227,0.4)" : "var(--line-strong)"}`,
+              color: tab === t.id ? "var(--indigo-600)" : "var(--text-mid)",
               fontSize: 13.5,
             }}
           >

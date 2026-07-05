@@ -81,8 +81,8 @@ export default function VoiceRecorder({
     padding: 0,
     borderRadius: 8,
     fontSize: 14.5,
-    background: active ? "rgba(201,162,39,0.18)" : "rgba(255,255,255,0.05)",
-    border: `1px solid ${active ? "rgba(201,162,39,0.45)" : "var(--line-strong)"}`,
+    background: active ? "rgba(91, 95, 227,0.18)" : "var(--surface-alt)",
+    border: `1px solid ${active ? "rgba(91, 95, 227,0.45)" : "var(--line-strong)"}`,
   });
 
   return (
@@ -122,8 +122,8 @@ export default function VoiceRecorder({
             style={{
               fontSize: 12.5,
               padding: "6px 14px",
-              background: recording ? "rgba(217,123,123,0.2)" : "rgba(255,255,255,0.06)",
-              border: `1px solid ${recording ? "rgba(217,123,123,0.5)" : "var(--line-strong)"}`,
+              background: recording ? "rgba(224, 86, 122,0.2)" : "var(--border)",
+              border: `1px solid ${recording ? "rgba(224, 86, 122,0.5)" : "var(--line-strong)"}`,
             }}
           >
             {recording ? "⏹ Stop recording" : "● Start recording"}

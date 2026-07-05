@@ -23,7 +23,7 @@ function Bar({ label, value, max, color }: { label: string; value: number; max: 
         <span>{label}</span>
         <span>{value}</span>
       </div>
-      <div style={{ height: 8, background: "rgba(255,255,255,0.06)", borderRadius: 4, overflow: "hidden" }}>
+      <div style={{ height: 8, background: "var(--border)", borderRadius: 4, overflow: "hidden" }}>
         <div style={{ width: `${pct}%`, height: "100%", background: color, borderRadius: 4 }} />
       </div>
     </div>
@@ -118,13 +118,13 @@ export default function AnalyticsTab() {
           {Object.entries(data.by_language)
             .filter(([k]) => k !== "arabic")
             .map(([k, v]) => (
-              <Bar key={k} label={LANG_LABELS[k] || k} value={v} max={maxLang} color="var(--brass-500)" />
+              <Bar key={k} label={LANG_LABELS[k] || k} value={v} max={maxLang} color="var(--indigo-500)" />
             ))}
         </div>
         <div className="glass-panel" style={{ padding: 18 }}>
           <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 12 }}>By Intent</div>
           {Object.entries(data.by_intent).map(([k, v]) => (
-            <Bar key={k} label={k} value={v} max={maxIntent} color="var(--teal-400)" />
+            <Bar key={k} label={k} value={v} max={maxIntent} color="var(--teal-500)" />
           ))}
         </div>
       </div>

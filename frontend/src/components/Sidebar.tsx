@@ -41,7 +41,7 @@ export default function Sidebar({ onClearChat }: { onClearChat: () => void }) {
         borderInlineEnd: "1px solid var(--line)",
       }}
     >
-      <div style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--brass-300)", fontWeight: 600 }}>
+      <div style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--indigo-600)", fontWeight: 600 }}>
         Horizon Tech
       </div>
       <div style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", margin: "4px 0 14px" }}>
@@ -54,7 +54,7 @@ export default function Sidebar({ onClearChat }: { onClearChat: () => void }) {
         {employee.grade} · {employee.department}
         {employee.admin_role && (
           <>
-            {" "}· <span style={{ color: "var(--brass-300)" }}>🔑 {employee.admin_role}</span>
+            {" "}· <span style={{ color: "var(--indigo-600)" }}>🔑 {employee.admin_role}</span>
           </>
         )}
       </div>

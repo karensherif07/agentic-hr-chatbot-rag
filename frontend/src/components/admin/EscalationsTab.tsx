@@ -46,7 +46,7 @@ export default function EscalationsTab() {
                 <div>👤 {r.full_name} ({r.department})</div>
                 <div>📧 {r.email}</div>
                 <div>🕒 {new Date(r.asked_at).toLocaleString()}</div>
-                <div className="glass-panel" style={{ padding: 10, marginTop: 6, background: "rgba(255,255,255,0.03)" }}>
+                <div className="glass-panel" style={{ padding: 10, marginTop: 6, background: "var(--surface-alt)" }}>
                   {r.question_text}
                 </div>
                 <button className="btn btn-primary" style={{ marginTop: 10, width: "fit-content", fontSize: 12.5 }} onClick={() => resolve(r.id)}>

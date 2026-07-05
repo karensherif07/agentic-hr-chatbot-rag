@@ -1,34 +1,45 @@
 :root {
   /* ── Palette ──────────────────────────────────────────────
-     Horizon Tech: dusk-navy ground, brass accent (a sunrise-over-
-     horizon read, deliberately not terracotta/cream or neon-on-black).
+     Clean light SaaS look: near-white ground, indigo accent,
+     slate text. Built to look production-ready, not "themed".
   */
-  --ink-950: #0b1420;
-  --ink-900: #0f1b2d;
-  --ink-800: #16273f;
-  --ink-700: #1f3252;
-  --ink-600: #2c4468;
-  --line: rgba(255, 255, 255, 0.09);
-  --line-strong: rgba(255, 255, 255, 0.16);
+  --bg: #f7f7fb;
+  --bg-alt: #eef0f7;
+  --surface: #ffffff;
+  --surface-alt: #f9fafc;
 
-  --paper: #f4f1ea;
-  --paper-dim: #d8d3c6;
+  --border: #e4e6ef;
+  --border-strong: #d3d6e3;
+  --line: var(--border);
+  --line-strong: var(--border-strong);
 
-  --brass-300: #e8cf7a;
-  --brass-400: #d9b64f;
-  --brass-500: #c9a227;
-  --brass-600: #a9841a;
+  --ink-900: #14162b;
+  --ink-700: #383b57;
+  --ink-500: #6b6f8d;
+  --ink-300: #9a9db8;
 
-  --teal-400: #6fb8ac;
-  --rose-400: #d97b8e;
+  --indigo-50: #eef0ff;
+  --indigo-100: #dfe2ff;
+  --indigo-400: #7b7fe8;
+  --indigo-500: #5b5fe3;
+  --indigo-600: #4a4ecf;
+  --indigo-700: #3b3fb0;
 
-  --text-hi: #f3efe6;
-  --text-mid: rgba(243, 239, 230, 0.72);
-  --text-lo: rgba(243, 239, 230, 0.48);
+  --teal-500: #12a594;
+  --amber-500: #d99a2b;
+  --rose-500: #e0567a;
 
-  --success: #6fb88a;
-  --warning: #d9a94f;
-  --danger: #d97b7b;
+  --text-hi: var(--ink-900);
+  --text-mid: var(--ink-700);
+  --text-lo: var(--ink-500);
+  --text-faint: var(--ink-300);
+
+  --success: #12a594;
+  --success-bg: #e5f8f5;
+  --warning: #d99a2b;
+  --warning-bg: #fdf3e3;
+  --danger: #e0567a;
+  --danger-bg: #fdebf0;
 
   /* ── Type ─────────────────────────────────────────────── */
   --font-display: "Fraunces", "Noto Naskh Arabic", serif;
@@ -36,19 +47,13 @@
   --font-ar: "Noto Naskh Arabic", "Inter", sans-serif;
 
   /* ── Rhythm ───────────────────────────────────────────── */
-  --radius-sm: 8px;
+  --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 20px;
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
 
-  --shadow-panel: 0 12px 40px -12px rgba(0, 0, 0, 0.55);
-  --shadow-soft: 0 4px 16px -4px rgba(0, 0, 0, 0.35);
+  --shadow-panel: 0 1px 2px rgba(20, 22, 43, 0.04), 0 8px 24px -8px rgba(20, 22, 43, 0.08);
+  --shadow-soft: 0 1px 3px rgba(20, 22, 43, 0.06);
+  --shadow-lift: 0 4px 16px -4px rgba(91, 95, 227, 0.28);
 }
 
 * {
@@ -64,14 +69,14 @@ body,
 body {
   margin: 0;
   font-family: var(--font-body);
-  background: radial-gradient(120% 140% at 15% -10%, var(--ink-700) 0%, var(--ink-900) 45%, var(--ink-950) 100%);
+  background: var(--bg);
   color: var(--text-hi);
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--brass-500);
-  color: var(--ink-950);
+  background: var(--indigo-100);
+  color: var(--indigo-700);
 }
 
 ::-webkit-scrollbar {
@@ -79,7 +84,7 @@ body {
   height: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--ink-600);
+  background: var(--border-strong);
   border-radius: 8px;
   border: 2px solid transparent;
   background-clip: content-box;
@@ -93,17 +98,17 @@ button {
 }
 
 a {
-  color: var(--brass-300);
+  color: var(--indigo-600);
 }
 
 :focus-visible {
-  outline: 2px solid var(--brass-400);
+  outline: 2px solid var(--indigo-500);
   outline-offset: 2px;
 }
 
 /* ── Signature element: the horizon line ─────────────────
-   A thin gradient rule used under headers — the one recurring
-   motif tying every screen back to "Horizon" Tech. */
+   A thin gradient rule tying every screen back to "Horizon" Tech —
+   kept as a motif, restyled to fit the light palette. */
 .horizon-rule {
   height: 2px;
   width: 100%;
@@ -111,14 +116,14 @@ a {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--brass-600) 15%,
-    var(--brass-300) 50%,
-    var(--brass-600) 85%,
+    var(--indigo-400) 15%,
+    var(--indigo-600) 50%,
+    var(--indigo-400) 85%,
     transparent 100%
   );
   background-size: 200% 100%;
   animation: horizon-drift 8s ease-in-out infinite;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -144,11 +149,10 @@ a {
 }
 
 .glass-panel {
-  background: rgba(255, 255, 255, 0.045);
-  border: 1px solid var(--line);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-panel);
-  backdrop-filter: blur(6px);
 }
 
 .btn {
@@ -162,34 +166,36 @@ a {
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .btn-primary {
-  background: linear-gradient(180deg, var(--brass-400), var(--brass-500));
-  color: var(--ink-950);
+  background: var(--indigo-500);
+  color: #ffffff;
+  box-shadow: var(--shadow-lift);
 }
-.btn-primary:hover { background: linear-gradient(180deg, var(--brass-300), var(--brass-400)); }
+.btn-primary:hover { background: var(--indigo-600); }
 
 .btn-ghost {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: var(--line-strong);
-  color: var(--text-hi);
+  background: var(--surface);
+  border-color: var(--border-strong);
+  color: var(--text-mid);
 }
-.btn-ghost:hover { background: rgba(255, 255, 255, 0.08); }
+.btn-ghost:hover { background: var(--surface-alt); border-color: var(--indigo-400); color: var(--indigo-600); }
 
 .btn-danger {
-  background: rgba(217, 123, 123, 0.14);
-  border-color: rgba(217, 123, 123, 0.4);
-  color: #f0b8b8;
+  background: var(--danger-bg);
+  border-color: rgba(224, 86, 122, 0.35);
+  color: #b23f5f;
 }
-.btn-danger:hover { background: rgba(217, 123, 123, 0.22); }
+.btn-danger:hover { background: #fbdce6; }
 
 .input {
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
   padding: 11px 14px;
   color: var(--text-hi);
@@ -197,22 +203,19 @@ a {
   font-family: inherit;
 }
 .input:focus {
-  border-color: var(--brass-400);
+  border-color: var(--indigo-500);
+  box-shadow: 0 0 0 3px var(--indigo-50);
 }
 .input::placeholder {
-  color: var(--text-lo);
+  color: var(--text-faint);
 }
 
-/* Native <select> dropdowns render their popup list with the OS/browser's
-   own styling, which ignores our dark `color: var(--text-hi)` on some
-   platforms and defaults to white-on-white. Force a light background with
-   dark text specifically for the option list so it's always readable. */
 select.input {
   cursor: pointer;
 }
 select.input option {
   background: #ffffff;
-  color: #1a1a1a;
+  color: var(--text-hi);
 }
 
 .badge {
@@ -220,11 +223,33 @@ select.input option {
   align-items: center;
   gap: 4px;
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   padding: 3px 9px;
   border-radius: 999px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-alt);
   color: var(--text-mid);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.chip:hover {
+  border-color: var(--indigo-400);
+  background: var(--indigo-50);
+  color: var(--indigo-700);
 }

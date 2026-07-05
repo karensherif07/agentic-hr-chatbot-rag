@@ -134,7 +134,7 @@ export default function PolicyManagerTab() {
                 justifyContent: "space-between",
                 padding: "10px 14px",
                 borderRadius: 10,
-                background: "rgba(255,255,255,0.03)",
+                background: "var(--surface-alt)",
                 border: "1px solid var(--line)",
                 opacity: p.is_active ? 1 : 0.5,
               }}
