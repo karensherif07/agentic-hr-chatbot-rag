@@ -1,7 +1,20 @@
-venv/
+# Python
 __pycache__/
+*.pyc
+.venv/
+venv/
+
+# Env files (never commit real secrets)
 .env
-*.log
-*.sqlite3
+
+# Node / frontend
 node_modules/
-data/embeddings/
+dist/
+*.tsbuildinfo
+
+# Uploaded policy PDFs (contain real company data — don't commit)
+backend/policies/*.pdf
+
+# OS
+.DS_Store
+Thumbs.db
