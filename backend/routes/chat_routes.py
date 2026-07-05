@@ -178,7 +178,7 @@ class ContactHRBody(BaseModel):
 
 @router.post("/contact-hr")
 def contact_hr(body: ContactHRBody, emp: dict = Depends(get_current_employee)):
-    hr_email = get_hr_email()
+    hr_email = get_hr_email(exclude_employee_id=emp["id"])
     if not hr_email:
         return {"sent": False, "reason": "HR email not configured."}
     sent = send_contact_hr_email(

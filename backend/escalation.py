@@ -1,4 +1,3 @@
-
 """
 escalation.py (backend) — email-sending logic only.
 The "Notify HR / Dismiss" buttons now live in React
