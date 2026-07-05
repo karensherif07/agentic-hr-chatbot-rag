@@ -12,8 +12,6 @@ node_modules/
 dist/
 *.tsbuildinfo
 
-# Uploaded policy PDFs (contain real company data — don't commit)
-backend/policies/*.pdf
 
 # OS
 .DS_Store
