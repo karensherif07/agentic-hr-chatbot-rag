@@ -1,7 +1,15 @@
 import base64
 
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
+
+try:
+    from pydantic import BaseModel
+except ImportError:
+    # Fallback for environments where pydantic is not installed or resolvable.
+    class BaseModel:
+        def __init__(self, **data):
+            for key, value in data.items():
+                setattr(self, key, value)
 
 from deps import get_current_employee, get_models, ModelBundle
 from agent import run_agent
