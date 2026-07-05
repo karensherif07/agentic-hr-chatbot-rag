@@ -141,7 +141,7 @@ def require_login() -> None:
                 unsafe_allow_html=True)
     with st.container():
         st.markdown('<div class="lw">', unsafe_allow_html=True)
-        st.title("HR Policy Assistant")
+        st.title("HR Assistant")
         st.caption("Sign in with your Horizon Tech email to continue.")
         with st.form("login_form"):
             email    = st.text_input("Work email")

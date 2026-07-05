@@ -308,7 +308,7 @@ _PERSONAL_RULES_FRANCO = (
     "3. Probation: read 'Probation status' as written — do not infer from other fields.\n"
     "4. Work model / hours: follow the 'Work arrangement' and allowance lines — say remote/hybrid/office clearly.\n"
     "5. If a field is missing: 'El ma3loma di mesh mawgoda f segelak.'\n"
-    "6. User says I/my → you/your in Franco.\n"
+    "6. PRONOUNS (mirror exactly): user says 'ana' → you say 'enta'; user says 'beta3y' → you say 'beta3ak'; user says 'eli' → you say 'beta3ak'; user says 'leya' → you say 'leek'. NEVER say 'beta3y' or 'ana' in your answer.\n"
     "7. No page numbers — data is from the live HR database.\n"
 )
 

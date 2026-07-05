@@ -112,7 +112,7 @@ def validate(ans: str, lang: str, has_citations: bool = False) -> str:
         if lang == "arabic":
             ans += "\n\n⚠️ لم يتم ذكر أرقام الصفحات في هذه الإجابة."
         elif lang == "franco":
-            ans += "\n\n⚠️ Mafeesh arqam sa7fat fel egaba di."
+            ans += ""
         else:
             ans += "\n\n⚠️ Page citations were not produced for this answer."
     return ans

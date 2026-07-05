@@ -1,6 +1,6 @@
 """
 pages/admin_portal.py
-HR Admin Dashboard — Analytics, Escalations, Audit Log, System Config, Health
+HR Admin Dashboard — Analytics, Escalations, Audit Log
 """
 
 import streamlit as st
@@ -39,8 +39,6 @@ tabs = st.tabs([
     "📊 Analytics",
     "🔴 Escalations",
     "📋 Audit Log",
-    "⚙️ Config",
-    "💚 System Health",
 ])
 
 # ═══════════════════════════════════════════════════════════
@@ -84,7 +82,6 @@ with tabs[0]:
 
         st.divider()
 
-        # ── Charts ───────────────────────────────────────────
         c1, c2 = st.columns(2)
         with c1:
             st.subheader("By Language")
@@ -96,7 +93,6 @@ with tabs[0]:
             }
             lang_counts = df_ana["language"].value_counts().reset_index()
             lang_counts.columns = ["language", "count"]
-            # Remove legacy "arabic" tag from before dialect splitting
             lang_counts = lang_counts[lang_counts["language"] != "arabic"]
             lang_counts["language"] = lang_counts["language"].map(lambda x: label_map.get(x, x))
             st.bar_chart(lang_counts.set_index("language"))
@@ -106,7 +102,6 @@ with tabs[0]:
 
         st.divider()
 
-        # ── Unanswered questions ──────────────────────────────
         st.subheader("🔴 Unanswered Questions")
         udf = df_ana[df_ana["unanswered"] == True][
             ["asked_at", "full_name", "department", "language", "question_text"]
@@ -115,11 +110,8 @@ with tabs[0]:
 
         st.divider()
 
-        # ── ALL queries log ───────────────────────────────────
-        # This is the full log with search, filter, and download
         st.subheader("📋 All Queries Log")
 
-        # Filter controls
         fc1, fc2, fc3 = st.columns(3)
         with fc1:
             filter_lang = st.selectbox(
@@ -130,7 +122,7 @@ with tabs[0]:
         with fc2:
             filter_intent = st.selectbox(
                 "Filter by intent",
-                ["All", "policy", "personal", "hybrid","out_of_scope"],
+                ["All", "policy", "personal", "hybrid", "out_of_scope"],
                 key="filter_intent",
             )
         with fc3:
@@ -142,7 +134,6 @@ with tabs[0]:
 
         search_text = st.text_input("🔍 Search question text", key="search_q", placeholder="Type to search...")
 
-        # Apply filters
         df_filtered = df_ana.copy()
         if filter_lang != "All":
             df_filtered = df_filtered[df_filtered["language"] == filter_lang]
@@ -159,7 +150,6 @@ with tabs[0]:
 
         st.caption(f"Showing {len(df_filtered)} of {total} queries")
 
-        # Display table with colour-coded unanswered column
         display_cols = ["asked_at", "full_name", "department", "grade",
                         "intent", "topic", "language", "unanswered", "question_text"]
         available_cols = [c for c in display_cols if c in df_filtered.columns]
@@ -181,7 +171,6 @@ with tabs[0]:
             },
         )
 
-        # Download buttons
         dl1, dl2 = st.columns(2)
         with dl1:
             csv_all = df_ana.to_csv(index=False).encode("utf-8")
@@ -227,7 +216,7 @@ with tabs[1]:
                 st.write(f"📧 {row['email']}")
                 st.write(f"🕒 {row['asked_at']}")
                 st.info(row["question_text"])
-                if st.button(f"Resolve #{row['id']}", key=f"res_{row['id']}"):
+                if st.button(f"✅ Mark as Resolved", key=f"res_{row['id']}"):
                     try:
                         with get_db() as db:
                             db.execute(text(
@@ -235,7 +224,7 @@ with tabs[1]:
                             ), {"id": row["id"]})
                             db.commit()
                         log_admin_action("resolve_escalation", "analytics_log", row["id"])
-                        st.success("✅ Resolved")
+                        st.cache_data.clear()
                         st.rerun()
                     except Exception as e:
                         st.error(f"Error: {e}")
@@ -265,102 +254,3 @@ with tabs[2]:
             st.dataframe(df_audit, use_container_width=True, hide_index=True)
     except Exception as e:
         st.warning(f"Audit table may not be initialized: {e}")
-
-
-# ═══════════════════════════════════════════════════════════
-# TAB 4: SYSTEM CONFIG
-# ═══════════════════════════════════════════════════════════
-with tabs[3]:
-    st.subheader("System Configuration")
-    st.caption("Manage HR contact, SMTP settings, and system parameters.")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.write("**Current Configuration:**")
-        st.code(f"""
-HR_EMAIL:        {os.environ.get('HR_EMAIL', '(not set)')}
-SMTP_HOST:       {os.environ.get('SMTP_HOST', '(not set)')}
-SMTP_USER:       {os.environ.get('SMTP_USER', '(not set)')}
-ROUTING_LLM:     llama-3.3-70b-versatile
-EN_LLM:          llama-3.3-70b-versatile
-AR_LLM:          qwen/qwen3-32b  (thinking disabled)
-CRITIQUE_LLM:    llama-3.1-8b-instant
-RETRIEVAL_TOP_N: 5
-""")
-    with col2:
-        st.write("**How to Update:**")
-        st.info("""
-1. Edit `.env` in the root directory:
-   ```
-   HR_EMAIL=hr@horizontech.com
-   SMTP_HOST=smtp.gmail.com
-   SMTP_PORT=587
-   SMTP_USER=noreply@horizontech.com
-   SMTP_PASS=your-app-password
-   ```
-
-2. Restart the Streamlit app for changes to take effect.
-
-3. To grant admin access:
-   ```sql
-   UPDATE employees SET admin_role = 'hr_admin'
-   WHERE email = 'hr.person@horizontech.com';
-   ```
-""")
-
-    st.divider()
-    st.write("**Database Status:**")
-    try:
-        with get_db() as db:
-            log_count   = db.execute(text("SELECT COUNT(*) FROM analytics_log")).fetchone()[0]
-            admin_count = db.execute(text(
-                "SELECT COUNT(*) FROM employees WHERE admin_role IS NOT NULL"
-            )).fetchone()[0]
-        st.success("✅ Database connected")
-        st.write(f"   • {log_count} analytics log entries")
-        st.write(f"   • {admin_count} admin users configured")
-    except Exception as e:
-        st.error(f"❌ Database error: {e}")
-
-
-# ═══════════════════════════════════════════════════════════
-# TAB 5: SYSTEM HEALTH
-# ═══════════════════════════════════════════════════════════
-with tabs[4]:
-    st.subheader("💚 System Health Dashboard")
-    st.caption("Monitor system performance, failures, and response behaviour.")
-
-    @st.cache_data(ttl=60)
-    def load_health():
-        with get_db() as db:
-            rows = db.execute(text("""
-                SELECT asked_at, unanswered
-                FROM analytics_log
-                WHERE asked_at >= NOW() - INTERVAL '30 days'
-                ORDER BY asked_at
-            """)).fetchall()
-        df = pd.DataFrame([dict(r._mapping) for r in rows])
-        if not df.empty:
-            df["asked_at"] = pd.to_datetime(df["asked_at"], utc=True).dt.tz_convert(None)
-        return df
-
-    df = load_health()
-
-    if df.empty:
-        st.info("No data available.")
-    else:
-        total        = len(df)
-        failures     = int(df["unanswered"].sum())
-        failure_rate = round(failures / total * 100, 2)
-
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Total Queries (30d)", total)
-        c2.metric("Failures", failures)
-        c3.metric("Failure Rate", f"{failure_rate}%")
-
-        st.divider()
-        st.subheader("📈 Queries Over Time")
-        st.line_chart(df.groupby(df["asked_at"].dt.date).size())
-
-        st.subheader("⚠️ Failure Rate Over Time")
-        st.line_chart(df.groupby(df["asked_at"].dt.date)["unanswered"].mean())
