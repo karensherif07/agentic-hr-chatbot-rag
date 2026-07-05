@@ -17,6 +17,7 @@ from sqlalchemy import text
 
 from database import get_db
 from deps import require_admin, load_models_once, models
+from policy_sync import sync_active_policies_to_disk
 from routes.admin_routes import log_admin_action
 
 router = APIRouter(prefix="/api/admin/policies", tags=["policies"])
@@ -69,10 +70,10 @@ async def upload_policy(
 
     with get_db() as db:
         row = db.execute(text("""
-            INSERT INTO policy_documents (file_path, doc_name, lang, is_active, uploaded_by, uploaded_at)
-            VALUES (:fp, :dn, :lang, TRUE, :uid, NOW())
+            INSERT INTO policy_documents (file_path, doc_name, lang, is_active, uploaded_by, uploaded_at, file_data)
+            VALUES (:fp, :dn, :lang, TRUE, :uid, NOW(), :data)
             RETURNING id
-        """), {"fp": file_path, "dn": doc_name, "lang": lang, "uid": emp["id"]}).fetchone()
+        """), {"fp": file_path, "dn": doc_name, "lang": lang, "uid": emp["id"], "data": contents}).fetchone()
 
     log_admin_action(emp["id"], "upload_policy", "policy_documents", row[0], notes=doc_name)
     return {"id": row[0], "file_path": file_path, "note": "Uploaded. Click 'Rebuild Index' to activate it in retrieval."}
@@ -132,6 +133,7 @@ def rebuild_index(emp: dict = Depends(require_admin)):
     """
     models.ready = False
     try:
+        sync_active_policies_to_disk()
         load_models_once()
     except Exception as e:
         raise HTTPException(500, f"Index rebuild failed: {e}")

@@ -13,6 +13,7 @@ from fastapi import Depends, HTTPException, Request, status
 
 import auth  # your existing auth.py logic (token make/validate + DB fetch), trimmed of st.*
 from setup import setup as build_models
+from policy_sync import sync_active_policies_to_disk
 
 
 # ─────────────────────────────────────────────────────────────
@@ -39,6 +40,7 @@ models = ModelBundle()
 def load_models_once():
     if models.ready:
         return
+    sync_active_policies_to_disk()
     (models.ar_index, models.en_index,
      models.routing_llm, models.en_llm, models.ar_llm, models.critique_llm,
      models.reranker, models.dialect_pipe, models.ara_tokenizer) = build_models()
