@@ -1,3 +1,4 @@
+
 """
 escalation.py (backend) — email-sending logic only.
 The "Notify HR / Dismiss" buttons now live in React
@@ -10,7 +11,15 @@ from sqlalchemy import text
 from database import get_db
 
 
-def get_hr_email() -> str:
+def get_hr_email(exclude_employee_id: int | None = None) -> str:
+    """
+    Resolve who unanswered questions should be escalated to.
+
+    exclude_employee_id: if the person asking is themself the top-ranked
+    admin, we skip them and fall through to the next admin (or HR_EMAIL)
+    instead of "notifying HR" by emailing the requester themselves. This
+    matters now that admins use the same chat interface as everyone else.
+    """
     hr_email = os.environ.get("HR_EMAIL", "").strip()
     if hr_email:
         return hr_email
@@ -19,8 +28,9 @@ def get_hr_email() -> str:
             row = db.execute(text("""
                 SELECT email FROM employees
                 WHERE admin_role IN ('hr_admin', 'super_admin') AND is_active = TRUE
+                  AND (:exclude_id IS NULL OR id != :exclude_id)
                 ORDER BY admin_role DESC, id ASC LIMIT 1
-            """)).fetchone()
+            """), {"exclude_id": exclude_employee_id}).fetchone()
         if row:
             return row[0]
     except Exception:
