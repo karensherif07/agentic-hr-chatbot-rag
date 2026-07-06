@@ -35,7 +35,7 @@ def _safe_filename(name: str) -> str:
 def list_policies(emp: dict = Depends(require_admin)):
     with get_db() as db:
         rows = db.execute(text("""
-            SELECT id, file_path, doc_name, lang, is_active, uploaded_at,
+            SELECT pd.id, file_path, doc_name, lang, is_active, uploaded_at,
                    e.full_name AS uploaded_by_name
             FROM policy_documents pd
             LEFT JOIN employees e ON e.id = pd.uploaded_by
