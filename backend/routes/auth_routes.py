@@ -9,7 +9,7 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 _COOKIE_KWARGS = dict(
     httponly=True,
     samesite="lax",
-    secure=False,   # set True in production behind HTTPS
+    secure=True,   # set True in production behind HTTPS
     max_age=auth.SESSION_TTL_SEC,
     path="/",
 )
