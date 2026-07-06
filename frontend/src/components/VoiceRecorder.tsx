@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { BASE_URL } from "../api/client";
+import { BASE_URL, getToken } from "../api/client";
 
 type Mode = "mic" | "upload" | null;
 
@@ -59,9 +59,10 @@ export default function VoiceRecorder({
     try {
       const form = new FormData();
       form.append("file", blob, filename);
+      const token = getToken();
       const res = await fetch(`${BASE_URL}/api/voice/transcribe`, {
         method: "POST",
-        credentials: "include",
+        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         body: form,
       });
       if (!res.ok) throw new Error();

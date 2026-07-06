@@ -1,11 +1,41 @@
-import { useState } from "react";
-import { BASE_URL } from "../api/client";
+import { useEffect, useState } from "react";
+import { BASE_URL, getToken } from "../api/client";
 import type { CitedDoc } from "../api/types";
 
 function PdfPage({ doc }: { doc: CitedDoc }) {
   const [imgFailed, setImgFailed] = useState(false);
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const isAr = doc.lang === "arabic";
-  const imgUrl = `${BASE_URL}/api/policies/page-image?source=${encodeURIComponent(doc.source)}&page=${doc.page}`;
+
+  // <img src="..."> can't attach an Authorization header, so we fetch the
+  // image as a blob (with the token) and point the <img> at the resulting
+  // local object URL instead. Same end result, just token-compatible.
+  useEffect(() => {
+    let objectUrl: string | null = null;
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const token = getToken();
+        const url = `${BASE_URL}/api/policies/page-image?source=${encodeURIComponent(doc.source)}&page=${doc.page}`;
+        const res = await fetch(url, {
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        });
+        if (!res.ok) throw new Error();
+        const blob = await res.blob();
+        objectUrl = URL.createObjectURL(blob);
+        if (!cancelled) setBlobUrl(objectUrl);
+      } catch {
+        if (!cancelled) setImgFailed(true);
+      }
+    }
+    load();
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [doc.source, doc.page]);
 
   if (imgFailed) {
     // Same fallback as the original chat_ui.py: plain text block, RTL/LTR aware.
@@ -27,11 +57,14 @@ function PdfPage({ doc }: { doc: CitedDoc }) {
     );
   }
 
+  if (!blobUrl) {
+    return <div style={{ fontSize: 12.5, color: "var(--text-lo)" }}>Loading page…</div>;
+  }
+
   return (
     <img
-      src={imgUrl}
+      src={blobUrl}
       alt={`Page ${doc.page} — ${doc.doc_name}`}
-      crossOrigin="use-credentials"
       onError={() => setImgFailed(true)}
       style={{ width: "100%", maxWidth: 700, borderRadius: 8, border: "1px solid var(--line)" }}
     />
@@ -41,7 +74,6 @@ function PdfPage({ doc }: { doc: CitedDoc }) {
 export default function SourceEvidence({ docs }: { docs: CitedDoc[] }) {
   const [open, setOpen] = useState(false);
 
-  // De-dupe by (source, page) — mirrors the original chat_ui.py logic
   const unique = new Map<string, CitedDoc>();
   for (const d of docs) {
     const key = `${d.source}:${d.page}`;

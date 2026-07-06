@@ -2,8 +2,16 @@
 deps.py — Shared FastAPI dependencies.
 
 Replaces what Streamlit gave you for free:
-  - st.session_state   -> JWT/HMAC cookie + DB lookup per request
+  - st.session_state   -> Bearer token (validated per request) + DB lookup
   - st.cache_resource   -> module-level singleton, built once at startup
+
+Note: this was originally cookie-based, but Hugging Face Spaces sits behind
+a shared proxy that was silently stripping the
+`Access-Control-Allow-Credentials` header, which cookie-based cross-origin
+auth depends on. Switched to a standard Bearer token instead — the frontend
+sends `Authorization: Bearer <token>` on each request, which doesn't need
+that header at all and works regardless of what any intermediate proxy does
+with cookies.
 """
 
 import os
@@ -54,15 +62,19 @@ def get_models() -> ModelBundle:
 
 
 # ─────────────────────────────────────────────────────────────
-# Auth — reads the httpOnly cookie set at /api/auth/login,
+# Auth — reads the Bearer token from the Authorization header,
 # validates it with the same HMAC scheme as your original auth.py,
 # and loads the employee row fresh from the DB every request.
 # ─────────────────────────────────────────────────────────────
-COOKIE_NAME = "hr_session"
+def _extract_bearer_token(request: Request) -> "str | None":
+    header = request.headers.get("Authorization", "")
+    if not header.startswith("Bearer "):
+        return None
+    return header[len("Bearer "):].strip()
 
 
 def get_current_employee(request: Request) -> dict:
-    token = request.cookies.get(COOKIE_NAME)
+    token = _extract_bearer_token(request)
     if not token:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Not logged in.")
     emp_id = auth.validate_token(token)

@@ -25,7 +25,7 @@ CORS_ORIGINS = os.environ.get("CORS_ORIGINS", "http://localhost:5173").split(","
 app.add_middleware(
     CORSMiddleware,
     allow_origins=CORS_ORIGINS,
-    allow_credentials=True,   # required so the httpOnly auth cookie is sent/received
+    allow_credentials=False,  # not needed — auth is a Bearer token, not a cookie
     allow_methods=["*"],
     allow_headers=["*"],
 )

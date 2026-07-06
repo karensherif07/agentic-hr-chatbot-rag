@@ -1,4 +1,5 @@
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const TOKEN_STORAGE_KEY = "hr_auth_token";
 
 class ApiError extends Error {
   status: number;
@@ -8,14 +9,33 @@ class ApiError extends Error {
   }
 }
 
+// Token-based auth: stored in localStorage, sent as an Authorization header.
+// (Previously this was an httpOnly cookie + credentials:"include", but
+// Hugging Face Spaces' shared proxy was silently stripping the
+// Access-Control-Allow-Credentials header that cross-origin cookies
+// require. A Bearer token sidesteps that entirely — no credentialed
+// requests, so nothing for a proxy to strip.)
+export function getToken(): string | null {
+  return localStorage.getItem(TOKEN_STORAGE_KEY);
+}
+
+export function setToken(token: string) {
+  localStorage.setItem(TOKEN_STORAGE_KEY, token);
+}
+
+export function clearToken() {
+  localStorage.removeItem(TOKEN_STORAGE_KEY);
+}
+
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const token = getToken();
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
-    credentials: "include", // send/receive the httpOnly session cookie
     headers: {
       ...(options.body && !(options.body instanceof FormData)
         ? { "Content-Type": "application/json" }
         : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },
   });
