@@ -337,7 +337,11 @@ def _build_index(
 
 
 # ── Main setup ────────────────────────────────────────────────────────────────
-@functools.lru_cache(maxsize=1)
+# NOTE: intentionally NOT cached with functools.lru_cache — this function is
+# called again every time an admin clicks "Rebuild Index" (via deps.py's
+# load_models_once, after models.ready is reset to False), and it needs to
+# actually re-run and pick up newly uploaded/removed PDFs. Caching it would
+# make every rebuild silently return the very first build forever.
 def setup():
     """
     Returns:
@@ -352,6 +356,19 @@ def setup():
     dialect_pipe, ara_tokenizer = load_nlp_stack()
 
     emb = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large")
+
+    # Re-query the current active PDF list from the database on every call —
+    # NOT the module-level ARABIC_PDF_ENTRIES/ENGLISH_PDF_ENTRIES, which were
+    # only ever computed once at process import time and go stale the moment
+    # an admin uploads, deletes, or replaces a policy PDF afterward.
+    global ARABIC_PDF_ENTRIES, ENGLISH_PDF_ENTRIES, ARABIC_PDF_PATHS, ENGLISH_PDF_PATHS
+    global ARABIC_PDF_PATH_SET, ENGLISH_PDF_PATH_SET
+    ARABIC_PDF_ENTRIES  = _load_pdf_entries_from_db("arabic")
+    ENGLISH_PDF_ENTRIES = _load_pdf_entries_from_db("english")
+    ARABIC_PDF_PATHS  = [p for p, _ in ARABIC_PDF_ENTRIES]
+    ENGLISH_PDF_PATHS = [p for p, _ in ENGLISH_PDF_ENTRIES]
+    ARABIC_PDF_PATH_SET  = set(ARABIC_PDF_PATHS)
+    ENGLISH_PDF_PATH_SET = set(ENGLISH_PDF_PATHS)
 
     ar_index = _build_index(
         ARABIC_PDF_ENTRIES,
