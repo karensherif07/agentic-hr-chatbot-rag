@@ -1,15 +1,7 @@
 import base64
 
 from fastapi import APIRouter, Depends
-
-try:
-    from pydantic import BaseModel
-except ImportError:
-    # Fallback for environments where pydantic is not installed or resolvable.
-    class BaseModel:
-        def __init__(self, **data):
-            for key, value in data.items():
-                setattr(self, key, value)
+from pydantic import BaseModel
 
 from deps import get_current_employee, get_models, ModelBundle
 from agent import run_agent
@@ -88,6 +80,7 @@ def send_message(
         reranker=m.reranker,
         ara_tokenizer=m.ara_tokenizer,
         dialect_pipe=m.dialect_pipe,
+        chat_history=body.chat_history,
     )
 
     answer = result["answer"]
@@ -186,7 +179,7 @@ class ContactHRBody(BaseModel):
 
 @router.post("/contact-hr")
 def contact_hr(body: ContactHRBody, emp: dict = Depends(get_current_employee)):
-    hr_email = get_hr_email(exclude_employee_id=emp["id"])
+    hr_email = get_hr_email()
     if not hr_email:
         return {"sent": False, "reason": "HR email not configured."}
     sent = send_contact_hr_email(

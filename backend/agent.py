@@ -33,7 +33,7 @@ from personal_data import (
     get_performance_trend, get_okrs, get_latest_salary,
     get_payroll_history, get_training_record, get_active_disciplinary,
 )
-from retrieval import retrieve, rerank, rrf, rrf_weighted
+from retrieval import retrieve, rerank, rrf, rrf_weighted, build_retrieval_query
 from nlp_utils import (
     egyptian_to_msa, get_semantic_dialect,
     normalize_arabic, normalize_english,
@@ -839,6 +839,7 @@ def run_agent(
     reranker, ara_tokenizer, dialect_pipe=None,
     max_iterations=3,
     skip_critique=True,
+    chat_history=None,
 ):
     """
     Two-stage agentic orchestration:
@@ -851,12 +852,31 @@ def run_agent(
       policy   → ["retrieve_policy"]
       personal → [<db_tools…>]
       OOS      → ["out_of_scope"]
+
+    Follow-up questions (memory): `chat_history` is the raw list of prior
+    {"role", "content"} turns for THIS request. It's used to build a
+    conversation-aware retrieval/routing query — e.g. "what about sick
+    leave?" after a question about annual leave needs the prior turn to
+    resolve what "what about" refers to. Previously only the final answer
+    wording step (_format_answer, via history_str) ever saw conversation
+    history; intent classification, policy retrieval, and DB-tool planning
+    only ever saw the current question in isolation, so follow-ups that
+    needed different retrieval or tool selection based on context silently
+    failed. `history_str` (an already-summarized string) is still used for
+    natural-sounding final phrasing; `contextual_query` below is a separate,
+    retrieval-oriented expansion of the raw question used for routing.
     """
     db_tools     = _make_db_tools(employee_id)
     tool_results: dict = {}
     tools_called: list = []
     top_docs:     list = []
     scores_dict:  dict = {}
+
+    # Conversation-aware query for intent classification, retrieval, and
+    # planning — NOT used for the final answer's literal "Question:" field,
+    # which still uses the raw `question` so the answer stays a direct,
+    # natural response rather than echoing the expanded context blob.
+    contextual_query = build_retrieval_query(question, chat_history or [])
 
     # ── Greeting short-circuit (before any LLM call) ──────────────────────────
     _GREETING_RE = re.compile(
@@ -885,7 +905,7 @@ def run_agent(
         }
 
     # ── Stage 1: classify intent ──────────────────────────────────────────────
-    intent = _classify_intent(question, routing_llm)
+    intent = _classify_intent(contextual_query, routing_llm)
 
     # ── Stage 2: fetch data based on intent ───────────────────────────────────
 
@@ -894,14 +914,14 @@ def run_agent(
 
     elif intent == "policy":
         top_docs, scores_dict, ctx = _retrieve_policy(
-            question, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe
+            contextual_query, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe
         )
         tools_called = ["retrieve_policy"]
         tool_results["policy_context"] = ctx or ""
 
     elif intent == "personal":
         db_tools_called, db_results = _run_planner(
-            question, "",
+            contextual_query, "",
             routing_llm, db_tools,
         )
         tools_called = db_tools_called
@@ -909,7 +929,7 @@ def run_agent(
 
     else:  # hybrid
         top_docs, scores_dict, ctx = _retrieve_policy(
-            question, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe
+            contextual_query, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe
         )
         # Normalise: treat empty string same as "no policy found"
         ctx = ctx or ""
@@ -918,7 +938,7 @@ def run_agent(
         tools_called = [] if _is_empty_policy(ctx) else ["retrieve_policy"]
 
         db_tools_called, db_results = _run_planner(
-            question, ctx,
+            contextual_query, ctx,
             routing_llm, db_tools,
         )
         tools_called.extend(db_tools_called)
