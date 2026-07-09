@@ -95,20 +95,11 @@ def send_message(
     summary_llm = m.en_llm if lang == "english" else m.ar_llm
     new_summary = _summarize_and_save(emp["id"], new_history, body.conversation_summary, summary_llm)
 
-    # personal data string: strip backend-only ELIGIBILITY PRE-CHECK block
+    # Personal data string is shown as-is in the "Your data used" panel —
+    # the computed eligibility/financial figures are no longer a special
+    # hidden block that needs stripping; they're normal computed data about
+    # the employee's own record, transparent to show like everything else.
     pdata = result["personal_data"]
-    if pdata and "ELIGIBILITY PRE-CHECK" in pdata:
-        lines, out, skipping = pdata.splitlines(), [], False
-        for line in lines:
-            if line.strip().startswith("ELIGIBILITY PRE-CHECK"):
-                skipping = True
-                continue
-            if skipping:
-                if line.strip() == "":
-                    skipping = False
-                continue
-            out.append(line)
-        pdata = "\n".join(out).strip()
 
     from chat_ui import log_query
     log_query(emp["id"], result["intent"], result["topic"], lang, dialect, no_info, question)

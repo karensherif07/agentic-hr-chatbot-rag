@@ -16,6 +16,7 @@ Query Tool (open the file, copy contents, paste into Query Tool, execute) or
 ```
 backend/schema.sql
 backend/migrations/001_policy_documents.sql
+backend/migrations/002_add_pdf_bytes.sql
 ```
 
 ## 2. Backend

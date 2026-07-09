@@ -160,12 +160,12 @@ def format_personal_data(data: dict) -> str:
         lines.append("")
 
 
-    # ── Eligibility pre-check block ──────────────────────────────────────
-    # Structured YES/NO verdicts computed in Python so the LLM never has to
-    # reason over raw dates or do arithmetic itself. The LLM must use these
-    # verdicts as ground truth and never override them.
+    # ── Computed figures ──────────────────────────────────────────────────
+    # These are calculated in Python (dates, tenure, salary math) so the LLM
+    # never has to do arithmetic or reason over raw dates itself — errors
+    # there are what caused wrong eligibility answers before. 
     from datetime import date as _date
-    lines.append("ELIGIBILITY PRE-CHECK (use these verdicts exactly — do not recalculate)")
+    lines.append("COMPUTED FIGURES (accurate — use these values exactly; do not recalculate)")
     in_probation = bool(profile.get("probation_end_date")) if profile else False
     on_pip       = any(d.get("action_type") == "pip" for d in (data.get("active_disciplinary") or []))
 
@@ -264,13 +264,12 @@ _PERSONAL_RULES_EN = (
     "6. Mirror pronouns: user says I/my → reply with you/your.\n"
     "7. No page citations — this data is from the live HR database.\n"
     "8. LANGUAGE LOCK: Reply in English only.\n"
-    "9. ELIGIBILITY: When asked about bonus, promotion, scholarship, or leave eligibility, use the verdict "
-    "and reason given in the ELIGIBILITY PRE-CHECK block as your source of truth — do not re-derive it from "
-    "raw fields yourself. But rewrite it as a normal spoken sentence; never paste the block's own wording or "
-    "labels into your answer (see rule 10).\n"
+    "9. ELIGIBILITY: When asked about bonus, promotion, scholarship, or leave eligibility, use the computed "
+    "verdict and reason already given in your data as the source of truth — do not re-derive it from raw "
+    "fields yourself. Rewrite it as a normal spoken sentence (see rule 10).\n"
     "10. NATURAL PHRASING (important): Never print raw field names, internal labels, or "
     "key:value formatting in your answer — e.g. never write \"Probation status: NOT IN PROBATION\" or "
-    "\"probation_status: ACTIVE\" or \"ELIGIBILITY PRE-CHECK: YES\". Instead compose a normal sentence a "
+    "\"probation_status: ACTIVE\" or \"Eligible: YES\". Instead compose a normal sentence a "
     "person would actually say. Good: \"You're not currently in your probation period.\" or \"You're still "
     "on probation until March 1, 2026.\" or \"Yes, you're eligible for the bonus since you've completed "
     "6 months of service.\" Bad: \"Probation status: NOT IN PROBATION.\" Bad: \"According to "
@@ -356,10 +355,9 @@ _HYBRID_RULES_EN = (
     "State the relevant policy hours (shift length, breaks) with a page citation.\n"
     "5. Cite policy sentences with [Page N | AR/EN]. No citations for DB data.\n"
     "6. LANGUAGE LOCK: Reply in English only.\n"
-    "7. ELIGIBILITY: Use the verdict and reason from the ELIGIBILITY PRE-CHECK block as your source of "
-    "truth — never re-derive it yourself. But rewrite it as a normal sentence; never paste the block's "
-    "own labels or wording into your answer (e.g. don't write \"ELIGIBILITY PRE-CHECK: YES\" — instead say "
-    "\"Yes, you're eligible because...\").\n"
+    "7. ELIGIBILITY: Use the computed verdict and reason already given in the data as your source of "
+    "truth — never re-derive it yourself. Rewrite it as a normal sentence (e.g. don't write "
+    "\"Eligible: YES\" — instead say \"Yes, you're eligible because...\").\n"
     "8. Keep the answer under 5 sentences. No repetition.\n"
     "9. NATURAL PHRASING: Never print raw field names, internal labels, or key:value formatting anywhere "
     "in your answer.\n"
@@ -374,7 +372,7 @@ _HYBRID_RULES_AR = (
     "4. ساعات العمل: إذا كان العمل عن بُعد، وضّح أن الحضور اليومي للمكتب غير مطلوب، ثم اذكر ساعات السياسة مع رقم الصفحة.\n"
     "5. استشهد بجمل السياسة مع [Page N | AR/EN]. لا أرقام صفحات لبيانات قاعدة البيانات.\n"
     "6. قفل اللغة: أجب بالعربية فقط.\n"
-    "7. الأهلية: استخدم القرار والسبب من ELIGIBILITY PRE-CHECK كمصدر الحقيقة، لكن أعد صياغته كجملة طبيعية — لا تنسخ تسمية القسم نفسها في إجابتك.\n"
+    "7. الأهلية: استخدم القرار والسبب المحسوب في البيانات كمصدر الحقيقة، لكن أعد صياغته كجملة طبيعية.\n"
     "8. الإجابة في 5 جمل كحد أقصى. بدون تكرار.\n"
     "9. صياغة طبيعية: لا تكتب أبداً اسم الحقل الداخلي أو تنسيق key:value في إجابتك.\n"
 )
@@ -388,7 +386,7 @@ _HYBRID_RULES_EGY = (
     "4. العمل عن بُعد: لو شغلك remote متقولش إنك لازم تحضر كل يوم؛ ساعات السياسة لسه بتتطبق.\n"
     "5. استشهد بالسياسة مع [Page N | AR/EN]. لا أرقام صفحات للبيانات الشخصية.\n"
     "6. قفل اللغة: عامية مصرية بس.\n"
-    "7. الأهلية: استخدم القرار والسبب من ELIGIBILITY PRE-CHECK كمصدر الحقيقة، بس صيغه كجملة عادية — متنسخش اسم القسم في إجابتك.\n"
+    "7. الأهلية: استخدم القرار والسبب المحسوب في البيانات كمصدر الحقيقة، بس صيغه كجملة عادية.\n"
     "8. الإجابة في 5 جمل كحد أقصى.\n"
     "9. صياغة طبيعية: متكتبش اسم الحقل الداخلي أو key:value في إجابتك.\n"
 )
