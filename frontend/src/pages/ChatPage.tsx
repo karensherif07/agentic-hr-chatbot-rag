@@ -5,8 +5,9 @@ import SourceEvidence from "../components/SourceEvidence";
 import PersonalDataPanel from "../components/PersonalDataPanel";
 import EscalationBanner from "../components/EscalationBanner";
 import VoiceRecorder from "../components/VoiceRecorder";
-import SuggestedQuestions from "../components/SuggestedQuestions";
-import { api, BASE_URL } from "../api/client";
+import { api, BASE_URL, getToken, setToken, clearToken } from "../api/client";
+import { exportChatAsPdf } from "../utils/exportPdf";
+import { useAuthStore } from "../store/authStore";
 import type { ChatMessage, ChatResponse } from "../api/types";
 
 interface TurnMeta {
@@ -17,7 +18,15 @@ interface TurnMeta {
   lang: ChatResponse["lang"];
 }
 
+// Matches the server's own cap in sessions.py (_MAX_STORED_MESSAGES = 40) —
+// no correctness reason to send more than this each turn, since retrieval
+// only ever looks back 2 turns and the summary carries the rest of the
+// context. Keeps every request lean regardless of how long the on-screen
+// conversation gets.
+const MAX_SENT_HISTORY = 40;
+
 export default function ChatPage() {
+  const employee = useAuthStore((s) => s.employee);
   const [history, setHistory] = useState<ChatMessage[]>([]);
   const [summary, setSummary] = useState("");
   const [input, setInput] = useState("");
@@ -25,6 +34,7 @@ export default function ChatPage() {
   const [metaByIndex, setMetaByIndex] = useState<Record<number, TurnMeta>>({});
   const [escalationForIndex, setEscalationForIndex] = useState<number | null>(null);
   const [translated, setTranslated] = useState<{ text: string; lang: string } | null>(null);
+  const [streamingText, setStreamingText] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,15 +53,20 @@ export default function ChatPage() {
     setInput("");
     setThinking(true);
     setTranslated(null);
-    try {
-      const res = await api.post<ChatResponse>("/api/chat/message", {
-        question,
-        chat_history: history,
-        conversation_summary: summary,
-      });
-      setHistory(res.chat_history);
+    setStreamingText("");
+
+    const requestBody = {
+      question,
+      chat_history: history.slice(-MAX_SENT_HISTORY),
+      conversation_summary: summary,
+    };
+
+    function finalize(res: ChatResponse) {
+      const newTurns = res.chat_history.slice(-2);
+      const fullHistory = [...history, ...newTurns];
+      setHistory(fullHistory);
       setSummary(res.conversation_summary);
-      const assistantIndex = res.chat_history.length - 1;
+      const assistantIndex = fullHistory.length - 1;
       setMetaByIndex((prev) => ({
         ...prev,
         [assistantIndex]: {
@@ -63,12 +78,93 @@ export default function ChatPage() {
         },
       }));
       if (res.no_info) setEscalationForIndex(assistantIndex);
+    }
+
+    async function fallbackNonStreaming() {
+      try {
+        const res = await api.post<ChatResponse>("/api/chat/message", requestBody);
+        finalize(res);
+      } catch {
+        setHistory((h) => [
+          ...h,
+          { role: "assistant", content: "Sorry, something went wrong. Please try again.", is_arabic: false, is_franco: false },
+        ]);
+      }
+    }
+
+    try {
+      const token = getToken();
+      const res = await fetch(`${BASE_URL}/api/chat/message/stream`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (res.status === 401) {
+        clearToken();
+        window.location.href = "/login";
+        return;
+      }
+      const refreshed = res.headers.get("X-Refreshed-Token");
+      if (refreshed) setToken(refreshed);
+      if (!res.ok || !res.body) {
+        await fallbackNonStreaming();
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let liveText = "";
+      let doneResult: ChatResponse | null = null;
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        // SSE events are separated by a blank line; each starts with "data: ".
+        const events = buffer.split("\n\n");
+        buffer = events.pop() || ""; // last item may be incomplete, keep for next read
+
+        for (const evt of events) {
+          const line = evt.trim();
+          if (!line.startsWith("data:")) continue;
+          const jsonStr = line.slice(5).trim();
+          if (!jsonStr) continue;
+          let parsed: any;
+          try {
+            parsed = JSON.parse(jsonStr);
+          } catch {
+            continue;
+          }
+          if (parsed.type === "chunk") {
+            liveText += parsed.text;
+            setStreamingText(liveText);
+          } else if (parsed.type === "done") {
+            doneResult = parsed as ChatResponse;
+          } else if (parsed.type === "error") {
+            throw new Error(parsed.detail || "Stream error");
+          }
+        }
+      }
+
+      if (doneResult) {
+        // One-time swap: the live-streamed text may still contain raw
+        // citation markers; the "done" event's answer is fully cleaned.
+        // finalize() adds it to `history`, which replaces the streamingText
+        // bubble in the render below.
+        finalize(doneResult);
+      } else {
+        await fallbackNonStreaming();
+      }
     } catch {
-      setHistory((h) => [
-        ...h,
-        { role: "assistant", content: "Sorry, something went wrong. Please try again.", is_arabic: false, is_franco: false },
-      ]);
+      await fallbackNonStreaming();
     } finally {
+      setStreamingText(null);
       setThinking(false);
     }
   }
@@ -108,7 +204,7 @@ export default function ChatPage() {
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
-      <Sidebar onClearChat={clearChat} />
+      <Sidebar onClearChat={clearChat} onExportPdf={() => exportChatAsPdf(history, employee?.full_name)} />
 
       <div style={{ flex: 1, display: "flex", flexDirection: "column", maxWidth: 900, margin: "0 auto", width: "100%" }}>
         <div style={{ padding: "20px 28px 0" }}>
@@ -136,8 +232,6 @@ export default function ChatPage() {
             </div>
           )}
 
-          {history.length === 0 && <SuggestedQuestions onPick={(q) => sendQuestion(q)} />}
-
           {history.map((msg, i) => {
             const meta = metaByIndex[i];
             return (
@@ -157,10 +251,23 @@ export default function ChatPage() {
           })}
 
           {thinking && (
-            <div style={{ display: "flex", gap: 8, alignItems: "center", padding: "8px 4px", color: "var(--text-lo)", fontSize: 13.5 }}>
-              <span className="horizon-rule" style={{ width: 36, height: 2 }} />
-              Thinking…
-            </div>
+            <>
+              {streamingText ? (
+                <ChatBubble
+                  msg={{
+                    role: "assistant",
+                    content: streamingText,
+                    is_arabic: /[\u0600-\u06FF]/.test(streamingText),
+                    is_franco: false,
+                  }}
+                />
+              ) : (
+                <div style={{ display: "flex", gap: 8, alignItems: "center", padding: "8px 4px", color: "var(--text-lo)", fontSize: 13.5 }}>
+                  <span className="horizon-rule" style={{ width: 36, height: 2 }} />
+                  Thinking…
+                </div>
+              )}
+            </>
           )}
         </div>
 
