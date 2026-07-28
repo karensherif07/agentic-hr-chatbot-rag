@@ -40,6 +40,13 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     },
   });
 
+  // Sliding-session refresh: if the backend decided this token is getting
+  // close to expiry (see deps.py's _REFRESH_THRESHOLD_SEC), it sends a
+  // fresh one here — swap it in silently so an active user never gets
+  // logged out mid-session just from time passing while they're using it.
+  const refreshed = res.headers.get("X-Refreshed-Token");
+  if (refreshed) setToken(refreshed);
+
   if (!res.ok) {
     let message = res.statusText;
     try {
@@ -48,6 +55,18 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     } catch {
       /* ignore */
     }
+
+    // A 401 here means the token is missing/expired/invalid — the backend
+    // will never accept it again as-is. Rather than let every caller show
+    // a confusing generic error, clear it and bounce to login once, so the
+    // user gets a clear "please sign in again" instead of a dead end.
+    if (res.status === 401 && token) {
+      clearToken();
+      if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
+    }
+
     throw new ApiError(res.status, message);
   }
 
