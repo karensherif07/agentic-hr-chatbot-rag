@@ -43,6 +43,28 @@ def validate_token(token: str) -> "int | None":
     return int(data["id"])
 
 
+def token_seconds_remaining(token: str) -> "int | None":
+    """
+    Returns how many seconds until this (valid) token expires, or None if
+    the token is missing/malformed/already expired. Used for sliding-session
+    refresh — see deps.get_current_employee.
+    """
+    token = (token or "").strip()
+    if not token or "." not in token:
+        return None
+    p64, sig = token.rsplit(".", 1)
+    want = hmac.new(_secret(), p64.encode(), hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(want, sig):
+        return None
+    pad = "=" * (-len(p64) % 4)
+    try:
+        data = json.loads(base64.urlsafe_b64decode((p64 + pad).encode()).decode())
+    except Exception:
+        return None
+    remaining = int(data.get("exp", 0)) - int(time.time())
+    return remaining if remaining > 0 else None
+
+
 def verify_password(plain: str, hashed: str) -> bool:
     return bcrypt.checkpw(plain.encode(), hashed.encode())
 
