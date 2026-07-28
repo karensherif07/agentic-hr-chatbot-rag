@@ -342,7 +342,7 @@ def _build_index(
 # load_models_once, after models.ready is reset to False), and it needs to
 # actually re-run and pick up newly uploaded/removed PDFs. Caching it would
 # make every rebuild silently return the very first build forever.
-def setup():
+def setup(on_progress=None):
     """
     Returns:
         ar_index      – (FAISS, BM25, docs) for Arabic PDFs
@@ -352,9 +352,23 @@ def setup():
         ar_llm        – Arabic / Franco gen    (qwen3-32b)
         critique_llm  – self-critique          (llama-3.1-8b-instant)
         reranker, dialect_pipe, ara_tokenizer
+
+    on_progress: optional callable(str) invoked at each major stage, so
+    callers (e.g. the admin "Rebuild Index" endpoint) can surface live
+    progress instead of a bare spinner. Safe to omit — used for reporting
+    only, never changes behavior.
     """
+    def _report(stage):
+        if on_progress:
+            try:
+                on_progress(stage)
+            except Exception:
+                pass  # progress reporting must never break the actual build
+
+    _report("Loading dialect detection model…")
     dialect_pipe, ara_tokenizer = load_nlp_stack()
 
+    _report("Loading embedding model…")
     emb = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-large")
 
     # Re-query the current active PDF list from the database on every call —
@@ -370,12 +384,14 @@ def setup():
     ARABIC_PDF_PATH_SET  = set(ARABIC_PDF_PATHS)
     ENGLISH_PDF_PATH_SET = set(ENGLISH_PDF_PATHS)
 
+    _report(f"Indexing {len(ARABIC_PDF_ENTRIES)} Arabic document(s)…")
     ar_index = _build_index(
         ARABIC_PDF_ENTRIES,
         lambda t: normalize_arabic(t, ara_tokenizer),
         lang_tag="arabic",
         emb=emb,
     )
+    _report(f"Indexing {len(ENGLISH_PDF_ENTRIES)} English document(s)…")
     en_index = _build_index(
         ENGLISH_PDF_ENTRIES,
         normalize_english,
@@ -383,6 +399,7 @@ def setup():
         emb=emb,
     )
 
+    _report("Connecting language models…")
     # ── LLM roles ─────────────────────────────────────────────────────────────
     routing_llm = ChatGroq(
         groq_api_key=api_key,
@@ -405,8 +422,10 @@ def setup():
         temperature=0,
     )
 
+    _report("Loading reranker…")
     reranker = CrossEncoder("BAAI/bge-reranker-v2-m3")
 
+    _report("Done")
     return (
         ar_index, en_index,
         routing_llm, en_llm, ar_llm, critique_llm,
