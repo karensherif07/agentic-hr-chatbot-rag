@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile
 
-from deps import get_current_employee
+from deps import get_current_employee, limiter
 from speech import transcribe_audio, stt_available
 
 router = APIRouter(prefix="/api/voice", tags=["voice"])
@@ -12,7 +12,9 @@ def available(emp: dict = Depends(get_current_employee)):
 
 
 @router.post("/transcribe")
+@limiter.limit("15/minute")
 async def transcribe(
+    request: Request,
     file: UploadFile = File(...),
     emp: dict = Depends(get_current_employee),
 ):
