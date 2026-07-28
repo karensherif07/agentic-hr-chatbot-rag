@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { api } from "../api/client";
 
-export default function Sidebar({ onClearChat }: { onClearChat: () => void }) {
+export default function Sidebar({ onClearChat, onExportPdf }: { onClearChat: () => void; onExportPdf?: () => void }) {
   const { employee, logout } = useAuthStore();
   const navigate = useNavigate();
   const [contactOpen, setContactOpen] = useState(false);
@@ -100,6 +100,12 @@ export default function Sidebar({ onClearChat }: { onClearChat: () => void }) {
               </form>
             )}
           </div>
+        )}
+
+        {onExportPdf && (
+          <button className="btn btn-ghost" style={{ width: "100%", marginBottom: 8 }} onClick={onExportPdf}>
+            📄 Export chat as PDF
+          </button>
         )}
 
         <button className="btn btn-ghost" style={{ width: "100%" }} onClick={onClearChat}>
