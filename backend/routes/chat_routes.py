@@ -1,10 +1,12 @@
 import base64
+import json
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-from deps import get_current_employee, get_models, ModelBundle
-from agent import run_agent
+from deps import get_current_employee, get_models, ModelBundle, limiter
+from agent import run_agent, run_agent_stream
 from nlp_utils import detect_language_type, get_semantic_dialect
 from utils import build_history_str, is_no_info_answer, translate, strip_citations
 from sessions import load_session, save_session, clear_session
@@ -54,7 +56,9 @@ def _doc_to_json(d):
 
 
 @router.post("/message")
+@limiter.limit("20/minute")
 def send_message(
+    request: Request,
     body: MessageBody,
     emp: dict = Depends(get_current_employee),
     m: ModelBundle = Depends(get_models),
@@ -117,6 +121,107 @@ def send_message(
         "chat_history": new_history,
         "conversation_summary": new_summary,
     }
+
+
+@router.post("/message/stream")
+@limiter.limit("20/minute")
+def send_message_stream(
+    request: Request,
+    body: MessageBody,
+    emp: dict = Depends(get_current_employee),
+    m: ModelBundle = Depends(get_models),
+):
+    """
+    Server-Sent Events version of /message. Streams the final answer
+    token-by-token as it's generated, then sends one final "done" event
+    carrying the exact same fields the non-streaming endpoint returns
+    (cited_docs, personal_data, chat_history, etc.) — the frontend can
+    reuse identical result-handling for both.
+
+    Note: the live-streamed text is the raw model output (may still
+    contain [Page N | AR/EN] citation markers or stray formatting) —
+    citation stripping and validation need the complete answer, so that
+    cleanup only happens once, reflected in the final "done" event's
+    "answer" field. The frontend swaps in that cleaned text once
+    streaming finishes; see ChatPage.tsx for the one-time swap.
+    """
+    question = body.question.strip()
+    lang = detect_language_type(question)
+    dialect = get_semantic_dialect(question, m.dialect_pipe) if lang == "arabic" else None
+    history_str = build_history_str(body.chat_history, body.conversation_summary)
+
+    def event_stream():
+        gen = run_agent_stream(
+            question=question,
+            employee_id=emp["id"],
+            lang=lang,
+            dialect=dialect,
+            history_str=history_str,
+            ar_index=m.ar_index,
+            en_index=m.en_index,
+            routing_llm=m.routing_llm,
+            en_llm=m.en_llm,
+            ar_llm=m.ar_llm,
+            critique_llm=m.critique_llm,
+            reranker=m.reranker,
+            ara_tokenizer=m.ara_tokenizer,
+            dialect_pipe=m.dialect_pipe,
+            chat_history=body.chat_history,
+        )
+
+        result = None
+        try:
+            while True:
+                chunk = next(gen)
+                if chunk:
+                    yield f"data: {json.dumps({'type': 'chunk', 'text': chunk})}\n\n"
+        except StopIteration as stop:
+            result = stop.value or {}
+        except Exception as e:
+            yield f"data: {json.dumps({'type': 'error', 'detail': str(e)})}\n\n"
+            return
+
+        answer = result.get("answer", "")
+        is_franco = lang == "franco"
+        is_arabic_script = lang == "arabic"
+        no_info = is_no_info_answer(answer)
+
+        new_history = body.chat_history + [
+            {"role": "user", "content": question, "is_arabic": False, "is_franco": is_franco},
+            {"role": "assistant", "content": answer, "is_arabic": is_arabic_script, "is_franco": is_franco},
+        ]
+        summary_llm = m.en_llm if lang == "english" else m.ar_llm
+        new_summary = _summarize_and_save(emp["id"], new_history, body.conversation_summary, summary_llm)
+
+        pdata = result.get("personal_data", "")
+
+        from chat_ui import log_query
+        log_query(emp["id"], result.get("intent", ""), result.get("topic", ""), lang, dialect, no_info, question)
+
+        done_payload = {
+            "type": "done",
+            "answer": answer,
+            "lang": lang,
+            "dialect": dialect,
+            "intent": result.get("intent", ""),
+            "topic": result.get("topic", ""),
+            "tools_called": result.get("tools_called", []),
+            "no_info": no_info,
+            "personal_data": pdata if result.get("intent") in ("personal", "hybrid") and not no_info else "",
+            "cited_docs": [_doc_to_json(d) for d in result.get("cited_docs", [])] if result.get("intent") in ("policy", "hybrid") and not no_info else [],
+            "chat_history": new_history,
+            "conversation_summary": new_summary,
+        }
+        yield f"data: {json.dumps(done_payload)}\n\n"
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",  # disable proxy buffering (e.g. nginx/HF proxy) so chunks flush immediately
+        },
+    )
 
 
 class TranslateBody(BaseModel):

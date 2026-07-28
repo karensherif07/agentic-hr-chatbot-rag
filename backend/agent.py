@@ -739,8 +739,14 @@ def _pick_llm(lang, en_llm, ar_llm):
     return en_llm if lang in ["english", "franco"] else ar_llm
 
 
-def _format_answer(lang, dialect, question, tool_results, history_str,
-                   en_llm, ar_llm, top_docs):
+def _resolve_final_prompt(lang, dialect, question, tool_results, history_str, en_llm, ar_llm, top_docs):
+    """
+    Builds the final answer-generation prompt. Returns either:
+      ("literal", <string>)         — no LLM call needed (e.g. no policy found)
+      ("llm", <llm>, <prompt_str>)  — caller should invoke or stream this
+    Shared by _format_answer() (non-streaming) and _stream_final_answer()
+    (streaming) so both paths build the exact same prompt.
+    """
     has_policy = bool(tool_results.get("policy_context"))
     has_db     = any(k in tool_results for k in _DB_KEYS)
     llm        = _pick_llm(lang, en_llm, ar_llm)
@@ -748,36 +754,123 @@ def _format_answer(lang, dialect, question, tool_results, history_str,
                   if top_docs else tool_results.get("policy_context", ""))
 
     if has_db and has_policy:
-        res = _invoke_with_retry(llm, get_hybrid_prompt(lang, dialect).format(
+        prompt = get_hybrid_prompt(lang, dialect).format(
             personal_data=format_personal_data(_merge_db(tool_results)),
             policy_context=ctx,
             question=question,
             history=history_str,
-        ))
+        )
+        return "llm", llm, prompt
     elif has_db:
-        res = _invoke_with_retry(llm, get_personal_prompt(lang, dialect).format(
+        prompt = get_personal_prompt(lang, dialect).format(
             personal_data=format_personal_data(_merge_db(tool_results)),
             question=question,
             history=history_str,
-        ))
+        )
+        return "llm", llm, prompt
     else:
         if not ctx:
-            return "This information is not available in the policy documents."
-        # Prepend context instruction preamble (mirrors generate_answers.py)
+            return "literal", "This information is not available in the policy documents."
         if lang == "english":
             augmented_ctx = _EN_CONTEXT_INSTRUCTION + ctx
-            prompt = english_prompt
+            prompt_tpl = english_prompt
         elif lang == "franco":
             augmented_ctx = _FRANCO_CONTEXT_INSTRUCTION + ctx
-            prompt = franco_prompt
+            prompt_tpl = franco_prompt
         else:
             augmented_ctx = _AR_CONTEXT_INSTRUCTION + ctx
-            prompt = egy_prompt if dialect == "egyptian" else msa_prompt
-        res = _invoke_with_retry(llm, prompt.format(
-            context=augmented_ctx, question=question, history=history_str,
-        ))
+            prompt_tpl = egy_prompt if dialect == "egyptian" else msa_prompt
+        prompt = prompt_tpl.format(context=augmented_ctx, question=question, history=history_str)
+        return "llm", llm, prompt
 
+
+def _format_answer(lang, dialect, question, tool_results, history_str,
+                   en_llm, ar_llm, top_docs):
+    kind, a, b = _resolve_final_prompt(
+        lang, dialect, question, tool_results, history_str, en_llm, ar_llm, top_docs
+    )
+    if kind == "literal":
+        return a
+    llm, prompt = a, b
+    res = _invoke_with_retry(llm, prompt)
     return _strip_think_blocks(res.content)
+
+
+def _stream_final_answer(lang, dialect, question, tool_results, history_str,
+                          en_llm, ar_llm, top_docs):
+    """
+    Generator version of _format_answer(). Yields raw text chunks as they
+    arrive from the LLM (NOT yet stripped of citation markers or <think>
+    reasoning blocks — that cleanup needs the complete text, so it happens
+    once at the end; see run_agent_stream). Also filters out <think>...
+    </think> spans live on a best-effort basis so reasoning models (Qwen3
+    for Arabic/Franco) don't visibly leak raw reasoning tags mid-stream —
+    the final persisted answer is always fully cleaned regardless, via the
+    same _strip_think_blocks() used by the non-streaming path.
+
+    Returns the full accumulated raw text via generator return value
+    (accessible as `e.value` when driven with a manual next()/StopIteration,
+    or simply by accumulating chunks at the call site — see chat_routes.py).
+    """
+    kind, a, b = _resolve_final_prompt(
+        lang, dialect, question, tool_results, history_str, en_llm, ar_llm, top_docs
+    )
+    if kind == "literal":
+        yield a
+        return a
+
+    llm, prompt = a, b
+    full_text = ""
+    in_think = False
+    pending = ""  # small tail buffer to catch tags split across chunk boundaries
+
+    try:
+        for chunk in llm.stream(prompt):
+            piece = getattr(chunk, "content", "") or ""
+            if not piece:
+                continue
+            full_text += piece
+            pending += piece
+
+            # Process pending buffer for <think>/</think> boundaries.
+            while True:
+                if not in_think:
+                    start = pending.find("<think>")
+                    if start == -1:
+                        # No tag start in sight — flush all but a small tail
+                        # (in case "<thi" etc. is a split tag beginning).
+                        safe_len = max(0, len(pending) - 8)
+                        if safe_len:
+                            yield pending[:safe_len]
+                            pending = pending[safe_len:]
+                        break
+                    else:
+                        if start > 0:
+                            yield pending[:start]
+                        pending = pending[start + len("<think>"):]
+                        in_think = True
+                else:
+                    end = pending.find("</think>")
+                    if end == -1:
+                        pending = pending[-8:] if len(pending) > 8 else pending
+                        break
+                    else:
+                        pending = pending[end + len("</think>"):]
+                        in_think = False
+    except Exception as e:
+        # Mirror _invoke_with_retry's rate-limit awareness minimally — if
+        # streaming fails outright, fall back to a single non-streaming
+        # retry rather than leaving the user with a half-finished answer.
+        print(f"[agent] streaming failed ({e}), falling back to non-streaming retry")
+        res = _invoke_with_retry(llm, prompt)
+        full_text = res.content
+        yield full_text
+        return _strip_think_blocks(full_text)
+
+    if pending and not in_think:
+        yield pending
+
+    return _strip_think_blocks(full_text)
 
 
 # =============================================================================
@@ -977,6 +1070,125 @@ def run_agent(
                     answer, top_docs, scores_dict, cdocs = a2, t2, s2, cd2
 
     # ── Resolve final intent label ────────────────────────────────────────────
+    has_db_data = any(k in tool_results for k in _DB_KEYS)
+    if intent not in ("out_of_scope",) and is_no_info_answer(answer) and not has_db_data:
+        intent = "out_of_scope"
+
+    topic = _infer_topic(tools_called)
+    pdata = (_build_personal_data_str(tool_results)
+             if intent in ("personal", "hybrid") else "")
+
+    return {
+        "answer":        answer,
+        "docs":          top_docs,
+        "cited_docs":    cdocs,
+        "scores":        scores_dict,
+        "intent":        intent,
+        "topic":         topic,
+        "tools_called":  tools_called,
+        "personal_data": pdata,
+    }
+
+
+def run_agent_stream(
+    question, employee_id, lang, dialect, history_str,
+    ar_index, en_index, routing_llm, en_llm, ar_llm, critique_llm,
+    reranker, ara_tokenizer, dialect_pipe=None,
+    chat_history=None,
+):
+    """
+    Streaming twin of run_agent(). Identical Stage 1 (intent classification)
+    and Stage 2 (policy retrieval / DB tool planning) — those are fast,
+    non-generative steps and aren't streamed. Only the final answer
+    generation step streams token-by-token.
+
+    Yields raw text chunks (str) as they arrive — NOT yet stripped of
+    citation markers, since that requires the complete text. After the
+    generator is exhausted, call it via a driver loop that captures the
+    StopIteration.value, which holds the same metadata dict shape as
+    run_agent()'s return value (minus "answer", which was streamed —
+    the caller should use the accumulated chunks as the raw answer text
+    and run it through the same citation/cleanup steps run_agent uses).
+
+    Known simplification: does not support the critique-based re-retrieval
+    pass (run_agent's skip_critique=False path) — chat_routes.py already
+    calls run_agent with the default skip_critique=True, so this matches
+    current production behavior exactly; only a future change to enable
+    critique by default would need this extended.
+    """
+    db_tools     = _make_db_tools(employee_id)
+    tool_results: dict = {}
+    tools_called: list = []
+    top_docs:     list = []
+    scores_dict:  dict = {}
+
+    contextual_query = build_retrieval_query(question, chat_history or [])
+
+    _GREETING_RE = re.compile(
+        r"^\s*(hi|hello|hey|greetings|good\s+morning|good\s+afternoon|good\s+evening"
+        r"|ahlan|ahlan wa sahlan|marhaba|salam|السلام عليكم|مرحبا|أهلاً|هاي|هلو"
+        r"|هالو|ازيك|ازيك؟|ايه الاخبار|إزيك|صباح الخير|مساء الخير"
+        r"|salam|sala[mn]o|alo|hola|ciao|salut)\W*$",
+        re.IGNORECASE,
+    )
+    if _GREETING_RE.match(question.strip()):
+        greeting_replies = {
+            "arabic":  "أهلاً وسهلاً! 👋 أنا مساعدك لشؤون الموارد البشرية. كيف أقدر أساعدك اليوم؟",
+            "franco":  "Ahlan! 👋 Ana hena a3awwadak fi ay 7aga mota3ale2a bi HR. Ezay a2dar asa3dak?",
+            "english": "Hello! 👋 I'm your HR assistant. How can I help you today?",
+        }
+        reply = greeting_replies.get(lang, greeting_replies["english"])
+        yield reply
+        return {
+            "answer": reply, "docs": [], "cited_docs": [], "scores": {},
+            "intent": "out_of_scope", "topic": "none", "tools_called": [], "personal_data": "",
+        }
+
+    intent = _classify_intent(contextual_query, routing_llm)
+
+    if intent == "out_of_scope":
+        tools_called = ["out_of_scope"]
+
+    elif intent == "policy":
+        top_docs, scores_dict, ctx = _retrieve_policy(
+            contextual_query, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe
+        )
+        tools_called = ["retrieve_policy"]
+        tool_results["policy_context"] = ctx or ""
+
+    elif intent == "personal":
+        db_tools_called, db_results = _run_planner(
+            contextual_query, "", routing_llm, db_tools,
+        )
+        tools_called = db_tools_called
+        tool_results.update(db_results)
+
+    else:  # hybrid
+        top_docs, scores_dict, ctx = _retrieve_policy(
+            contextual_query, ar_index, en_index, reranker, ara_tokenizer, dialect_pipe
+        )
+        ctx = ctx or ""
+        tool_results["policy_context"] = ctx
+        tools_called = [] if _is_empty_policy(ctx) else ["retrieve_policy"]
+        db_tools_called, db_results = _run_planner(
+            contextual_query, ctx, routing_llm, db_tools,
+        )
+        tools_called.extend(db_tools_called)
+        tool_results.update(db_results)
+
+    # ── Stream the final answer ───────────────────────────────────────────────
+    raw = yield from _stream_final_answer(
+        lang, dialect, question, tool_results, history_str, en_llm, ar_llm, top_docs
+    )
+
+    cited = get_cited_pages(raw)
+    cdocs = filter_cited_chunks(top_docs, cited)
+    clean = strip_citations(raw)
+
+    db_only = (any(k in tool_results for k in _DB_KEYS)
+               and not tool_results.get("policy_context"))
+    answer  = clean if db_only else validate(clean, lang, has_citations=bool(cited))
+
     has_db_data = any(k in tool_results for k in _DB_KEYS)
     if intent not in ("out_of_scope",) and is_no_info_answer(answer) and not has_db_data:
         intent = "out_of_scope"
