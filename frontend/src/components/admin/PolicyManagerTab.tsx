@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "../../api/client";
 import type { PolicyDoc } from "../../api/types";
 
@@ -9,7 +9,9 @@ export default function PolicyManagerTab() {
   const [lang, setLang] = useState<"arabic" | "english">("english");
   const [uploading, setUploading] = useState(false);
   const [rebuilding, setRebuilding] = useState(false);
+  const [rebuildStage, setRebuildStage] = useState<string | null>(null);
   const [notice, setNotice] = useState<{ type: "ok" | "err"; text: string } | null>(null);
+  const pollRef = useRef<number | null>(null);
 
   function load() {
     api.get<{ rows: PolicyDoc[] }>("/api/admin/policies").then((r) => setRows(r.rows));
@@ -52,16 +54,39 @@ export default function PolicyManagerTab() {
 
   async function rebuildIndex() {
     setRebuilding(true);
+    setRebuildStage("Starting…");
     setNotice(null);
+
+    // Poll the status endpoint concurrently — the rebuild-index POST below
+    // blocks until fully done (can take minutes on free-tier CPU), so this
+    // is the only way to show live progress instead of a bare spinner.
+    pollRef.current = window.setInterval(async () => {
+      try {
+        const status = await api.get<{ stage: string; error: string | null }>("/api/admin/policies/rebuild-status");
+        if (status.stage && status.stage !== "idle") setRebuildStage(status.stage);
+      } catch {
+        /* ignore transient poll failures */
+      }
+    }, 1200);
+
     try {
       const res = await api.post<{ note: string }>("/api/admin/policies/rebuild-index");
       setNotice({ type: "ok", text: res.note });
     } catch (e: any) {
       setNotice({ type: "err", text: e.message || "Rebuild failed." });
     } finally {
+      if (pollRef.current) window.clearInterval(pollRef.current);
+      pollRef.current = null;
       setRebuilding(false);
+      setRebuildStage(null);
     }
   }
+
+  useEffect(() => {
+    return () => {
+      if (pollRef.current) window.clearInterval(pollRef.current);
+    };
+  }, []);
 
   return (
     <div>
@@ -117,7 +142,7 @@ export default function PolicyManagerTab() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
           <div style={{ fontSize: 13.5, fontWeight: 600 }}>Current policy documents</div>
           <button className="btn btn-ghost" onClick={rebuildIndex} disabled={rebuilding}>
-            {rebuilding ? "Rebuilding…" : "🔄 Rebuild Index"}
+            {rebuilding ? `⏳ ${rebuildStage || "Rebuilding…"}` : "🔄 Rebuild Index"}
           </button>
         </div>
 
@@ -134,7 +159,7 @@ export default function PolicyManagerTab() {
                 justifyContent: "space-between",
                 padding: "10px 14px",
                 borderRadius: 10,
-                background: "var(--surface-alt)",
+                background: "rgba(255,255,255,0.03)",
                 border: "1px solid var(--line)",
                 opacity: p.is_active ? 1 : 0.5,
               }}

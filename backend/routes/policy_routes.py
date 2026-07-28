@@ -35,7 +35,7 @@ def _safe_filename(name: str) -> str:
 def list_policies(emp: dict = Depends(require_admin)):
     with get_db() as db:
         rows = db.execute(text("""
-            SELECT pd.id, pd.file_path, pd.doc_name, pd.lang, pd.is_active, pd.uploaded_at,
+            SELECT pd.id, file_path, doc_name, lang, is_active, uploaded_at,
                    e.full_name AS uploaded_by_name
             FROM policy_documents pd
             LEFT JOIN employees e ON e.id = pd.uploaded_by
@@ -123,13 +123,25 @@ def delete_policy(policy_id: int, emp: dict = Depends(require_admin)):
     return {"ok": True, "note": "Deleted. Click 'Rebuild Index' to remove it from retrieval."}
 
 
+@router.get("/rebuild-status")
+def rebuild_status_endpoint(emp: dict = Depends(require_admin)):
+    """
+    Lightweight status the frontend polls while a rebuild is in progress
+    (the /rebuild-index POST itself blocks until done, which can take
+    minutes on free-tier CPU — this lets the UI show live stage text
+    instead of a bare spinner the whole time).
+    """
+    from deps import rebuild_status
+    return dict(rebuild_status)
+
+
 @router.post("/rebuild-index")
 def rebuild_index(emp: dict = Depends(require_admin)):
     """
     Clears the in-memory model bundle and rebuilds FAISS/BM25 indexes from
     the current active rows in policy_documents. This is synchronous and
-    can take a while (embeddings + reranker reload) — the frontend should
-    show a spinner and disable chat during this call.
+    can take a while (embeddings + reranker reload) — the frontend polls
+    GET /rebuild-status concurrently to show live progress during this call.
     """
     models.ready = False
     try:
